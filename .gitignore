@@ -2,6 +2,7 @@
 build/
 *.aux
 *.log
+.texpadtmp/
 
 # Emacs junk
 auto/
