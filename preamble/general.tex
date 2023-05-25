@@ -1,0 +1,215 @@
+% File encoding
+\usepackage[utf8]{inputenc}
+
+% Languages
+\usepackage[main=english,ngerman]{babel}
+
+% classicthesis setup
+\PassOptionsToPackage{%
+  %drafting,%
+  %dottedtoc,%
+  eulerchapternumbers,
+  %listings,%
+  %parts,%
+  floatperchapter, pdfspacing,%
+  beramono,%
+  %minionprospacing,
+  %subfig,%
+  %eulermath,%
+  a5paper,%
+}{classicthesis}
+
+% Meta
+\input{preamble/meta}
+
+% Hyphenation
+\input{preamble/hyphenation}
+
+% Finetuning
+\newcounter{dummy}
+\newlength{\abcd}
+
+% Common abbreviations
+\newcommand{\ie}{i.\,e.\xspace}
+\newcommand{\Ie}{I.\,e.\xspace}
+\newcommand{\eg}{e.\,g.\xspace}
+\newcommand{\Eg}{E.\,g.\xspace}
+
+% Handy packages
+\usepackage{csquotes}  % smart quotes
+\usepackage[T1]{fontenc}
+\usepackage{xspace}
+\usepackage{textcomp}
+\usepackage{mparhack}
+\usepackage{relsize}
+
+% Change font
+%\usepackage{cmbright}
+
+% Redefine cite command to include space before
+% <http://tex.stackexchange.com/questions/11602/>
+\let\origcite\cite%
+\def\cite#1{\unskip~\origcite{#1}}
+
+% Math stuff
+\usepackage{amsmath}
+%\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{isomath}
+
+% Figures, tables, and captions
+\usepackage{tabularx}
+\usepackage{ltablex}
+\setlength{\extrarowheight}{3pt}
+\newcommand{\tableheadline}[1]{\multicolumn{1}{c}{\spacedlowsmallcaps{#1}}}
+\newcommand{\myfloatalign}{\centering}
+\usepackage{floatrow}
+\usepackage{caption}
+\captionsetup{format=hang,font=small,labelfont={sc},margin=5pt}
+\usepackage{subcaption}
+\captionsetup[sub]{margin=0pt,font=small,labelfont={rm}}
+\usepackage[table, dvipsnames]{xcolor}
+
+% Customize colors
+\definecolor{chaptercolor}{HTML}{1A254B}
+\definecolor{linkcolor}{HTML}{2B50AA}
+\definecolor{citecolor}{HTML}{2B50AA}
+\definecolor{linkcolor}{HTML}{2B50AA}
+\definecolor{lightlinkcolor}{HTML}{9A8F97}
+\definecolor{darklinkcolor}{HTML}{1A254B}
+\definecolor{pink}{HTML}{F2545B}
+\definecolor{red}{HTML}{A4243B}
+\definecolor{blue}{HTML}{2b50aa}
+
+% Graphics
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{shapes.geometric}
+
+% Circled numbers
+\newcommand*\circled[1]{
+  \tikz[baseline=(char.base)]{
+    \node[shape=circle,draw,inner sep=1pt,font=\footnotesize,%
+          minimum size=0.8\baselineskip] (char) {\figureversion{lining}#1};
+  }
+}
+
+% Autoreferences
+\usepackage[hidelinks]{hyperref}
+\renewcommand*{\figureautorefname}{Figure}
+\renewcommand*{\tableautorefname}{Table}
+\renewcommand*{\partautorefname}{Part}
+\renewcommand*{\chapterautorefname}{Chapter}
+\renewcommand*{\sectionautorefname}{Section}
+\renewcommand*{\subsectionautorefname}{Section}
+\renewcommand*{\subsubsectionautorefname}{Section}
+\providecommand{\subfigureautorefname}{\figureautorefname}%
+\usepackage{cleveref}
+
+% Load classicthesis style
+\usepackage{scrhack}
+\usepackage{classicthesis}
+
+% Acronyms
+\usepackage[acronym, nonumberlist, xindy, symbols]{glossaries}
+\include{preamble/acronym}
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+\makeglossaries
+
+% Hyperref
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue,
+    anchorcolor=blue
+}
+
+% List items
+\usepackage{enumitem}
+
+% Customize text width and length
+\KOMAoptions{headinclude=true, footinclude=false}
+%\setlength{\textwidth}{10.5cm} % 9 pt font
+\setlength{\textwidth}{11.6cm} % 10 pt font
+% text height set by golden ratio
+\areaset[current]{\textwidth}{1.618034\textwidth}
+
+% Page numbers in plain style (chapter titles)
+\clearscrplain
+\ofoot[\pagemark]{}
+% Adjust distance to footer (default is too large)
+\setlength{\footskip}{19pt}
+
+% Chapter font
+\let\chapterNumber\undefined%
+\newfont{\chapterNumber}{eurb10 scaled 5500}
+%\newfont{\chapterNumber}{MinionPro-Regular-lf-t1 scaled 5500}
+
+% SI units
+\usepackage{siunitx}
+\sisetup{
+  separate-uncertainty,
+  repeatunits=false,
+  detect-family,
+  unit-mode=text,
+}
+\DeclareSIUnit\au{a.u.}
+\let\u=\SI%
+
+% Product type codes
+\newcommand{\productcode}[1]{\figureversion{lining}#1}
+
+% TOC
+\renewcommand{\cftpartfont}{\color{chaptercolor}\normalfont}%
+\renewcommand{\cftpartpagefont}{\normalfont}%
+
+% Chapter number on inside
+\titleformat{\chapter}[display]%
+  {\relax}{\vspace*{-3\baselineskip}\makebox[\linewidth][r]{\color{darklinkcolor}\chapterNumber\thechapter}}{10pt}%
+  {\raggedright\spacedallcaps}[\normalsize\vspace*{.8\baselineskip}\titlerule]%
+
+% Chapter abstract
+\def\chapterabstract#1{%
+  \begingroup
+  \baselineskip1.3em
+  \leftskip1em
+  \rightskip\leftskip\itshape#1
+  \par
+  \endgroup
+}
+
+% Chapter quotes
+% Adapted from: <http://tex.stackexchange.com/questions/53377/inspirational-quote-at-start-of-chapter>
+\setkomafont{dictumtext}{\itshape\small}%
+\setkomafont{dictumauthor}{\normalfont}
+\renewcommand*{\dictumwidth}{0.6\textwidth}
+\renewcommand*{\dictumrule}{}
+\renewcommand*\dictumauthorformat[1]{--- #1}
+
+% Subfigure labels (manual)
+%\newcommand{\subfig}[1]{#1)}
+\newcommand{\subfig}[1]{(#1)}
+
+% CV
+\newcommand{\cvleft}[1]{\begin{minipage}[t]{2.5cm}\begin{flushright}#1\end{flushright}\end{minipage}\hspace{5mm}}
+\newcommand{\cvright}[1]{\begin{minipage}[t]{8cm}{#1}\end{minipage}}
+
+% Footnote without number
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+% Put pages on A4 w/ crop marks
+%\usepackage[a4,center,cam]{crop}
+
+% Widow and club penalties
+\clubpenalty=10000
+\widowpenalty=10000
+%\displaywidowpenalty=10000

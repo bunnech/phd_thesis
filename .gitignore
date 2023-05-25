@@ -1,0 +1,18 @@
+# LaTeX stuff
+build/
+*.aux
+*.log
+
+# Emacs junk
+auto/
+ltxpng/
+
+# Python stuff
+*.py[cod]
+
+# Temps
+*.*~
+*.bak
+cover/*
+
+.DS_Store

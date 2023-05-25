@@ -1,0 +1,134 @@
+\begin{thebibliography}{18}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bergen et~al.(2020)Bergen, Lange, Peidli, Wolf, and
+  Theis]{bergen2020generalizing}
+Volker Bergen, Marius Lange, Stefan Peidli, F~Alexander Wolf, and Fabian~J
+  Theis.
+\newblock {Generalizing RNA velocity to transient cell states through dynamical
+  modeling}.
+\newblock \emph{Nature Biotechnology}, 38\penalty0 (12), 2020.
+
+\bibitem[Bunne et~al.(2021)Bunne, Stark, Gut, del Castillo, Lehmann, Pelkmans,
+  Krause, and Ratsch]{bunne2021learning}
+Charlotte Bunne, Stefan~G Stark, Gabriele Gut, Jacobo~Sarabia del Castillo,
+  Kjong-Van Lehmann, Lucas Pelkmans, Andreas Krause, and Gunnar Ratsch.
+\newblock {Learning Single-Cell Perturbation Responses using Neural Optimal
+  Transport}.
+\newblock \emph{bioRxiv}, 2021.
+
+\bibitem[Bunne et~al.(2022)Bunne, Krause, and Cuturi]{bunne2022supervised}
+Charlotte Bunne, Andreas Krause, and Marco Cuturi.
+\newblock {Supervised Training of Conditional Monge Maps}.
+\newblock In \emph{Advances in Neural Information Processing Systems
+  (NeurIPS)}, 2022.
+
+\bibitem[Bunne et~al.(2023)Bunne, Hsieh, Cuturi, and
+  Krause]{bunne2022recovering}
+Charlotte Bunne, Ya-Ping Hsieh, Marci Cuturi, and Andreas Krause.
+\newblock {The Schr\"odinger Bridge between Gaussian Measures has a Closed
+  Form}.
+\newblock In \emph{International Conference on Artificial Intelligence and
+  Statistics (AISTATS)}, 2023.
+
+\bibitem[Jacob et~al.(2018)Jacob, She, Almahairi, Rajeswar, and
+  Courville]{jacob2018w2gan}
+Leygonie Jacob, Jennifer She, Amjad Almahairi, Sai Rajeswar, and Aaron
+  Courville.
+\newblock {W2GAN: Recovering an Optimal Transport Map with a GAN}.
+\newblock In \emph{arXiv Preprint}, 2018.
+
+\bibitem[Kun et~al.(2021)Kun, Tsang, Ng, Gershenson, and Wong]{kun2021mek}
+E~Kun, YTM Tsang, CW~Ng, DM~Gershenson, and KK~Wong.
+\newblock {MEK inhibitor resistance mechanisms and recent developments in
+  combination trials}.
+\newblock \emph{Cancer Treatment Reviews}, 92:\penalty0 102137, 2021.
+
+\bibitem[Lavenant et~al.(2021)Lavenant, Zhang, Kim, and
+  Schiebinger]{lavenant2021towards}
+Hugo Lavenant, Stephen Zhang, Young-Heon Kim, and Geoffrey Schiebinger.
+\newblock Towards a mathematical theory of trajectory inference.
+\newblock \emph{arXiv preprint arXiv:2102.09204}, 2021.
+
+\bibitem[Lopez et~al.(2018)Lopez, Regier, Cole, Jordan, and
+  Yosef]{Lopez2018scvi}
+Romain Lopez, Jeffrey Regier, Michael~B Cole, Michael~I Jordan, and Nir Yosef.
+\newblock {Deep generative modeling for single-cell transcriptomics}.
+\newblock \emph{Nature methods}, 15\penalty0 (12), 2018.
+
+\bibitem[Lotfollahi et~al.(2019)Lotfollahi, Wolf, and
+  Theis]{lotfollahi2019scgen}
+Mohammad Lotfollahi, F~Alexander Wolf, and Fabian~J Theis.
+\newblock {scGen predicts single-cell perturbation responses}.
+\newblock \emph{Nature Methods}, 16\penalty0 (8), 2019.
+
+\bibitem[Makkuva et~al.(2020)Makkuva, Taghvaei, Oh, and
+  Lee]{makkuva2020optimal}
+Ashok Makkuva, Amirhossein Taghvaei, Sewoong Oh, and Jason Lee.
+\newblock Optimal transport mapping via input convex neural networks.
+\newblock In \emph{International Conference on Machine Learning (ICML)},
+  volume~37, 2020.
+
+\bibitem[Prasad et~al.(2020)Prasad, Yang, and Uhler]{prasad2020optimal}
+Neha Prasad, Karren Yang, and Caroline Uhler.
+\newblock {Optimal Transport using GANs for Lineage Tracing}.
+\newblock \emph{arXiv preprint arXiv:2007.12098}, 2020.
+
+\bibitem[Schiebinger et~al.(2019)Schiebinger, Shu, Tabaka, Cleary, Subramanian,
+  Solomon, Gould, Liu, Lin, Berube, et~al.]{schiebinger2019optimal}
+Geoffrey Schiebinger, Jian Shu, Marcin Tabaka, Brian Cleary, Vidya Subramanian,
+  Aryeh Solomon, Joshua Gould, Siyan Liu, Stacie Lin, Peter Berube, et~al.
+\newblock {Optimal-Transport Analysis of Single-Cell Gene Expression Identifies
+  Developmental Trajectories in Reprogramming}.
+\newblock \emph{Cell}, 176\penalty0 (4), 2019.
+
+\bibitem[Somnath et~al.(2023)Somnath, Pariset, Hsieh, Martinez, Krause, and
+  Bunne]{somnath2023aligned}
+Vignesh~Ram Somnath, Matteo Pariset, Ya-Ping Hsieh, Maria~Rodriguez Martinez,
+  Andreas Krause, and Charlotte Bunne.
+\newblock {Aligned Diffusion Schrödinger Bridges}.
+\newblock In \emph{Conference on Uncertainty in Artificial Intelligence (UAI)},
+  2023.
+
+\bibitem[Turke et~al.(2012)Turke, Song, Costa, Cook, Arteaga, Asara, and
+  Engelman]{turke2012mek}
+Alexa~B Turke, Youngchul Song, Carlotta Costa, Rebecca Cook, Carlos~L Arteaga,
+  John~M Asara, and Jeffrey~A Engelman.
+\newblock {MEK inhibition leads to PI3K/AKT activation by relieving a negative
+  feedback on ERBB receptors}.
+\newblock \emph{Cancer Research}, 72\penalty0 (13), 2012.
+
+\bibitem[Wilkinson(2009)]{wilkinson2009stochastic}
+Darren~J Wilkinson.
+\newblock Stochastic modelling for quantitative description of heterogeneous
+  biological systems.
+\newblock \emph{Nature Reviews Genetics}, 10\penalty0 (2), 2009.
+
+\bibitem[Yang and Uhler(2019)]{yang2018scalable}
+Karren~D Yang and Caroline Uhler.
+\newblock {Scalable Unbalanced Optimal Transport using Generative Adversarial
+  Networks}.
+\newblock \emph{International Conference on Learning Representations (ICLR)},
+  2019.
+
+\bibitem[Yang et~al.(2020)Yang, Damodaran, Venkatachalapathy, Soylemezoglu,
+  Shivashankar, and Uhler]{yang2020predicting}
+Karren~Dai Yang, Karthik Damodaran, Saradha Venkatachalapathy, Ali~C
+  Soylemezoglu, GV~Shivashankar, and Caroline Uhler.
+\newblock Predicting cell lineages using autoencoders and optimal transport.
+\newblock \emph{PLoS Computational Biology}, 16\penalty0 (4), 2020.
+
+\bibitem[Zhao et~al.(2021)Zhao, Dovas, Spinazzi, Levitin, Banu, Upadhyayula,
+  Sudhakar, Marie, Otten, Sisti, et~al.]{zhao2021deconvolution}
+Wenting Zhao, Athanassios Dovas, Eleonora~Francesca Spinazzi, Hanna~Mendes
+  Levitin, Matei~Alexandru Banu, Pavan Upadhyayula, Tejaswi Sudhakar, Tamara
+  Marie, Marc~L Otten, Michael~B Sisti, et~al.
+\newblock {Deconvolution of cell type-specific drug responses in human tumor
+  tissue with single-cell RNA-seq}.
+\newblock \emph{Genome Medicine}, 13\penalty0 (1), 2021.
+
+\end{thebibliography}

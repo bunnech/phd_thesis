@@ -1,0 +1,63 @@
+\chapter{Conclusion and Future Directions}
+\label{cha:conclusion}
+
+\dictum[Siri Hustvedt, \textit{What I Loved} (2003)]{%
+  It's odd the way life works, the way it mutates and wanders, the way one thing becomes another.}%
+%\dictum[Siri Hustvedt, \textit{The Shaking Woman, \\ or A History of My Nerves} (2010)]{True stories can't be told forward, only backward. We invent them from the vantage point of an ever- changing present and tell ourselves how they unfolded.}
+\vskip 1em
+
+\looseness -1 In this work we propose \textsc{CellOT}, a framework to model single-cell perturbation responses from unpaired treated and untreated cell states using neural optimal transport.
+By adequately modeling the nature of the problem through the lens of optimal transport, \textsc{CellOT} determines how perturbations affect cellular properties, reconstructs the most likely trajectory single cells take upon perturbation, and subsequently assists in a better understanding of driving factors of cell fate decision and cellular evasion mechanisms.
+\textsc{CellOT} builds on the recent successes of optimal transport applications in single-cell biology \citep{schiebinger2019optimal, lavenant2021towards}, by introducing a fully parameterized transport map that can be applied to incoming unseen samples.
+Previous methods \citep{jacob2018w2gan, yang2018scalable, prasad2020optimal} rely on an unconstrained parameterization of the \emph{primal} optimal transport map. However, the unconstrained nature of these models makes robust optimization challenging and results in reduced performance \citep[Table 1]{makkuva2020optimal}.
+Instead, we learn the transformation of unperturbed to perturbed cell states through the \emph{dual} optimal transport problem, parameterized via a pair of neural networks constrained to be convex \citep{makkuva2020optimal}.
+These constraints are important inductive biases that facilitate learning and result in a reliable and easy-to-train framework, as evidenced by the consistently strong performance of \textsc{CellOT} on several problems without the need for extensive hyperparameter tuning (see Online Methods).\smallskip
+
+\looseness -1 \textsc{CellOT} infers the highly complex and nonlinear evolution of cell populations in response to perturbations without making strong simplifying assumptions on the nature of these dynamics.
+Unlike current approaches comprising autoencoder-based baselines \citep{Lopez2018scvi, lotfollahi2019scgen, yang2020predicting}, \textsc{CellOT} does not necessarily rely on learning meaningful low-dimensional embeddings in which perturbations are modeled as linear shifts. % , thus faithfully capturing the heterogeneity of single-cell perturbation responses and accounting for high cell-to-cell variability.
+We confirm this advantage through experiments on single-cell responses to different drugs in cancer cell lines obtained with RNA-seq and spatially resolved 4i measurements, where \textsc{CellOT} consistently outperforms (Fig.~\ref{fig:fig_2} and \ref{supp_fig:4i_all_results}). Our evaluations went beyond the often-used average treatment effect and correlation analysis across all cells; we analyzed marginals
+% UMAPs
+and computed MMD scores, a strong measure of how well predicted and observed distributions match.
+
+\smallskip
+
+\looseness -1 Using \textsc{CellOT} to perform cell-state-aware drug profiling enables us to quantify perturbation effects as a function of the underlying heterogeneity of the studied system, in our cases a co-culture of two melanoma cell lines with different sensitivities to drug treatments. In doing so, we \textit{sharpen} the response profiles of the measured drugs and reveal cell-state-specific responses of multiple signaling pathway in relation to treatment history of the cell line donor. We find the signaling activity associated to the MEK and PI3k pathways to decouple in cells pre-exposed to MEK inhibitors, a known adaptation mechanism for therapy evasion in melanoma cells \citep{kun2021mek}. This \textit{pathway rewiring} is associated to alteration in the molecular feedback structure of cells from effectors to receptors \citep{kun2021mek, turke2012mek}. Thus, combining \textsc{CellOT} with a larger set of combination treatments, multiplexed imaging, and cellular systems reflective of disease adaptations may help us to elucidate the molecular mechanisms of signaling pathway evolution in the context of cancer therapy. 
+
+\smallskip
+
+% The results in Fig.~\ref{fig:fig_2}-\ref{fig:fig_3} are based on predictions on cells from the same sample but that were not used for training (i.i.d.~setting). The treatment effects can then be analyzed by scrutinizing the learned maps (cf.~Fig.~\ref{fig:fig_3}). However, for predicting the treatment effect in practice, it is much more relevant 
+We further analyze how well the learned maps generalize beyond samples used for training (o.o.s.~setting) and to different sample compositions (o.o.d.~setting). In Fig.~\ref{fig:fig_4}, we therefore test \textsc{CellOT}'s ability to
+%  generalize beyond settings containing cells derived from the same sample. Specifically, we study the challenging out-of-sample setting when 
+to predict treatment responses in unseen lupus patients, infer developmental trajectories on stem cells of lower potency, and translate innate immune responses across patients. In all cases, \textsc{CellOT}'s accuracy and precision are superior to current state-of-the-art methods (Fig.~\ref{fig:fig_4}). Moreover, the predicted cell states after perturbation are still very close to the actually observed cell states. We consider these results as particularly promising, as it illustrates that accurate o.o.s.~and o.o.d.~predictions are indeed possible.
+
+\smallskip
+
+The ability to make predictions out-of-distribution, such as on unseen patients, is, however, only feasible if a) similar samples have been observed in the unperturbed setting, and b) the training set contains cases that are similar not only in their unperturbed state but also their perturbation response.
+An analysis of glioblastoma patients treated with Panobinostat \citep{zhao2021deconvolution} (see \ref{supp_fig:gbm_patients_iid_ood}a-c) indeed confirms this restriction:
+\textsc{CellOT} and the baselines are able to predict treatment outcomes for those patients that are similar to other patients in both unperturbed state as well as perturbation effect (see Fig.~\ref{supp_fig:gbm_patients_iid_ood}f), but fail to capture perturbation effects for patients that exhibit unique responses (see \ref{supp_fig:gbm_patients_iid_ood}g).
+This limitation is important to consider when applying \textsc{CellOT} in o.o.d. settings. To overcome such problems, 
+larger cohorts, additional meta-information, and methodological extensions are required. \citet{bunne2022supervised} partially address this issue by deriving a neural optimal transport scheme that can be conditioned on a context, e.g., patient meta-data, when predicting perturbation responses.
+
+\smallskip
+% In this work, we address the \emph{pairing problem} emerging from the current experimental setup by assuming that perturbed cellular states are coupled to their initial states according to the principle of \emph{minimum action}. That is, given unpaired observations of cells before and after perturbation, we aim to pair cells to their treated states in such a way that the average distance between the pairs, in feature space, is minimal.
+% This principle underlying the optimal transport theory is ideally suited for acute cellular perturbations during which single cells do not redistribute entirely and randomly in multidimensional measurement space, but typically only in a few dimensions, such that the overall correlation structure is preserved.
+% We validated the desirability of the optimal transport prior on the map through comparisons with na\"ive alignments.
+% \textsc{CellOT} not only captures cellular transitions upon perturbation better in terms of distributional distances than maps that model the identity instead of an optimal transport (see Fig.~\ref{fig:fig_2}), but also accounts for the subpopulation structure before and after perturbation, contrary to non-OT mappings (see \ref{supp_fig:lupus_umaps_all}).
+
+We also observe that the predictive performance for \textsc{CellOT} drops when perturbations are too strong, i.e., the cell distributions before and after perturbations are very different (see Fig.~\ref{fig:fig_4}j); a similar drop is observed for the other methods (see \textbf{\ref{supp_fig:statefate_days_all_methods}}).
+The principle underlying the optimal transport theory is ideally suited for acute cellular perturbations during which single cells do not redistribute entirely and randomly in multidimensional measurement space, but typically only in a few dimensions, such that the overall correlation structure is preserved. While this modeling hypothesis is satisfied when perturbation responses are observed via regularly and frequently sampled snapshots, molecular transitions cannot be reconstructed when perturbation responses have progressed too far. For particularly strong or complicated perturbations, cellular multiplex profiles might change too drastically, violating OT assumptions and making it challenging to reconstruct the alignments between unperturbed and perturbed populations based on the \emph{minimal effort} principle.
+In such settings, additional information is likely needed, for instance, a model of the underlying biology or models that integrate observations of multiple smaller time steps. 
+
+\looseness -1 Despite the stochastic nature of cell fate decisions and the fact that cellular dynamics are intrinsically noisy \citep{wilkinson2009stochastic}, \textsc{CellOT} models cell responses as deterministic trajectories. Approaches treating cell fate decisions as probabilistic events have previously allowed estimation of the full dynamical model to a greater extent than their deterministic counterparts \citep{bergen2020generalizing}.
+By connecting OT and stochastic difference equations, recent work \citep{bunne2022recovering, somnath2023aligned} can build up on \textsc{CellOT} to account for biological heteroscedasticity,
+% affecting cellular perturbation responses on a finer level
+at the cost of added model complexity and other simplifying assumptions.
+
+\smallskip
+
+Despite having provided a proof-of-concept of the capacity of \textsc{CellOT} to model various chemical perturbations for different data modalities through an in-depth analysis of the nature of the learned mapping as well as a demonstration of its versatility in a broad class of applications, \textsc{CellOT}'s generalization capacity has been evaluated on relatively small datasets. Crucially, large cohorts comprised of patients with different molecular profiles, such as cancer patients with various underlying genetics, could result in strongly heterogeneous treatment responses.
+It is evident that approaches addressing these challenges could readily exploit the upcoming availability of large-scale patient cohort studies.
+The use of neural optimal transport to learn single-cell drug responses makes thus for an exciting avenue for future work,
+including its use to improve our understanding of cell therapies, study drug responses from patient samples, and better account for cell-to-cell variability in large-scale drug design efforts.
+
+% Elucidating heterogeneous drug responses and the underlying cell biology at the single-cell level is of great interest to drug development efforts as wells as to scientists studying disease mechanisms (REF), since it could improve our understanding of treatment evasion events as well as  point towards beneficial combination therapies (REF).  With \textsc{CellOT} we can predict drug effects based on the feature profiles of measured control cells and can later subtract from each predicted cell their corresponding control cell features. This approach results in drug perturbation data corrected at the single-cell. Additionally, \textsc{CellOT} provides us with the linking between cells prior and after treatment, thus the ability to link cell heterogeneity in an unperturbed population to distinct response outcomes in a treated population.
