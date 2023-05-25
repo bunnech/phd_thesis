@@ -1,0 +1,937 @@
+% Math Definitions
+
+%----------------------------------------------------------------------
+%% \acrshort{ tools
+%----------------------------------------------------------------------
+\usepackage{thmtools}		% for \acrshort{ tools
+\usepackage{thm-restate}		% for restating theorems
+
+%----------------------------------------------------------------------
+%% Theorem-like
+%----------------------------------------------------------------------
+\newtheorem{theorem}{Theorem}		% for theorems
+\newtheorem{corollary}{Corollary}		% for corollaries
+\newtheorem{lemma}{Lemma}		% for lemmas
+\newtheorem{proposition}{Proposition}		% for propositions
+
+\newtheorem{conjecture}{Conjecture}		% for conjectures
+\newtheorem{claim}{Claim}		% for claims
+\newtheorem{remark}{Remark}		% for remarks
+
+%----------------------------------------------------------------------
+%% Delimiters
+%----------------------------------------------------------------------
+\DeclarePairedDelimiter{\braces}{\{}{\}}		% for braces
+\DeclarePairedDelimiter{\bracks}{[}{]}		% for brackets
+\DeclarePairedDelimiter{\parens}{(}{)}		% for parentheses
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}		% for absolute value
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}		% for ceiling
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}		% for floor
+\DeclarePairedDelimiter{\clip}{[}{]}		% for clipping
+\DeclarePairedDelimiter{\negpart}{[}{]_{-}}		% for negative part
+\DeclarePairedDelimiter{\pospart}{[}{]_{+}}		% for positive part
+\DeclarePairedDelimiterX{\inner}[2]{\langle}{\rangle}{#1, #2}		% for scalar product
+\DeclarePairedDelimiter{\norm}{\lVert}{ \rVert}		% for norm
+\DeclarePairedDelimiterXPP{\twonorm}[1]{}{\lVert}{\rVert}{}{#1}		% for L2 norm
+\DeclarePairedDelimiterXPP{\dnorm}[1]{}{\lVert}{\rVert}{_{\ast}}{#1}		% for dual norm
+\DeclarePairedDelimiter{\bra}{\langle}{\rvert}		% for bras
+\DeclarePairedDelimiter{\ket}{\lvert}{\rangle}		% for kets
+\DeclarePairedDelimiterX{\braket}[2]{\langle}{\rangle}{#1,#2}		% for brakets
+\DeclarePairedDelimiterX{\setdef}[2]{\{}{\}}{#1:#2}		% for set builder notation
+\DeclarePairedDelimiterXPP{\exclude}[1]{\mathopen{}\setminus}{\{}{\}}{}{#1}
+
+%----------------------------------------------------------------------
+%% Modifiers
+%----------------------------------------------------------------------
+\newcommand{\alt}[1]{#1'}		% for alternates
+\newcommand*{\tabindent}{\hspace{3mm}}
+
+%----------------------------------------------------------------------
+%% Operators
+%----------------------------------------------------------------------
+\DeclareMathOperator*{\argmax}{arg\,max}		% for argmax
+%\DeclareMathOperator*{\argmin}{arg\,min}		% for argmin
+\DeclareMathOperator*{\intersect}{\bigcap}		% for intersections
+\DeclareMathOperator*{\union}{\bigcup}		% for unions
+
+\DeclareMathOperator{\aff}{aff}		% for affine hull
+\DeclareMathOperator{\bd}{bd}		% for boundary
+\DeclareMathOperator{\bigoh}{\mathcal{O}}		% for Landau O
+\DeclareMathOperator{\card}{card}		% for cardinality
+\DeclareMathOperator{\cl}{cl}		% for closure
+\DeclareMathOperator{\conv}{conv}		% for convex hull (but see also \simplex)
+\DeclareMathOperator{\crit}{crit}		% for gap function
+\DeclareMathOperator{\diag}{diag}		% for diagonal matrices
+\DeclareMathOperator{\diam}{diam}		% for diameter
+\DeclareMathOperator{\dist}{dist}		% for distance
+\DeclareMathOperator{\dom}{dom}		% for domain
+\DeclareMathOperator{\eig}{eig}		% for eigenvalues
+\DeclareMathOperator{\ess}{ess}		% for essential
+\DeclareMathOperator{\grad}{\nabla}		% for gradient
+\DeclareMathOperator{\Hess}{Hess}		% for Hessian
+\DeclareMathOperator{\ind}{ind}		% for index
+\DeclareMathOperator{\im}{im}		% for image
+\DeclareMathOperator{\intr}{int}		% for interior
+\DeclareMathOperator{\Jac}{D}		% for Jacobian
+\DeclareMathOperator{\one}{\mathds{1}}		% for indicator
+\DeclareMathOperator{\proj}{pr}		% for projection
+\DeclareMathOperator{\prox}{prox}		% for prox
+\DeclareMathOperator{\rank}{rank}		% for rank
+\DeclareMathOperator{\relint}{ri}		% for relative interior
+\DeclareMathOperator{\sign}{sgn}		% for sign
+\DeclareMathOperator{\supp}{supp}		% for support
+\DeclareMathOperator{\Sym}{Sym}		% for symmetric
+\DeclareMathOperator{\tr}{tr}		% for trace
+\DeclareMathOperator{\unif}{unif}		% for uniform distribution
+\DeclareMathOperator{\vol}{vol}		% for volume
+
+%----------------------------------------------------------------------
+%% Riemannian Manifolds
+%----------------------------------------------------------------------
+\newcommand{\mfd}{\mathcal{M}}		% for metric tensor
+\newcommand{\curve}{\gamma}          % for curves
+\newcommand{\sect}{\mathcal{K}}    % for sectional curvatures
+
+%----------------------------------------------------------------------
+%% Points and sets
+%----------------------------------------------------------------------
+\newcommand{\from}{\colon}		% for function definition
+\newcommand{\too}{\rightrightarrows}		% for correspondences
+\newcommand{\injects}{\hookrightarrow}		% for injections
+\newcommand{\surjects}{\twoheadrightarrow}		% for surjections
+\newcommand{\defeq}{\coloneqq}		% for direct definition
+\newcommand{\eqdef}{\eqqcolon}		% for reverse definition
+\newcommand{\sset}{\mathcal{S}}		% for generic set
+\newcommand{\points}{\mfd}		% for Riemannian RM
+\newcommand{\intpoints}{\points^{\circ}}		%for point set interior
+\newcommand{\point}{x}		% for generic point
+\newcommand{\pointalt}{\alt\point}		% for alternate point
+\newcommand{\dpoints}{\mathcal{W}}		% for second point set (duals, etc.)
+\newcommand{\dpoint}{w}		% for second generic point
+\newcommand{\dpointalt}{\alt\dpoint}		% for second alternate variable
+\newcommand{\base}{p}		% for reference point
+\newcommand{\basealt}{q}		% for alternate reference point
+\newcommand{\test}[1][\point]{\hat{#1}}		% for test point (\point by default)
+\newcommand{\tests}{\test[\points]}		% for set of test points
+\newcommand{\open}{\mathcal{U}}		% for open sets
+\newcommand{\closed}{\mathcal{C}}		% for closed sets
+\newcommand{\cpt}{\mathcal{K}}		% for compact sets
+\newcommand{\nbhd}{\mathcal{U}}		% for neighborhoods
+
+%----------------------------------------------------------------------
+%% Basic indices
+%----------------------------------------------------------------------
+\newcommand{\start}{1}		% for start index
+\newcommand{\halfafterstart}{3/2}		% for second index
+\newcommand{\afterstart}{2}		% for second index
+\newcommand{\running}{\start,\afterstart,\dotsc}		% for running index
+\newcommand{\halfrunning}{\start,\halfafterstart,\dotsc}
+\newcommand{\runalt}{k}		% for running sequence index
+\newcommand{\run}{n}		% for main sequence index
+\newcommand{\nRuns}{T}		% for total number of runs
+\newcommand{\runs}{\mathcal{\nRuns}}		% for set of runs
+
+%----------------------------------------------------------------------
+%% Sequences and recursions
+%----------------------------------------------------------------------
+\newcommand{\state}{Z}		% for main iterate
+\newcommand{\dstate}{Y}		% for other iterate
+\newcommand{\avg}[1][\state]{\bar{#1}}		% for averaging (X by default)
+\newcommand{\new}[1][\point]{#1^{+}}		% for new iterate (x by default)
+
+\newcommand{\init}[1][\state]{\debug{#1}_{\start}}		% for initial value (X by default)
+\newcommand{\afterinit}[1][\state]{\debug{#1}_{\afterstart}}		% for second value (X by default)
+\newcommand{\preiter}[1][\state]{\debug{#1}_{\runalt-1}}		% for iterated value (X by default)
+\newcommand{\iter}[1][\state]{\debug{#1}_{\runalt}}		% for iterated value (X by default)
+\newcommand{\afteriter}[1][\state]{\debug{#1}_{\runalt+1}}		% for iterated value (X by default)
+\newcommand{\preprev}[1][\state]{\debug{#1}_{\run-2}}		% for previous value (X by default)
+\newcommand{\prev}[1][\state]{\debug{#1}_{\run-1}}		% for previous value (X by default)
+\newcommand{\curr}[1][\state]{\debug{#1}_{\run}}		% for current value (X by default)
+\newcommand{\prelead}[1][\state]{\debug{#1}_{\run-1}^{+}}		% for current value (X by default)
+\newcommand{\lead}[1][\state]{\debug{#1}_{\run}^{+}}		% for current value (X by default)
+
+%----------------------------------------------------------------------
+%% Vector spaces
+%----------------------------------------------------------------------
+\newcommand{\vecspace}{\R^{\vdim}}		% for generic vector space
+\newcommand{\coord}{i}		% for index
+\newcommand{\vdim}{d}		% for dimension
+\newcommand{\vvec}{v}		% for generic vector
+\newcommand{\bvec}{e}		% for basis vector
+\newcommand{\bvecs}{\mathcal{E}}		% for basis vectors
+\newcommand{\subspace}{\mathcal{W}}		% for subspace
+\newcommand{\wvec}{w}		% for generic subspace vector
+\newcommand{\subdim}{m}		% for subspace dimension
+
+\newcommand{\tanhull}{\mathcal{Z}}		% for tangent hull
+\newcommand{\tanvec}{z}		% for tangent vectors
+
+%----------------------------------------------------------------------
+%% Duality
+%----------------------------------------------------------------------
+\newcommand{\dual}[1]{#1^{\ast}}		% for dual variables
+\newcommand{\dspace}{\dual\vecspace}		% for dual space
+\newcommand{\dvec}{v}		% for dual vector
+\newcommand{\dbvec}{\eps}		% for dual basis vectors
+
+%----------------------------------------------------------------------
+%% Matrices and vectors
+%----------------------------------------------------------------------
+%\newcommand{\ones}{\mathbf{1}}		% for vector of ones
+\newcommand{\mat}{M}		% for generic matrix
+\newcommand{\eye}{I}		% for identity matrix
+\newcommand{\mg}{\succ}		% for positive-definite
+\newcommand{\mgeq}{\succcurlyeq}		% for positive-semidefinite
+\newcommand{\ml}{\prec}		% for negative-definite
+\newcommand{\mleq}{\preccurlyeq}		% for negative-semidefinite
+\newcommand{\SPD}{\mathbb{S}_{++}^\vdim}		% for Symmetric Positive Definite cone 
+
+%----------------------------------------------------------------------
+%% Probability
+%----------------------------------------------------------------------
+\DeclareMathOperator{\ex}{\mathbb{E}}		% for expectations
+\DeclareMathOperator{\prob}{\mathbb{P}}		% for probability
+\DeclareMathOperator{\Var}{Var}		% for variance
+\DeclareMathOperator{\simplex}{\Delta}		% for simplices
+\newcommand{\seed}{\omega}		% for seed
+\newcommand{\seeds}{\Omega}		% for seed space
+\newcommand{\history}{\mathcal{H}}		% for filtrations
+\newcommand{\sample}{\omega}		% for samples
+\newcommand{\samples}{\Omega}		% for sample space
+\newcommand{\filter}{\mathcal{F}}		% for filtrations
+\newcommand{\probspace}{(\samples,\filter,\prob)}		% for probability space
+\newcommand{\event}{\mathcal{E}}       % for event
+\newcommand{\eventalt}{\mathcal{H}}       % for alternate event
+\newcommand{\comp}[1]{#1^{\mathtt{c}}}		% for complement
+\newcommand{\mean}{\mu}		% for mean of distribution
+\newcommand{\variance}{\sigma^{2}}		% for mean of distribution
+\newcommand{\dkl}{D_{\mathrm{KL}}}		% for Kullback Leibler
+\newcommand{\as}{{{a.s.}}}		% for almost surely
+\providecommand\given{\vert}		% empty command for conditionals
+\DeclarePairedDelimiterXPP{\exof}[1]{\ex}{[}{]}{}{%		% for conditional expectations
+\renewcommand\given{\nonscript\,\delimsize\vert\nonscript\,\mathopen{}} #1}
+\DeclarePairedDelimiterXPP{\probof}[1]{\prob}{(}{)}{}{%		% for conditional probabilities
+\renewcommand\given{\nonscript\:\delimsize\vert\nonscript\:\mathopen{}} #1}
+
+%----------------------------------------------------------------------
+%% Geometry
+%----------------------------------------------------------------------
+\newcommand{\gmat}{g}		% for metric tensor
+\newcommand{\gdist}{\dist_{\gmat}}
+\newcommand{\ball}{\mathbb{B}}		% for balls
+\newcommand{\sphere}{\mathbb{S}}		% for spheres
+
+%----------------------------------------------------------------------
+%% Schrödinger Bridges
+%----------------------------------------------------------------------
+
+\newcommand{\mbase}{\mu}
+\newcommand{\m}{\mbase_0}     % for mean of the first gaussian
+\newcommand{\malt}{\mbase_\horizon}     % for mean of the second gaussian
+\newcommand{\covarbase}{\Sigma}
+\newcommand{\covar}{\covarbase_0}     % for covariance of the first gaussian
+\newcommand{\covaralt}{\covarbase_\horizon}     % for covariance of the first gaussian
+\newcommand{\ctime}{t}
+\newcommand{\ctimealt}{s}
+\newcommand{\horizon}{1}
+\newcommand{\ratiosym}{r}    % for symbol of the the ratio between \ctime and \horizon
+\newcommand{\ratio}[1][\ctime]{\ratiosym_{#1}}     % for ratio between \ctime and \horizon
+\newcommand{\ratioc}[1][\ctime]{\bar{\ratiosym}_{#1}}     % for complementary ratio between \ctime and \horizon
+\newcommand{\scalingbase}{\mathrm{QV}}     % for quadratic variation
+\newcommand{\scaling}[1][\ctime]{ \scalingbase\parens*{ #1 } } 
+\newcommand{\scalingsq}[1][\ctime]{ \scalingbase^2\parens*{ #1 } }
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\sdebase}{ X }
+\newcommand{\sde}[1][\ctime]{ \sdebase_{ #1 } }     % for marginal variables
+\newcommand{\dsde}[1][\ctime]{ \dd\sdebase_{ #1 } }     % for marginal variables
+\newcommand{\tinv}{\tau}
+\newcommand{\testfbase}{u}
+\newcommand{\generator}{\mathcal{L}_{\ctime}}
+\newcommand{\Laplace}{\Delta}
+\newcommand{\dconst}{\lambda}     % for constant drift
+\newcommand{\sconst}{\mathbf{v}}     % for constant shift
+\newcommand{\vconst}{\omega}     % for constant volatility
+\newcommand{\qvbase}{\mathrm{q}}
+\newcommand{\qv}[1][\ctime]{\qvbase\parens*{ #1 } }
+\newcommand{\qve}[1][\horizon]{\qvbase\parens*{ #1 } }
+\newcommand{\dqv}[1][\ctime]{ \dot{\qvbase}\parens*{ #1 } }
+\newcommand{\subVPfbase}{ \beta }
+\newcommand{\subVPf}[1][\ctime]{ {\subVPfbase}\parens*{ #1 } }
+\newcommand{\aggtimeqr}[1][\ctime]{ \aggtimebase^4_{ #1 } }
+\newcommand{\refsdebase}{ Y }     % for ref SDEs
+\newcommand{\refsde}[1][\ctime]{ \refsdebase_{ #1 } }
+\newcommand{\drefsde}[1][\ctime]{ \dd \refsdebase_{ #1 } }
+\newcommand{\wiescalebase}{ g }
+\newcommand{\wiescale}[1][\ctime]{ \wiescalebase\parens*{ #1 } }
+\newcommand{\wiescalesq}[1][\ctime]{ \wiescalebase^2\parens*{ #1 } }
+\newcommand{\QVbase}{ \mathrm{qv} }
+\newcommand{\QV}[1][\ctime]{ \QVbase\parens*{ #1 }  }
+\newcommand{\dQV}[1][\ctime]{ \dot{\QVbase}\patens*{ #1 }  }
+\newcommand{\driftbase}{  c  }
+\newcommand{\drift}[1][\ctime]{ \driftbase_{ #1 }  }%{ \driftbase\parens*{ #1 }  }
+\newcommand{\shiftbase}{  \alpha  }
+\newcommand{\shift}[1][\ctime]{ \shiftbase_{ #1 }  }
+\newcommand{\volatbase}{  g  }
+\newcommand{\volat}[1][\ctime]{ \volatbase_{#1}  }%{ \volatbase\parens*{ #1 }  }
+\newcommand{\volatsq}[1][\ctimealt]{ \volatbase^2_{ #1 }  }%{ \volatbase^2\parens*{ #1 }  }
+\newcommand{\refprobase}{\mathbb{Q}}     % for alternative general stochastic processes alphabet
+\newcommand{\refpro}[1][\ctime]{\refprobase_{ #1 }}
+\newcommand{\refjoint}{\refprobase_{\mathrm{0\horizon}} }    % for alternative general stochastic processes alphabet
+\newcommand{\refapprox}[1][\ctime]{ {\refprobase}^{\solbase}_{ #1 }}
+
+%----------------------------------------------------------------------
+%%% LINEAR SDES
+%----------------------------------------------------------------------
+
+\newcommand{\Wienerbase}{\mathbb{W}}     % for reversible Wiener processes alphabet
+\newcommand{\Wiener}[1][\ctime]{ \Wienerbase_{#1} }     % for reversible Wiener processes
+\newcommand{\dWiener}[1][\ctimealt]{ \dd \Wienerbase_{#1} }     % for Wiener processes increments
+\newcommand{\aggtimebase}{  \tau  }
+\newcommand{\aggtime}[1][\ctime]{ \aggtimebase_{ #1 }  }
+\newcommand{\aggtimeinv}[1][\ctimealt]{ \aggtimebase^{\ssstyle -1}_{ #1 }  }
+\newcommand{\aggtimesq}[1][\ctimealt]{ \aggtimebase^2_{ #1 }  }
+\newcommand{\aggtimesqinv}[1][\ctimealt]{ \aggtimebase^{-2}_{ #1 }  }
+\newcommand{\daggtime}[1][\ctime]{ \dot{\aggtimebase}_{ #1 }  }
+\newcommand{\mrsdebase}{ \eta}
+\NewDocumentCommand{\mYcinit}{ O{\ctime}  }{  \mrsdebase\parens*{#1 } } %  \middle| \refsde[0] } }
+\newcommand{\kernelbase}{ \kappa}
+\NewDocumentCommand{\kernel}{ O{\ctime} O{\ctime'}  }{  \kernelbase\parens*{#1, #2} }% \middle| \refsde[0] } }
+
+\newcommand{\intdasq}{ \int_0^\ctime {\aggtimesqinv[\ctimealt]}{\volatsq} \dd \ctimealt }
+\newcommand{\intdasqT}{ \int_0^\horizon {\aggtimesqinv[\ctimealt]}{\volatsq} \dd \ctimealt }
+\newcommand{\law}[1]{ \mathrm{law}\parens*{ #1 } }
+\newcommand{\ssstyle}{\scriptscriptstyle}
+\newcommand{\sssNcal}{\ssstyle\Ncal}
+\newcommand{\solbase}{}
+\newcommand{\Cstar}{C_{\sigma_{\solbase}}}
+\newcommand{\pbase}{\mathbb{P}}     % for general stochastic processes alphabet
+\newcommand{\Pinit}{\pbase_{{0}}}     % for initial marginal
+\newcommand{\Pend}{\pbase_{{\horizon}}}     % for end marginal
+\newcommand{\Pmargin}[1][\ctime]{ \pbase_{{#1}} }     % for general marginals
+\newcommand{\Psol}[1][\ctime]{ \pbase^{\solbase}_{ #1 } }
+\newcommand{\Pjoint}{ \pbase_{ \mathrm{0\horizon}} }
+\newcommand{\distbase}{ \pbase }
+\newcommand{\ini}{ {0} }
+\newcommand{\distinit}{ \hat{\distbase}_{ \ini } }
+\newcommand{\en}{ {\horizon} }
+\newcommand{\distend}{ \hat{\distbase}_{ \en} }
+\newcommand{\Xsol}[1][\ctime]{ X^{\solbase}_{ #1 } }
+\newcommand{\dXsol}[1][\ctime]{ \dd X^{\solbase}_{ #1 } }
+\newcommand{\meansol}[1][\ctime]{ \mu^{\solbase}_{ #1 } }
+\newcommand{\dmeansol}[1][\ctime]{ \dot{\mu}^{\solbase}_{ #1 } }
+\newcommand{\Sigmasol}[1][\ctime]{ \Sigma^{\solbase}_{ #1 } }
+\newcommand{\Sigmasolinv}[1][\ctime]{ \Sigma^{\solbase-1}_{ #1 } }
+\newcommand{\dSigmasol}[1][\ctime]{ \dot{\Sigma}^{\solbase}_{ #1 } }
+\newcommand{\dratio}[1][\ctime]{\dot{\ratiosym}_{#1}}     % for ratio between \ctime and \horizon
+\newcommand{\dratioc}[1][\ctime]{\dot{\bar{\ratiosym}}_{#1}}     % for complementary ratio between \ctime and \horizon
+\newcommand{\cmeansol}[2]{ \mu^{\solbase}_{ #1 \vert #2 } }
+\newcommand{\cSigmasol}[2]{ \Sigma^{\solbase}_{ #1 \vert #2 } }
+\newcommand{\efftrbase}{\rho}    % for effectively scaling
+\newcommand{\efftr}[1][\ctime]{  \efftrbase_{ #1 }  }
+\newcommand{\paramf}{ \theta }
+\newcommand{\SBfbase}{ Z }
+\newcommand{\paramb}{ \phi }
+\newcommand{\SBbbase}{ \hat{\SBfbase} }
+\NewDocumentCommand{\SBf}{ O{\ctime} O{\point} O{\paramf} }{ \SBfbase_{#1}^{#3}\parens{#2} }
+\NewDocumentCommand{\SBb}{ O{\ctime} O{\point} O{\paramb} }{ \SBbbase_{#1}^{#3}\parens{#2} }
+\newcommand{\GSBfbase}{ f_{\sssNcal} } %f_{\scriptscriptstyle\textup{GSB}} }
+\newcommand{\GSBbbase}{ \hat{\GSBfbase}}%^{\scriptscriptstyle\textup{rev}} }
+\NewDocumentCommand{\GSBf}{ O{\ctime} O{\point} }{ \GSBfbase\parens*{#1,#2} }
+\newcommand{\tshiftbase}{ \zeta }%[1][\ctime]{ \dot{\scalingbase}\parens*{ #1 } } 
+\newcommand{\tshift}[1][\ctime]{ \tshiftbase\parens*{ #1 } } 
+
+% Other
+
+\newcommand{\Ninit}{\Ncal_{\ini}}
+\newcommand{\Nend}{\Ncal_{\en}}
+\newcommand{\coef}{\lambda}		% for coefficient
+\newcommand{\dd}{\:\mathrm{d}}		% for integrators
+\newcommand{\intR}{\int_{\R^{\vdim}}}		% for integration over full domains
+\newcommand{\intRR}{\int_{\R^{\vdim}  \times \R^{\vdim}  }}		% for integration over double full domains
+\newcommand{\nn}{\nonumber}		% for equations
+\newcommand{\subs}{\leftarrow}      % for substitution
+\newcommand{\ddt}{\frac{\mathrm{d}}{\mathrm{d}t}}		% for Leibniz
+\newcommand{\ddc}{\frac{\partial}{\partial \point_{\coord} }}		% for Leibniz
+\newcommand{\del}{\partial}		% for derivatives
+\newcommand{\eps}{\varepsilon}		% for better epsilon
+\newcommand{\pd}{\partial}		% for derivatives
+\newcommand{\wilde}{\widetilde}		% for wide tildes
+\newcommand{\insum}{\sum\nolimits}		% for compact sums
+\newcommand{\inprod}{\prod\nolimits}		% for compact products
+\newcommand{\pexp}{p}		% for first exponent
+\newcommand{\qexp}{q}		% for second exponent
+\newcommand{\rexp}{r}		% for third exponent
+\newcommand{\dsum}{\oplus}		% for direct sums
+\newcommand{\const}{ \mathrm{const.} }
+
+\newcommand{\Div}[1][\point]{ \nabla_{ {#1} } \cdot }
+\newcommand{\dt}{ \dd \ctime}
+\newcommand{\loss}{\ell}
+\newcommand{\caching}{M}
+\newcommand{\outeriter}{K_\textup{out}}
+\newcommand{\inneriter}{K_\textup{in}}
+\newcommand{\pretriterf}{K_{\paramf}}
+\newcommand{\pretriterb}{K_{\paramb}}
+\newcommand{\lrbase}{\gamma}
+\newcommand{\lrf}{\lrbase_{\paramf}}
+\newcommand{\lrb}{\lrbase_{\paramb}}
+\newcommand{\Nconst}{  \parens*{2\pi}^{\frac{\vdim}{2}}  }
+\newcommand{\Psta}{ \pbase_{{0\horizon}} }
+\newcommand{\Pstasol}{ \pbase^\star_{{0\horizon}} }
+\newcommand{\Qsta}{ \refprobase_{{0\horizon} }}
+\newcommand{\tPsta}{ \tilde{\pbase}_{\mathrm{0\horizon}} }
+\newcommand{\tPstasol}{ \tilde{\pbase}^{\star}_{\mathrm{0\horizon}} }
+\newcommand{\tm}{\tilde{\mbase}_0}
+\newcommand{\tcovar}{\tilde{\covarbase}_0}
+\newcommand{\eqlaw}{  \overset{ \mathrm{law} }{=} }
+\newcommand{\Cs}{  C_{\sigma_{\star}} }
+\newcommand{\Pt}{ P_{\ctime} }
+\newcommand{\Qt}{ Q_{\ctime} }
+\newcommand{\St}{S_{\ctime}}
+\newcommand{\Kth}{K_{\ctime,\ctime + h}}
+\newcommand{\muc}[1][\ctime+h]{ \check{\mu}_{ #1 } }
+\newcommand{\Sigmac}[1][\ctime+h]{ \check{\Sigma}_{  #1 } }
+\newcommand{\Sigmacinv}[1][\ctime+h]{ \check{\Sigma}^{-1}_{  #1 } }
+\DeclareMathOperator{\gradBW}{\mathrm{grad}}
+\DeclareMathOperator{\divg}{\nabla\cdot}
+
+\newcommand{\tSt}{ \tilde{\St} }
+\newcommand{\dSt}{\dot{S}_t}
+\newcommand{\fpotbase}{\Phi'}
+\newcommand{\fpot}[1][\ctime]{\fpotbase_{#1}}
+\newcommand{\rfpotbase}{\hat{\Phi'}}
+\newcommand{\rfpot}[1][\ctime]{\rfpotbase_{#1}}
+\newcommand{\potbase}{\Phi}
+\newcommand{\pot}[1][\ctime]{\potbase_{#1}}
+\newcommand{\rpotbase}{\hat{\Phi}}
+\newcommand{\rpot}[1][\ctime]{\rpotbase_{#1}}
+\newcommand{\measurebase}{ \rho }
+\newcommand{\measure}[1][\ctime]{ \measurebase_{#1}  }
+\newcommand{\pt}{\partial_{\ctime}}
+\newcommand{\potsolbase}{ \Phi }
+\newcommand{\potsol}[1][\ctime]{ \potsolbase_{#1} }
+\newcommand{\vecsol}[1][\ctime]{ \nabla\potsolbase_{#1} }
+\newcommand{\lyapbase}{\mathcal{L}}
+\NewDocumentCommand{\lyap}{ O{\Sigmasol} O{\dSigmasol} }{ \lyapbase_{\ssstyle #1}\bracks{#2}  }
+\NewDocumentCommand{\lyapinv}{ O{\Sigma} O{2\nabla F} }{ \lyapbase^{-1}_{\ssstyle #1}\bracks{#2}  }
+\newcommand{\ctimebar}{\bar{\ctime}}
+
+\newcommand{\C}{ C_{\sigma} }
+\newcommand{\D}{ D_{\sigma} }
+
+\newcommand{\covbase}{\Sigma}
+
+\newcommand{\dSigcurve}[1][\ctime]{  \dot{\covbase}_{#1}  }
+\newcommand{\ddSigcurve}[1][\ctime]{  \ddot{\covbase}_{#1}  }
+
+
+\newcommand{\Sigcurveinv}[1][\ctime]{  \covbase^{-1}_{#1}  }
+\newcommand{\kenergyBW}{ \frac{1}{2} \normBWsq[\dSigcurve][\Sigcurve] }
+\newcommand{\penergyBWbase}{ \mathcal{U} }
+\NewDocumentCommand{\penergyBW}{ O{\sdev} O{\Sigcurve} }{ \penergyBWbase_{#1}\parens*{#2}  }
+
+\newcommand{\entropybase}{ H }
+\newcommand{\entropy}[1][\covbase]{ \entropybase\parens*{ #1 } }
+\newcommand{\fisherbase}{ {I} }
+\newcommand{\fisher}[1][\covbase]{ \fisherbase\parens*{#1} }
+\newcommand{\fisherBWbase}{ \mathcal{I} }
+\newcommand{\fisherBW}[1][\covbase]{ \fisherBWbase_{\sigma}\parens*{#1} }
+
+\newcommand{\LagBW}{ \kenergyBW - \penergyBW }
+\newcommand{\HamBW}{ \kenergyBW + \penergyBW }
+\newcommand{\tspace}{\mathcal{T}_{\ssstyle \Sigma}\SPD}
+\newcommand{\coder}{\nabla_{\ssstyle\dSigcurve}\dSigcurve}
+\newcommand{\dderbase}{D}
+\newcommand{\dder}{\dderbase_{\ssstyle X}X}
+\newcommand{\tdriftbase}{ f }
+
+\newcommand{\pSB}[1]{  p^{\SB}_{#1} }
+\newcommand{\horbase}{M}
+\newcommand{\hor}[1][\ctime]{ \horbase_{#1} }
+\newcommand{\Ht}{ \tilde{S}_{\ctime} }
+\newcommand{\dHt}{ \dot{\tilde{S}}_{\ctime} }
+\newcommand{\nconst}{ (2\pi)^{\frac{d}{2}} }
+\newcommand{\drm}{\mathrm{d}}
+\newcommand{\Coupling}{\Pi}
+\newcommand{\coupling}{\pi}
+\newcommand{\vecfield}{V}
+\newcommand{\vect}{v_t}
+\newcommand{\vectalt}{w_t}
+\newcommand{\driftf}{f_t}
+\NewDocumentCommand{\innerBW}{ O{\dot{\Sigcurve}} O{\dot{\Sigcurve}} O{\Sigcurve} }{ \inner{#1}{#2}_{\ssstyle #3} }
+\NewDocumentCommand{\normBW}{ O{\dSigmasol} O{\Sigmasol} }{ \norm{#1}_{\ssstyle #2} }
+\NewDocumentCommand{\normBWsq}{ O{\dSigmasol} O{\Sigmasol} }{ \norm{#1}^2_{\ssstyle #2} }
+
+\newcommand{\figleft}{{\em (Left)}}
+\newcommand{\figcenter}{{\em (Center)}}
+\newcommand{\figright}{{\em (Right)}}
+\newcommand{\figtop}{{\em (Top)}}
+\newcommand{\figbottom}{{\em (Bottom)}}
+\newcommand{\captiona}{{\em (a)}}
+\newcommand{\captionb}{{\em (b)}}
+\newcommand{\captionc}{{\em (c)}}
+\newcommand{\captiond}{{\em (d)}}
+\newcommand{\newterm}[1]{{\bf #1}}
+\def\figref#1{figure~\ref{#1}}
+\def\Figref#1{Figure~\ref{#1}}
+\def\twofigref#1#2{figures \ref{#1} and \ref{#2}}
+\def\quadfigref#1#2#3#4{figures \ref{#1}, \ref{#2}, \ref{#3} and \ref{#4}}
+\def\secref#1{section~\ref{#1}}
+\def\Secref#1{Section~\ref{#1}}
+\def\twosecrefs#1#2{sections \ref{#1} and \ref{#2}}
+\def\secrefs#1#2#3{sections \ref{#1}, \ref{#2} and \ref{#3}}
+\def\plaineqref#1{\ref{#1}}
+\def\chapref#1{chapter~\ref{#1}}
+\def\Chapref#1{Chapter~\ref{#1}}
+\def\rangechapref#1#2{chapters\ref{#1}--\ref{#2}}
+\def\algref#1{algorithm~\ref{#1}}
+\def\Algref#1{Algorithm~\ref{#1}}
+\def\twoalgref#1#2{algorithms \ref{#1} and \ref{#2}}
+\def\Twoalgref#1#2{Algorithms \ref{#1} and \ref{#2}}
+\def\partref#1{part~\ref{#1}}
+\def\Partref#1{Part~\ref{#1}}
+\def\twopartref#1#2{parts \ref{#1} and \ref{#2}}
+\def\ceil#1{\lceil #1 \rceil}
+\def\floor#1{\lfloor #1 \rfloor}
+\def\1{\bm{1}}
+
+% Random variables
+\def\reta{{\textnormal{$\eta$}}}
+\def\ra{{\textnormal{a}}}
+\def\rb{{\textnormal{b}}}
+\def\rc{{\textnormal{c}}}
+\def\rd{{\textnormal{d}}}
+\def\re{{\textnormal{e}}}
+\def\rf{{\textnormal{f}}}
+\def\rg{{\textnormal{g}}}
+\def\rh{{\textnormal{h}}}
+\def\ri{{\textnormal{i}}}
+\def\rj{{\textnormal{j}}}
+\def\rk{{\textnormal{k}}}
+\def\rl{{\textnormal{l}}}
+\def\rn{{\textnormal{n}}}
+\def\ro{{\textnormal{o}}}
+\def\rp{{\textnormal{p}}}
+\def\rq{{\textnormal{q}}}
+\def\rr{{\textnormal{r}}}
+\def\rs{{\textnormal{s}}}
+\def\rt{{\textnormal{t}}}
+\def\ru{{\textnormal{u}}}
+\def\rv{{\textnormal{v}}}
+\def\rw{{\textnormal{w}}}
+\def\rx{{\textnormal{x}}}
+\def\ry{{\textnormal{y}}}
+\def\rz{{\textnormal{z}}}
+
+% Random vectors
+\def\rvepsilon{{\mathbf{\epsilon}}}
+\def\rvtheta{{\mathbf{\theta}}}
+\def\rva{{\mathbf{a}}}
+\def\rvb{{\mathbf{b}}}
+\def\rvc{{\mathbf{c}}}
+\def\rvd{{\mathbf{d}}}
+\def\rve{{\mathbf{e}}}
+\def\rvf{{\mathbf{f}}}
+\def\rvg{{\mathbf{g}}}
+\def\rvh{{\mathbf{h}}}
+\def\rvu{{\mathbf{i}}}
+\def\rvj{{\mathbf{j}}}
+\def\rvk{{\mathbf{k}}}
+\def\rvl{{\mathbf{l}}}
+\def\rvm{{\mathbf{m}}}
+\def\rvn{{\mathbf{n}}}
+\def\rvo{{\mathbf{o}}}
+\def\rvp{{\mathbf{p}}}
+\def\rvq{{\mathbf{q}}}
+\def\rvr{{\mathbf{r}}}
+\def\rvs{{\mathbf{s}}}
+\def\rvt{{\mathbf{t}}}
+\def\rvu{{\mathbf{u}}}
+\def\rvv{{\mathbf{v}}}
+\def\rvw{{\mathbf{w}}}
+\def\rvx{{\mathbf{x}}}
+\def\rvy{{\mathbf{y}}}
+\def\rvz{{\mathbf{z}}}
+
+% Elements of random vectors
+\def\erva{{\textnormal{a}}}
+\def\ervb{{\textnormal{b}}}
+\def\ervc{{\textnormal{c}}}
+\def\ervd{{\textnormal{d}}}
+\def\erve{{\textnormal{e}}}
+\def\ervf{{\textnormal{f}}}
+\def\ervg{{\textnormal{g}}}
+\def\ervh{{\textnormal{h}}}
+\def\ervi{{\textnormal{i}}}
+\def\ervj{{\textnormal{j}}}
+\def\ervk{{\textnormal{k}}}
+\def\ervl{{\textnormal{l}}}
+\def\ervm{{\textnormal{m}}}
+\def\ervn{{\textnormal{n}}}
+\def\ervo{{\textnormal{o}}}
+\def\ervp{{\textnormal{p}}}
+\def\ervq{{\textnormal{q}}}
+\def\ervr{{\textnormal{r}}}
+\def\ervs{{\textnormal{s}}}
+\def\ervt{{\textnormal{t}}}
+\def\ervu{{\textnormal{u}}}
+\def\ervv{{\textnormal{v}}}
+\def\ervw{{\textnormal{w}}}
+\def\ervx{{\textnormal{x}}}
+\def\ervy{{\textnormal{y}}}
+\def\ervz{{\textnormal{z}}}
+
+% Random matrices
+\def\rmA{{\mathbf{A}}}
+\def\rmB{{\mathbf{B}}}
+\def\rmC{{\mathbf{C}}}
+\def\rmD{{\mathbf{D}}}
+\def\rmE{{\mathbf{E}}}
+\def\rmF{{\mathbf{F}}}
+\def\rmG{{\mathbf{G}}}
+\def\rmH{{\mathbf{H}}}
+\def\rmI{{\mathbf{I}}}
+\def\rmJ{{\mathbf{J}}}
+\def\rmK{{\mathbf{K}}}
+\def\rmL{{\mathbf{L}}}
+\def\rmM{{\mathbf{M}}}
+\def\rmN{{\mathbf{N}}}
+\def\rmO{{\mathbf{O}}}
+\def\rmP{{\mathbf{P}}}
+\def\rmQ{{\mathbf{Q}}}
+\def\rmR{{\mathbf{R}}}
+\def\rmS{{\mathbf{S}}}
+\def\rmT{{\mathbf{T}}}
+\def\rmU{{\mathbf{U}}}
+\def\rmV{{\mathbf{V}}}
+\def\rmW{{\mathbf{W}}}
+\def\rmX{{\mathbf{X}}}
+\def\rmY{{\mathbf{Y}}}
+\def\rmZ{{\mathbf{Z}}}
+
+% Elements of random matrices
+\def\ermA{{\textnormal{A}}}
+\def\ermB{{\textnormal{B}}}
+\def\ermC{{\textnormal{C}}}
+\def\ermD{{\textnormal{D}}}
+\def\ermE{{\textnormal{E}}}
+\def\ermF{{\textnormal{F}}}
+\def\ermG{{\textnormal{G}}}
+\def\ermH{{\textnormal{H}}}
+\def\ermI{{\textnormal{I}}}
+\def\ermJ{{\textnormal{J}}}
+\def\ermK{{\textnormal{K}}}
+\def\ermL{{\textnormal{L}}}
+\def\ermM{{\textnormal{M}}}
+\def\ermN{{\textnormal{N}}}
+\def\ermO{{\textnormal{O}}}
+\def\ermP{{\textnormal{P}}}
+\def\ermQ{{\textnormal{Q}}}
+\def\ermR{{\textnormal{R}}}
+\def\ermS{{\textnormal{S}}}
+\def\ermT{{\textnormal{T}}}
+\def\ermU{{\textnormal{U}}}
+\def\ermV{{\textnormal{V}}}
+\def\ermW{{\textnormal{W}}}
+\def\ermX{{\textnormal{X}}}
+\def\ermY{{\textnormal{Y}}}
+\def\ermZ{{\textnormal{Z}}}
+
+% Vectors
+\def\vzero{{\bm{0}}}
+\def\vone{{\bm{1}}}
+\def\vmu{{\bm{\mu}}}
+\def\vtheta{{\bm{\theta}}}
+\def\va{{\bm{a}}}
+\def\vb{{\bm{b}}}
+\def\vc{{\bm{c}}}
+\def\vd{{\bm{d}}}
+\def\ve{{\bm{e}}}
+\def\vf{{\bm{f}}}
+\def\vg{{\bm{g}}}
+\def\vh{{\bm{h}}}
+\def\vi{{\bm{i}}}
+\def\vj{{\bm{j}}}
+\def\vk{{\bm{k}}}
+\def\vl{{\bm{l}}}
+\def\vm{{\bm{m}}}
+\def\vn{{\bm{n}}}
+\def\vo{{\bm{o}}}
+\def\vp{{\bm{p}}}
+\def\vq{{\bm{q}}}
+\def\vr{{\bm{r}}}
+\def\vs{{\bm{s}}}
+\def\vt{{\bm{t}}}
+\def\vu{{\bm{u}}}
+\def\vv{{\bm{v}}}
+\def\vw{{\bm{w}}}
+\def\vx{{\bm{x}}}
+\def\vy{{\bm{y}}}
+\def\vz{{\bm{z}}}
+
+% Elements of vectors
+\def\evalpha{{\alpha}}
+\def\evbeta{{\beta}}
+\def\evepsilon{{\epsilon}}
+\def\evlambda{{\lambda}}
+\def\evomega{{\omega}}
+\def\evmu{{\mu}}
+\def\evpsi{{\psi}}
+\def\evsigma{{\sigma}}
+\def\evtheta{{\theta}}
+\def\eva{{a}}
+\def\evb{{b}}
+\def\evc{{c}}
+\def\evd{{d}}
+\def\eve{{e}}
+\def\evf{{f}}
+\def\evg{{g}}
+\def\evh{{h}}
+\def\evi{{i}}
+\def\evj{{j}}
+\def\evk{{k}}
+\def\evl{{l}}
+\def\evm{{m}}
+\def\evn{{n}}
+\def\evo{{o}}
+\def\evp{{p}}
+\def\evq{{q}}
+\def\evr{{r}}
+\def\evs{{s}}
+\def\evt{{t}}
+\def\evu{{u}}
+\def\evv{{v}}
+\def\evw{{w}}
+\def\evx{{x}}
+\def\evy{{y}}
+\def\evz{{z}}
+
+% Matrix
+\def\mA{{\bm{A}}}
+\def\mB{{\bm{B}}}
+\def\mC{{\bm{C}}}
+\def\mD{{\bm{D}}}
+\def\mE{{\bm{E}}}
+\def\mF{{\bm{F}}}
+\def\mG{{\bm{G}}}
+\def\mH{{\bm{H}}}
+\def\mI{{\bm{I}}}
+\def\mJ{{\bm{J}}}
+\def\mK{{\bm{K}}}
+\def\mL{{\bm{L}}}
+\def\mM{{\bm{M}}}
+\def\mN{{\bm{N}}}
+\def\mO{{\bm{O}}}
+\def\mP{{\bm{P}}}
+\def\mQ{{\bm{Q}}}
+\def\mR{{\bm{R}}}
+\def\mS{{\bm{S}}}
+\def\mT{{\bm{T}}}
+\def\mU{{\bm{U}}}
+\def\mV{{\bm{V}}}
+\def\mW{{\bm{W}}}
+\def\mX{{\bm{X}}}
+\def\mY{{\bm{Y}}}
+\def\mZ{{\bm{Z}}}
+\def\mBeta{{\bm{\beta}}}
+\def\mPhi{{\bm{\Phi}}}
+\def\mLambda{{\bm{\Lambda}}}
+\def\mSigma{{\bm{\Sigma}}}
+
+% Tensor
+\DeclareMathAlphabet{\mathsfit}{\encodingdefault}{\sfdefault}{m}{sl}
+\SetMathAlphabet{\mathsfit}{bold}{\encodingdefault}{\sfdefault}{bx}{n}
+\newcommand{\tens}[1]{\bm{\mathsfit{#1}}}
+\def\tA{{\tens{A}}}
+\def\tB{{\tens{B}}}
+\def\tC{{\tens{C}}}
+\def\tD{{\tens{D}}}
+\def\tE{{\tens{E}}}
+\def\tF{{\tens{F}}}
+\def\tG{{\tens{G}}}
+\def\tH{{\tens{H}}}
+\def\tI{{\tens{I}}}
+\def\tJ{{\tens{J}}}
+\def\tK{{\tens{K}}}
+\def\tL{{\tens{L}}}
+\def\tM{{\tens{M}}}
+\def\tN{{\tens{N}}}
+\def\tO{{\tens{O}}}
+\def\tP{{\tens{P}}}
+\def\tQ{{\tens{Q}}}
+\def\tR{{\tens{R}}}
+\def\tS{{\tens{S}}}
+\def\tT{{\tens{T}}}
+\def\tU{{\tens{U}}}
+\def\tV{{\tens{V}}}
+\def\tW{{\tens{W}}}
+\def\tX{{\tens{X}}}
+\def\tY{{\tens{Y}}}
+\def\tZ{{\tens{Z}}}
+
+
+% Graph
+\def\gA{{\mathcal{A}}}
+\def\gB{{\mathcal{B}}}
+\def\gC{{\mathcal{C}}}
+\def\gD{{\mathcal{D}}}
+\def\gE{{\mathcal{E}}}
+\def\gF{{\mathcal{F}}}
+\def\gG{{\mathcal{G}}}
+\def\gH{{\mathcal{H}}}
+\def\gI{{\mathcal{I}}}
+\def\gJ{{\mathcal{J}}}
+\def\gK{{\mathcal{K}}}
+\def\gL{{\mathcal{L}}}
+\def\gM{{\mathcal{M}}}
+\def\gN{{\mathcal{N}}}
+\def\gO{{\mathcal{O}}}
+\def\gP{{\mathcal{P}}}
+\def\gQ{{\mathcal{Q}}}
+\def\gR{{\mathcal{R}}}
+\def\gS{{\mathcal{S}}}
+\def\gT{{\mathcal{T}}}
+\def\gU{{\mathcal{U}}}
+\def\gV{{\mathcal{V}}}
+\def\gW{{\mathcal{W}}}
+\def\gX{{\mathcal{X}}}
+\def\gY{{\mathcal{Y}}}
+\def\gZ{{\mathcal{Z}}}
+
+% Sets
+\def\sA{{\mathbb{A}}}
+\def\sB{{\mathbb{B}}}
+\def\sC{{\mathbb{C}}}
+\def\sD{{\mathbb{D}}}
+\def\sF{{\mathbb{F}}}
+\def\sG{{\mathbb{G}}}
+\def\sH{{\mathbb{H}}}
+\def\sI{{\mathbb{I}}}
+\def\sJ{{\mathbb{J}}}
+\def\sK{{\mathbb{K}}}
+\def\sL{{\mathbb{L}}}
+\def\sM{{\mathbb{M}}}
+\def\sN{{\mathbb{N}}}
+\def\sO{{\mathbb{O}}}
+\def\sP{{\mathbb{P}}}
+\def\sQ{{\mathbb{Q}}}
+\def\sR{{\mathbb{R}}}
+\def\sS{{\mathbb{S}}}
+\def\sT{{\mathbb{T}}}
+\def\sU{{\mathbb{U}}}
+\def\sV{{\mathbb{V}}}
+\def\sW{{\mathbb{W}}}
+\def\sX{{\mathbb{X}}}
+\def\sY{{\mathbb{Y}}}
+\def\sZ{{\mathbb{Z}}}
+
+% Entries of a matrix
+\def\emLambda{{\Lambda}}
+\def\emA{{A}}
+\def\emB{{B}}
+\def\emC{{C}}
+\def\emD{{D}}
+\def\emE{{E}}
+\def\emF{{F}}
+\def\emG{{G}}
+\def\emH{{H}}
+\def\emI{{I}}
+\def\emJ{{J}}
+\def\emK{{K}}
+\def\emL{{L}}
+\def\emM{{M}}
+\def\emN{{N}}
+\def\emO{{O}}
+\def\emP{{P}}
+\def\emQ{{Q}}
+\def\emR{{R}}
+\def\emS{{S}}
+\def\emT{{T}}
+\def\emU{{U}}
+\def\emV{{V}}
+\def\emW{{W}}
+\def\emX{{X}}
+\def\emY{{Y}}
+\def\emZ{{Z}}
+\def\emSigma{{\Sigma}}
+
+% entries of a tensor
+% Same font as tensor, without \bm wrapper
+\newcommand{\etens}[1]{\mathsfit{#1}}
+\def\etLambda{{\etens{\Lambda}}}
+\def\etA{{\etens{A}}}
+\def\etB{{\etens{B}}}
+\def\etC{{\etens{C}}}
+\def\etD{{\etens{D}}}
+\def\etE{{\etens{E}}}
+\def\etF{{\etens{F}}}
+\def\etG{{\etens{G}}}
+\def\etH{{\etens{H}}}
+\def\etI{{\etens{I}}}
+\def\etJ{{\etens{J}}}
+\def\etK{{\etens{K}}}
+\def\etL{{\etens{L}}}
+\def\etM{{\etens{M}}}
+\def\etN{{\etens{N}}}
+\def\etO{{\etens{O}}}
+\def\etP{{\etens{P}}}
+\def\etQ{{\etens{Q}}}
+\def\etR{{\etens{R}}}
+\def\etS{{\etens{S}}}
+\def\etT{{\etens{T}}}
+\def\etU{{\etens{U}}}
+\def\etV{{\etens{V}}}
+\def\etW{{\etens{W}}}
+\def\etX{{\etens{X}}}
+\def\etY{{\etens{Y}}}
+\def\etZ{{\etens{Z}}}
+
+\newcommand{\pdata}{p_{\rm{data}}}
+
+\newcommand{\ptrain}{\hat{p}_{\rm{data}}}
+\newcommand{\Ptrain}{\hat{P}_{\rm{data}}}
+
+\newcommand{\pmodel}{p_{\rm{model}}}
+\newcommand{\Pmodel}{P_{\rm{model}}}
+\newcommand{\ptildemodel}{\tilde{p}_{\rm{model}}}
+
+\newcommand{\pencode}{p_{\rm{encoder}}}
+\newcommand{\pdecode}{p_{\rm{decoder}}}
+\newcommand{\precons}{p_{\rm{reconstruct}}}
+
+\newcommand{\laplace}{\mathrm{Laplace}} % Laplace distribution
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Ls}{\mathcal{L}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\emp}{\tilde{p}}
+\newcommand{\lr}{\alpha}
+\newcommand{\reg}{\lambda}
+\newcommand{\rect}{\mathrm{rectifier}}
+\newcommand{\softmax}{\mathrm{softmax}}
+\newcommand{\sigmoid}{\sigma}
+\newcommand{\softplus}{\zeta}
+\newcommand{\standarderror}{\mathrm{SE}}
+
+\newcommand{\normlzero}{L^0}
+\newcommand{\normlone}{L^1}
+\newcommand{\normltwo}{L^2}
+\newcommand{\normlp}{L^p}
+\newcommand{\normmax}{L^\infty}
+
+\newcommand{\parents}{Pa}
+
+\DeclareMathOperator{\Tr}{Tr}
+\let\ab\allowbreak
+
+% ours
+\def\Pcal{\mathcal{P}}
+\def\Ncal{\mathcal{N}}
+\def\bP{\mathbf{P}}
+\def\bC{\mathbf{C}}
+\def\RR{\mathbb{R}}
+\def\cW{\overline{W}_{\varepsilon}}
+\def\We{W_{\varepsilon}}
+\def\ones{\mathbf{1}}
+\DeclarePairedDelimiterX{\dotp}[2]{\langle}{\rangle}{#1, #2}
+

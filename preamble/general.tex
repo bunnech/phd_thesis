@@ -29,12 +29,6 @@
 \newcounter{dummy}
 \newlength{\abcd}
 
-% Common abbreviations
-\newcommand{\ie}{i.\,e.\xspace}
-\newcommand{\Ie}{I.\,e.\xspace}
-\newcommand{\eg}{e.\,g.\xspace}
-\newcommand{\Eg}{E.\,g.\xspace}
-
 % Handy packages
 \usepackage{csquotes}  % smart quotes
 \usepackage[T1]{fontenc}
@@ -53,7 +47,7 @@
 
 % Math stuff
 \usepackage{amsmath}
-%\usepackage{amssymb}
+\usepackage{amssymb}
 \usepackage{mathtools}
 \usepackage{isomath}
 
@@ -69,6 +63,15 @@
 \usepackage{subcaption}
 \captionsetup[sub]{margin=0pt,font=small,labelfont={rm}}
 \usepackage[table, dvipsnames]{xcolor}
+\usepackage{adjustbox}
+\usepackage{float}
+\usepackage{makecell}
+\usepackage{booktabs}
+
+% Algorithms
+\usepackage{algorithm}
+\usepackage[algo2e, ruled,vlined,boxed,linesnumbered]{algorithm2e}
+\usepackage[noend]{algorithmic}
 
 % Customize colors
 \definecolor{chaptercolor}{HTML}{1A254B}
@@ -115,7 +118,6 @@
 
 % Acronyms
 \usepackage[acronym, nonumberlist, xindy, symbols]{glossaries}
-\include{preamble/acronym}
 \renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
 \makeglossaries
 
@@ -133,9 +135,7 @@
 
 % Customize text width and length
 \KOMAoptions{headinclude=true, footinclude=false}
-%\setlength{\textwidth}{10.5cm} % 9 pt font
 \setlength{\textwidth}{11.6cm} % 10 pt font
-% text height set by golden ratio
 \areaset[current]{\textwidth}{1.618034\textwidth}
 
 % Page numbers in plain style (chapter titles)
@@ -168,6 +168,10 @@
 \renewcommand{\cftpartpagefont}{\normalfont}%
 
 % Chapter number on inside
+\titleformat{\part}[display]
+    {\normalfont\centering\large}%
+    {\thispagestyle{empty}\partname~\MakeTextUppercase{\thepart}}{1em}%
+    {\color{darklinkcolor}\spacedallcaps}
 \titleformat{\chapter}[display]%
   {\relax}{\vspace*{-3\baselineskip}\makebox[\linewidth][r]{\color{darklinkcolor}\chapterNumber\thechapter}}{10pt}%
   {\raggedright\spacedallcaps}[\normalsize\vspace*{.8\baselineskip}\titlerule]%
@@ -191,7 +195,6 @@
 \renewcommand*\dictumauthorformat[1]{--- #1}
 
 % Subfigure labels (manual)
-%\newcommand{\subfig}[1]{#1)}
 \newcommand{\subfig}[1]{(#1)}
 
 % CV
@@ -205,9 +208,6 @@
   \addtocounter{footnote}{-1}%
   \endgroup
 }
-
-% Put pages on A4 w/ crop marks
-%\usepackage[a4,center,cam]{crop}
 
 % Widow and club penalties
 \clubpenalty=10000

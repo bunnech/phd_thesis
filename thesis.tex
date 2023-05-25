@@ -19,6 +19,9 @@
 \usepackage[resetlabels]{multibib}
 \newcites{own}{ }
 
+% Math definitions
+\include{preamble/math}
+
 \begin{document}
 \frenchspacing
 \raggedbottom%
@@ -38,7 +41,35 @@
 \cleardoublepage\include{frontbackmatter/abstract}
 \cleardoublepage\include{frontbackmatter/acknowledgments}
 \pagestyle{scrheadings}
-\cleardoublepage\include{frontbackmatter/contents}
+
+% Table of Contents
+\refstepcounter{dummy}
+\pdfbookmark[1]{\contentsname}{tableofcontents}
+\setcounter{tocdepth}{2} % <-- 2 includes up to subsections in the ToC
+\setcounter{secnumdepth}{3} % <-- 3 numbers up to subsubsections
+\manualmark%
+\markboth{\spacedlowsmallcaps{\contentsname}}{\spacedlowsmallcaps{\contentsname}}
+\tableofcontents
+\automark[section]{chapter}
+\renewcommand{\chaptermark}[1]{\markboth{\spacedlowsmallcaps{#1}}{\spacedlowsmallcaps{#1}}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\enspace\spacedlowsmallcaps{#1}}}
+
+% Notation and Acronyms
+\begingroup
+
+\refstepcounter{dummy}
+\pdfbookmark[1]{Notation}{notation}
+\markboth{\spacedlowsmallcaps{Notation}}{\spacedlowsmallcaps{Notation}}
+\chapter*{Notation}
+
+\let\clearpage\relax
+\let\cleardoublepage\relax
+\let\cleardoublepage\relax
+
+\include{preamble/notation}
+\include{preamble/acronym}
+\printacronyms
+\endgroup
 
 % Mainmatter
 \cleardoublepage\pagenumbering{arabic}%
@@ -47,17 +78,16 @@
 \cleardoublepage%
 \input{chapters/background}
 
+\part{Static Neural Optimal Transport}
 \cleardoublepage%
-\input{chapters/related_work}
+\input{chapters/cellot}
+\input{chapters/condot}
 
+\part{Dynamic Neural Optimal Transport}
 \cleardoublepage%
-\input{chapters/part_not}
-
-\cleardoublepage%
-\input{chapters/part_nsde}
-
-\cleardoublepage%
-\input{chapters/part_npde}
+\input{chapters/gsbflow}
+\input{chapters/sbalign}
+\input{chapters/jkonet}
 
 \cleardoublepage%
 \input{chapters/conclusion}
