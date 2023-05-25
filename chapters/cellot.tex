@@ -6,3 +6,9 @@
   Tout va par degr\'e dans la nature, et rien par saut, et cette regle \`a l'\'egard des changements est une partie de ma loi de la continuit\'e.}%
 
 
+\paragraph{Convex Neural Architectures.}
+Input convex neural networks are neural networks $\psi_\theta(x)$ with specific constraints on the architecture and parameters $\theta$, such that their output is a convex function of some (or all) elements of the input $x$~\citep{amos2017input}. We consider in this work \textit{fully} input convex neural networks (ICNNs), such that the output is a convex function of the entire input $x$. A typical ICNN is a $L$-layer, fully connected network such that, for $l = 0, \dots, L-1$:
+\begin{equation} \label{eq:icnn}
+    z_{l+1} = a_l(W^x_lx + W^z_l z_l + b_l)  \text{ and } \psi_\theta(x) = z_L,
+\end{equation}
+where by convention, $z_0$ and $W^z_0$ are $0$, $a_l$ are convex non-decreasing (non-linear) activation functions, $\theta=\{b_l, W^z_l, W^x_l\}_{l=0}^{L-1}$ are the weights and biases of the neural network, with weight matrices $W^z_l$ associated to latent representations $z$ that have non-negative entries. Since \citet{amos2017input}'s work, convex neural architectures have been further extended and shown to capture relevant models despite these constraints~\citep{amos2017input, pmlr-v119-makkuva20a, huang2021convex}. In particular, \citet{chen2018optimal} provide a theoretical analysis that any convex function over a convex domain can be approximated in sup norm by an ICNN.

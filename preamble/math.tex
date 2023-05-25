@@ -50,7 +50,7 @@
 %% Operators
 %----------------------------------------------------------------------
 \DeclareMathOperator*{\argmax}{arg\,max}		% for argmax
-%\DeclareMathOperator*{\argmin}{arg\,min}		% for argmin
+\DeclareMathOperator*{\argmin}{arg\,min}		% for argmin
 \DeclareMathOperator*{\intersect}{\bigcap}		% for intersections
 \DeclareMathOperator*{\union}{\bigcup}		% for unions
 
@@ -309,6 +309,11 @@
 \newcommand{\Pend}{\pbase_{{\horizon}}}     % for end marginal
 \newcommand{\Pmargin}[1][\ctime]{ \pbase_{{#1}} }     % for general marginals
 \newcommand{\Psol}[1][\ctime]{ \pbase^{\solbase}_{ #1 } }
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\Sp}{\mathbb{S}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\Pssol}{\pi^\star}
+
 \newcommand{\Pjoint}{ \pbase_{ \mathrm{0\horizon}} }
 \newcommand{\distbase}{ \pbase }
 \newcommand{\ini}{ {0} }
@@ -924,7 +929,6 @@
 \DeclareMathOperator{\Tr}{Tr}
 \let\ab\allowbreak
 
-% ours
 \def\Pcal{\mathcal{P}}
 \def\Ncal{\mathcal{N}}
 \def\bP{\mathbf{P}}
@@ -934,4 +938,12 @@
 \def\We{W_{\varepsilon}}
 \def\ones{\mathbf{1}}
 \DeclarePairedDelimiterX{\dotp}[2]{\langle}{\rangle}{#1, #2}
+
+\newcommand{\fdrift}{b_t}
+\newcommand{\doob}{h_t}
+\newcommand{\doobs}{h_{t,\reg}}
+\newcommand{\Loss}{L}
+\newcommand{\reg}{\tau}
+\newcommand{\cvolatbase}{\beta}
+\newcommand{\cvolat}[1][\ctime]{\cvolatbase_{#1}}
 

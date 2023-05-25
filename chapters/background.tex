@@ -5,6 +5,35 @@
   ...}%
 
 
+\paragraph{Optimal Transport.} 
+For two probability measures $\mu, \nu$ in $\mathcal{P}(\mathbb{R}^d)$, their squared 2-Wasserstein distance is
+\begin{equation} \label{eq:ot}
+    W_2^2(\mu, \nu) = \inf_{\gamma\in \Gamma(\mu,\nu)}\iint \|x-y\|^2_2 \gamma(dx, dy),
+\end{equation}
+where $\Gamma(\mu, \nu)$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$. When instantiated on finite discrete measures, such as $\mu=\sum_{i=1}^n a_i\delta_{x_i}$ and $\nu=\sum_{j=1}^m b_j\delta_{y_j}$, this problem translates to a linear program, which can be regularized using an entropy term~\citep{cuturi2013sinkhorn,Peyre2019computational}. For $\varepsilon\geq0$, set 
+\begin{equation}\label{eq:reg-ot}
+\We(\mu,\nu) \defeq \min_{\bP\in U(a,b)} \dotp{\bP}{[\|x_i - y_j\|^2]_{ij}}  \,-\varepsilon H(\bP),
+\end{equation}
+where $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(a,b)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m =a, \bP^\top\mathbf{1}_n=b\}$. 
+Notice that the definition above reduces to the usual (squared) 2-Wasserstein distance when $\varepsilon=0$. Setting $\varepsilon>0$ yields a faster and differentiable proxy to approximate $W_{0}$, but introduces a bias, since $\We(\mu,\mu)\ne 0$ in general. % To correct that bias, we use 
+In the rest of this work, we therefore use the \textit{Sinkhorn divergence}~\citep{ramdas2017wasserstein,genevay2018,salimans2018improving,feydy2018interpolating} as %to recover 
+a valid non-negative discrepancy,
+\begin{equation} \label{eq:sinkhorn}
+\cW(\mu,\nu) \defeq \We(\mu,\nu)-\frac{1}{2}\left(\We(\mu,\mu)+\We(\nu,\nu)\right).\\
+\end{equation}
+
+\paragraph{OT and Convexity.} 
+An alternative formulation for OT is given by the \citet{Monge1781} problem  
+\begin{align}\label{eq:monge}
+W_2^2(\mu,\nu) &= \inf_{T:T_{\#} \mu = \nu} \int_\mathcal{X} ||x - T(x)||^2d\mu(x) \,
+\end{align}
+where $\#$ is the push-forward operator, and the optimal solution $T^\star$ is known as the \citeauthor{Monge1781} map between $\mu$ and $\nu$. The \citeauthor{Brenier1987} theorem \citeyear{Brenier1987} states that if $\mu$ has a density, the Monge map $T^\star$ between $\mu$ and $\nu$ can be recovered as the gradient of a unique (up to constants) convex function $\psi$ whose gradient pushes forward $\mu$ to $\nu$. Namely, if $\psi:\mathbb{R}^d \rightarrow \mathbb{R}$ is convex and $(\nabla \psi)_{\#}\mu = \nu$, then $T^\star(x)=\nabla \psi(x)$ and
+\begin{align}\label{eq:brenier}
+W_2^2(\mu,\nu) &= \int_\mathcal{X} ||x - \nabla \psi(x)||^2 d\mu(x)\,.
+\end{align}
+%establishing an equivalence between the Kantorovich formulation of OT~\eqref{eq:ot} with optimal transport plan $\gamma$, and the Monge formulation involving map $T$. %, which consists of finding a map that associates points coming from both probability measures. 
+
+
 
 \chapter{Dynamical Processes in Biomedicine}
 \label{cha:bio_background}
