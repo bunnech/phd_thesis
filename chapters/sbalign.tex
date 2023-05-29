@@ -1,35 +1,31 @@
-\chapter{...}
+\section{Aligned Diffusion Schr\"odinger Bridges}
 \label{cha:sb_align}
 
 
-\dictum[..., \textit{...} (...)]{%
-  ...}%
-
-
-\looseness -1 \emph{Interpolation}, the task of transforming one given distribution into another, lies at the heart of many modern machine learning applications such as single-cell genomics \citep{tong2020trajectorynet, schiebinger2019optimal, bunne2022supervised}, meteorology \citep{fisher2009data}, and robotics \citep{chen2021optimal}. To this end, \aclp{DSB} \citep{de2021diffusion,chen2021likelihood,vargas2021solving,liu2022deep} have recently emerged as a powerful paradigm due to their ability to generalize prior deep diffusion-based models, notably \acl{SMLD}
-\citep{song2019generative,song2020score} and \aclp{DDPM} \citep{ho2020denoising}, which have achieved the state-of-the-art on many generative modeling problems.
+\looseness -1 \emph{Interpolation}, the task of transforming one given distribution into another, lies at the heart of many modern machine learning applications such as single-cell genomics \citep{tong2020trajectorynet, schiebinger2019optimal, bunne2022supervised}, meteorology \citep{fisher2009data}, and robotics \citep{chen2021optimal}. To this end, \acrlongpl{DSB} \citep{de2021diffusion,chen2021likelihood,vargas2021solving,liu2022deep} have recently emerged as a powerful paradigm due to their ability to generalize prior deep diffusion-based models, notably \acrlong{SMLD}
+\citep{song2019generative,song2020score} and \acrlongpl{DDPM} \citep{ho2020denoising}, which have achieved the state-of-the-art on many generative modeling problems.
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\linewidth]{figures/fig_overview_proteins.pdf}
+    \includegraphics[width=\linewidth]{figures/fig_overview_cells.pdf}
     \caption{Overview of \textsc{SBalign}: In biological tasks such as protein docking, one is naturally provided with {\em aligned} data in the form of unbound and bound structures of participating proteins. Our goal is to therefore recover a stochastic trajectory from $\x_0$ to $\x_1$. To achieve this, we connect the characterization of an SDE conditioned on $\x_0$ and $\x_1$ (utilizing the Doob's \emph{$h$-transform}) with that of a Brownian bridge between $\x_0$ and $\x_1$ (classical Schr\"odinger bridge theory). We show that this leads to a simpler training procedure with lower variance and strong empirical results.}
     \label{fig:overview_proteins}
 \end{figure}
 
-Despite the wide success, a significant limitation of existing frameworks for solving \acp{DSB} is that they fail to capture the \emph{alignment} of data: If $\distinit, \distend$ are two (empirical) distributions between which we wish to interpolate, then a tacit assumption in the literature is that the dependence of $\distinit$ and $\distend$ is unknown and somehow has to be recovered. Such an assumption, however, ignores important scenarios where the data is \emph{aligned}, meaning that the samples from $\distinit$ and $\distend$ naturally come in pairs $(\x^i_0,\x^i_1)_i^{N}$, which is common in many biological phenomena. Proteins, for instance, undergo conformational changes upon interactions with other biomolecules (protein docking, see Fig.~\ref{fig:overview_proteins}). The goal is to model conformational changes by recovering a (stochastic) trajectory $\x_t$ based on the positions observed at two-time points $\left(\x_0, \x_1\right)$. Failing to incorporate this alignment would mean that we completely ignore information on the correspondence between the initial and final points of the molecules, resulting in a much harder problem than necessary.
+Despite the wide success, a significant limitation of existing frameworks for solving \acrshortpl{DSB} is that they fail to capture the \emph{alignment} of data: If $\distinit, \distend$ are two (empirical) distributions between which we wish to interpolate, then a tacit assumption in the literature is that the dependence of $\distinit$ and $\distend$ is unknown and somehow has to be recovered. Such an assumption, however, ignores important scenarios where the data is \emph{aligned}, meaning that the samples from $\distinit$ and $\distend$ naturally come in pairs $(\x^i_0,\x^i_1)_i^{N}$, which is common in many biological phenomena. Proteins, for instance, undergo conformational changes upon interactions with other biomolecules (protein docking, see Fig.~\ref{fig:overview_proteins}). The goal is to model conformational changes by recovering a (stochastic) trajectory $\x_t$ based on the positions observed at two-time points $\left(\x_0, \x_1\right)$. Failing to incorporate this alignment would mean that we completely ignore information on the correspondence between the initial and final points of the molecules, resulting in a much harder problem than necessary.
 Beyond, the recent use of SBs has been motivated by an important task in molecular biology: Cells change their molecular profile throughout developmental processes \citep{schiebinger2019optimal,bunne2021jkonet} or in response to perturbations such as cancer drugs \citep{lotfollahi2019scgen,bunne2021learning}. As most measurement technologies are destructive assays, i.e., the same cell cannot be observed twice nor fully profiled over time, these methods aim at reconstructing cell dynamics from \emph{unpaired} snapshots.
 Recent developments in molecular biology, however, aim at overcoming this technological limitation. For example, \citet{chen2022live} propose a transcriptome profiling approach that preserves cell viability. \citet{weinreb2020lineage} capture cell differentiation processes by clonally connecting cells and their progenitors through barcodes (see illustrative Figure in Supplement).
 
-\looseness -1 Motivated by these observations, the goal of this paper is to propose a novel algorithmic framework for solving \acp{DSB} with (partially) \emph{aligned} data. Our approach is in stark contrast to existing works which, due to the lack of data alignment, all rely on some variants of \acdef{IPF} \citep{fortet1940resolution, kullback1968probability} and are thus prone to numerical instability. On the other hand, via a combination of the original theory of Schr\"odinger bridges \citep{schrodinger1931umkehrung,leonard2013survey} and the key notion of Doob's \emph{$h$-transform} \citep{doob1984classical, rogers2000diffusions}, we design a novel loss function that completely bypasses the \ac{IPF} procedure and can be trained with much lower variance.
+\looseness -1 Motivated by these observations, the goal of this paper is to propose a novel algorithmic framework for solving \acrshortpl{DSB} with (partially) \emph{aligned} data. Our approach is in stark contrast to existing works which, due to the lack of data alignment, all rely on some variants of \acrshort{IPF} \citep{fortet1940resolution, kullback1968probability} and are thus prone to numerical instability. On the other hand, via a combination of the original theory of Schr\"odinger bridges \citep{schrodinger1931umkehrung,leonard2013survey} and the key notion of Doob's \emph{$h$-transform} \citep{doob1984classical, rogers2000diffusions}, we design a novel loss function that completely bypasses the \acrshort{IPF} procedure and can be trained with much lower variance.
 
 
 To summarize, we make the following contributions:
 \begin{itemize}[topsep=0pt]
-\item To our best knowledge, we consider, for the first time, the problem of interpolation with \emph{aligned} data. We rigorously formulate the problem in the \ac{DSB} framework.
+\item To our best knowledge, we consider, for the first time, the problem of interpolation with \emph{aligned} data. We rigorously formulate the problem in the \acrshort{DSB} framework.
 
-\item Based on the theory of Schr\"odinger bridges and $h$-transform, we derive a new loss function that, unlike prior work on \acp{DSB}, does not require an \ac{IPF}-like procedure to train. We also propose principled regularization schemes to further stabilize training.
+\item Based on the theory of Schr\"odinger bridges and $h$-transform, we derive a new loss function that, unlike prior work on \acrshortpl{DSB}, does not require an \acrshort{IPF}-like procedure to train. We also propose principled regularization schemes to further stabilize training.
 
-\item We describe how interpolating aligned data can provide better reference processes for use in classical \acp{DSB}, paving the way to hybrid aligned/non-aligned \acp{SB}.
+\item We describe how interpolating aligned data can provide better reference processes for use in classical \acrshortpl{DSB}, paving the way to hybrid aligned/non-aligned \acrshortpl{SB}.
 
 \item \looseness -1 We evaluate our proposed framework on both synthetic and real data. For experiments utilizing real data, we consider two tasks where such aligned data is naturally available. The first is the task of developmental processes in single-cell biology, and the second is ({\em rigid}) protein docking, where the goal is to predict the 3D structure of the bound complex formed by two proteins, given their unbound 3D structures. Our method demonstrates a considerable improvement over prior methods across various metrics, thereby substantiating the importance of taking the data alignment into account. 
 
@@ -37,49 +33,48 @@ To summarize, we make the following contributions:
 
 \paragraph{Related work}
 
-Solving \acp{DSB} is a subject of significant interest in recent years and has flourished in a number of different algorithms \citep{de2021diffusion,chen2021likelihood,vargas2021solving,bunne2022recovering,liudeep2022}. However, all these previous approaches focus on  \emph{unaligned} data, and therefore the methodologies all rely on \ac{IPF} and are hence drastically different from ours. In the experiments, we will demonstrate the importance of taking the alignment of data into consideration by comparing our method to these baselines.
+Solving \acrshortpl{DSB} is a subject of significant interest in recent years and has flourished in a number of different algorithms \citep{de2021diffusion,chen2021likelihood,vargas2021solving,bunne2022recovering,liu2022deep}. However, all these previous approaches focus on  \emph{unaligned} data, and therefore the methodologies all rely on \acrshort{IPF} and are hence drastically different from ours. In the experiments, we will demonstrate the importance of taking the alignment of data into consideration by comparing our method to these baselines.
 
 An important ingredient in our theory is Doob's $h$-transform, which has recently also been utilized by \cite{liu2023learning} to solve the problem of constrained diffusion. However, their fundamental motivation is different from ours. \cite{liu2023learning} focus on learning the drift of the diffusion model and the $h$-transform \emph{together}, whereas ours is to read off the drift \emph{from} the $h$-transform with the help of {\em aligned data}. Consequently, there is no overlap between the two algorithms and their intended applications. 
 
-To the best of our knowledge, the concurrent work of \citet{tong2023conditional} is the only existing framework that can tackle aligned data, which, however, is not their original motivation. In the context of solving \acp{DSB}, their algorithm can be seen as learning a vector field that generates the correct \emph{marginal} probability \citep[cf.][Proposition 4.3]{tong2023conditional}. Importantly, this is different from our aim of finding the \emph{pathwise} optimal solution of \acp{DSB}: If $(\x^i_{0,\textup{test}})_{i=1}^m$ is a test data set for which we wish to predict their destinations, then the framework of \citet{tong2023conditional} can only ensure that the marginal distribution $(\x^i_{1,\textup{test}})_{i=1}^m$ is correct, whereas ours is capable of predicting that $\x^i_{1,\textup{test}}$ is precisely the destination of $\x^i_{0,\textup{test}}$ for each $i$. This latter property is highly desirable in tasks like ML-accelerated protein docking.
+To the best of our knowledge, the concurrent work of \citet{tong2023conditional} is the only existing framework that can tackle aligned data, which, however, is not their original motivation. In the context of solving \acrshortpl{DSB}, their algorithm can be seen as learning a vector field that generates the correct \emph{marginal} probability \citep[cf.][Proposition 4.3]{tong2023conditional}. Importantly, this is different from our aim of finding the \emph{pathwise} optimal solution of \acrshortpl{DSB}: If $(\x^i_{0,\textup{test}})_{i=1}^m$ is a test data set for which we wish to predict their destinations, then the framework of \citet{tong2023conditional} can only ensure that the marginal distribution $(\x^i_{1,\textup{test}})_{i=1}^m$ is correct, whereas ours is capable of predicting that $\x^i_{1,\textup{test}}$ is precisely the destination of $\x^i_{0,\textup{test}}$ for each $i$. This latter property is highly desirable in tasks like ML-accelerated protein docking.
 
 \paragraph{Problem formulation}
 
-Suppose that we are given access to i.i.d. \emph{aligned} data $(\x_0^i,\x_1^i)_{i=1}^N$, where the marginal distribution of $\x^i_0$'s is $\distinit$ and of $\x_1^i$'s is $\distend$. Typically, we view $\distinit$ as the empirical marginal distribution of a stochastic process observed at time $t= 0$, and likewise $\distend$ the empirical marginal observed at $t=\horizon$. The goal is to reconstruct the stochastic process $\Pmargin$ based on $(\x_0^i,\x_1^i)_{i=1}^N$, \ie to \emph{interpolate} between $\distinit$ and $\distend$.
+Suppose that we are given access to i.i.d. \emph{aligned} data $(\x_0^i,\x_1^i)_{i=1}^N$, where the marginal distribution of $\x^i_0$'s is $\distinit$ and of $\x_1^i$'s is $\distend$. Typically, we view $\distinit$ as the empirical marginal distribution of a stochastic process observed at time $t= 0$, and likewise $\distend$ the empirical marginal observed at $t=\horizon$. The goal is to reconstruct the stochastic process $\Pmargin$ based on $(\x_0^i,\x_1^i)_{i=1}^N$, i.e., to \emph{interpolate} between $\distinit$ and $\distend$.
 
 Such a task is ubiquitous in biological applications. For instance, understanding how proteins dock to other biomolecules is of significant interest in biology and has become a topic of intense study in recent years \citep{ganea2022independent, tsaban2022harnessing, corso2022diffdock}. In the protein docking task, $\x_0^i$ represents the 3D structures of the unbound proteins, while $\x_1^i$ represents the 3D structure of the bound complex. Reconstructing a stochastic process that diffuses $\x_0^i$'s to $\x_1^i$'s is tantamount to recovering the energy landscape governing the docking process.  Similarly, in molecular dynamics simulations, we have access to trajectories $\left(\x_t^i\right)_{t \in [0, 1]}$, where $\x_0^i$ and $\x_1^i$ represent the initial and final positions of the $i$-th molecule respectively. Any learning algorithm using these simulations should be able to respect the provided alignment. 
 
 
-\paragraph{Diffusion Schr\"odinger bridges}
+%\paragraph{Diffusion Schr\"odinger bridges}
+%
+%To solve the interpolation problem, in \cref{sec:Methods}, we will invoke the framework of \acrshortpl{DSB}, which are designed to solve interpolation problems with \emph{unaligned} data. More specifically, given two marginals $\distinit$ and $\distend$, the \acrshort{DSB} framework proceeds by first choosing a reference process $\refpro$ using prior knowledge, for instance a simple Brownian motion, and then solve the entropy-minimization problem over all stochastic processes $\Pmargin$:
+%\begin{equation}
+%\label{eq:SB}
+%\tag{SB}
+%\min_{ \substack{ \Pinit = \distinit, \; \Pend = \distend} } \KL{\Pmargin}{\refpro}.
+%\end{equation}
+%
+%Despite the fact that many methods exist for solving \eqref{eq:SB}  \citep{de2021diffusion,chen2021likelihood,vargas2021solving,bunne2022recovering}, none of these approaches are capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:SB}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein. Unfortunately, it is well-known that tackling the marginals separately necessitates a forward-backward learning process known as the \acrlong{IPF} procedure \citep{fortet1940resolution,kullback1968probability}, which constitutes the primary reason of high variance training, thereby confronting \acrshortpl{DSB} with numerical and scalability issues. Our major contribution, detailed in the next section, is therefore to devise the first algorithmic framework that solves the interpolation problem with aligned data \emph{without} resorting to IPF.
+%
 
-To solve the interpolation problem, in \cref{sec:Methods}, we will invoke the framework of \acrshortpl{DSB}, which are designed to solve interpolation problems with \emph{unaligned} data. More specifically, given two marginals $\distinit$ and $\distend$, the \acrshort{DSB} framework proceeds by first choosing a reference process $\refpro$ using prior knowledge, for instance a simple Brownian motion, and then solve the entropy-minimization problem over all stochastic processes $\Pmargin$:
-\begin{equation}
-\label{eq:SB}
-\tag{SB}
-\min_{ \substack{ \Pinit = \distinit, \; \Pend = \distend} } \KL{\Pmargin}{\refpro}.
-\end{equation}
-
-Despite the fact that many methods exist for solving \eqref{eq:SB}  \citep{de2021diffusion,chen2021likelihood,vargas2021solving,bunne2022recovering}, none of these approaches are capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:SB}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein. Unfortunately, it is well-known that tackling the marginals separately necessitates a forward-backward learning process known as the \acrlong{IPF} procedure \citep{fortet1940resolution,kullback1968probability}, which constitutes the primary reason of high variance training, thereby confronting \acp{DSB} with numerical and scalability issues. Our major contribution, detailed in the next section, is therefore to devise the first algorithmic framework that solves the interpolation problem with aligned data \emph{without} resorting to IPF.
-
-\section{Aligned Diffusion Schr\"odinger Bridges}
-
+\subsection{\textsc{SBalign}: ...}
 
 In this section, we derive a novel loss function for \acrshortpl{DSB} with aligned data by combining two classical notions: The theory of \acrlongpl{SB} \citep{schrodinger1931umkehrung,leonard2013survey,chen2021stochastic} and Doob's $h$-transform \citep{doob1984classical, rogers2000diffusions}. We then describe how solutions to DSBs with aligned data can be leveraged in the context of classical \acrshortpl{DSB}.
 
-\subsection{Learning aligned diffusion Schr\"odinger bridges}
 \paragraph{Static SB and aligned data}
 
-Our starting point is the simple and classical observation that \eqref{eq:SB} is the continuous-time analogue of the \emph{entropic optimal transport}, also known as the \emph{static} \acl{SB} problem \citep{leonard2013survey,chen2021stochastic,Peyre2019computational}:
+Our starting point is the simple and classical observation that \eqref{eq:SB} is the continuous-time analogue of the \emph{entropic optimal transport}, also known as the \emph{static} \acrlong{SB} problem \citep{leonard2013survey,chen2021stochastic,Peyre2019computational}:
 \begin{equation}
 \label{eq:static-SB}
 \Pssol \defeq \argmin_{ \substack{ \Pinit = \distinit, \; \Pend = \distend} } \KL{\mathbb{P}_{0,1}}{\refprobase_{0,1}}
-\end{equation}where the minimization is over all \emph{couplings} of $\distinit$ and $\distend$, and $\refprobase_{0,1}$ is simply the joint distribution of $\refpro$ at $t=0,\horizon$. In other words, if we denote by $\Psol$ the stochastic process that minimizes \eqref{eq:SB}, then the joint distribution $\Psol[0,\horizon]$ necessarily coincides with the $\Pssol$ in \eqref{eq:static-SB}. Moreover, since in \acp{DSB}, the data is always assumed to arise from $\Psol$, we see that:
+\end{equation}where the minimization is over all \emph{couplings} of $\distinit$ and $\distend$, and $\refprobase_{0,1}$ is simply the joint distribution of $\refpro$ at $t=0,\horizon$. In other words, if we denote by $\Psol$ the stochastic process that minimizes \eqref{eq:SB}, then the joint distribution $\Psol[0,\horizon]$ necessarily coincides with the $\Pssol$ in \eqref{eq:static-SB}. Moreover, since in \acrshortpl{DSB}, the data is always assumed to arise from $\Psol$, we see that:
 \begin{quote}
 The \emph{aligned} data $(\x_0^i,\x_1^i)_{i=1}^N$ constitutes samples of $\Pssol$.
 \end{quote}
 This simple but crucial observation lies at the heart of all derivations to come. 
 
-Our central idea is to represent $\Psol$ via two different, but equivalent, characterizations, both of which involve $\Pssol$: That of a \emph{mixture} of reference processes with pinned end points, and that of conditional \acdefpl{SDE}.
+Our central idea is to represent $\Psol$ via two different, but equivalent, characterizations, both of which involve $\Pssol$: That of a \emph{mixture} of reference processes with pinned end points, and that of conditional \acrlongpl{SDE}.
 
 
 
@@ -91,7 +86,7 @@ For illustration purposes, from now on, we will assume that the reference proces
 \label{eq:gtWt}
 \dd \refpro = \volat \dWiener.
 \end{equation}
-In this case, it is well-known that $\refpro$ \emph{conditioned} to start at $\x_0$ and end at $\x_1$ can be written in another \ac{SDE} \citep{mansuy2008aspects, liu2023learning}:
+In this case, it is well-known that $\refpro$ \emph{conditioned} to start at $\x_0$ and end at $\x_1$ can be written in another \acrshort{SDE} \citep{mansuy2008aspects, liu2023learning}:
 \begin{equation}
 \label{eq:BB}
 \dd X_t = \volatsq[\ctime] \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]} \dt + \volat\dWiener
@@ -101,14 +96,14 @@ where $X_0 = \x_0$ and %, $\dWiener$ is itself a Brownian motion, and
 \cvolat\defeq \int_0^\ctime \volatsq \dd s.
 \end{equation}We call the processes in \eqref{eq:BB} the \emph{scaled Brownian bridges} as they generalize the classical Brownian bridge, which corresponds to the case of $\volat \equiv 1$.
 
-The first characterization of $\Psol$ is then an immediate consequence the following classical result in \acl{SB} theory: Draw a sample $(\x_0, \x_1) \sim \Pssol$ and connect them via \eqref{eq:BB}. The resulting path is a sample from $\Psol$ \citep{leonard2013survey, chen2021stochastic}. In other words, $\Psol$ is a \emph{mixture} of scaled Brownian bridges, with the mixing weight given by $\Pssol$.
+The first characterization of $\Psol$ is then an immediate consequence the following classical result in \acrlong{SB} theory: Draw a sample $(\x_0, \x_1) \sim \Pssol$ and connect them via \eqref{eq:BB}. The resulting path is a sample from $\Psol$ \citep{leonard2013survey, chen2021stochastic}. In other words, $\Psol$ is a \emph{mixture} of scaled Brownian bridges, with the mixing weight given by $\Pssol$.
 
 
 \paragraph{$\Psol$ from $\Pssol$: \acrshort{SDE} representation}
 
 
 
-Another characterization of $\Psol$ is that it is itself given by an \ac{SDE} of the form \citep{leonard2013survey, chen2021stochastic}
+Another characterization of $\Psol$ is that it is itself given by an \acrshort{SDE} of the form \citep{leonard2013survey, chen2021stochastic}
 \begin{equation}
 \label{eq:SB-SDE}
 \dd X_t = \volatsq[\ctime]\fdrift(X_t) \dt + \volat\dWiener.
@@ -116,18 +111,18 @@ Another characterization of $\Psol$ is that it is itself given by an \ac{SDE} of
 Here, $\fdrift: \R^d \to \R^d$ is a time-dependent drift function that we wish to learn.
 
 
-Now, by Doob's h-transform, we know that the \ac{SDE} \eqref{eq:SB-SDE} \emph{conditioned} to start at $\x_0$ and end at $\x_1$ is given by another \ac{SDE}  \citep{doob1984classical,rogers2000diffusions}:
+Now, by Doob's h-transform, we know that the \acrshort{SDE} \eqref{eq:SB-SDE} \emph{conditioned} to start at $\x_0$ and end at $\x_1$ is given by another \acrshort{SDE}  \citep{doob1984classical,rogers2000diffusions}:
 \begin{equation}
 \label{eq:SB-SD-conditioned}
 \dd X_t = \volatsq[\ctime]\bracks*{\fdrift(X_t) + \nabla \log \doob(X_t) }\dt +\volat \dWiener
 \end{equation}
-where $\doob(\x) \defeq \prob(X_1 = \x_1\vert X_t = \x)$ is the \emph{Doob's $h$ function}. Notice that we have suppressed the dependence of $\doob$ on $\x_0$ and $\x_1$ for notational simplicity.%\footnote{The fact $\doob$ does not depend on the starting point $\x_0$ is easily understood: An \ac{SDE} remains the same no matter where it starts.}
+where $\doob(\x) \defeq \prob(X_1 = \x_1\vert X_t = \x)$ is the \emph{Doob's $h$ function}. Notice that we have suppressed the dependence of $\doob$ on $\x_0$ and $\x_1$ for notational simplicity.%\footnote{The fact $\doob$ does not depend on the starting point $\x_0$ is easily understood: An \acrshort{SDE} remains the same no matter where it starts.}
 
 
 
 \paragraph{Loss function}
 
-Since both \eqref{eq:BB} and \eqref{eq:SB-SD-conditioned} represent $\Psol$, the solution of the \acp{DSB}, the two \acp{SDE} must coincide. 
+Since both \eqref{eq:BB} and \eqref{eq:SB-SD-conditioned} represent $\Psol$, the solution of the \acrshortpl{DSB}, the two \acrshortpl{SDE} must coincide. 
 %This in turn implies that, for all $(\x_0,\x_1)\sim\Pssol$, we must have
 %\begin{equation}
 %\fdrift(X_t) + \nabla \log \doob(X_t) =  \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}.
@@ -192,10 +187,11 @@ where the term $\frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}$ is akin to $
 Inspecting $\doob$ in \eqref{eq:SB-SD-conditioned}, we see that, given $(\x_0,\x_1)$, it can be written as the conditional expectation of an indicator function:
 \begin{equation}
 \label{eq:h-semigroup}
-\doob(\x) = \prob(X_1 = \x_1\vert X_t = \x) = \exof*{\one_{\{\x_1\}}\vert X_t = \x}
+\doob(\x) = \prob(X_1 = \x_1\vert X_t = \x) = \exof*{
+\one_{\{\x_1\}}\vert X_t = \x}
 \end{equation}where the expectation is over \eqref{eq:SB-SDE}. Functions of the form \eqref{eq:h-semigroup} lend itself well to computation since it solves simulating the \emph{unconditioned} paths.
 %since the Feymann-Kac formula, which offers an representation via simulating the \emph{unconditional} paths and has been well-studied in fields such as physics \cite{}, financial engineering \citep{}, and machine learning \citep{}. 
-~Furthermore, in order to avoid overfitting on the given samples, it is customary to replace the ``hard'' constraint $\one_{\{\x_1\}}$ by its \emph{smoothed} version \citep{zhang2021path, holdijk2022path}: 
+Furthermore, in order to avoid overfitting on the given samples, it is customary to replace the "hard" constraint $\one_{\{\x_1\}}$ by its \emph{smoothed} version \citep{zhang2021path, holdijk2022path}: 
 \begin{equation}
 \label{eq:softdoob}
 \doobs(\x) \defeq \exof*{  \exp\parens*{-\frac{1}{2\reg}\norm{X_\horizon-\x_1}^2 }  \vert X_t = \x}.
@@ -222,7 +218,7 @@ Although the computation of \eqref{eq:softdoob} can be done via a standard appli
 \end{figure*}
 
 \paragraph{Regularization}
-Since it is well-known that $\nabla \log\doob$ typically explodes when $\ctime\to 1$ \citep{liu2023learning}, it is important to regularize the behavior of $m^{\phi}$ for numerical stability, especially when $\ctime\to 1$. Moreover, in practice, it is desirable to learn a drift $\fdrift^\theta$ that respects the data alignment \emph{in expectation}: If $(\x_0,\x_1)$ is an input pair, then multiple runs of the \ac{SDE} \eqref{eq:SB-SDE} starting from $\x_0$ should, on average, produce samples that are in the proximity of $\x_1$. This observation implies that we should search for drifts whose corresponding $h$-transforms are diminishing.
+Since it is well-known that $\nabla \log\doob$ typically explodes when $\ctime\to 1$ \citep{liu2023learning}, it is important to regularize the behavior of $m^{\phi}$ for numerical stability, especially when $\ctime\to 1$. Moreover, in practice, it is desirable to learn a drift $\fdrift^\theta$ that respects the data alignment \emph{in expectation}: If $(\x_0,\x_1)$ is an input pair, then multiple runs of the \acrshort{SDE} \eqref{eq:SB-SDE} starting from $\x_0$ should, on average, produce samples that are in the proximity of $\x_1$. This observation implies that we should search for drifts whose corresponding $h$-transforms are diminishing.
 
 A simple way to simultaneously achieve the above two requirements is to add an $\ell^2$-regularization term, resulting in the loss function:
 %\eqref{eq:logdoobs} is computationally expensive to simulate, because of repeated function calls to to $\fdrift^\theta$, and also suffers from high variance especially in the initial stages of training. 
@@ -235,7 +231,7 @@ A simple way to simultaneously achieve the above two requirements is to add an $
 \end{align}where $\lambda_t$ can either be constant or vary with time. The overall algorithm is depicted in \cref{alg:SBalign}.
 
 
-\subsection{Paired Schr\"odinger Bridges as Prior Processes}
+\subsection{Aligned Schr\"odinger Bridges as Prior Processes}
 \label{subsec:prior_drift}
 Classical SBs are unsuitable in cases where the alignments are known, because they only consider samples from $\distinit$ and $\distend$ and disregard those drawn from the (optimal) coupling $\pi^\star$. However, the reliance of our method on this crucial knowledge is critical to avoid the necessity of IPF-like iterates but may become a limitation when insufficient information on alignments is available. 
 
@@ -247,10 +243,10 @@ An alternative, proposed by \citet{bunne2022recovering}, draws on the closed-for
 Unlike our method, these alternatives construct better prior drifts by falling back to simpler and related tasks, or approximations of the original problem. We instead propose to shape a coarse-grained description of the drift based on alignments sampled directly from $\mathbb{P}_{0,1}$. 
 
 
-\section{Empirical Evaluation}
+\subsection{Empirical Evaluation}
 In this section, we evaluate \textsc{SBalign} in different settings involving 2-dimensional synthetic datasets, the task of reconstructing cellular differentiation processes, as well as predicting the conformation of a protein structure and its ligand formalized as rigid protein docking problem.
 
-\subsection{Synthetic Experiments}
+\subsubsection{Synthetic Experiments}
 \label{sec:synthetic}
 
 \begin{figure*}
@@ -289,10 +285,8 @@ Setting imprecise values for one of $t_h$ and $t_v$ when defining custom referen
     \label{fig:results_cell_class}
 \end{figure*}
 
-\vspace{-5pt}
-\subsection{Cell Differentiation}
+\subsubsection{Cell Differentiation}
 \label{sec:cell}
-\vspace{-5pt}
 
 \looseness -1 Biological processes are determined through heterogeneous responses of single cells to external stimuli, i.e., developmental factors or drugs. Understanding and predicting the dynamics of single cells subject to a stimulus is thus crucial to enhance our understanding of health and disease and the focus of this task.
 Most single-cell high-throughput technologies are destructive assays ---i.e., they destroy cells upon measurement--- allowing us to only measure \textit{unaligned} snapshots of the evolving cell population. Recent methods address this limitation by proposing (lower-throughput) technologies that keep cells alive after transcriptome profiling \citep{chen2022live} or that genetically tag cells to obtain a clonal trace upon cell division \citep{weinreb2020lineage}.
@@ -318,7 +312,7 @@ Most single-cell high-throughput technologies are destructive assays ---i.e., th
 }
 \end{table}
 
-\paragraph{Baselines} \looseness -1 We benchmark \textsc{SBalign} against previous \acp{DSB} such as \citep[\textsc{fbSB}]{chen2021likelihood}. Beyond, we compare \textsc{SBalign} in the setting of learning a prior reference process. Naturally, cell division processes and subsequently the propagation of the barcodes are very noisy. While this genetic annotation provides some form of assignment, it does not capture the full developmental process. We thus test \textsc{SBalign} in a setting where it learns a prior from such partial alignments and, plugged into \textsc{fbSB}, is fine-tuned on the full dataset.
+\paragraph{Baselines} \looseness -1 We benchmark \textsc{SBalign} against previous \acrshortpl{DSB} such as \citep[\textsc{fbSB}]{chen2021likelihood}. Beyond, we compare \textsc{SBalign} in the setting of learning a prior reference process. Naturally, cell division processes and subsequently the propagation of the barcodes are very noisy. While this genetic annotation provides some form of assignment, it does not capture the full developmental process. We thus test \textsc{SBalign} in a setting where it learns a prior from such partial alignments and, plugged into \textsc{fbSB}, is fine-tuned on the full dataset.
  
 \paragraph{Evaluation metrics} To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\epsilon}$~\citep{cuturi2013sinkhorn}, as well as average scores, i.e., $\ell_2(\text{PS})$ \citep{bunne2021learning} and RMSD. Moreover, we also train a simple neural network-based classifier to annotate the cell type on day 4 and we report the accuracy of the predicted vs. true cell type for all the models. See \S~\ref{app:metrics} for further details.
 
@@ -326,8 +320,8 @@ Most single-cell high-throughput technologies are destructive assays ---i.e., th
 Lastly, we employ \textsc{SBalign} to learn a prior process from noisy alignments based on genetic barcode annotations. When using this reference process within \textsc{fbSB}, we learn an SB which compensates for inaccuracies stemming from the stochastic nature of cell division and barcode redistribution and which achieves better scores on distributional metrics (see Tab.~\ref{tab:results_cells}).
 Further results can be found in \S~\ref{app:more_results}.
 
-\section{Conclusion}
+\subsection{Discussion}
 
 \vspace{-5pt}
-In this paper, we propose a new framework to tackle the interpolation task with aligned data via \aclp{DSB}. Our central contribution is a novel algorithmic framework derived from the Schr\"odinger bridge theory and Doob's $h$-transform. Via a combination of the two notions, we derive novel loss functions which, unlike all prior methods for solving \aclp{DSB}, do not rely on the \acl{IPF} procedure and are hence numerically stable. We verify our proposed algorithm on various synthetic and real-world tasks and demonstrate noticeable improvement over the previous state-of-the-art, thereby substantiating the claim that data alignment is a highly relevant feature that warrants further research.
+In this paper, we propose a new framework to tackle the interpolation task with aligned data via \acrlongpl{DSB}. Our central contribution is a novel algorithmic framework derived from the Schr\"odinger bridge theory and Doob's $h$-transform. Via a combination of the two notions, we derive novel loss functions which, unlike all prior methods for solving \acrlongpl{DSB}, do not rely on the \acrlong{IPF} procedure and are hence numerically stable. We verify our proposed algorithm on various synthetic and real-world tasks and demonstrate noticeable improvement over the previous state-of-the-art, thereby substantiating the claim that data alignment is a highly relevant feature that warrants further research.
 

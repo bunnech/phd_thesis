@@ -3,6 +3,13 @@ build/
 *.aux
 *.log
 .texpadtmp/
+*.acn
+*.glo
+*.glsdefs
+*.out
+*.slo
+*.toc
+*.xdy
 
 # Emacs junk
 auto/
@@ -15,5 +22,6 @@ ltxpng/
 *.*~
 *.bak
 cover/*
+raw/*
 
 .DS_Store

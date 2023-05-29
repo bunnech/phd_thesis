@@ -177,7 +177,7 @@
 %----------------------------------------------------------------------
 %% Matrices and vectors
 %----------------------------------------------------------------------
-%\newcommand{\ones}{\mathbf{1}}		% for vector of ones
+\newcommand{\ones}{\mathbf{1}}		% for vector of ones
 \newcommand{\mat}{M}		% for generic matrix
 \newcommand{\eye}{I}		% for identity matrix
 \newcommand{\mg}{\succ}		% for positive-definite
@@ -346,7 +346,15 @@
 \newcommand{\tshift}[1][\ctime]{ \tshiftbase\parens*{ #1 } } 
 
 % Other
+\newcommand{\fdrift}{b_t}
+\newcommand{\doob}{h_t}
+\newcommand{\doobs}{h_{t,\reg}}
+\newcommand{\Loss}{L}
+\newcommand{\reg}{\tau}
+\newcommand{\cvolatbase}{\beta}
+\newcommand{\cvolat}[1][\ctime]{\cvolatbase_{#1}}
 
+\def\cont{c}
 \newcommand{\Ninit}{\Ncal_{\ini}}
 \newcommand{\Nend}{\Ncal_{\en}}
 \newcommand{\coef}{\lambda}		% for coefficient
@@ -911,7 +919,6 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\emp}{\tilde{p}}
 \newcommand{\lr}{\alpha}
-\newcommand{\reg}{\lambda}
 \newcommand{\rect}{\mathrm{rectifier}}
 \newcommand{\softmax}{\mathrm{softmax}}
 \newcommand{\sigmoid}{\sigma}
@@ -923,6 +930,7 @@
 \newcommand{\normltwo}{L^2}
 \newcommand{\normlp}{L^p}
 \newcommand{\normmax}{L^\infty}
+\newcommand{\newinf}{\mathop{\mathrm{inf}\vphantom{\mathrm{sup}}}}
 
 \newcommand{\parents}{Pa}
 
@@ -936,14 +944,4 @@
 \def\RR{\mathbb{R}}
 \def\cW{\overline{W}_{\varepsilon}}
 \def\We{W_{\varepsilon}}
-\def\ones{\mathbf{1}}
 \DeclarePairedDelimiterX{\dotp}[2]{\langle}{\rangle}{#1, #2}
-
-\newcommand{\fdrift}{b_t}
-\newcommand{\doob}{h_t}
-\newcommand{\doobs}{h_{t,\reg}}
-\newcommand{\Loss}{L}
-\newcommand{\reg}{\tau}
-\newcommand{\cvolatbase}{\beta}
-\newcommand{\cvolat}[1][\ctime]{\cvolatbase_{#1}}
-

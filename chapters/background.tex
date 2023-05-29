@@ -23,11 +23,11 @@ a valid non-negative discrepancy,
 \end{equation}
 
 \paragraph{OT and Convexity.} 
-An alternative formulation for OT is given by the \citet{Monge1781} problem  
+An alternative formulation for OT is given by the \citet{monge1781histoire} problem  
 \begin{align}\label{eq:monge}
 W_2^2(\mu,\nu) &= \inf_{T:T_{\#} \mu = \nu} \int_\mathcal{X} ||x - T(x)||^2d\mu(x) \,
 \end{align}
-where $\#$ is the push-forward operator, and the optimal solution $T^\star$ is known as the \citeauthor{Monge1781} map between $\mu$ and $\nu$. The \citeauthor{Brenier1987} theorem \citeyear{Brenier1987} states that if $\mu$ has a density, the Monge map $T^\star$ between $\mu$ and $\nu$ can be recovered as the gradient of a unique (up to constants) convex function $\psi$ whose gradient pushes forward $\mu$ to $\nu$. Namely, if $\psi:\mathbb{R}^d \rightarrow \mathbb{R}$ is convex and $(\nabla \psi)_{\#}\mu = \nu$, then $T^\star(x)=\nabla \psi(x)$ and
+where $\#$ is the push-forward operator, and the optimal solution $T^\star$ is known as the \citeauthor{monge1781histoire} map between $\mu$ and $\nu$. The \citeauthor{Brenier1987} theorem \citeyear{Brenier1987} states that if $\mu$ has a density, the Monge map $T^\star$ between $\mu$ and $\nu$ can be recovered as the gradient of a unique (up to constants) convex function $\psi$ whose gradient pushes forward $\mu$ to $\nu$. Namely, if $\psi:\mathbb{R}^d \rightarrow \mathbb{R}$ is convex and $(\nabla \psi)_{\#}\mu = \nu$, then $T^\star(x)=\nabla \psi(x)$ and
 \begin{align}\label{eq:brenier}
 W_2^2(\mu,\nu) &= \int_\mathcal{X} ||x - \nabla \psi(x)||^2 d\mu(x)\,.
 \end{align}
