@@ -1,8 +1,8 @@
 \chapter{Optimal Transport for Dynamical Systems}
 \label{cha:ot_background}
 
-\dictum[..., \textit{...} (...)]{%
-  ...}%
+\dictum[Elinor Ostrom, \textit{Governing the Commons} (1990)]{%
+  The power of a theory is exactly proportional to the diversity of situations it can explain.}%
 
 
 \paragraph{Optimal Transport.} 
@@ -10,7 +10,7 @@ For two probability measures $\mu, \nu$ in $\mathcal{P}(\mathbb{R}^d)$, their sq
 \begin{equation} \label{eq:ot}
     W_2^2(\mu, \nu) = \inf_{\gamma\in \Gamma(\mu,\nu)}\iint \|x-y\|^2_2 \gamma(dx, dy),
 \end{equation}
-where $\Gamma(\mu, \nu)$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$. When instantiated on finite discrete measures, such as $\mu=\sum_{i=1}^n a_i\delta_{x_i}$ and $\nu=\sum_{j=1}^m b_j\delta_{y_j}$, this problem translates to a linear program, which can be regularized using an entropy term~\citep{cuturi2013sinkhorn,Peyre2019computational}. For $\varepsilon\geq0$, set 
+where $\Gamma(\mu, \nu)$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$. When instantiated on finite discrete measures, such as $\mu=\sum_{i=1}^n a_i\delta_{x_i}$ and $\nu=\sum_{j=1}^m b_j\delta_{y_j}$, this problem translates to a linear program, which can be regularized using an entropy term~\citep{cuturi2013sinkhorn,peyre2019computational}. For $\varepsilon\geq0$, set 
 \begin{equation}\label{eq:reg-ot}
 \We(\mu,\nu) \defeq \min_{\bP\in U(a,b)} \dotp{\bP}{[\|x_i - y_j\|^2]_{ij}}  \,-\varepsilon H(\bP),
 \end{equation}

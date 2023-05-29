@@ -1,4 +1,4 @@
-\section{Aligned Diffusion Schr\"odinger Bridges}
+\section{Learning Diffusion Schr\"odinger Bridges from Sparse Trajectories}
 \label{cha:sb_align}
 
 
@@ -31,7 +31,7 @@ To summarize, we make the following contributions:
 
 \end{itemize}
 
-\paragraph{Related work}
+\paragraph{Related work.}
 
 Solving \acrshortpl{DSB} is a subject of significant interest in recent years and has flourished in a number of different algorithms \citep{de2021diffusion,chen2021likelihood,vargas2021solving,bunne2022recovering,liu2022deep}. However, all these previous approaches focus on  \emph{unaligned} data, and therefore the methodologies all rely on \acrshort{IPF} and are hence drastically different from ours. In the experiments, we will demonstrate the importance of taking the alignment of data into consideration by comparing our method to these baselines.
 
@@ -39,7 +39,7 @@ An important ingredient in our theory is Doob's $h$-transform, which has recentl
 
 To the best of our knowledge, the concurrent work of \citet{tong2023conditional} is the only existing framework that can tackle aligned data, which, however, is not their original motivation. In the context of solving \acrshortpl{DSB}, their algorithm can be seen as learning a vector field that generates the correct \emph{marginal} probability \citep[cf.][Proposition 4.3]{tong2023conditional}. Importantly, this is different from our aim of finding the \emph{pathwise} optimal solution of \acrshortpl{DSB}: If $(\x^i_{0,\textup{test}})_{i=1}^m$ is a test data set for which we wish to predict their destinations, then the framework of \citet{tong2023conditional} can only ensure that the marginal distribution $(\x^i_{1,\textup{test}})_{i=1}^m$ is correct, whereas ours is capable of predicting that $\x^i_{1,\textup{test}}$ is precisely the destination of $\x^i_{0,\textup{test}}$ for each $i$. This latter property is highly desirable in tasks like ML-accelerated protein docking.
 
-\paragraph{Problem formulation}
+\paragraph{Problem formulation.}
 
 Suppose that we are given access to i.i.d. \emph{aligned} data $(\x_0^i,\x_1^i)_{i=1}^N$, where the marginal distribution of $\x^i_0$'s is $\distinit$ and of $\x_1^i$'s is $\distend$. Typically, we view $\distinit$ as the empirical marginal distribution of a stochastic process observed at time $t= 0$, and likewise $\distend$ the empirical marginal observed at $t=\horizon$. The goal is to reconstruct the stochastic process $\Pmargin$ based on $(\x_0^i,\x_1^i)_{i=1}^N$, i.e., to \emph{interpolate} between $\distinit$ and $\distend$.
 
@@ -58,13 +58,13 @@ Such a task is ubiquitous in biological applications. For instance, understandin
 %Despite the fact that many methods exist for solving \eqref{eq:SB}  \citep{de2021diffusion,chen2021likelihood,vargas2021solving,bunne2022recovering}, none of these approaches are capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:SB}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein. Unfortunately, it is well-known that tackling the marginals separately necessitates a forward-backward learning process known as the \acrlong{IPF} procedure \citep{fortet1940resolution,kullback1968probability}, which constitutes the primary reason of high variance training, thereby confronting \acrshortpl{DSB} with numerical and scalability issues. Our major contribution, detailed in the next section, is therefore to devise the first algorithmic framework that solves the interpolation problem with aligned data \emph{without} resorting to IPF.
 %
 
-\subsection{\textsc{SBalign}: ...}
+\subsection{\textsc{SBalign}: Aligned Diffusion Schr\"odinger Bridges}
 
 In this section, we derive a novel loss function for \acrshortpl{DSB} with aligned data by combining two classical notions: The theory of \acrlongpl{SB} \citep{schrodinger1931umkehrung,leonard2013survey,chen2021stochastic} and Doob's $h$-transform \citep{doob1984classical, rogers2000diffusions}. We then describe how solutions to DSBs with aligned data can be leveraged in the context of classical \acrshortpl{DSB}.
 
 \paragraph{Static SB and aligned data}
 
-Our starting point is the simple and classical observation that \eqref{eq:SB} is the continuous-time analogue of the \emph{entropic optimal transport}, also known as the \emph{static} \acrlong{SB} problem \citep{leonard2013survey,chen2021stochastic,Peyre2019computational}:
+Our starting point is the simple and classical observation that \eqref{eq:SB} is the continuous-time analogue of the \emph{entropic optimal transport}, also known as the \emph{static} \acrlong{SB} problem \citep{leonard2013survey,chen2021stochastic,peyre2019computational}:
 \begin{equation}
 \label{eq:static-SB}
 \Pssol \defeq \argmin_{ \substack{ \Pinit = \distinit, \; \Pend = \distend} } \KL{\mathbb{P}_{0,1}}{\refprobase_{0,1}}

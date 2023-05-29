@@ -1,4 +1,4 @@
-\chapter{Learning Dynamical Systems via Optimal Transport and Gradient Flows}
+\chapter[Learning Dynamical Systems via OT and Gradient Flows]{Learning Dynamical Systems via Optimal Transport and Gradient Flows}
 \label{cha:neural_pde}
 
 \dictum[Andrey Kolmogorov, \textit{\"Uber die analytischen Methoden in der Wahrscheinlichkeitsrechnung} (1931)]{%
@@ -26,7 +26,7 @@ computed between the outputs of the \textsc{JKOnet} module (the prediction) and 
 We demonstrate \textsc{JKOnet}'s range of applications by applying in on synthetic potential- and trajectory-based population dynamics, as well as developmental trajectories of human embryonic stem cells based on single-cell genomics data.
 
 
-\section{On the Connection between Optimal Transport and Fokker-Planck Equations}
+\section[On the Connection between OT and Fokker-Planck Equations]{On the Connection between Optimal Transport and Fokker-Planck Equations}
 
 \paragraph{JKO Flows.}
 In their seminal paper, \citet{jordan1998variational} study diffusion processes under the lens of the OT metric \citep[see also][]{ambrosio2006gradient} and introduce a scheme that is now known as the JKO flow: Starting with $\rho_0$, and given a real-valued energy function $J:\mathcal{P}(\mathbb{R}^d)\rightarrow \mathbb{R}$ driving the evolution of the system, they define iteratively for $t\geq 0$, :
@@ -255,7 +255,7 @@ While facilitating training of the forward method in some settings, it likewise 
     \label{fig:exp_jkonet_cell}
 \end{minipage}\hfill
 \begin{minipage}{0.39\linewidth}
-% \vspace*{-\dimexpr\baselineskip+\heavyrulewidth+\abovetopsep\relax}
+
 
 \captionof{table}{Evaluation of cell lineage branch classification performance of \textsc{JKOnet} and the forward method on the embryoid body scRNA-seq data based on the $\ell_1$-distance of the histograms and the Hellinger distance $H^2$ \eqref{eq:hellinger} of the predicted branch class distributions (using 3 runs).}
 \label{tab:exp_jkonet_cell_class}

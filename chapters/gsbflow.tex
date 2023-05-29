@@ -1,4 +1,4 @@
-\chapter{Learning Dynamical Systems via Optimal Transport and Stochastic Control}
+\chapter[Learning Dynamical Systems via OT and Stochastic Control]{Learning Dynamical Systems via Optimal Transport and Stochastic Control}
 \label{cha:neural_sde}
 
 \dictum[Erwin Schr\"odinger, \textit{What is Life?} (1944)]{%
@@ -13,7 +13,7 @@
 
 \section{Data-Driven Priors for Diffusion Schr\"odinger Bridges}
 
-The \acrfull{SB} \citep{leonard2013survey, chen2021stochastic}, alternatively known as the \emph{dynamic} entropy-regularized \acrlong{OT} (OT), has recently received significant attention from the machine learning community. In contrast to the classical \emph{static} \acrshort{OT} where one seeks a {coupling} between measures that minimizes the average cost \citep{villani2009optimal, peyre2019computational}, the goal of \acrshortpl{SB} is to find the optimal \emph{stochastic processes} that evolve a given measure into another. As such, \acrshortpl{SB} are particularly suitable for learning complex continuous-time systems, and have been successfully applied to a wide range of applications such as sampling \citep{bernton2019schr, huang2021schrodinger}, generative modeling \citep{chen2021likelihood,de2021diffusion,wang2021deep}, molecular biology \citep{holdijk2022path}, and mean-field games \citep{liu2022deep}. 
+The \acrfull{SB} \citep{leonard2013survey, chen2021stochastic}, alternatively known as the \emph{dynamic} entropy-regularized \acrlong{OT} (OT), has recently received significant attention from the machine learning community. In contrast to the classical \emph{static} \acrshort{OT} where one seeks a {coupling} between measures that minimizes the average cost \citep{villani2009optimal,peyre2019computational}, the goal of \acrshortpl{SB} is to find the optimal \emph{stochastic processes} that evolve a given measure into another. As such, \acrshortpl{SB} are particularly suitable for learning complex continuous-time systems, and have been successfully applied to a wide range of applications such as sampling \citep{bernton2019schr, huang2021schrodinger}, generative modeling \citep{chen2021likelihood,de2021diffusion,wang2021deep}, molecular biology \citep{holdijk2022path}, and mean-field games \citep{liu2022deep}. 
 
 %The \emph{static} optimal transport (OT) problems seek to find the optimal mapping which transforms a given probability measure into another while minimizing the 
 
@@ -45,7 +45,7 @@ The goal of our paper is to continue this pursuit of closed-form solutions and t
 \end{enumerate}
 
 
-\subsection{Preliminaries on Gaussian Optimal Transport Problems}
+\subsection{Preliminaries on Gaussian Optimal Transport}
 
 
 Throughout this paper, let $\xi \sim \Ncal(\mu, \Sigma)$ and $\xi' \sim \Ncal(\mu', \Sigma')$ denote two given Gaussian random variables. By abusing the notation, we will continue to denote the measures of these Gaussians by $\xi$ and $\xi'$, respectively. We will also denote by $\Pi(\xi,\xi')$ the set of all their couplings. 
@@ -95,7 +95,7 @@ where $\left(\Div \vect\right)(\point) \coloneqq \sum_{i=1}^d \frac{\partial}{\p
 To our knowledge, the only work that has partially addressed the closed-form solution of \eqref{eq:BBGaussian} is \citet{mallasto2021entropy}, whose results are nonetheless insufficient to cover important applications such as generative modeling. In \cref{sec:results}, we will derive a vast generalization of the results in \citet{mallasto2021entropy} and provide a detailed comparison in \crefrange{sec:overview}{sec:mechanics}.
 
 
-\subsection{The Gaussian Schr\"odinger Bridge Problem and Analysis Overview}
+\subsection{The Gaussian Schr\"odinger Bridge Problem}
 
 \newcommand{\Pstar}[1][\ctime]{\mathbb{P}^\star_{#1}}
 
@@ -286,7 +286,7 @@ Armed with \cref{lem:lyapMain}, it is straightforward to verify that $\lyap = \H
 To conclude, in contrast to the purely technical approach of \citet{mallasto2021entropy}, our \cref{thm:mechanics} provides a geometric and conceptually clean solution for $\sigma\Wiener$-\acrshortpl{GSB}: Compute the Lyapunov operator $\lyap$ via verifying the symmetry of the matrix in \cref{lem:lyapMain}. \emph{It turns out that this technique can be readily extended to general \acrshortpl{GSB}}, and therefore serves as the foundation for the proof of our main result; see \cref{sec:results}.
 
 
-\paragraph{Remark}
+\paragraph{Remark.}
 It is interesting to note that the matrix $\Ht$ in \eqref{eq:HtMain} is itself \emph{not} symmetric. Other consequences of \cref{thm:mechanics} that might be of independent interest can be found in \cref{sec:interesting}. We also note that, when $\sigma = 0$, the solution to \eqref{eq:LagBW} is simply the Wasserstein geodesic between Gaussian measures, whose formula is well-known \citep{dowson1982frechet, takatsu2010wasserstein}. However, as explained in \cref{sec:overview}, the case of $\sigma > 0$ requires a completely different analysis since, unlike when $\sigma = 0$, it is not reducible to a convex program. This leads to the significantly more involved proofs of \cref{thm:mechanics} and of \eqref{eq:solMain} in \citet{mallasto2021entropy}.
 
 
@@ -424,7 +424,7 @@ Then the following holds:
 As in \cref{thm:mechanics}, the key step in the proof of \cref{thm:GaussianSB} is to recognize the symmetry of the matrix $\St^\top \Sigmasolinv$ where $\St$, defined in \eqref{eq:functions}, simply becomes the $\Ht$ in \cref{lem:lyapMain} (up to an additive factor of $\frac{\sigma^2\bar{t}}{2}\eye$) for $\sigma\Wiener$-\acrshortpl{GSB}. Although this can be directly verified via generalizing \cref{lem:lyapMain}, the computation becomes quite tedious, so our proof of \cref{thm:GaussianSB} will follow a slightly different route. In any case, given the symmetry of $\St^\top \Sigmasolinv$, the proof simply boils down to a series of straightforward calculations; see \cref{app:GaussianSB}.
 
 
-\paragraph{Closed forms for conditional distributions}
+\paragraph{Closed forms for conditional distributions.}
 In many practical applications such as generative modeling, a requirement to employ the \acrshort{SDE} representation of \acrshortpl{GSB} in \eqref{eq:GSB-forward-sol} is that its \emph{conditional distributions} given the initial points can be computed efficiently. As an immediate corollary of \cref{thm:GaussianSB}, we obtain the following closed-form expressions for these conditional distributions. % Importantly, this will allow us to perform a \emph{pretraining} procedure, described in detail in \cref{sec:methods}, for \emph{both} the forward and the backward drifts in the likelihood objectives \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}.%, which will prove extremely valuable in practice.
 \begin{restatable}{corollary}{GSBMargins}
 \label{cor:GSB-Margins}
@@ -528,9 +528,9 @@ As demonstrated in \cref{fig:res_synthetic}, \textsc{GSBflow} is able to success
 \looseness -1 Modern single-cell profiling technologies are able to provide rich feature representations (e.g., gene expression) of \textit{individual} cells at any development state. A crucial issue that arises with such profiling methods is their destructive nature: Measuring a cell requires destroying it and thus a cell cannot be measured twice. As a result, independent samples are collected at each snapshot, with no access to ground-truth single-cell trajectories throughout time, resulting in challenging, \emph{unaligned}, datasets.
 Recovering cellular dynamics from such unaligned snapshots, i.e., $\distinit$ to $\distend$, has, however, extremely important scientific and biomedical relevance \citep{kulkarni2019beyond}. For example, it determines our understanding on how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or unveils mechanisms of cell differentiation and development \citep{schiebinger2019optimal}. Following related work, in particular previous methods based on optimal transport \citep{schiebinger2019optimal, bunne2021learning, bunne2022supervised, tong2020trajectorynet}, the task is thus to learn the stochastic process that described the evolution of single cells from $\distinit$ to $\distend$.
 
-\paragraph{Experimental Setup}
+\paragraph{Experimental Setup.}
 
-\paragraph{Single-cell genomics via \acrshortpl{SB}}
+\paragraph{Single-cell genomics via \acrshortpl{SB}.}
 Let us consider the evolution of a gene, for which we can collect the empirical distributions $\distinit,\distend$ of its expression levels at the times $t=0,1$ \citep{schiebinger2019optimal,moon2019visualizing}. Our goal is to two-fold: 
 \begin{enumerate}[itemsep=.0cm,topsep=0cm]
 \item To solve the \textbf{generative modeling} problem, i.e., to generate $\distinit$ or $\distend$ from a standard Gaussian noise, and
@@ -540,7 +540,7 @@ Let us consider the evolution of a gene, for which we can collect the empirical 
 
 Although there are numerous algorithms for generative modeling, to our knowledge, the only framework that can simultaneously solve both tasks is the \acrshort{SB}-based scheme recently proposed in \citep{chen2021likelihood}. In order to apply this framework, one has to choose a prior process $\refsde$, which is taken by the authors to be the high-performing \acrshort{VESDE} and sub-\acrshort{VPSDE}. These \acrshort{SB}-based methods, as well as several standard generative modeling algorithms \citep{ho2020denoising, sohl2015deep, song2020score, huang2021variational, song2019generative, song2020score} for the first task, constitute strong baselines for our experiments.
 
-\paragraph{Our choice of $\refsde$; the \textsc{GSBflow}}
+\paragraph{Our choice of $\refsde$; the \textsc{GSBflow}.}
 
 
 Instead of directly diving into the numerical solution of \acrshortpl{SB} as in \citet{chen2021likelihood}, we first empirically verify that the distributions $\distinit,\distend$ in single-cell genomics are typically close to \emph{non-standard} Gaussian distributions: See \cref{fig:gaussianMain} for the canonical dataset \citep{schiebinger2019optimal} and \cref{fig:gaussian} in \cref{app:empirical} for the same phenomenon on another standard benchmark \citep{moon2019visualizing}. 
@@ -551,7 +551,7 @@ Since the solutions of \acrshortpl{SB} are Lipschitz in terms of $\distinit,\dis
 Motivated by these observations, we propose a simple modification of the framework in \citet{chen2021likelihood}: Replace the prior process $\refsde$ by its \acrshort{GSB} approximation and keep everything else the same. The resulting scheme, which we term the \textsc{GSBflow}, learns a pair of forward {\color{pink} $\SBf$} and backward parametrized drifts {\color{blue} $\SBb$} that progressively transport samples from $\distinit \rightarrow \distend$ and $\distend \rightarrow \distinit$, respectively. The full algorithm is presented in \cref{sec:methods} for completeness.
 
 
-\paragraph{Results}
+\paragraph{Results.}
 \label{sec:cell}
 
 
