@@ -1,12 +1,6 @@
 % Math Definitions
 
 %----------------------------------------------------------------------
-%% \acrshort{ tools
-%----------------------------------------------------------------------
-\usepackage{thmtools}		% for \acrshort{ tools
-\usepackage{thm-restate}		% for restating theorems
-
-%----------------------------------------------------------------------
 %% Theorem-like
 %----------------------------------------------------------------------
 \newtheorem{theorem}{Theorem}		% for theorems
@@ -204,6 +198,7 @@
 \newcommand{\eventalt}{\mathcal{H}}       % for alternate event
 \newcommand{\comp}[1]{#1^{\mathtt{c}}}		% for complement
 \newcommand{\mean}{\mu}		% for mean of distribution
+\newcommand{\sdev}{\sigma}		% for mean of distribution
 \newcommand{\variance}{\sigma^{2}}		% for mean of distribution
 \newcommand{\dkl}{D_{\mathrm{KL}}}		% for Kullback Leibler
 \newcommand{\as}{{{a.s.}}}		% for almost surely
@@ -247,6 +242,8 @@
 \newcommand{\tinv}{\tau}
 \newcommand{\testfbase}{u}
 \newcommand{\generator}{\mathcal{L}_{\ctime}}
+\NewDocumentCommand{\testf}{ O{\ctime} O{\point} }{ \testfbase\parens*{#1,#2} }
+
 \newcommand{\Laplace}{\Delta}
 \newcommand{\dconst}{\lambda}     % for constant drift
 \newcommand{\sconst}{\mathbf{v}}     % for constant shift
@@ -390,6 +387,7 @@
 \newcommand{\lrb}{\lrbase_{\paramb}}
 \newcommand{\Nconst}{  \parens*{2\pi}^{\frac{\vdim}{2}}  }
 \newcommand{\Psta}{ \pbase_{{0\horizon}} }
+\newcommand{\Pstar}[1][\ctime]{\mathbb{P}^\star_{#1}}
 \newcommand{\Pstasol}{ \pbase^\star_{{0\horizon}} }
 \newcommand{\Qsta}{ \refprobase_{{0\horizon} }}
 \newcommand{\tPsta}{ \tilde{\pbase}_{\mathrm{0\horizon}} }
@@ -433,7 +431,7 @@
 \newcommand{\D}{ D_{\sigma} }
 
 \newcommand{\covbase}{\Sigma}
-
+\newcommand{\Sigcurve}[1][\ctime]{  \covbase_{#1}  }
 \newcommand{\dSigcurve}[1][\ctime]{  \dot{\covbase}_{#1}  }
 \newcommand{\ddSigcurve}[1][\ctime]{  \ddot{\covbase}_{#1}  }
 

@@ -22,21 +22,22 @@ The \acrfull{SB} \citep{leonard2013survey, chen2021stochastic}, alternatively kn
 
 %the dynamic extensions of these \acrshort{OT} problems, i.e., finding the optimal \emph{trajectories} that transport measures, have witnessed a sudden surge of interest. A particularly prominent instance of these extensions is the \acrfull{SB} \citep{schrodinger1931umkehrung, schrodinger1932theorie}, for comparing constrained \emph{stochastic processes} has attracted significant attention. Creative applications of \acrshort{SB} have already yielded success in sampling and generative modeling tasks \citep{}, while also witnessing a surging interest in fields like molecular dynamics and mean-field games \citep{}. 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=1.1\linewidth]{figures/fig_overview_gsb.pdf}
-    \caption{Solving the \acrshort{SB} problem between $\distinit$ and $\distend$ is notoriously difficult because it requires learning the time-dependent drifts of two SDEs that respect the desired marginals, and a random initialization for these drifts is usually extremely far from satisfying that constraint. We propose a data-dependent procedure that relies first on Gaussian approximations of the data measures, which provide a closed-form drift $f_{\mathcal{N}}$ in \eqref{eq:GSB-forward} (the \acrshort{GSB}). We show that this facilitates the training of forward/backward drifts $\hat{Z}^\theta_t, \hat{Z}^\phi_t$.}%
-    \label{fig:overview}
-\end{figure}
-
 Despite of these impressive achievements, a common limitation of the existing works is that the \acrshortpl{SB} are typically solved in a purely {numerical} fashion. In sharp contrast, it is well-known that many important \acrshort{OT} problems for \emph{Gaussian} measures admit \emph{closed-form} solutions, and the advantages of such solutions are numerous: they have inspired new learning methods \citep{rabin2011wasserstein, vayer2019sliced, bonneel2015sliced}, they can serve as the ground truth for evaluating numerical schemes \citep{janati2020entropic}, and they have lead to the discovery of a new geometry that is both rich in theory and application \citep{takatsu2010wasserstein}. 
 
-\newpage
-The goal of our paper is to continue this pursuit of closed-form solutions and thereby extending these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see Fig.~\ref{fig:overview}. To this end, we make the following \textbf{contributions}: \vspace{8pt}
+\begin{figure}[t]
+    \centering
+    %\vskip-0.1cm
+    \includegraphics[width=0.7\textwidth]{figures/fig_overview_gsb.pdf}
+    \caption{Solving the \acrshort{SB} problem between $\distinit$ and $\distend$ is notoriously difficult because it requires learning the time-dependent drifts of two SDEs that respect the desired marginals, and a random initialization for these drifts is usually extremely far from satisfying that constraint. We propose a data-dependent procedure that relies first on Gaussian approximations of the data measures, which provide a closed-form drift $f_{\mathcal{N}}$ in \eqref{eq:GSB-forward} (the \acrshort{GSB}). We show that this facilitates the training of forward/backward drifts $\hat{Z}^\theta_t, \hat{Z}^\phi_t$.}
+    \label{fig:overview_gsbflow}
+\end{figure}
+
+\paragraph{Contributions.}
+The goal of our paper is to continue this pursuit of closed-form solutions and thereby extending these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see Fig.~\ref{fig:overview_gsbflow}. To this end, we make the following contributions: \vspace{8pt}
 %As a central contribution, we derive a set of new expressions for \acrfullp{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures, that covers a wide range of applications. Furthermore, our analysis reveals a
 \begin{enumerate}[leftmargin=.4cm,itemsep=.0cm,topsep=.0cm]
-\item As our central result, we derive the closed-form expressions for \acrfullpl{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures. This is a challenging task for which all existing techniques fail, and thus we need to resort to a number of new ideas from entropic \acrshort{OT}, Riemannian geometry, and generator theory; see \cref{sec:overview}.
-%, thereby filling the void of. %, that covers a wide range of applications.  %These formulas constitute the first non-trivial closed forms for \emph{dynamic} entropy-regularized \acrshort{OT}. %The proof combines a number of ideas from entropic optimal transport, Riemannian geometry, Gaussian analysis, and generator theory, which might be of independent interest; see \crefrange{sec:mechanics}{sec:results}.
+\item As our central result, we derive the closed-form expressions for \acrfullpl{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures. This is a challenging task for which all existing techniques fail, and thus we need to resort to a number of new ideas from entropic \acrshort{OT}, Riemannian geometry, and generator theory; see \cref{sec:overview_gsbflow}.
+%, thereby filling the void of. %, that covers a wide range of applications.  %These formulas constitute the first non-trivial closed forms for \emph{dynamic} entropy-regularized \acrshort{OT}. %The proof combines a number of ideas from entropic optimal transport, Riemannian geometry, Gaussian analysis, and generator theory, which might be of independent interest; see \crefrange{sec:mechanics_gsbflow}{sec:results_gsbflow}.
 
 \item We extend the deep connection between geometry and Gaussian \acrshort{OT} to \acrlongpl{GSB}. In particular, our results can be seen as a vast generalization of the classical Bures-Wasserstein geodesics between Gaussian measures \citep{takatsu2010wasserstein, bhatia2019bures}, which is the foundation of many computational methods \citep{chewi2020gradient, altschuler2021averaging, han2021riemannian}.
 
@@ -46,7 +47,7 @@ The goal of our paper is to continue this pursuit of closed-form solutions and t
 
 
 \subsection{Preliminaries on Gaussian Optimal Transport}
-
+\label{sec:prelim}
 
 Throughout this paper, let $\xi \sim \Ncal(\mu, \Sigma)$ and $\xi' \sim \Ncal(\mu', \Sigma')$ denote two given Gaussian random variables. By abusing the notation, we will continue to denote the measures of these Gaussians by $\xi$ and $\xi'$, respectively. We will also denote by $\Pi(\xi,\xi')$ the set of all their couplings. 
 
@@ -92,14 +93,14 @@ In the literature, \eqref{eq:RegW2Gaussian} is commonly referred to as the \emph
 \end{equation}
 where $\left(\Div \vect\right)(\point) \coloneqq \sum_{i=1}^d \frac{\partial}{\partial \point_i}v_t^{i}(\point)$ denotes the divergence operator with respect to the $\point$ variable. It can be shown that, if $\rho^\star_t$ is the optimal curve for \eqref{eq:BBGaussian}, then the joint distribution of the end marginals $(\rho^\star_0, \rho_1^\star)$ coincides with \eqref{eq:StaticGaussianSB-sol}, hence the interpretation of $\rho_t^\star$ as the optimal \emph{trajectory} in the space of measures  \citep{chen2016relation, gentil2017analogy, chen2021stochastic, gentil2020dynamical}.
 
-To our knowledge, the only work that has partially addressed the closed-form solution of \eqref{eq:BBGaussian} is \citet{mallasto2021entropy}, whose results are nonetheless insufficient to cover important applications such as generative modeling. In \cref{sec:results}, we will derive a vast generalization of the results in \citet{mallasto2021entropy} and provide a detailed comparison in \crefrange{sec:overview}{sec:mechanics}.
+To our knowledge, the only work that has partially addressed the closed-form solution of \eqref{eq:BBGaussian} is \citet{mallasto2021entropy}, whose results are nonetheless insufficient to cover important applications such as generative modeling. In \cref{sec:results_gsbflow}, we will derive a vast generalization of the results in \citet{mallasto2021entropy} and provide a detailed comparison in \crefrange{sec:overview_gsbflow}{sec:mechanics_gsbflow}.
 
 
 \subsection{The Gaussian Schr\"odinger Bridge Problem}
+\label{sec:overview_gsbflow}
 
-\newcommand{\Pstar}[1][\ctime]{\mathbb{P}^\star_{#1}}
 
-The purpose of this section is to introduce the core objectives in our paper, the \acrlongpl{GSB}, and establish their connection to the Gaussian \acrshort{OT} problems in \cref{sec:prelim}. To help the reader navigate our somewhat technical proofs in \crefrange{sec:mechanics}{sec:results},  we illustrate in \cref{sec:tere} the high-level challenges as well as our new techniques for solving \acrlongpl{GSB}.
+The purpose of this section is to introduce the core objectives in our paper, the \acrlongpl{GSB}, and establish their connection to the Gaussian \acrshort{OT} problems in \cref{sec:prelim_gsbflow}. To help the reader navigate our somewhat technical proofs in \crefrange{sec:mechanics_gsbflow}{sec:results_gsbflow},  we illustrate in \cref{sec:tere} the high-level challenges as well as our new techniques for solving \acrlongpl{GSB}.
 
 \subsubsection{Schr\"odinger Bridges as Dynamic Entropy-Regularized Optimal Transport}
 
@@ -164,7 +165,7 @@ To emphasize the dependence on the reference \acrshort{SDE}, we will sometimes c
 %\subsubsection{Technical Challenges and Related Work} 
 %\label{sec:tere}
 
-\textbf{Technical challenges; related work.} In order to analyze \eqref{eq:GSB}, we first notice that the objective in \eqref{eq:dynamicGSB} becomes $\sigma^{-2}\exof*{\int_{0}^\horizon  \frac{1}{2} \norm{\vect}^2 + \frac{\sigma^4}{8} \norm*{\nabla\log\measure}^2 \dt}$ for $\sigma\Wiener$-\acrshortpl{GSB}. Up to a constant factor, this is simply \eqref{eq:BBGaussian}, so \cref{thm:GSBtoBB} reduces to the well-known fact that $\sigma\Wiener$-\acrshortpl{GSB} are a reformulation of the dynamic Gaussian \acrshort{OT} \citep{leonard2013survey, chen2016relation, gentil2017analogy}. 
+\paragraph{Technical challenges; related work.} In order to analyze \eqref{eq:GSB}, we first notice that the objective in \eqref{eq:dynamicGSB} becomes $\sigma^{-2}\exof*{\int_{0}^\horizon  \frac{1}{2} \norm{\vect}^2 + \frac{\sigma^4}{8} \norm*{\nabla\log\measure}^2 \dt}$ for $\sigma\Wiener$-\acrshortpl{GSB}. Up to a constant factor, this is simply \eqref{eq:BBGaussian}, so \cref{thm:GSBtoBB} reduces to the well-known fact that $\sigma\Wiener$-\acrshortpl{GSB} are a reformulation of the dynamic Gaussian \acrshort{OT} \citep{leonard2013survey, chen2016relation, gentil2017analogy}. 
 
 At first sight, this might suggest that one can extend existing tools in Gaussian \acrshort{OT} to analyze \acrshortpl{GSB}.%\eqref{eq:BBGaussian} to \eqref{eq:dynamicGSB}.
 ~Unfortunately, the major difficulty of tackling \acrshortpl{GSB} is that these existing tools are fundamentally insufficient for the generalized objective \eqref{eq:dynamicGSB}. 
@@ -187,10 +188,11 @@ To conclude, in order to find an analytic expression for general \acrshortpl{GSB
 
 \paragraph{Our approach}
 
-To overcome the aforementioned challenges, in \cref{sec:mechanics}, we will first develop a principled framework for analyzing the closed-form expressions of $\sigma\Wiener$-\acrshortpl{GSB}, i.e., \eqref{eq:BBGaussian}. Unlike the ad hoc approach of \citet{mallasto2021entropy} which is very specific to \acrlongpl{BM}, our analysis reveals the general role played by the \emph{Lyapunov operator} (see \eqref{eq:lya}) on covariance matrices, thereby essentially reducing the solutions of \acrshortpl{GSB} to solving a matrix equation. This route is enabled via yet another equivalent formulation of \eqref{eq:BBGaussian}, namely the action minimization problem on the \emph{Bures-Wasserstein geometry}, which has recently emerged as a rich source for inspiring new computational methods \citep{chewi2020gradient, altschuler2021averaging, han2021riemannian}. In \cref{sec:results}, we show how the insight gained from our geometric framework in \cref{sec:mechanics} can be easily adapted to \acrshortpl{GSB} with general reference processes, which ultimately leads to the full resolution of \eqref{eq:GSB}.
+To overcome the aforementioned challenges, in \cref{sec:mechanics_gsbflow}, we will first develop a principled framework for analyzing the closed-form expressions of $\sigma\Wiener$-\acrshortpl{GSB}, i.e., \eqref{eq:BBGaussian}. Unlike the ad hoc approach of \citet{mallasto2021entropy} which is very specific to \acrlongpl{BM}, our analysis reveals the general role played by the \emph{Lyapunov operator} (see \eqref{eq:lya}) on covariance matrices, thereby essentially reducing the solutions of \acrshortpl{GSB} to solving a matrix equation. This route is enabled via yet another equivalent formulation of \eqref{eq:BBGaussian}, namely the action minimization problem on the \emph{Bures-Wasserstein geometry}, which has recently emerged as a rich source for inspiring new computational methods \citep{chewi2020gradient, altschuler2021averaging, han2021riemannian}. In \cref{sec:results_gsbflow}, we show how the insight gained from our geometric framework in \cref{sec:mechanics_gsbflow} can be easily adapted to \acrshortpl{GSB} with general reference processes, which ultimately leads to the full resolution of \eqref{eq:GSB}.
 
 
 \subsection{The Bures-Wasserstein Geometry of $\sigma\Wiener$-Gaussian Schr\"odinger Bridges}
+\label{sec:mechanics_gsbflow}
 
 
 This section illustrates the simple geometric intuition that underlies the somewhat technical proof of our main result (cf. \cref{thm:GaussianSB}). After briefly reviewing the action minimization problems on Euclidean spaces in \cref{sec:actionRd}, we present the main observation in \cref{sec:actionBW}: $\sigma\Wiener$-\acrshortpl{GSB} are but action minimization problems on the Bures-Wasserstein manifolds, which can be tackled by following a standard routine in physics. 
@@ -257,19 +259,22 @@ The minimizer of \eqref{eq:GaussianSBWiener} (and hence \eqref{eq:BBGaussian}) c
 \label{eq:LagBW}
 %\tag{L}
 \min_{\Sigcurve[0] = \Sigma, \Sigma_\horizon = \Sigma'} \int_{0}^\horizon \LagBW \dt
-\end{align}where $\penergyBW \defeq - \frac{\sigma^4}{8} \tr \Sigcurveinv$ and the minimum is taken over all piecewise smooth curves in $\SPD$. In particular, the minimizer of \eqref{eq:GaussianSBWiener} solves the Euler-Lagrange equation in the Bures-Wasserstein geometry:
+\end{align}
+where $\penergyBW \defeq - \frac{\sigma^4}{8} \tr \Sigcurveinv$ and the minimum is taken over all piecewise smooth curves in $\SPD$. In particular, the minimizer of \eqref{eq:GaussianSBWiener} solves the Euler-Lagrange equation in the Bures-Wasserstein geometry:
 \begin{equation}
 \label{eq:EL-BW}
 \nabla_{\ssstyle\dSigcurve}\dSigcurve = -  \gradBW \penergyBW, \quad \Sigcurve[0] = \Sigma,\quad \Sigcurve[\horizon] = \Sigma',
-\end{equation}where $\nabla_{\ssstyle\dSigcurve}\dSigcurve$ denotes the Riemannian acceleration and $\gradBW$ the Riemannian gradient in the Bures-Wasserstein sense.
+\end{equation}
+where $\nabla_{\ssstyle\dSigcurve}\dSigcurve$ denotes the Riemannian acceleration and $\gradBW$ the Riemannian gradient in the Bures-Wasserstein sense.
 \end{restatable}
 
-\paragraph{An important implication}As alluded to in \cref{sec:overview}, the solution curve to \eqref{eq:BBGaussian} or \eqref{eq:GaussianSBWiener} is not new; it is derived in \citet{mallasto2021entropy} via a strenuous and rather unenlightening calculation:
+\paragraph{An important implication}As alluded to in \cref{sec:overview_gsbflow}, the solution curve to \eqref{eq:BBGaussian} or \eqref{eq:GaussianSBWiener} is not new; it is derived in \citet{mallasto2021entropy} via a strenuous and rather unenlightening calculation:
 \begin{equation}
 \label{eq:solMain}
 \Sigmasol \defeq \ctimebar^2 \Sigma + \ctime^2 \Sigma' + \ctime\cdot\ctimebar\parens*{\C+\C^\top+ \sigma^2 \eye}.
 \end{equation}
-Here, $\ctimebar \defeq 1-\ctime$ and $\C$ is defined in \eqref{eq:Cstar}. However, the interpretation of \eqref{eq:solMain} as the minimizer of \eqref{eq:LagBW} is new and suggests a principled avenue towards the closed-form solution of $\sigma\Wiener$-\acrshortpl{GSB}: solve the Euler-Lagrange equation \eqref{eq:EL-BW}. Inspecting the formulas for $\nabla_{\ssstyle\dSigcurve}\dSigcurve$ and $\gradBW \penergyBW$ (see \eqref{eq:gradBW-lyapinv} and \eqref{eq:coderBW}), one can further reduce \eqref{eq:EL-BW} to computing the Lyapunov operator $\lyap$, which presents the bottleneck in the proof of \cref{thm:mechanics} as there is, in general, no closed form for the matrix equation \eqref{eq:lya}. To this end, our main contribution is the following technical Lemma:
+Here, $\ctimebar \defeq 1-\ctime$ and $\C$ is defined in \eqref{eq:Cstar}. However, the interpretation of \eqref{eq:solMain} as the minimizer of \eqref{eq:LagBW} is new and suggests a principled avenue towards the closed-form solution of $\sigma\Wiener$-\acrshortpl{GSB}: solve the Euler-Lagrange equation \eqref{eq:EL-BW}.
+Inspecting the formulas for $\nabla_{\ssstyle\dSigcurve}\dSigcurve$ and $\gradBW \penergyBW$ (see \eqref{eq:gradBW-lyapinv} and \eqref{eq:coderBW}), one can further reduce \eqref{eq:EL-BW} to computing the Lyapunov operator $\lyap$, which presents the bottleneck in the proof of \cref{thm:mechanics} as there is, in general, no closed form for the matrix equation \eqref{eq:lya}. To this end, our main contribution is the following technical Lemma:
 \begin{lemma}\label{lem:lyapMain}
 Define the matrix $\tilde{\St}$ to be:
 \begin{equation}
@@ -283,14 +288,15 @@ Armed with \cref{lem:lyapMain}, it is straightforward to verify that $\lyap = \H
 \end{align}which is more or less equivalent to the original Euler-Lagrange equation \eqref{eq:EL-BW}; we defer the details to \cref{app:proofmechanics}.
 
 
-To conclude, in contrast to the purely technical approach of \citet{mallasto2021entropy}, our \cref{thm:mechanics} provides a geometric and conceptually clean solution for $\sigma\Wiener$-\acrshortpl{GSB}: Compute the Lyapunov operator $\lyap$ via verifying the symmetry of the matrix in \cref{lem:lyapMain}. \emph{It turns out that this technique can be readily extended to general \acrshortpl{GSB}}, and therefore serves as the foundation for the proof of our main result; see \cref{sec:results}.
+To conclude, in contrast to the purely technical approach of \citet{mallasto2021entropy}, our \cref{thm:mechanics} provides a geometric and conceptually clean solution for $\sigma\Wiener$-\acrshortpl{GSB}: Compute the Lyapunov operator $\lyap$ via verifying the symmetry of the matrix in \cref{lem:lyapMain}. \emph{It turns out that this technique can be readily extended to general \acrshortpl{GSB}}, and therefore serves as the foundation for the proof of our main result; see \cref{sec:results_gsbflow}.
 
 
 \paragraph{Remark.}
-It is interesting to note that the matrix $\Ht$ in \eqref{eq:HtMain} is itself \emph{not} symmetric. Other consequences of \cref{thm:mechanics} that might be of independent interest can be found in \cref{sec:interesting}. We also note that, when $\sigma = 0$, the solution to \eqref{eq:LagBW} is simply the Wasserstein geodesic between Gaussian measures, whose formula is well-known \citep{dowson1982frechet, takatsu2010wasserstein}. However, as explained in \cref{sec:overview}, the case of $\sigma > 0$ requires a completely different analysis since, unlike when $\sigma = 0$, it is not reducible to a convex program. This leads to the significantly more involved proofs of \cref{thm:mechanics} and of \eqref{eq:solMain} in \citet{mallasto2021entropy}.
+It is interesting to note that the matrix $\Ht$ in \eqref{eq:HtMain} is itself \emph{not} symmetric. Other consequences of \cref{thm:mechanics} that might be of independent interest can be found in \cref{sec:interesting}. We also note that, when $\sigma = 0$, the solution to \eqref{eq:LagBW} is simply the Wasserstein geodesic between Gaussian measures, whose formula is well-known \citep{dowson1982frechet, takatsu2010wasserstein}. However, as explained in \cref{sec:overview_gsbflow}, the case of $\sigma > 0$ requires a completely different analysis since, unlike when $\sigma = 0$, it is not reducible to a convex program. This leads to the significantly more involved proofs of \cref{thm:mechanics} and of \eqref{eq:solMain} in \citet{mallasto2021entropy}.
 
 
-\subsection{\textsc{GSBflow}: Closed-Form Solutions of General Gaussian Schr\"odinger Bridges}
+\subsection{Closed-Form Solutions of General Gaussian Schr\"odinger Bridges}
+\label{sec:results_gsbflow}
 
 We now present the closed-form solutions of general \acrshortpl{GSB}.
 
@@ -469,11 +475,17 @@ Our framework captures most popular reference \acrshortpl{SDE} in the machine le
 \end{itemize}
 
 
+\subsection{\textsc{GSBflow}: ...}
+
+
 \subsection{Empirical Evaluation}
+\label{sec:experiments}
+
+
 \begin{figure}[t]
      \centering
          \centering
-         \includegraphics[width=\linewidth]{figures/fig_pred_gsbve_toy_spiral_moon.pdf}
+         \includegraphics[width=0.9\linewidth]{figures/fig_pred_gsbve_toy_spiral_moon.pdf}
          \caption{Illustration of the time-dependent drifts learned by \textsc{GSBflow} with VE SDE for two toy marginal distributions. \emph{Top.} Evolution of $\distend$ (moons) $\rightarrow \distinit$ (spiral) via backward policy {\color{blue} $\SBb$}. \emph{Bottom.} Evolution of $\distinit$ (spiral) $\rightarrow \distend$ (moons) via forward policy {\color{pink} $\SBf$}.}
         \label{fig:res_synthetic}
 \end{figure}
@@ -530,7 +542,7 @@ Recovering cellular dynamics from such unaligned snapshots, i.e., $\distinit$ to
 
 \paragraph{Experimental Setup.}
 
-\paragraph{Single-cell genomics via \acrshortpl{SB}.}
+\paragraph{Single-cell genomics via SBs.}
 Let us consider the evolution of a gene, for which we can collect the empirical distributions $\distinit,\distend$ of its expression levels at the times $t=0,1$ \citep{schiebinger2019optimal,moon2019visualizing}. Our goal is to two-fold: 
 \begin{enumerate}[itemsep=.0cm,topsep=0cm]
 \item To solve the \textbf{generative modeling} problem, i.e., to generate $\distinit$ or $\distend$ from a standard Gaussian noise, and

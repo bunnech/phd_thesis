@@ -93,8 +93,8 @@ In \S~\ref{sec:evaluation}, we analyze several embedding types for different use
 \begin{wrapfigure}{r}{0.4\textwidth}
     \centering
     %\vskip-0.1cm
-    \includegraphics[width=.4\textwidth]{figures/fig_architecture.pdf}
-    \caption{\textbf{\textsc{CondOT} Architecture and Modules}. The embedding module $\mathcal{E}_\phi$ embeds arbitrary conditions $c$, which are then combined via module $\mathcal{C}_\Phi$. Using the processed contexts $c$, the map $\mathcal{T}_\theta(c)$ acts on $\mu$ to predict the target measure $\nu$.}\vskip-0.5cm
+    \includegraphics[width=\textwidth]{figures/fig_architecture.pdf}
+    \caption{\textbf{\textsc{CondOT} Architecture and Modules}. The embedding module $\mathcal{E}_\phi$ embeds arbitrary conditions $c$, which are then combined via module $\mathcal{C}_\Phi$. Using the processed contexts $c$, the map $\mathcal{T}_\theta(c)$ acts on $\mu$ to predict the target measure $\nu$.}
     \label{fig:architecture}
 \end{wrapfigure}
 \looseness -1 While we often have access to contexts $c$ in isolation, it is crucial to infer the effect of contexts applied in combination. A prominent example are cancer combination therapies, in which multiple treatment modalities are administered in combination to enhance treatment efficacy~\citep{kummar2010utilizing}.
@@ -145,7 +145,7 @@ This involves training the \textsc{CondOT} architecture using two PICNNs, i.e., 
 
 \begin{figure*}
     \centering
-    \includegraphics[width=1.2\textwidth]{figures/fig_sciplex_main_results.pdf}
+    \includegraphics[width=\textwidth]{figures/fig_sciplex_main_results.pdf}
     \caption{\textbf{a.} \looseness -1 Predictive performance of \textsc{CondOT} and baselines w.r.t. the entropy-regularized Wasserstein distance on drug dosages \emph{in-sample}, i.e., seen during training, and \emph{out-of-sample}, i.e., unseen during training. \textbf{b.} Marginal distributions of observed source and target distributions, as well as predictions on perturbed distributions by \textsc{CondOT} and baselines of an exemplary gene across different cell lines. Predicted marginals of each method should match the marginal of the target population.}
     \label{fig:exp_scalar_sciplex}
 \end{figure*}
@@ -213,8 +213,8 @@ Often, the effect of genetic perturbations are subtle in the high-dimensional ge
 Figure~\ref{fig:exp_action_norman_scatter}a and b demonstrate that compared to OT ablation studies, Fig.~\ref{fig:exp_action_norman_scatter}c and Fig.~\ref{fig:exp_action_norman_line}a for the current state-of-the-art method \textsc{CPA}~\citep{lotfollahi2021compositional}. Compared to both, \textsc{CondOT} captures the perturbation responses more accurately w.r.t. the Wasserstein distance.
 
 \begin{figure*}[t]
-    \includegraphics[width=1.15\textwidth]{figures/fig_action_comb_comparison_metrics.pdf}
-    \caption{Predictive performance for \textbf{a.} known perturbations, \textbf{b.} unknown perturbations in combination w.r.t. regularized Wasserstein distance and \textbf{c.} MMD over different train / test splits of increasing difficulty for baseline \textsc{CPA} as well as \textsc{CondOT} with different combinators $\mathcal{C}^\text{ohe}_+$ and $\mathcal{C}^\text{moa}_\Phi$. For more details on the dataset splits, see~\S\ref{app:datasplits}.}
+    \includegraphics[width=1.1\textwidth]{figures/fig_action_comb_comparison_metrics.pdf}
+    \caption{Predictive performance for \textbf{a.} known perturbations, \textbf{b.} unknown perturbations in combination w.r.t. regularized Wasserstein distance and \textbf{c.} MMD over different train / test splits of increasing difficulty for baseline \textsc{CPA} as well as \textsc{CondOT} with different combinators $\mathcal{C}^\text{ohe}_+$ and $\mathcal{C}^\text{moa}_\Phi$.}
     \label{fig:exp_action_norman_line}
 \end{figure*}
 
@@ -230,7 +230,7 @@ As current state-of-the-art methods are restricted to modeling perturbations via
  
  \begin{figure*}
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/fig_action_comb_comparison_umap.pdf}
+    \includegraphics[width=0.9\textwidth]{figures/fig_action_comb_comparison_umap.pdf}
     \caption{\looseness -1 UMAP embeddings of cells perturbed by the combination KLF1+MAP2K6 (gray) and predictions of \textsc{CondOT} (ours), \textsc{ICNN OT}~\citep{makkuva2020optimal}, and \textsc{CPA} (blue). While \textsc{CondOT} aligns well with observed perturbed cells, the baselines fail to capture subpopulations.}
     \label{fig:action_comb_comparison_umap}
 \end{figure*}
@@ -242,7 +242,7 @@ As current state-of-the-art methods are restricted to modeling perturbations via
 \looseness -1 While experimental studies can often measure perturbation effects in biological systems in isolation, the combinatorial space of perturbations in composition is too large to capture experimentally. Often, however, combination therapies are cornerstones of cancer therapy~\citep{mokhtari2017combination}.
 In the following, we test different combinator architectures to predict genetic perturbations in combination from single targets.
 Similarly to \citet{lotfollahi2021compositional}, we can embed combinations by adding individual one-hot encodings of single perturbations (i.e., $\mathcal{C}^\text{ohe}_+$). In addition, we parameterize a combinator via a permutation-invariant deep set, as introduced in \S~\ref{subsec:combin}, based on mode-of-action embeddings of individual perturbations (i.e., $\mathcal{C}^\text{moa}_\Phi$). 
-We split the dataset into train / test splits of increasing difficulty (details on the dataset splits in~\S\ref{app:datasplits}). Initially containing all individual perturbations as well as some combinations, the number of perturbations seen in combination during training decreases over each split. For more details, see \S~\ref{app:exp_details}.
+We split the dataset into train / test splits of increasing difficulty: Initially containing all individual perturbations as well as some combinations, the number of perturbations seen in combination during training decreases over each split. For more details, see \S~\ref{app:exp_details}.
 We compare different combinators to \textsc{ICNN OT} (Fig.~\ref{fig:exp_action_norman_scatter}b) and \textsc{CPA}~\citep{lotfollahi2021compositional} (Fig.~\ref{fig:exp_action_norman_scatter}c, Fig.~\ref{fig:exp_action_norman_line}b, c). While the performance drops compared to inference on \emph{known} perturbations (Fig.~\ref{fig:exp_action_norman_line}a) and decreases with increasing difficulty of the train / test split, \textsc{CondOT} outperforms all baselines.
 When embedding these high-dimensional populations in a low-dimensional UMAP space~\citep{umap}, one can see that \textsc{CondOT} captures the entire perturbed population, while \textsc{ICNN OT} and \textsc{CPA} fail in capturing certain subpopulations in the perturbed state (see Fig.~\ref{fig:action_comb_comparison_umap} and ~\ref{fig:exp_scalar_norman_umaps_more}).
 

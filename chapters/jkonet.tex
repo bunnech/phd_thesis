@@ -6,13 +6,6 @@
 
 % Introduction
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=.9\linewidth]{figures/fig_overview_jkonet.pdf}
-    \caption{Given an observed trajectory $(\mu_0,\dots,\mu_T)$ of point clouds (gray), we seek parameters $\xi$ for the energy $J_\xi$ such that the predictions $\rho_1, \dots, \rho_T$ (blue) following a JKO flow from $\rho_0=\mu_0$ are close the observed trajectory (gray), by minimizing (as a function of $\xi$) the sum of Wasserstein distances between $\rho_{t+1}$, the JKO step from $\rho_{t-1}$ using $J_\xi$, and data $\mu_{t+1}$.}
-    \label{fig:overview}
-\end{figure}
-
 \paragraph{Modeling Particle Dynamics as a JKO Scheme.} In this paper, we draw inspiration from both approaches above---the intuition from the recent NF literature that flows should mimic an optimal transport (OT as prior), and be able, through training, to predict future configurations (OT as a loss)---to propose a causal model for population dynamics. Our approach relies on a powerful hammer: the Jordan-Kinderlehrer-Otto (JKO) flow~\citep{jordan1998variational}, widely regarded as one of the most influential mathematical breakthroughs in recent history. While the JKO flow was initially introduced as an alternative method to solve the Fokker-Planck partial differential equation (PDE), its flexibility can be showcased to handle more complex PDEs \cite[\S4.7]{santambrogio2017euclidean}, or even describe the gradient flows of non-differentiable energies that have no PDE representation.
 On a purely mechanical level, a JKO step is to measures what the proximal step~\citep{combettes2011proximal} is to vectors: In a JKO step, particles move to decrease collectively an {\em energy} (a real-valued function defined on measures), yet remain close (in Wasserstein sense) to the previous configuration. Our goal in this paper is to treat JKO steps as parameterized modules, and fit their parameter (the energy function) so that its outputs agree repeatedly over time with observed data. 
 This approach presents several challenges: While numerical approaches to solve JKO steps have been proposed in low dimensional settings~\citep{burger2010, carrillo2021primal, peyre2015entropic,benamou2016augmented}, scaling it to higher dimensions is an open problem. Moreover, minimizing a loss involving a JKO step w.r.t. energy requires not only solving the JKO problem, but also computing the (transpose) Jacobian of its output w.r.t. energy parameters.
@@ -22,9 +15,16 @@ This approach presents several challenges: While numerical approaches to solve J
 \paragraph{Contributions.}\hspace{1em} Our contributions are two-fold. First, we propose a method, given an input configuration and an energy function, to compute JKO steps using input convex neural networks (ICNN)~\citep{amos2017input,makkuva2020optimal} (see also concurrent works that have proposed similar approaches~\citep{alvarez2021optimizing, mokrov2021large}). Second, we view the JKO step as an inner layer, a \textsc{JKOnet} module parameterized by an energy function, which is tasked with moving the particles of an input configuration along an OT flow (the gradient of an optimal ICNN), trading off a lower energy with proximity to the previous configuration.
 %This module, \textsc{JKOnet}, can be therefore seen as a parameterized \emph{mover} of particles that is constrained by design to produce locally (OT) optimal displacements. 
 We propose to estimate the parameters of the energy by minimizing a fitting loss %(as a function of the energy itself) 
-computed between the outputs of the \textsc{JKOnet} module (the prediction) and the ground truth displacements, as illustrated in Figure~\ref{fig:overview}.
+computed between the outputs of the \textsc{JKOnet} module (the prediction) and the ground truth displacements, as illustrated in Figure~\ref{fig:overview_jkonet}.
 We demonstrate \textsc{JKOnet}'s range of applications by applying in on synthetic potential- and trajectory-based population dynamics, as well as developmental trajectories of human embryonic stem cells based on single-cell genomics data.
 
+\begin{figure}[t]
+    \centering
+    %\vskip-0.1cm
+    \includegraphics[width=0.6\textwidth]{figures/fig_overview_jkonet.pdf}
+    \caption{Given an observed trajectory $(\mu_0,\dots,\mu_T)$ of point clouds (gray), we seek parameters $\xi$ for the energy $J_\xi$ such that the predictions $\rho_1, \dots, \rho_T$ (blue) following a JKO flow from $\rho_0=\mu_0$ are close the observed trajectory (gray), by minimizing (as a function of $\xi$) the sum of Wasserstein distances between $\rho_{t+1}$, the JKO step from $\rho_{t-1}$ using $J_\xi$, and data $\mu_{t+1}$.}
+    \label{fig:overview_jkonet}
+\end{figure}
 
 \section[On the Connection between OT and Fokker-Planck Equations]{On the Connection between Optimal Transport and Fokker-Planck Equations}
 
@@ -109,14 +109,13 @@ $\xi\leftarrow \xi^0$
 \label{algo:jkonet}
 \end{algorithm}
 
-\begin{figure}[H]
- \vspace{-10pt}
+\begin{wrapfigure}{r}{0.6\textwidth}
     \centering
-    \includegraphics[width=.9\linewidth]{figures/fig_optimization_icnn.pdf}
-    \caption{Optimization of the ICNN used in JKO steps. The bumps correspond to a change in the outer iteration, the smooth decrease in between correspond to a single minimization~\eqref{eq:thetastar} of a time step $t_i$. \vspace{-10pt}}
+    %\vskip-0.1cm
+    \includegraphics[width=\textwidth]{figures/fig_optimization_icnn.pdf}
+    \caption{Optimization of the ICNN used in JKO steps. The bumps correspond to a change in the outer iteration, the smooth decrease in between correspond to a single minimization~\eqref{eq:thetastar} of a time step $t_i$. }
     \label{fig:training_icnn}
-\end{figure}
-
+\end{wrapfigure}
 
 Inferring nonlinear energies accounting for population growth and decline, as well as interactions between points, using the formalism of \citep{de2019stochastic}, transformers~\citep{vaswani2017attention} or set pooling methods \citep{edwards2016, zaheer2017}, is an exciting direction for future work.
 
@@ -130,15 +129,36 @@ To address slow convergence and instabilities for dynamics with many snapshots, 
 \label{fig:task_overview}
 \end{figure*}
 
-\begin{figure*}[h]
-\vspace{-10pt}
-\subfloat[\centering Quadratic Potential.]{\includegraphics[width=.22\linewidth]{figures/fig_energy_implicit_quadratic.pdf}}
-\subfloat[\centering Styblinski Potential.]{\includegraphics[width=.22\linewidth]{figures/fig_energy_implicit_styblinski.pdf}}
-\subfloat[\centering Semicircle Trajectory \emph{with} teacher forcing.]{\includegraphics[width=.23\linewidth]{figures/fig_energy_implicit_semicircle_tf.pdf}}
-\subfloat[\centering Predicted Population Evolution on Semicircle Trajectory.]{\includegraphics[width=.33\linewidth]{figures/fig_prediction_implicit_semicircle_tf.pdf}}
-\caption{\textbf{Results of \text{JKOnet} on Potential- and Trajectory-based Dyanamics.} (a)-(c) Contour plots of the energy functionals $J_\xi$ of \textsc{JKOnet} on potential- and trajectory-based population dynamics in different training settings (i.e., trained with or without teacher forcing \S~ \ref{sec:learn_energy}), color gradients depict the magnitude of $J_\xi$. (d) Predicted population snapshots ($\hat{\rho}_1, \dots, \hat{\rho}_4$) (blue) and data trajectory ($\mu_0, \dots, \mu_4)$ (gray).}
-\label{fig:exp_jkonet_pot_traj}
-\end{figure*}
+
+\begin{figure}[t]
+     \centering
+     \begin{subfigure}[t]{0.21\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_quadratic.pdf}
+         \caption{Quadratic \protect\newline Potential.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.21\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_styblinski.pdf}
+         \caption{Styblinski \protect\newline Potential.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.22\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_semicircle_tf.pdf}
+         \caption{Semicircle \protect\newline Trajectory \emph{with} teacher forcing.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.33\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_prediction_implicit_semicircle_tf.pdf}
+         \caption{Predicted Population \protect\newline Evolution on Semicircle Trajectory.}
+     \end{subfigure}
+	 \caption{\textbf{Results of \text{JKOnet} on Potential- and Trajectory-based Dyanamics.} (a)-(c) Contour plots of the energy functionals $J_\xi$ of \textsc{JKOnet} on potential- and trajectory-based population dynamics in different training settings (i.e., trained with or without teacher forcing \S~ \ref{sec:learn_energy}), color gradients depict the magnitude of $J_\xi$. (d) Predicted population snapshots ($\hat{\rho}_1, \dots, \hat{\rho}_4$) (blue) and data trajectory ($\mu_0, \dots, \mu_4)$ (gray).}
+	 \label{fig:exp_jkonet_pot_traj}
+\end{figure}
+
 
 \subsection{Bilevel Formulation of \textsc{JKOnet}}
 Learning the free energy functional $J_\xi$ while solving each JKO step via an ICNN results in a challenging bilevel optimization problem.
@@ -152,29 +172,70 @@ At each time step, the predicted dynamics are compared to the ground truth traje
 \end{split}
 \end{align}
 The dependence of the Sinkhorn divergence losses in \eqref{eq:fittingloss} on $\xi$ only appears in the fact that the predictions $\rho_{t+1}(\xi)$ are themselves implicitly defined as solving a JKO step parameterized with the energy $J_\xi$. 
-Learning  $J_\xi$ through the exclusive supervision of data observations requires therefore to differentiate the arg-minimum of a JKO problem, down therefore through to the lower-level optimization of the ICNN. We achieve this by implementing a differentiable double loop in \texttt{JAX}, differentiating first the Sinkhorn divergence using the \texttt{OTT}\footnote{\href{https://github.com/ott-jax/ott}{github.com/ott-jax/ott}} package \citep{cuturi2022optimal}, and then backpropagating through the ICNN optimization by unrolling Adam steps \citep{kingma2014adam, metz2016unrolled, lorraine2020}.
+Learning  $J_\xi$ through the exclusive supervision of data observations requires therefore to differentiate the arg-minimum of a JKO problem, down therefore through to the lower-level optimization of the ICNN. We achieve this by implementing a differentiable double loop in \texttt{JAX}, differentiating first the Sinkhorn divergence using the \texttt{OTT} package \citep{cuturi2022optimal}, and then backpropagating through the ICNN optimization by unrolling Adam steps \citep{kingma2014adam, metz2016unrolled, lorraine2020}.
 
 
-\begin{figure*}[ht]
-\subfloat[\centering \textsc{JKOnet} on 30\% corrupted data.]{\includegraphics[width=.28\linewidth]{figures/fig_predictions_jko_noise.pdf}}
-\subfloat[\centering Forward method on 30\% corrupted data.]{\includegraphics[width=.26\linewidth]{figures/fig_predictions_forward_noise.pdf}}
-\subfloat[\centering $W_\epsilon$ \eqref{eq:reg-ot} vs. noise level on 20\% corrupted data.]{\includegraphics[width=.23\linewidth]{figures/fig_fb_comp_noise_20.pdf}}
-\subfloat[\centering $W_\epsilon$ \eqref{eq:reg-ot} vs. noise level on 30\% corrupted data.]{\includegraphics[width=.22\linewidth]{figures/fig_fb_comp_noise_30.pdf}}
-\caption{Comparison between \textsc{JKOnet} and the forward method in settings of increasing noise on corrupted data on the semicircle trajectory task.}
-\label{fig:exp_comp_noise}
-\end{figure*}
+\begin{figure}[t]
+     \centering
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_predictions_jko_noise.pdf}
+         \caption{\textsc{JKOnet} (30\% corrupted data).}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.47\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_predictions_forward_noise.pdf}
+         \caption{Forward method (30\% corrupted data).}
+     \end{subfigure}
+     
+     \begin{subfigure}[t]{0.485\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_fb_comp_noise_20.pdf}
+         \caption{$W_\epsilon$ vs. noise level (20\% corrupted data).}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.46\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_fb_comp_noise_30.pdf}
+         \caption{$W_\epsilon$ vs. noise level (30\% corrupted data).}
+     \end{subfigure}
+     \caption{Comparison between \textsc{JKOnet} and the forward method in settings of increasing noise on corrupted data on the semicircle trajectory task.}
+     \label{fig:exp_comp_noise}
+\end{figure}
 
-\begin{figure*}[ht]
-\subfloat[\centering Forward method, \protect\newline \emph{with} teacher forcing.]{\includegraphics[width=.25\linewidth]{figures/fig_energy_explicit_spiral_tf.pdf}}
-\subfloat[\centering Forward method, \protect\newline \emph{no} teacher forcing.]{\includegraphics[width=.25\linewidth]{figures/fig_energy_explicit_spiral.pdf}}
-\subfloat[\centering \textsc{JKOnet}, \protect\newline \emph{with} teacher forcing.]{\includegraphics[width=.25\linewidth]{figures/fig_energy_implicit_spiral_tf.pdf}}
-\subfloat[\centering \textsc{JKOnet}, \protect\newline \emph{no} teacher forcing.]{\includegraphics[width=.25\linewidth]{figures/fig_energy_implicit_spiral.pdf}}
-\caption{Comparison between energy functionals $J_\xi$ of the spiral trajectory task (see \ref{fig:task_overview}) between the forward method and \textsc{JKOnet}, trained with or without teacher forcing \S~\ref{sec:learn_energy}). When using teacher forcing, the forward method overfits a gap on the lower-right corner of the spiral, outputting a highly irregular energy. When taking into account the entire trajectory recursively, the Forward method does better overall, but is unable to recover an energy as precise as that returned by \textsc{JKOnet}.}
-\label{fig:exp_comp_spiral}
-\end{figure*}
 
-\newpage
-\paragraph{Inner Loop Termination.} A question that arises when defining $\rho_{t+1}(\xi)$ lies in the budget of gradient steps needed or allowed to optimize the parameters $\theta$ of the ICNN, before taking a new gradient step on $\xi$ in the outer loss. A straightforward approach in \texttt{JAX} \citep{jax2018github} would be to use a preset number of iterations with a \texttt{for} loop (\texttt{jax.lax.scan}). 
+\begin{figure}[t]
+     \centering
+     \begin{subfigure}[t]{0.24\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_energy_explicit_spiral_tf.pdf}
+         \caption{Forward method, \protect\newline teacher forcing.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.24\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_energy_explicit_spiral.pdf}
+         \caption{Forward method, \protect\newline \emph{no} teacher forcing.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.24\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_spiral_tf.pdf}
+         \caption{\textsc{JKOnet}, \protect\newline teacher forcing.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.24\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_spiral.pdf}
+         \caption{\textsc{JKOnet}, \protect\newline \emph{no} teacher forcing.}
+     \end{subfigure}
+	 \caption{Comparison between energy functionals $J_\xi$ of the spiral trajectory task (see \ref{fig:task_overview}) between the forward method and \textsc{JKOnet}, trained with or without teacher forcing \S~\ref{sec:learn_energy}). When using teacher forcing, the forward method overfits a gap on the lower-right corner of the spiral, outputting a highly irregular energy. When taking into account the entire trajectory recursively, the Forward method does better overall, but is unable to recover an energy as precise as that returned by \textsc{JKOnet}.}
+	 \label{fig:exp_comp_spiral}
+\end{figure}
+
+
+\paragraph{Inner loop yermination.} A question that arises when defining $\rho_{t+1}(\xi)$ lies in the budget of gradient steps needed or allowed to optimize the parameters $\theta$ of the ICNN, before taking a new gradient step on $\xi$ in the outer loss. A straightforward approach in \texttt{JAX} \citep{jax2018github} would be to use a preset number of iterations with a \texttt{for} loop (\texttt{jax.lax.scan}). 
 We do observe, however, that the number of iterations needed to converge in relevant scenarios can vary significantly with the ICNN architecture and/or the hardness of the underlying task.
 We propose to use instead a differentiable fixed-point loop to solve each JKO step up to a desired convergence threshold.
 We measure convergence of the optimization of the ICNN via the average norm of the gradient of the JKO objective w.r.t. the ICNN parameters $\theta$, i.e., $\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\xi}(\theta_i, \xi)}_2/\sum_i \text{count}(\theta_i)$.
@@ -214,7 +275,7 @@ In usual JKO applications, $\tau$ needs to be tuned manually. In this work, the 
 In the following, we evaluate our method empirically on a variety of tasks. This includes recovering synthetic potential- and trajectory-based population dynamics (see Fig.~\ref{fig:task_overview}), as well as the evolution of high-dimensional single-cell populations during a developmental process. 
 
 \subsection{...} \label{sec:eval_synt}
-\paragraph{Energy-Driven Trajectories.} The first task involves evolutions of partial differential equations with known potential. We hereby consider both convex (e.g., the quadratic function $J(x) = \|x\|^2_2$) and nonconvex potentials (e.g., Styblinski function) (see Fig.~\ref{fig:task_overview}). These two-dimensional synthetic flows are generated using the Euler-Maruyama method~\citep{kloeden1992stochastic}. For details, see \S~\ref{app:potential_dataset}.
+\paragraph{Energy-Driven Trajectories.} The first task involves evolutions of partial differential equations with known potential. We hereby consider both convex (e.g., the quadratic function $J(x) = \|x\|^2_2$) and nonconvex potentials (e.g., Styblinski function) (see Fig.~\ref{fig:task_overview}). These two-dimensional synthetic flows are generated using the Euler-Maruyama method~\citep{kloeden1992stochastic}. 
 To recover the true potential via \textsc{JKOnet}, we parameterize both energy $J_\xi$ and ICNN $\psi_\theta$ with linear layers ($\epsilon = 1.0$, $\tau = 1.0$, \S~\ref{app:hyperparam}). More details on the architectures can be found in \S~\ref{app:architecure}.
 Figure~\ref{fig:exp_jkonet_pot_traj}a-b demonstrate \textsc{JKOnet}'s ability to recover convex and nonconvex potentials via energy $J_\xi$.
 
@@ -239,28 +300,40 @@ While facilitating training of the forward method in some settings, it likewise 
 
 \subsection{...} \label{sec:eval_cell}
 
-\begin{table*}[t]
-\begin{minipage}{0.58\linewidth}
-    \subfloat[\centering PCA embedding of the embryoid body scRNA-seq data colored by the snapshot time.]{\includegraphics[width=.5\linewidth, valign=t]{figures/fig_data_moon_days_full.pdf}}
-    \subfloat[\centering PCA embedding of the embryoid body scRNA-seq data colored by the lineage branch class.]{\includegraphics[width=.5\linewidth, valign=t]{figures/fig_data_moon_Branches_full.pdf}}
-\end{minipage}\hfill
-\begin{minipage}{0.39\linewidth}
-    \subfloat[\centering Distribution of cell lineage branch classes in the data or  predicted by \textsc{JKOnet} or the forward method.]{\includegraphics[width=.9\linewidth, valign=t]{figures/fig_distribution_cell_types_Branches.pdf}}
-\end{minipage}\hfill
+\begin{figure}[t]
+     \centering
+     \begin{subfigure}[t]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_data_moon_days_full.pdf}
+         \caption{PCA embedding of the embryoid body scRNA-seq data colored by the snapshot time.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_data_moon_Branches_full.pdf}
+         \caption{PCA embedding of the embryoid body scRNA-seq data colored by the lineage branch class.}
+     \end{subfigure}
 
-\begin{minipage}{0.58\linewidth}
-    \subfloat[\centering PCA embedding of \textsc{JKOnet} predictions colored by the snapshot time.]{\includegraphics[width=.5\linewidth, valign=t]{figures/fig_implicit_moon_pred_days.pdf}}
-    \subfloat[\centering  PCA embedding of \textsc{JKOnet} predictions colored by the lineage branch class.]{\includegraphics[width=.5\linewidth, valign=t]{figures/fig_implicit_moon_pred_Branches.pdf}}
-    \captionof{figure}{Analysis of population dynamics predictions of \textsc{JKOnet} on the embryoid body scRNA-seq data.}
-    \label{fig:exp_jkonet_cell}
-\end{minipage}\hfill
-\begin{minipage}{0.39\linewidth}
+     \begin{subfigure}[t]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_implicit_moon_pred_days.pdf}
+         \caption{PCA embedding of \textsc{JKOnet} predictions colored by the snapshot time.}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[t]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/fig_implicit_moon_pred_Branches.pdf}
+         \caption{PCA embedding of \textsc{JKOnet} predictions colored by the lineage branch class.}
+     \end{subfigure}
+	 \caption{Analysis of population dynamics predictions of \textsc{JKOnet} on the embryoid body scRNA-seq data.}
+	 \label{fig:exp_jkonet_cell}
+\end{figure}
 
-
-\captionof{table}{Evaluation of cell lineage branch classification performance of \textsc{JKOnet} and the forward method on the embryoid body scRNA-seq data based on the $\ell_1$-distance of the histograms and the Hellinger distance $H^2$ \eqref{eq:hellinger} of the predicted branch class distributions (using 3 runs).}
-\label{tab:exp_jkonet_cell_class}
-\centering
-	\resizebox{\linewidth}{!}{%
+\begin{figure}[t]
+    \includegraphics[width=.47\linewidth]{figures/fig_distribution_cell_types_Branches.pdf}
+%    \captionof{figure}{Distribution of cell lineage branch classes in the data or  predicted by \textsc{JKOnet} or the forward method.}
+	\qquad
+	\resizebox{.45\linewidth}{!}{%
     \begin{tabular}{lcc}
     \toprule
          \textbf{Method} & \multicolumn{2}{c}{\textbf{Cell Lineage Classification}} \\
@@ -274,9 +347,10 @@ While facilitating training of the forward method in some settings, it likewise 
         \tabindent \textsc{JKOnet} & $215.60 \pm 12.53$ & $0.034 \pm 0.004$ \\
     \bottomrule
     \end{tabular}
-}
-\end{minipage}
-\end{table*}
+    }
+\caption{Evaluation of cell lineage branch classification performance of \textsc{JKOnet} and the forward method on the embryoid body scRNA-seq data based on the $\ell_1$-distance of the histograms and the Hellinger distance $H^2$ \eqref{eq:hellinger} of the predicted branch class distributions (using 3 runs). \vspace{10pt}}
+\label{tab:exp_jkonet_cell_class}
+\end{figure}
 
 We investigate the ability of \textsc{JKOnet} to predict the evolution of cellular and molecular processes through time.
 The advent of single cell profiling technologies has enabled the generation of high-resolution single-cell data, making it possible to profile individual cells at different states in the development. 

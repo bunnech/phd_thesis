@@ -37,9 +37,6 @@
 \usepackage{mparhack}
 \usepackage{relsize}
 
-% Change font
-%\usepackage{cmbright}
-
 % Redefine cite command to include space before
 % <http://tex.stackexchange.com/questions/11602/>
 \let\origcite\cite%
@@ -48,9 +45,12 @@
 % Math stuff
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{isomath}
 \usepackage{dsfont}
+\usepackage{thmtools}
+\usepackage{thm-restate}
 
 % Figures, tables, and captions
 \usepackage{tabularx}
@@ -60,9 +60,10 @@
 \newcommand{\myfloatalign}{\centering}
 \usepackage{floatrow}
 \usepackage{caption}
-\captionsetup{format=hang,font=small,labelfont={sc},margin=5pt}
+\captionsetup[figure]{font=small}
+%\captionsetup{format=hang,font=small,labelfont={sc},margin=5pt}
 \usepackage{subcaption}
-\captionsetup[sub]{margin=0pt,font=small,labelfont={rm}}
+%\captionsetup[sub]{margin=0pt,font=small,labelfont={rm}}
 \usepackage[table, dvipsnames]{xcolor}
 \usepackage{adjustbox}
 \usepackage{float}

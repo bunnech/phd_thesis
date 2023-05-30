@@ -99,7 +99,7 @@ where $X_0 = \x_0$ and %, $\dWiener$ is itself a Brownian motion, and
 The first characterization of $\Psol$ is then an immediate consequence the following classical result in \acrlong{SB} theory: Draw a sample $(\x_0, \x_1) \sim \Pssol$ and connect them via \eqref{eq:BB}. The resulting path is a sample from $\Psol$ \citep{leonard2013survey, chen2021stochastic}. In other words, $\Psol$ is a \emph{mixture} of scaled Brownian bridges, with the mixing weight given by $\Pssol$.
 
 
-\paragraph{$\Psol$ from $\Pssol$: \acrshort{SDE} representation}
+\paragraph{$\Psol$ from $\Pssol$: SDE representation}
 
 
 
@@ -258,7 +258,7 @@ In this section, we evaluate \textsc{SBalign} in different settings involving 2-
 
 We run our algorithm on two synthetic datasets (figures in \S~\ref{app:datasets}), and compare the results with classic Schr\"odinger bridge models, i.e., the forward-backward SB formulation proposed by \cite{chen2021likelihood}, herein referred to as \textsc{fbSB}. We equip the baseline with prior knowledge, as elaborated below, to further challenge \textsc{SBalign}.
 
-\paragraph{Moon dataset}
+\paragraph{Moon dataset.}
 The first synthetic dataset (Fig.~\ref{fig:results_spiral}a-c) consists of two distributions, each supported on two semi-circles ($\distinit$ drawn in \textit{blue} and $\distend$ in \textit{red}).
 $\distend$ was obtained from $\distinit$ by applying a clockwise rotation around the center, i.e., by making points in the upper blue arm correspond to those in the right red one.
 This transformation is clearly not the most likely one under the assumption of Brownian motion of particles and should therefore not be found as the solution of a classical SB problem. 
@@ -268,7 +268,7 @@ While being a minimizer of \eqref{eq:SB}, such a solution completely disregards 
 One way of encoding this additional information on the nature of the process is to modify $\refpro$ by introducing a clockwise radial drift, which describes the prior tangential velocity of particles moving circularly around the center.
 Solving the classical SB with this updated reference process indeed generates trajectories that respect most alignments (Fig.~\ref{fig:results_spiral}b), but requires a hand-crafted expression of the drift that is only possible in very simple cases.
 
-\paragraph{T dataset}
+\paragraph{T dataset.}
 In most real-world applications, it is very difficult to define an appropriate reference process $\refpro$, which respects the known alignment without excessively distorting the trajectories from a solution to \eqref{eq:SB}. This is already visible in simple examples like (Fig.~\ref{fig:results_spiral}d-f), in which the value of good candidate prior drifts at a specific location needs to vary wildly in time.
 In this dataset, $\distinit$ and $\distend$ are both bi-modal distributions, each supported on two of the four extremes of an imaginary T-shaped area.
 We target alignments that connect the two arms of the T as well as the top cloud with the bottom one. We succeed in learning them with \textsc{SBalign} (Fig.~\ref{fig:results_spiral}e) but unsurprisingly fail when using the baseline \textsc{fbSB} (Fig.~\ref{fig:results_spiral}d) with a Brownian motion prior.

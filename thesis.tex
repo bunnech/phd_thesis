@@ -20,7 +20,7 @@
 \newcites{own}{ }
 
 % Math definitions
-\include{preamble/math}
+\input{preamble/math}
 
 \begin{document}
 \frenchspacing
@@ -34,12 +34,12 @@
 \cleardoublepage\setcounter{page}{1}
 
 % Frontmatter
-\include{frontbackmatter/dirtytitlepage}
-\include{frontbackmatter/titlepage}
-\include{frontbackmatter/titleback}
-\cleardoublepage\include{frontbackmatter/dedication}
-\cleardoublepage\include{frontbackmatter/abstract}
-\cleardoublepage\include{frontbackmatter/acknowledgments}
+\input{frontbackmatter/dirtytitlepage}
+\input{frontbackmatter/titlepage}
+\input{frontbackmatter/titleback}
+\cleardoublepage\input{frontbackmatter/dedication}
+\cleardoublepage\input{frontbackmatter/abstract}
+\cleardoublepage\input{frontbackmatter/acknowledgments}
 \pagestyle{scrheadings}
 
 % Table of Contents
@@ -66,8 +66,8 @@
 \let\cleardoublepage\relax
 \let\cleardoublepage\relax
 
-\include{preamble/notation}
-\include{preamble/acronym}
+\input{preamble/notation}
+\input{preamble/acronym}
 \printacronyms
 \endgroup
 
@@ -97,8 +97,8 @@
 \bibliography{references.bib}
 
 \bookmarksetup{startatroot}
-\cleardoublepage\include{frontbackmatter/cv}
-\cleardoublepage\include{frontbackmatter/publications}
+\cleardoublepage\input{frontbackmatter/cv}
+\cleardoublepage\input{frontbackmatter/publications}
 
 \appendix
 \cleardoublepage%
