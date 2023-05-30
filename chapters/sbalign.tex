@@ -146,11 +146,7 @@ Even with infinite data and a neural network with sufficient capacity, the loss 
 \end{equation}
 where the term $\frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}$ is akin to $\nabla \log p(\x_t | \x_0)$, while $\left(\fdrift^\theta + \nabla \log \doob^\theta(X_t)\right)$ corresponds to $s^\theta(X_t, t)$. 
 
-% \begin{equation}
-% \label{eq:loss}
-% \Loss(\theta) \defeq \exof*{\int_0^1 \norm*{\x_1-\x_0 + \frac{X_t}{1-t}-(b_{\theta} + \nabla \log \doob^\theta(X_t)})^2\dt  }
-% \end{equation}
-
+% TODO: Fix algorithm.
  \begin{algorithm}[t]
    \caption{\textsc{SBalign}}
    \label{alg:SBalign}
@@ -182,7 +178,7 @@ where the term $\frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}$ is akin to $
 \end{algorithmic}
 \end{algorithm}
 
-\paragraph{Computing $\doob^\theta$}% via the Feymann-Kac Formula}
+\paragraph{Computing $\doob^\theta$.}
 
 Inspecting $\doob$ in \eqref{eq:SB-SD-conditioned}, we see that, given $(\x_0,\x_1)$, it can be written as the conditional expectation of an indicator function:
 \begin{equation}
@@ -314,7 +310,7 @@ Most single-cell high-throughput technologies are destructive assays ---i.e., th
 
 \paragraph{Baselines} \looseness -1 We benchmark \textsc{SBalign} against previous \acrshortpl{DSB} such as \citep[\textsc{fbSB}]{chen2021likelihood}. Beyond, we compare \textsc{SBalign} in the setting of learning a prior reference process. Naturally, cell division processes and subsequently the propagation of the barcodes are very noisy. While this genetic annotation provides some form of assignment, it does not capture the full developmental process. We thus test \textsc{SBalign} in a setting where it learns a prior from such partial alignments and, plugged into \textsc{fbSB}, is fine-tuned on the full dataset.
  
-\paragraph{Evaluation metrics} To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\epsilon}$~\citep{cuturi2013sinkhorn}, as well as average scores, i.e., $\ell_2(\text{PS})$ \citep{bunne2021learning} and RMSD. Moreover, we also train a simple neural network-based classifier to annotate the cell type on day 4 and we report the accuracy of the predicted vs. true cell type for all the models. See \S~\ref{app:metrics} for further details.
+\paragraph{Evaluation metrics} To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\epsilon}$~\citep{cuturi2013sinkhorn}, as well as average scores, i.e., $\ell_2(\text{PS})$ \citep{bunne2021learning} and RMSD. Moreover, we also train a simple neural network-based classifier to annotate the cell type on day 4 and we report the accuracy of the predicted vs. true cell type for all the models. 
 
 \paragraph{Results} \textsc{SBalign} accurately predicts cellular differentiation processes in hematopoiesis from day 2 to day 4, as visible from the (2D projections of the) learned trajectories and alignments (Fig.~\ref{fig:results_cell_traj}c) and the quantitative evaluation in Table~\ref{tab:results_cells}. \textsc{SBalign} outperforms \textsc{fbSB} in all but the cell-type accuracy metric: Remarkably, our method exceeds the performances of the baseline also on distributional metrics and not uniquely on alignment-based ones. Further, we evaluate how well \textsc{SBalign} recovers the heterogeneity of emerging cell types throughout the developmental process on day 4. The results are displayed in Fig.~\ref{fig:results_cell_class}d and show that, while capturing the overall differentiation trend, \textsc{SBalign} (as well as \textsc{fbSB}) struggles to isolate rare cell types.
 Lastly, we employ \textsc{SBalign} to learn a prior process from noisy alignments based on genetic barcode annotations. When using this reference process within \textsc{fbSB}, we learn an SB which compensates for inaccuracies stemming from the stochastic nature of cell division and barcode redistribution and which achieves better scores on distributional metrics (see Tab.~\ref{tab:results_cells}).

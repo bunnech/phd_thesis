@@ -60,10 +60,9 @@
 \newcommand{\myfloatalign}{\centering}
 \usepackage{floatrow}
 \usepackage{caption}
-\captionsetup[figure]{font=small}
-%\captionsetup{format=hang,font=small,labelfont={sc},margin=5pt}
+\captionsetup[figure]{format=plain, font=footnotesize, labelfont=bf}
 \usepackage{subcaption}
-%\captionsetup[sub]{margin=0pt,font=small,labelfont={rm}}
+\captionsetup[subfigure]{font=footnotesize, labelfont=bf, labelsep=period, labelformat=simple,}
 \usepackage[table, dvipsnames]{xcolor}
 \usepackage{adjustbox}
 \usepackage{float}
@@ -98,7 +97,7 @@
 % Circled numbers
 \newcommand*\circled[1]{
   \tikz[baseline=(char.base)]{
-    \node[shape=circle,draw,inner sep=1pt,font=\footnotesize,%
+    \node[shape=circle, draw, inner sep=1pt, font=\footnotesize,%
           minimum size=0.8\baselineskip] (char) {\figureversion{lining}#1};
   }
 }

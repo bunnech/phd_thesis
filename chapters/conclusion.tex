@@ -33,8 +33,8 @@ to predict treatment responses in unseen lupus patients, infer developmental tra
 \smallskip
 
 The ability to make predictions out-of-distribution, such as on unseen patients, is, however, only feasible if a) similar samples have been observed in the unperturbed setting, and b) the training set contains cases that are similar not only in their unperturbed state but also their perturbation response.
-An analysis of glioblastoma patients treated with Panobinostat \citep{zhao2021deconvolution} (see \ref{supp_fig:gbm_patients_iid_ood}a-c) indeed confirms this restriction:
-\textsc{CellOT} and the baselines are able to predict treatment outcomes for those patients that are similar to other patients in both unperturbed state as well as perturbation effect (see Fig.~\ref{supp_fig:gbm_patients_iid_ood}f), but fail to capture perturbation effects for patients that exhibit unique responses (see \ref{supp_fig:gbm_patients_iid_ood}g).
+An analysis of glioblastoma patients treated with Panobinostat \citep{zhao2021deconvolution} (see Fig.~\ref{fig:gbm_patients_iid_ood}a-c) indeed confirms this restriction:
+\textsc{CellOT} and the baselines are able to predict treatment outcomes for those patients that are similar to other patients in both unperturbed state as well as perturbation effect (see Fig.~\ref{fig:gbm_patients_iid_ood}f), but fail to capture perturbation effects for patients that exhibit unique responses (see Fig.~\ref{fig:gbm_patients_iid_ood}g).
 This limitation is important to consider when applying \textsc{CellOT} in o.o.d. settings. To overcome such problems, 
 larger cohorts, additional meta-information, and methodological extensions are required. \citet{bunne2022supervised} partially address this issue by deriving a neural optimal transport scheme that can be conditioned on a context, e.g., patient meta-data, when predicting perturbation responses.
 

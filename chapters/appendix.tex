@@ -9,14 +9,14 @@
 \end{figure}
 \captionof{figure}{
 \textbf{a.} High similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the single-cell level. Scatter plots compares the relationship between measured pERK values of cells (left) treated with Midostaurin (green dots), Palbociclib (blue dots), Panobinostat (red dots), and MLN2480 (purple dots) or (right) predicted for those drugs along the horizontal axis to their corresponding 3NN cells on the vertical axis. X mark, square, inverted triangle, and circle represent the mean of the respective measurements per drug. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{b.} The high similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the population level across all drug perturbations. Drug average of measured (blue dots) and predicted (green dots) pERK values compared to their respective 3NN measurement. Drug treatments highlighted in color correspond the those presented in panel \textbf{a.}. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{c.} Projection of measured perturbed and predicted perturbed cells in a shared UMAP space. Each cell is color-coded according to the perturbation from which it originates. \textbf{d.} Projection of mean-corrected measured perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation from which it originates. Mean correction was achieved by subtracting calculating the mean of every feature for all cells in the control condition and subtracting the calculated feature means from the feature values of individual cells. \textbf{e.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation model with which it was predicted. \textbf{f.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to its assignment to one of the 12 cell states. \textbf{g.} Feature value overview of the 12 identified cell states in DMSO-treated (control) cells. Each column represents a cell state, each row a feature. Circles are colored and scaled based on feature value, from small size in blue for low feature values, to large circles in yellow for high feature values. \textbf{h-j.} Drug effect overview of the 12 identified cell states in \textbf{h.} Staurosporine (apoptosis ind.m apoptosis inducer, \textbf{i.} Trametinib (MEKi, MEK inhibitor), MLN2480 (panRAFi, panRAF inhibitor), \textbf{j.} Trametinib + Midostaurin (Tram + Mido, MEK inhibitor + pan Receptor Tyrosine Kinase inhibitor (panRTK)), Midostaurin (panRTK). Each column represents a cell state, rows represent features. `cell-' stands for mean cell intensity. Circles are scaled based on drug effect, the larger the $\pm$ effect the larger the circles. Negative values are encoded in hues of blue, positive values in red hues of the respective circles. \textbf{k.} Effect of drug treatments on levels of cleaved Caspase 3 (cleaved Caspase 3) in the 12 identified cell states. Each column represents a cell state, each row a drug treatment.}
-\label{supp_fig:4i_analysis_extended}
+\label{fig:4i_analysis_extended}
 
 \newpage
 \begin{figure}[p]
      \centering
      \includegraphics[width=\textwidth]{figures/fig_crossspecies_ood_analysis.pdf}
      \caption{\looseness -1 Analysis and further results of the cross species dataset. \textbf{a.} Pairwise average correlation of the PCA embeddings of the control states between species. \textbf{b.} Pairwise average correlation of the PCA embeddings of the treated states between patients, masked to only those patient pairs that showed a positive correlation in the control states. Only rat and mouse show consistent responses, i.e., a positive correlation of the control states and non-negative correlation of the respective target cells, and are thus chosen for the o.o.d. analysis. I.i.d. and o.o.d. results measured in the average gene expression for both \textbf{d.} \textsc{CellOT} and \textbf{c.} \textsc{scGen}.}
-     \label{supp_fig:crossspecies_ood_analysis}
+     \label{fig:crossspecies_ood_analysis}
 \end{figure}
 
 \newpage
@@ -30,7 +30,7 @@
      \textbf{f.} o.o.d. setting for a patient positively correlating with all patients that are also similar in the control state,
      \textbf{g.} o.o.d. setting for a patient where similar patients in the control state show different responses (correlation and anti-correlation) in the treated states. Data in \textbf{f} and \textbf{g} are presented as the mean +/- standard deviation across n=10 bootstraps of the test set.
      }
-     \label{supp_fig:gbm_patients_iid_ood}
+     \label{fig:gbm_patients_iid_ood}
 \end{figure}
 
 \clearpage
