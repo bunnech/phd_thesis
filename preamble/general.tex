@@ -5,18 +5,12 @@
 \usepackage[main=english,ngerman]{babel}
 
 % classicthesis setup
-\PassOptionsToPackage{%
-  %drafting,%
-  %dottedtoc,%
+\usepackage[overload]{textcase}
+\PassOptionsToPackage{
+  pdfspacing,
   eulerchapternumbers,
-  %listings,%
-  %parts,%
-  floatperchapter, pdfspacing,%
-  beramono,%
-  %minionprospacing,
-  %subfig,%
-  %eulermath,%
-  a5paper,%
+  floatperchapter, pdfspacing,
+  beramono, a5paper,
 }{classicthesis}
 
 % Meta
@@ -113,6 +107,7 @@
 \renewcommand*{\subsubsectionautorefname}{Section}
 \providecommand{\subfigureautorefname}{\figureautorefname}%
 \usepackage[capitalise]{cleveref}
+\Crefname{subsubsubappendix}{Appendix}{Appendices}%
 
 % Load classicthesis style
 \usepackage{scrhack}

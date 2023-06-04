@@ -1,12 +1,44 @@
+\chapter{Dynamical Processes in Biomedicine}
+\label{cha:bio_background}
+
+\dictum[Rosalind Franklin, \textit{Report} (1952)]{%
+  The results suggest a helical structure (which must be very closely packed) containing probably 2, 3 or 4 coaxial nucleic acid chains per helical unit and having the phosphate groups near the outside.}%
+\vskip 1em
+
+...
+
+
 \chapter{Optimal Transport for Dynamical Systems}
 \label{cha:theory_background}
 
 \dictum[Elinor Ostrom, \textit{Governing the Commons} (1990)]{%
   The power of a theory is exactly proportional to the diversity of situations it can explain.}%
+\vskip 1em
 
-% TODO: Propose structure of Background chapter.
 
-\paragraph{Optimal Transport.} 
+Optimal transport theory~\citep{santambrogio2015optimal} plays now a prominent role in the machine learning toolbox and has become within a few years the go-to framework to analyze, model, and solve an ever-increasing variety of tasks involving probability measures. This is best exemplified by its increasing importance to fitting generative models, where the goal is to learn a map~\citep{arjovsky2017wasserstein, genevay2018learning, salimans2018improving}, or more generally a diffusion \citep{song2020score, de2021diffusion} to morph a simple measure (e.g., Gaussian) onto a data distribution of interest (e.g., images). This is also apparent in the many applications that use OT to align probability measures that have since arisen, e.g., to transfer label knowledge between datasets~\citep{flamary2016optimal, singh2020model}, to analyze sampling schemes~\citep{dalalyan2017theoretical}, or study population trajectories~\citep{schiebinger2019optimal}.
+
+
+We will start the tutorial by emphasizing the centrality of the optimal \textit{assignment} problem in various ML problems, motivated both by its conceptual simplicity and practical ability to compare sets of the same size. 
+We will work out the mathematical foundations of optimal transport as an extension from these simple principles, recall its mathematical history from \citeauthor{monge1781histoire} (\citeyear{monge1781histoire}) and \citeauthor{kantorovich1942transfer} (\citeyear{kantorovich1942transfer}) to modern Fields medal winners \citeauthor{villani2009optimal} (\citeyear{villani2009optimal}) and \citeauthor{figalli2010optimal} (\citeyear{figalli2010optimal}). 
+We focus next on the numerical resolution of the \citeauthor{kantorovich1942transfer} problem, its statistical~\citep{rigollet2022sample, genevay2018sample} and computational challenges, to motivate by-now classic algorithms \citep{cuturi2013sinkhorn, chizat2018scaling}, and their large-scale extensions \citep{altschuler2019massively, scetbon2021low}. We will also mention quadratic (Gromov) OT~\citep{memoli2011gromov} and its efficient computation~\citep{solomon2016entropic,scetbon2022low}.
+
+
+We expect most of the audience to be familiar with the role of OT losses in the literature, e.g., for structured prediction \citep{frogner2015learning,janati2020multi} or generative model fitting \citep{yang2018scalable, arjovsky2017wasserstein, salimans2018improving, genevay2018learning}. Yet, we will gradually move away from the usual emphasis on OT distances (e.g., Wasserstein) towards a focus on the Monge \textit{map}, which provides an actionable way to flow from one probability distribution onto another. This section will start with a complete proof of the celebrated \citeauthor{brenier1987decomposition} theorem for general costs, which will require an introduction to the notion of $c$-concavity. Once this quintessential result of OT theory is established, we will particularize it to translation-invariant costs and bridge it to the flurry of neural approaches that have been proposed in the literature. 
+This comprises approaches that are a direct consequence of the \citeauthor{brenier1987decomposition} theorem, to model Monge maps as gradients of convex functions, parameterized through input convex neural networks (ICNN) \citep{amos2017input, huang2021convex, makkuva2020optimal, korotin2021neural, lubeck2022neural, bunne2022supervised}, via regularizers \citep{uscidda2023monge}, amortized optimization \citep{amos2022amortizing, amos2022meta}, or entropic maps \citep{pooladian2021entropic, pooladian2023minimax, divol2022optimal, cuturi2023monge}.
+
+
+\citet*{benamou2000computational} showed how the dynamic point of view offers an alternate and intuitive interpretation of optimal transport with links to fluid dynamics that surprisingly leads to a convex optimization problem that can be parameterized through normalizing flows \citep{tong2020trajectorynet}.
+We will further highlight connections of OT to PDEs such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme: In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} 
+it has found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
+Beyond PDEs, we will explore the relation between the optimal transport problem and the Schr\"odinger bridge problem from stochastic control. It represents a key connection that has recently fueled the development of \acrlongpl{DSB} \citep{de2021diffusion, chen2021stochastic, bunne2022recovering, liu2022deep}. Compared to classical diffusion-based generative models \citep{daniels2021score, song2020score}, these algorithms allow interpolation between complex distributions. Extended to the Riemannian geometry \citep{thornton2022riemannian, de2022riemannian}, it has found applications in molecular dynamics \citep{holdijk2022path} and cell differentiation processes \citep{tong2023conditional, bunne2022recovering}.
+
+\section{Static Optimal Transport}
+
+...
+
+\subsection{...}
+
 For two probability measures $\mu, \nu$ in $\mathcal{P}(\mathbb{R}^d)$, their squared 2-Wasserstein distance is
 \begin{equation} \label{eq:ot}
     W_2^2(\mu, \nu) = \inf_{\gamma\in \Gamma(\mu,\nu)}\iint \|x-y\|^2_2 \gamma(dx, dy),
@@ -17,27 +49,58 @@ where $\Gamma(\mu, \nu)$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R
 \end{equation}
 where $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(a,b)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m =a, \bP^\top\mathbf{1}_n=b\}$. 
 Notice that the definition above reduces to the usual (squared) 2-Wasserstein distance when $\varepsilon=0$. Setting $\varepsilon>0$ yields a faster and differentiable proxy to approximate $W_{0}$, but introduces a bias, since $\We(\mu,\mu)\ne 0$ in general. % To correct that bias, we use 
-In the rest of this work, we therefore use the \textit{Sinkhorn divergence}~\citep{ramdas2017wasserstein,genevay2018,salimans2018improving,feydy2018interpolating} as %to recover 
+In the rest of this work, we therefore use the \textit{Sinkhorn divergence}~\citep{ramdas2017wasserstein,genevay2018sample,salimans2018improving,feydy2018interpolating} as %to recover 
 a valid non-negative discrepancy,
 \begin{equation} \label{eq:sinkhorn}
 \cW(\mu,\nu) \defeq \We(\mu,\nu)-\frac{1}{2}\left(\We(\mu,\mu)+\We(\nu,\nu)\right).\\
 \end{equation}
+
+Optimal transport plays a pair of roles: inducing a mathematically well-characterized distance measure between distributions as well as providing a geometry-based approach to realize couplings between two probability distributions.
+Let $\mu$ and $\nu$ be two measures in $\mathbb{R}^d$. 
+The optimal transport problem by \citet{monge1781histoire} is defined as
+\begin{equation}\label{eq:monge}
+    {\arg \min}_{T : T_\sharp \mu = \nu} \enspace \mathbb{E}_{X \sim \mu}\|X-T(X)\|^2_2,
+\end{equation}
+where $T$ corresponding to the smallest cost is the optimal transport map.
+\citet{kantorovich1942transfer} provided a relaxation to this non-convex and difficult-to-solve problem, which reads
+\begin{equation}\label{eq:ot}
+W(\mu, \nu)= \inf _{\gamma \in \Gamma(\mu, \nu)} \mathbb{E}_{(X, Y) \sim \gamma}\|X-Y\|^2_2,
+\end{equation}
+where the polytope $\Gamma(\mu, \nu)$ is $\{\gamma \in\mathbb{R}^{n \times m}_+, \gamma\mathbf{1}_m =\mu, \gamma^\top\mathbf{1}_n=\nu\}$, describing the set of all couplings (or joint distributions) $\gamma$ between $\mu$ and $\nu$.
+The optimal transport plan $\gamma$ thus corresponds to the coupling between two probability distributions minimizing the overall transportation cost. 
+Computing optimal transport distances in \eqref{eq:ot} involves solving a linear program, and thus their computational cost is prohibitive for large-scale machine learning problems. Regularizing objective \eqref{eq:ot} with an entropy term results in significantly more efficient optimization \citep{cuturi2013sinkhorn} and differentiability w.r.t. its inputs, and thus commonly used
+% \begin{equation}\label{eq:ot-reg}
+% W_{2}^{2, \varepsilon}(\mu, \nu)=\inf _{\gamma \in \Gamma(\mu, \nu)} \int\|x-y\|^{2} d \gamma(x, y) - \varepsilon H(\gamma),
+% \end{equation}
+% with entropy $H(\gamma) = -\sum_{ij} \gamma_{ij} (\log \gamma_{ij} - 1)$ and parameter $\varepsilon$ controlling the strength of the regularization. $W_{2}^\varepsilon$ is further differentiable w.r.t. its inputs and thus 
+as a loss function in machine learning applications.
+
+\begin{equation}\label{eq:dual}
+f^\star:=\arg\!\!\sup_{f\,\text{convex}}\mathcal{E}_{\mu,\nu}(f):=\int_{\mathbb{R}^d}f^*\textrm{d}\mu+\int_{\mathbb{R}^d}f\textrm{d}\nu.
+\end{equation}
+
+
+Problem~\eqref{eq:ot} denotes the primal formulation for the Wasserstein distance. The corresponding dual introduced by \citeauthor{kantorovich1942transfer} in \citeyear{kantorovich1942transfer} is a constrained concave maximization problem defined as
+\begin{equation} \label{eq:dual-ot}
+    W(\mu, \nu)=\sup _{(f, g) \in \Phi_{c}} \mathbb{E}_{\mu}[f(x)]+\mathbb{E}_{\nu}[g(y)],
+\end{equation}
+where the set of admissible potentials is $\Phi_c \defeq \{(f, g) \in L^{1}(\mu) \times L^{1}(\nu): f(x)+g(y) \leq \frac{1}{2}\|x-y\|_{2}^{2}$, $\forall(x, y) d\mu \otimes d\nu \text{ a.e.}\}$ \citep[Theorem 1.3]{villani2021topics}.
+\citet[Theorem 2.9]{villani2021topics} further simplifies the dual problem~\eqref{eq:dual-ot} over the pair of functions $(f, g)$ to
+\begin{equation} \label{eq:dual-ot-cvx}
+    W(\mu, \nu)= \underbrace{\frac{1}{2}\mathbb{E}\left[\|x\|_{2}^{2}+\|y\|_{2}^{2}\right]}_{\mathcal{C}_{\mu, \nu}}-\inf _{f \in \Tilde{\Phi}} \mathbb{E}_{\mu}[f(X)]+\mathbb{E}_{\nu}\left[f^{*}(Y)\right],
+\end{equation}
+where $\Tilde{\Phi}$ is the set of all convex functions in $L^1(d\mu) \times L^1(d\nu)$, $L^{1}(\mu) \defeq \{f \text{ is measurable } \& \int f d\mu<\infty\}$, $f^*(y) = \sup_x \dotp{x}{y} - f(x)$ is $f$'s convex conjugate, and the optimal transport plan corresponds to gradient of the convex conjugate, $\gamma = \nabla f^\star$. %, reparameterizing $f(\cdot) = \frac{1}{2}\norm{\cdot}^2_2 - f(\cdot)$ and $g(\cdot) = \frac{1}{2}\norm{\cdot}^2_2 - g(\cdot)$, 
+\citet[Theorem 2.9]{villani2021topics} then proves the existence of an optimal pair $(f, f^*)$ of lower semi-continuous proper conjugate convex functions on $\mathbb{R}^n$ minimizing \eqref{eq:dual-ot}.
+
 
 \paragraph{OT and Convexity.} 
 An alternative formulation for OT is given by the \citet{monge1781histoire} problem  
 \begin{align}\label{eq:monge}
 W_2^2(\mu,\nu) &= \inf_{T:T_{\#} \mu = \nu} \int_\mathcal{X} ||x - T(x)||^2d\mu(x) \,
 \end{align}
-where $\#$ is the push-forward operator, and the optimal solution $T^\star$ is known as the \citeauthor{monge1781histoire} map between $\mu$ and $\nu$. The \citeauthor{Brenier1987} theorem \citeyear{Brenier1987} states that if $\mu$ has a density, the Monge map $T^\star$ between $\mu$ and $\nu$ can be recovered as the gradient of a unique (up to constants) convex function $\psi$ whose gradient pushes forward $\mu$ to $\nu$. Namely, if $\psi:\mathbb{R}^d \rightarrow \mathbb{R}$ is convex and $(\nabla \psi)_{\#}\mu = \nu$, then $T^\star(x)=\nabla \psi(x)$ and
+where $\#$ is the push-forward operator, and the optimal solution $T^\star$ is known as the \citeauthor{monge1781histoire} map between $\mu$ and $\nu$. The \citeauthor{brenier1987decomposition} theorem \citeyear{brenier1987decomposition} states that if $\mu$ has a density, the Monge map $T^\star$ between $\mu$ and $\nu$ can be recovered as the gradient of a unique (up to constants) convex function $\psi$ whose gradient pushes forward $\mu$ to $\nu$. Namely, if $\psi:\mathbb{R}^d \rightarrow \mathbb{R}$ is convex and $(\nabla \psi)_{\#}\mu = \nu$, then $T^\star(x)=\nabla \psi(x)$ and
 \begin{align}\label{eq:brenier}
 W_2^2(\mu,\nu) &= \int_\mathcal{X} ||x - \nabla \psi(x)||^2 d\mu(x)\,.
 \end{align}
 %establishing an equivalence between the Kantorovich formulation of OT~\eqref{eq:ot} with optimal transport plan $\gamma$, and the Monge formulation involving map $T$. %, which consists of finding a map that associates points coming from both probability measures. 
 
-
-
-\chapter{Dynamical Processes in Biomedicine}
-\label{cha:bio_background}
-
-\dictum[Rosalind Franklin, \textit{Report} (1952)]{%
-  The results suggest a helical structure (which must be very closely packed) containing probably 2, 3 or 4 coaxial nucleic acid chains per helical unit and having the phosphate groups near the outside.}%

@@ -377,6 +377,11 @@
 \newcommand{\Div}[1][\point]{ \nabla_{ {#1} } \cdot }
 \newcommand{\dt}{ \dd \ctime}
 \newcommand{\loss}{\ell}
+%\newcommand{\lossf}{ \loss\parens*{\point_{\horizon};\paramf} }
+\NewDocumentCommand{\lossf}{ O{\point_{\horizon}} O{\paramf} }{  \loss\parens*{ #1; #2 }}
+
+%\newcommand{\lossb}{ \loss\parens*{\point_{0};\paramb} }
+\NewDocumentCommand{\lossb}{ O{\point_{0}} O{\paramb} }{  \loss\parens*{ #1; #2 }}
 \newcommand{\caching}{M}
 \newcommand{\outeriter}{K_\textup{out}}
 \newcommand{\inneriter}{K_\textup{in}}

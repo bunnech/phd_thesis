@@ -3,7 +3,7 @@
 
 \section{Further Empirical Evaluation}
 
-\begin{figure}[p]
+\begin{figure}[H]
      \centering
      \includegraphics[width=\textwidth]{figures/fig_4i_analysis_extended.pdf}
 \end{figure}
@@ -22,7 +22,7 @@
 \newpage
 \begin{figure}[p]
      \centering
-     \includegraphics[width=1.1\textwidth]{figures/fig_gbm_patients_iid_ood.pdf}
+     \includegraphics[width=1.05\textwidth]{figures/fig_gbm_patients_iid_ood.pdf}
      \caption{Analysis and results of the glioblastoma dataset consisting of seven patients. \textbf{a.} Cells from seven glioblastoma patients are measured in an untreated and Panobinostat-treated state. For each sample, we train two models, an o.o.d.~model trained on cells from all other samples but the holdout patient we test on and an i.i.d.~model trained with additional access to half of the cells in the holdout sample.
      \textbf{b.} Pairwise average correlation of the PCA embeddings of the control states between patients. \textbf{c.} Pairwise average correlation of the PCA embeddings of the treated states between patients, masked to only those patient pairs that showed a positive correlation in the control states. Only patient PW034 positively correlates with all other patients. Other patients, such as PW053, correlate and anti-correlate with other patients in the treated state.
      Performance comparison between \textsc{CellOT} and baselines for different metrics in the \textbf{d.} i.i.d. setting (mean standard deviation across 7 samples, 10 bootstraps of the test set per sample),
@@ -43,8 +43,8 @@
 %----------------------------------------------------------------------
 %%% PROOF OF BURES-WASSERSTEIN MECHANICS
 %----------------------------------------------------------------------
-\section{Proof of \cref{thm:GSBtoBB}}
-\label{app:GSBtoBB}
+\section{Proof of \cref{thm:gsbtobb}}
+\label{app:gsbtobb}
 
 
 It is known that, for \acrshortpl{SB}, the optimal solution can be searched within the class of stochastic processes \citep{leonard2013survey}
@@ -136,16 +136,16 @@ For convenience, we restate \cref{thm:mechanics} in full below:
 \mechanics*
 
 
-The proof consists of verifying the Euler-Lagrange equation \eqref{eq:EL-BW} for the curve \eqref{eq:solMain}.
+The proof consists of verifying the Euler-Lagrange equation \eqref{eq:el-bw} for the curve \eqref{eq:solMain}.
 
-\subsubsection{Verifying the Euler-Lagrange Equation \eqref{eq:EL-BW}}
+\subsubsection{Verifying the Euler-Lagrange Equation \eqref{eq:el-bw}}
 \label{sec:verifyEL}
-We begin by noting that the boundary conditions in \eqref{eq:EL-BW} hold for the curve in \eqref{eq:solMain}. 
+We begin by noting that the boundary conditions in \eqref{eq:el-bw} hold for the curve in \eqref{eq:solMain}. 
 
 
-We now compute the two sides of \eqref{eq:EL-BW} separately:
+We now compute the two sides of \eqref{eq:el-bw} separately:
 
-\paragraph{The right-hand side of \eqref{eq:EL-BW}: $-\gradBW\penergyBW$.}
+\paragraph{The right-hand side of \eqref{eq:el-bw}: $-\gradBW\penergyBW$.}
 ~Since $\nabla \penergyBW = -\nabla \parens*{\tr \frac{\sdev^4}{8} \Sigcurveinv} =  \frac{\sdev^4}{8} \Sigcurveinv\cdot \Sigcurveinv$, we see from \eqref{eq:gradBW-def} that the negative Bures-Wasserstein gradient of $\penergyBW$ is
 \begin{align}
 \nn
@@ -155,7 +155,7 @@ We now compute the two sides of \eqref{eq:EL-BW} separately:
 \end{align}
 
 
-\paragraph{The left-hand side of \eqref{eq:EL-BW}: $\coder$.}
+\paragraph{The left-hand side of \eqref{eq:el-bw}: $\coder$.}
 ~Computing $\coder$ is significantly trickier than $-\gradBW\penergyBW$. The central piece of the proof is the following technical lemma:
 \begin{lemma}
 \label{lem:lyap}
@@ -169,13 +169,13 @@ Define the matrix $\Ht$ to be:
 \end{equation}
 Moreover, $\Ht$ satisfies the following identity:
 \begin{equation}
-\label{eq:Ht-id}
+\label{eq:ht-id}
 \dHt - \Sigcurveinv \Ht^2 =- \frac{\sdev^4}{4} \Sigcurveinv.
 \end{equation}
 
 \end{lemma}
 
-Before commencing the proof of \cref{lem:lyap}, let us show how it readily leads us to \eqref{eq:EL-BW}.
+Before commencing the proof of \cref{lem:lyap}, let us show how it readily leads us to \eqref{eq:el-bw}.
 
 Recall the definition of $\coder$ in \eqref{eq:coderBW}. First, note that, by \eqref{eq:solMain} and \eqref{eq:Ht},
 \begin{align}
@@ -201,7 +201,7 @@ By noting, again from \cref{lem:lyap},
 \end{align}
 we thus get
 \begin{align}\nn
- \Sigcurve \parens*{\lyap}^2 + \parens*{\lyap}^2 \Sigcurve- \parens*{  \lyap \dSigcurve + \dSigcurve\lyap } 
+ \Sigcurve \parens*{\lyap}^2 &+ \parens*{\lyap}^2 \Sigcurve- \parens*{  \lyap \dSigcurve + \dSigcurve\lyap } \\
  &= \parens*{\Ht - \dSigcurve} \lyap + \lyap \parens*{\Ht^\top - \dSigcurve} \\
  \nn
  &= - \parens*{ \Ht^\top\lyap + \lyap \Ht  }
@@ -209,15 +209,15 @@ we thus get
 \begin{align}
 \label{eq:holdBW1}
 \coder &= 2\dHt - 2 \Sigcurveinv\Ht^2.
-\end{align}In lieu of \eqref{eq:EL-BW}, \eqref{eq:gradBWU}, and \eqref{eq:holdBW1}, the proof of \eqref{eq:LagBW} can thus be reduced to showing
+\end{align}In lieu of \eqref{eq:el-bw}, \eqref{eq:gradBWU}, and \eqref{eq:holdBW1}, the proof of \eqref{eq:LagBW} can thus be reduced to showing
 \begin{align}
 2\dHt -  2\Sigcurveinv\Ht^2 = -\frac{\sdev^4}{2} \Sigcurveinv
-\end{align}which is exactly \eqref{eq:Ht-id}.
+\end{align}which is exactly \eqref{eq:ht-id}.
 
 
 
 \begin{proof}[Proof of \cref{lem:lyap}] 
-We now prove \cref{lem:lyap}. We begin by proving some useful identities that will inspire our proof for the general \acrshortpl{GSB} in \cref{sec:results}.
+We now prove \cref{lem:lyap}. We begin by proving some useful identities that will inspire our proof for the general \acrshortpl{GSB} in \cref{sec:results_gsbflow}.
 
 \paragraph{Useful identities.}
 ~First, note that the definition of $\C$ immediately implies $\C \Sigma = \Sigma \C^\top$. In addition, we have
@@ -331,7 +331,7 @@ i.e., $\lyap = \Ht^\top\Sigcurveinv$.
 
 
 
-\paragraph{Proof of \eqref{eq:Ht-id}}
+\paragraph{Proof of \eqref{eq:ht-id}}
 
 We next compute
 \begin{align}
@@ -367,7 +367,7 @@ We thus get, by combining \eqref{eq:Pteq} \eqref{eq:Qteq}
 \label{eq:holdBW3}
 &= \Sigcurve \dHt + \frac{\sdev^4}{4}\eye
 \end{align}
-where the third equality follows from \eqref{eq:Pteq}, \eqref{eq:Qteq}, and \eqref{eq:PtQtt}-\eqref{eq:QttPt}, and the fifth equality follows from \eqref{eq:Ht}. Multiplying both sides of \eqref{eq:holdBW3} by $\Sigcurveinv$ from the right yields the desired \eqref{eq:Ht-id}. 
+where the third equality follows from \eqref{eq:Pteq}, \eqref{eq:Qteq}, and \eqref{eq:PtQtt}-\eqref{eq:QttPt}, and the fifth equality follows from \eqref{eq:Ht}. Multiplying both sides of \eqref{eq:holdBW3} by $\Sigcurveinv$ from the right yields the desired \eqref{eq:ht-id}. 
 \end{proof}
 
 
@@ -414,7 +414,7 @@ We are now ready to finish the proof of \cref{thm:mechanics}. By \citet{leonard2
 &=   \nconst \parens*{-\frac{1}{2} (\det\Sigmasol)^{-\frac{3}{2}}}  
 \cdot\det\Sigmasol\cdot \tr \Sigmasolinv \dSigmasol \exp\parens*{ -\frac{1}{2}\point^\top \Sigmasolinv\point   } \\
 \nn
-&\hspace{20mm}+ \nconst (\det\Sigmasol)^{-\frac{1}{2}} \exp\parens*{ -\frac{1}{2}\point^\top \Sigmasolinv\point   } \cdot \parens*{\frac{1}{2} \point^\top \Sigmasolinv \dSigmasol \Sigmasolinv \point} \\
+&\hspace{10mm}+ \nconst (\det\Sigmasol)^{-\frac{1}{2}} \exp\parens*{ -\frac{1}{2}\point^\top \Sigmasolinv\point   } \cdot \parens*{\frac{1}{2} \point^\top \Sigmasolinv \dSigmasol \Sigmasolinv \point} \\
 \label{eq:pt-m}
 &= \measure(\point) \cdot \parens*{ \frac{1}{2} \point^\top \Sigmasolinv \dSigmasol \Sigmasolinv \point -\frac{1}{2}\tr \Sigmasolinv \dSigmasol }.
 \end{align}
@@ -507,7 +507,7 @@ Recall that $\nabla \entropy= \nabla\parens*{ -\frac{1}{2} \log\det \covbase - \
 &= \frac{\sdev^4}{4}\innerBW[\gradBW \entropy][\gradBW \entropy][\covbase] \\
 &= \frac{\sdev^4}{4} \tr \lyap[\covbase][\gradBW \entropy]\covbase\lyap[\covbase][\gradBW \entropy] \\
 &= \frac{\sdev^4}{4} \tr \lyap[\covbase][\lyapinv[\covbase][2\nabla \entropy]]\covbase\lyap[\covbase][\lyapinv[\covbase][2\nabla \entropy]] \\
-&= \frac{\sdev^4}{4} (-\covbase^{-1})\covbase(-\covbase^{-1})=\frac{\sdev^4}{4}\covbase^{-1}. \qed
+&= \frac{\sdev^4}{4} (-\covbase^{-1})\covbase(-\covbase^{-1})=\frac{\sdev^4}{4}\covbase^{-1}.
 \end{align*}
 \end{proof}
 
@@ -562,16 +562,16 @@ Notice that
 \pot + \rpot = \sdev^2 \log \measure
 \end{align}which is a well-known feature of the solutions to the forward and backward Schr\"odinger systems \citep{chen2021stochastic,leonard2013survey}.
 
-
+\newpage
 %----------------------------------------------------------------------
 %%% PROOF OF GAUSSIAN SB
 %----------------------------------------------------------------------
 \section{Proof of the Closed-Form Solutions for Gaussian Schr\"odinger Bridges}
-\label{app:GaussianSB}
+\label{app:gaussian_sb}
 
 
-\subsection{Preliminaries for the Proof of \cref{thm:GaussianSB}}
-\label{app:PrelimproofGSB}
+\subsection{Preliminaries for the Proof of \cref{thm:gaussian_sb}}
+\label{app:prelimproof_gsb}
 
 
 We need a technical lemma that is intimately related to the ``central identity of quantum field theory'' \citep{zee2010quantum}; the version below is adopted from \citep{126767}, wherein the readers can find an easy proof.
@@ -590,14 +590,15 @@ Lastly, we recall the elementary
 \begin{lemma}[Conditional Gaussians are Gaussian]
 \label[lemma]{lem:Cond-Gaussians}
 Let 
-
-$(Y_0, Y_1) \sim \Ncal \parens*{  \begin{bmatrix}
+\begin{align*}
+(Y_0, Y_1) \sim \Ncal \parens*{  \begin{bmatrix}
 \mu_0 \\
 \mu_1
 \end{bmatrix},  \begin{bmatrix}
 \Sigma_{00}& \Sigma_{01}\\
 \Sigma_{10}&\Sigma_{11}
-\end{bmatrix}}$. 
+\end{bmatrix}}. 
+\end{align*}
 
 Then $Y_0 \vert Y_1 = y \sim \Ncal( \check{\mu}, \check{\Sigma})$ where
 \begin{align}
@@ -613,7 +614,7 @@ Then $Y_0 \vert Y_1 = y \sim \Ncal( \check{\mu}, \check{\Sigma})$ where
 
 
 
-We are now ready for the proof. For convenience, we restate \cref{thm:GaussianSB} below:
+We are now ready for the proof. For convenience, we restate \cref{thm:gaussian_sb} below:
 \GaussianSB*
 
 
@@ -642,7 +643,7 @@ is the generator for the process \eqref{eq:GSB-forward-sol}.
 \item Proof concludes by matching terms in \eqref{eq:semi-gen} and \eqref{eq:gen-def}.\qed
 \end{enumerate}
 
-\begin{proof}[Proof of \cref{thm:GaussianSB}]
+\begin{proof}[Proof of \cref{thm:gaussian_sb}]
 From now on, we will invoke the notations in \eqref{eq:functions} without explicit mentions.
 
 \paragraph{The static Gaussian SB.}
@@ -658,8 +659,10 @@ over all $\Psta$ having marginals $\Ncal\parens*{  \m, \covar }$ and $\Ncal\pare
 Recall that, conditioned on $\refsde[0]$, $\refsde \sim \refpro$ is a Gaussian process with mean \eqref{eq:mYdef} and covariance \eqref{eq:covYdef}. Thus, if we only consider the endpoint marginal distributions $(\refsde[0], \refsde[\horizon])$, it is easy to derive the transition probability:
 
 \begin{align}
-\refprobase\parens*{   \refsde[\horizon] = y_\horizon \middle| \refsde[0] = y_0 } &= \Nconst  \det \parens*{\kernel[\horizon][\horizon] \eye }^{-\frac{1}{2}} \exp\parens*{  -\frac{1}{2}  \parens*{y_\horizon - \mYcinit[\horizon]}^\top  \parens*{\kernel[\horizon][\horizon] \eye }^{-1}\parens*{y_\horizon - \mYcinit[\horizon]} } \\
-&= \Nconst  \det \parens*{\kernel[\horizon][\horizon] \eye }^{-\frac{1}{2}} \exp\parens*{  -\frac{1}{2\kernel[\horizon][\horizon]}  \norm*{  y_\horizon - \aggtime[\horizon] y_0  - \tshift[\horizon]   }^2}.
+\refprobase\parens*{   \refsde[\horizon] = y_\horizon \middle| \refsde[0] = y_0 } &= \Nconst  \det \parens*{\kernel[\horizon][\horizon] \eye }^{-\frac{1}{2}} \exp(  \\
+\nn & \qquad-\frac{1}{2}  \parens*{y_\horizon - \mYcinit[\horizon]}^\top  \parens*{\kernel[\horizon][\horizon] \eye }^{-1}\parens*{y_\horizon - \mYcinit[\horizon]} ) \\
+&= \Nconst  \det \parens*{\kernel[\horizon][\horizon] \eye }^{-\frac{1}{2}} \exp( \\ 
+\nn & \qquad-\frac{1}{2\kernel[\horizon][\horizon]}  \norm*{  y_\horizon - \aggtime[\horizon] y_0  - \tshift[\horizon]   }^2).
 \end{align}
 
 Therefore, abusing the notation by continually writing $\Psta$ as the relative density of $\Psta$ with respect to the Lebesgue measure, we get
@@ -668,7 +671,8 @@ Therefore, abusing the notation by continually writing $\Psta$ as the relative d
 \label{eq:KLsta}
 \KL{\Psta}{\Qsta} &= \int_{\R^\vdim \times \R^\vdim}  \log \frac{\dd \Psta } {\dd \Qsta} \dd \Psta \\
 \label{eq:hold}
-&=   \const +  \frac{1}{2 \kernel[\horizon][\horizon]} \int_{\R^\vdim \times \R^\vdim}  \norm*{  y' - \aggtime[\horizon] y   - \aggtime[\horizon]\tshift[\horizon]    }^2  \dd \Psta(y,y') +  \intRR \log  \Psta  \dd \Psta.
+&=   \const +  \frac{1}{2 \kernel[\horizon][\horizon]} \int_{\R^\vdim \times \R^\vdim}  \norm*{  y' - \aggtime[\horizon] y   - \aggtime[\horizon]\tshift[\horizon]    }^2  \dd \Psta(y,y') \\
+\nn &\qquad\qquad+  \intRR \log  \Psta  \dd \Psta.
 \end{align}
 
 If $\Psta$ is a joint distribution with marginals $Y \sim \Ncal\parens*{ \m, \covar}$ and $Y'\sim\Ncal\parens*{ \malt, \covaralt}$, then the change of variable $\tilde{Y} = \aggtime[\horizon]Y + \tshift[\horizon]$ gives rise to a joint distribution $\tPsta$ having marginals $\tilde{Y} \sim \Ncal\parens*{ \tm, \tcovar}$ and $Y'\sim\Ncal\parens*{ \malt, \covaralt}$, where
@@ -692,7 +696,8 @@ Therefore, minimizing \eqref{eq:KLsta} over $\Psta$ is equivalent to
 
 \begin{align}
 \label{eq:tPstasol}
-\min_{ \tPsta} \KL{ \tPsta }{ \Qsta}\equiv \min_{ \tPsta}\; \intRR  \frac{ \norm*{ y - y'}_2^2}{2} \dd \tPsta(y, y') +  \kernel[\horizon][\horizon]\intRR \log  \tPsta  \dd \tPsta.
+\min_{ \tPsta} \KL{ \tPsta }{ \Qsta}\equiv &\min_{ \tPsta}\; \intRR  \frac{ \norm*{ y - y'}_2^2}{2} \dd \tPsta(y, y') \\
+&+  \kernel[\horizon][\horizon]\intRR \log  \tPsta  \dd \tPsta.
 \end{align}
 
 By \eqref{eq:StaticGaussianSB-sol}, the solution to \eqref{eq:tPstasol} is given by the joint Gaussian 
@@ -736,7 +741,6 @@ The optimal static Gaussian \acrshort{SB} $\Pstasol$ is then given by the invers
 For future use, we will need the distribution of $\refsde$ conditioned on $\refsde[0]$ and $\refsde[\horizon]$. When $\refsde \equiv \Wiener$, the distribution is called the \emph{Brownian bridge}, which is in itself an important subject in mathematics and financial engineering \citep{mansuy2008aspects}. We thus term the conditional distribution of $\refsde$ the \emph{$\refprobase$\textendash Bridges}.
 
 From \eqref{eq:mYdef} and \eqref{eq:covYdef}, one can infer that, given $\refsde[0]$, the joint distribution of $\parens*{\refsde,\refsde[\horizon]}$ is 
-
 \begin{align}
 \refsde,\refsde[\horizon] \vert \refsde[0] \sim  \Ncal \parens*{  \begin{bmatrix}
 \mYcinit[\ctime] \\
@@ -764,8 +768,9 @@ and covariance process (for any $\ctime' \geq \ctime$)
 
 \begin{align}
 \label{eq:QBridgecov}
-\exof*{ \parens*{ \refsde - \exof{  \refsde \given \refsde[0], \refsde[\horizon] } }\parens*{ \refsde[\ctime'] - \exof{  \refsde[\ctime'] \given \refsde[0], \refsde[\horizon] } }^\top \given \refsde[0], \refsde[\horizon]  } 
-&= \parens*{   \kernel - \frac{\kernel[\ctime][\horizon] \kernel[\ctime'][\horizon]}{ \kernel[\horizon][\horizon]} } \eye.
+&\exof*{ \parens*{ \refsde - \exof{  \refsde \given \refsde[0], \refsde[\horizon] } }\parens*{ \refsde[\ctime'] - \exof{  \refsde[\ctime'] \given \refsde[0], \refsde[\horizon] } }^\top \given \refsde[0], \refsde[\horizon]  } \\
+\nn 
+&\quad\quad\quad= \parens*{   \kernel - \frac{\kernel[\ctime][\horizon] \kernel[\ctime'][\horizon]}{ \kernel[\horizon][\horizon]} } \eye.
 \end{align}
 
 Since a Gaussian process is uniquely determined by its mean and covariance processes, we have, for some Gaussian process $\xi_t$ independent of $\refsde$ having zero mean and covariance process \eqref{eq:QBridgecov},
@@ -784,7 +789,7 @@ The disintegration formula of $\KL{\cdot}{\cdot}$ \citep{leonard2013survey} impl
 \Xsol \eqlaw \ratioc \Xsol[0] + \ratio \Xsol[\horizon] + \tshift - \ratio \tshift + \xi_\ctime
 \end{align}
 
-from which \eqref{eq:meansol} and \eqref{eq:covsol} follow by a straightforward calculation. Furthermore, in view of \eqref{eq:Pstasol} and \eqref{eq:Xsol}, $\Xsol$ is obviously a Gaussian process. Finally, since $\refpro$ is a Markov process, \cite[Theorem 2.12]{leonard2013survey} implies that $\Psol$ is also Markov. This concludes the first half of \cref{thm:GaussianSB}.
+from which \eqref{eq:meansol} and \eqref{eq:covsol} follow by a straightforward calculation. Furthermore, in view of \eqref{eq:Pstasol} and \eqref{eq:Xsol}, $\Xsol$ is obviously a Gaussian process. Finally, since $\refpro$ is a Markov process, \cite[Theorem 2.12]{leonard2013survey} implies that $\Psol$ is also Markov. This concludes the first half of \cref{thm:gaussian_sb}.
 
 
 \paragraph{The SDE representation of $\Xsol$}
@@ -809,10 +814,14 @@ We first compute the first-order approximation of $\Sigmasol$. In view of \eqref
 
 \begin{align}
 \nn
-\dSigmasol &= 2 \dratioc\ratioc \covar + 2 \dratio\ratio \covaralt + \parens*{  \dratio\ratioc + \ratio\dratioc } \parens*{ \Cs + \Cs^\top} + \parens*{  \frac{\del}{\del \ctime} \kernel[\ctime][\ctime] - \dratio \kernel[\ctime][\horizon] - \ratio \frac{\del}{\del \ctime} \kernel[\ctime][\horizon]  }\eye \\
+\dSigmasol &= 2 \dratioc\ratioc \covar + 2 \dratio\ratio \covaralt + \parens*{  \dratio\ratioc + \ratio\dratioc } \parens*{ \Cs + \Cs^\top} \\
 \nn
-&= \dratio \parens*{   \ratio \covaralt + \ratioc \Cs + \ratio \covaralt + \ratioc \Cs^\top  } + \dratioc \parens*{   \ratioc \covar + \ratio \Cs + \ratioc \covar + \ratio \Cs^\top  } + \parens*{  \frac{\del}{\del \ctime} \kernel[\ctime][\ctime] -2 \dratio \kernel[\ctime][\horizon]  }\eye\\
-\label{eq:dSigmasol}
+&\qquad\qquad+ \Big(  \frac{\del}{\del \ctime} \kernel[\ctime][\ctime] - \dratio \kernel[\ctime][\horizon] - \ratio \frac{\del}{\del \ctime} \kernel[\ctime][\horizon]  \Big)\eye \\
+\nn
+&= \dratio \parens*{   \ratio \covaralt + \ratioc \Cs + \ratio \covaralt + \ratioc \Cs^\top  } + \dratioc \parens*{   \ratioc \covar + \ratio \Cs + \ratioc \covar + \ratio \Cs^\top  } \\
+\nn
+&\qquad\qquad+ \Big(  \frac{\del}{\del \ctime} \kernel[\ctime][\ctime] -2 \dratio \kernel[\ctime][\horizon]  \Big)\eye\\
+\label{eq:dsigmasol}
 &= \parens*{ \Pt + \Pt^\top } - \parens*{ \Qt + \Qt^\top } + \parens*{  \frac{\del}{\del \ctime} \kernel[\ctime][\ctime] -2 \dratio \kernel[\ctime][\horizon]  }\eye.
 \end{align}
 
@@ -823,13 +832,17 @@ Next, let $K_{\ctime,\ctime + h}$ denote the covariance process of $\Xsol$. We c
 K_{\ctime, \ctime + h} &\defeq \exof*{  \parens*{\Xsol-\meansol} \parens*{\Xsol[\ctime+h]-\meansol[\ctime+h]}^\top   } \\
 \nn
 &=  \ratioc\ratioc[\ctime+h] \covar + \ratio \ratio[\ctime+h] \covaralt + \ratioc \ratio[\ctime+h] \Cs + \ratio\ratioc[\ctime+h]\Cs^\top 
-+ \parens*{ \kernel[\ctime][\ctime+h] - \ratio[\ctime+h] \kernel[\ctime][\horizon] }\eye \\
++ \Big( \kernel[\ctime][\ctime+h] \\
 \nn
-&= \Sigmasol + \ratioc(\ratioc[\ctime+h]-\ratioc) \covar + \ratio(\ratio[\ctime+h] - \ratio) \covaralt + \ratioc(\ratio[\ctime+h] - \ratio) \Cs + \ratio( \ratioc[\ctime+h] -\ratioc) \Cs^\top \\
+&\qquad- \ratio[\ctime+h] \kernel[\ctime][\horizon] \Big) \eye \\
 \nn
-&\hspace{70mm}+ \parens*{ \kernel[\ctime][\ctime+h] - \kernel[\ctime][\ctime] - \ratio[\ctime+h] \kernel[\ctime][\horizon] + \ratio\kernel[\ctime][\horizon] }\eye \\
+&= \Sigmasol + \ratioc(\ratioc[\ctime+h]-\ratioc) \covar + \ratio(\ratio[\ctime+h] - \ratio) \covaralt + \ratioc(\ratio[\ctime+h] - \ratio) \Cs \\
 \nn
-&= \Sigmasol + \frac{\ratio[\ctime+h] - \ratio}{\dratio} \Pt - \frac{\ratioc[\ctime+h] - \ratioc}{\dratioc} \Qt^\top + \parens*{ \kernel[\ctime][\ctime+h] - \kernel[\ctime][\ctime] - \ratio[\ctime+h] \kernel[\ctime][\horizon] + \ratio\kernel[\ctime][\horizon] }\eye \\
+&\qquad+ \ratio( \ratioc[\ctime+h] -\ratioc) \Cs^\top + \parens*{ \kernel[\ctime][\ctime+h] - \kernel[\ctime][\ctime] - \ratio[\ctime+h] \kernel[\ctime][\horizon] + \ratio\kernel[\ctime][\horizon] }\eye \\
+\nn
+&= \Sigmasol + \frac{\ratio[\ctime+h] - \ratio}{\dratio} \Pt - \frac{\ratioc[\ctime+h] - \ratioc}{\dratioc} \Qt^\top + \Big( \kernel[\ctime][\ctime+h] \\
+\nn
+&\qquad- \kernel[\ctime][\ctime] - \ratio[\ctime+h] \kernel[\ctime][\horizon] + \ratio\kernel[\ctime][\horizon] \Big)\eye \\
 \label{eq:hold5}
 &= \Sigmasol + h \braces*{  \Pt - \Qt^\top +  \bracks*{ \parens*{\frac{\del}{\del \ctime'}\kernelbase }(\ctime, \ctime) - \dratio \kernel[\ctime][\horizon] } \eye } + o(h),
 \end{align}
@@ -860,13 +873,13 @@ Combining \eqref{eq:6} and \eqref{eq:7}, using the fact that $\ratio \kernel[\ct
 \begin{align}
 \nn
 K_{\ctime, \ctime + h} &= \Sigmasol + h \braces*{  \Pt - \Qt^\top + \bracks*{\drift\kernel[\ctime][\ctime] \parens*{1- \efftr} - \volatsq[\ctime] \efftr} \eye } + o(h)  \\
-\label{eq:Kapprox}
+\label{eq:kapprox}
 &= \Sigmasol + h \St + o(h).
 \end{align}
 
 
 
-We are now ready to derive \eqref{eq:GSB-forward-sol}. By \cref{lem:Cond-Gaussians}, the random variable $\Xsol[\ctime+h]$ conditioned on $\Xsol = \point$ follows $\Ncal\parens*{  \muc, \Sigmac }$ where, by \eqref{eq:Kapprox},
+We are now ready to derive \eqref{eq:GSB-forward-sol}. By \cref{lem:Cond-Gaussians}, the random variable $\Xsol[\ctime+h]$ conditioned on $\Xsol = \point$ follows $\Ncal\parens*{  \muc, \Sigmac }$ where, by \eqref{eq:kapprox},
 
 \begin{align}
 \nn
@@ -877,7 +890,7 @@ We are now ready to derive \eqref{eq:GSB-forward-sol}. By \cref{lem:Cond-Gaussia
 &= \point + h \parens*{  \St^\top \Sigmasolinv\parens*{ \point - \meansol  } + \dmeansol } + o(h),
 \end{align}
 
-and, by \eqref{eq:dSigmasol} and \eqref{eq:hold5},
+and, by \eqref{eq:dsigmasol} and \eqref{eq:hold5},
 
 \begin{align}
 \nn
@@ -907,17 +920,21 @@ However, by \eqref{eq:covYdef}, we have
 from which \eqref{eq:2} simplifies to
 
 \begin{equation}
-\label{eq:Sigmacapprox}
+\label{eq:sigmacapprox}
 \Sigmac = h \volatsq[\ctime] \eye + o(h).
 \end{equation}
 
 We can now compute $\exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = \point  }$ as follows:
 
+% TODO: Get feedback on most elegant way of breaking equations.
 \begin{align}
 \nn
-\exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = \point  } &=  \Nconst  \parens*{\det \Sigmac}^{-\frac{1}{2}} \intR \testf[\ctime+h][\pointalt] \exp\parens*{-\frac{1}{2} \parens*{\pointalt - \muc}^\top \Sigmacinv\parens*{\pointalt - \muc}} \dd \pointalt \\
+\exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = \point  } &=  \Nconst  \parens*{\det \Sigmac}^{-\frac{1}{2}} \intR \testf[\ctime+h][\pointalt] \exp\big( \\
+&\qquad -\frac{1}{2} \parens*{\pointalt - \muc}^\top \Sigmacinv\parens*{\pointalt - \muc}\big) \dd \pointalt \\
+\nn
+&= \Nconst\parens*{\det \Sigmac}^{-\frac{1}{2}} \intR \testf[\ctime+h][\pointalt + \muc]  \exp\big( \\
 \label{eq:3}
-&= \Nconst\parens*{\det \Sigmac}^{-\frac{1}{2}} \intR \testf[\ctime+h][\pointalt + \muc]  \exp\parens*{-\frac{1}{2} \pointalt^\top \Sigmacinv\pointalt } \dd \pointalt.
+&\qquad  -\frac{1}{2} \pointalt^\top \Sigmacinv\pointalt \big) \dd \pointalt.
 \end{align}
 
 Invoking \cref{lem:centralid}, we see that \eqref{eq:3} can be evaluated as
@@ -927,11 +944,13 @@ Invoking \cref{lem:centralid}, we see that \eqref{eq:3} can be evaluated as
 \exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = \point  } &=  \left.\exp\parens*{ \frac{1}{2} \del_{\pointalt}^\top \Sigmac \del_{\pointalt}}  \testf[\ctime+h][\pointalt + \muc]\right\vert_{\pointalt = 0}.
 \end{align}
 
-Since $\Sigmac = h\volatsq[\ctime]\eye + o(h) $ by \eqref{eq:Sigmacapprox}, expanding the power series $\exp\parens*{ \frac{1}{2} \del_{\pointalt}^\top \Sigmac \del_{\pointalt}} $ and ignoring every $o(h)$ terms, \eqref{eq:4} becomes
+Since $\Sigmac = h\volatsq[\ctime]\eye + o(h) $ by \eqref{eq:sigmacapprox}, expanding the power series $\exp\parens*{ \frac{1}{2} \del_{\pointalt}^\top \Sigmac \del_{\pointalt}} $ and ignoring every $o(h)$ terms, \eqref{eq:4} becomes
 
 \begin{align}
 \nn
-\exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = \point  } &=  \left. \parens*{\testf[\ctime+h][\pointalt + \muc] + \frac{h\volatsq[\ctime]}{2}\Laplace \testf[\ctime+h][\pointalt + \muc]}\right\vert_{\pointalt = 0} + o(h) \\
+\exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = \point  } &=  \left. \parens*{\testf[\ctime+h][\pointalt + \muc] + \frac{h\volatsq[\ctime]}{2}\Laplace \testf[\ctime+h][\pointalt + \muc]}\right\vert_{\pointalt = 0}  \\
+\nn
+&\qquad\qquad+ o(h) \\
 \label{eq:5}
 &= \testf[\ctime+h][ \muc] + \frac{h\volatsq[\ctime]}{2}\Laplace \testf[\ctime+h][ \muc] + o(h).
 \end{align}
@@ -940,14 +959,16 @@ Recalling from \eqref{eq:mucapprox} that $\muc = \point + h \parens*{  \St^\top 
 
 \begin{align}
 \nn
-\exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = \point  } &= \testf[\ctime+h][\point] + h\parens*{ \frac{\volatsq[\ctime]}{2}\Laplace \testf[\ctime+h][ \point] + \inner*{ \nabla \testf[\ctime+h][\point]}{ \St^\top \Sigmasolinv\parens*{ \point - \meansol  } + \dmeansol }} + o(h)
+\exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = \point  } &= \testf[\ctime+h][\point] + h\Big( \frac{\volatsq[\ctime]}{2}\Laplace \testf[\ctime+h][ \point] \\
+	&\qquad + \inner*{ \nabla \testf[\ctime+h][\point]}{ \St^\top \Sigmasolinv\parens*{ \point - \meansol  } + \dmeansol } \Big) + o(h)
 \end{align}
 
 whence 
 
 \begin{align}
 \nn
-\lim_{ h\to 0}  \frac{  \exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = x }  - \testf  }{h} = \frac{\del}{\del \ctime} \testf +  \frac{\volatsq[\ctime]}{2} \Laplace \testf +  \inner*{  \nabla \testf }{ \St^\top \Sigmasolinv\parens*{ \point - \meansol  } + \dmeansol  }.
+\lim_{ h\to 0}  \frac{  \exof*{ \testf[\ctime+h][\Xsol[\ctime+h]] \given \Xsol = x }  - \testf  }{h} = &\frac{\del}{\del \ctime} \testf +  \frac{\volatsq[\ctime]}{2} \Laplace \testf \\
+ &+  \inner*{  \nabla \testf }{ \St^\top \Sigmasolinv\parens*{ \point - \meansol  } + \dmeansol  }.
 \end{align}
 
 This is exactly \eqref{eq:gensde} with $\GSBf \subs \St^\top \Sigmasolinv\parens*{ \point - \meansol  } + \dmeansol$, which concludes the proof for \eqref{eq:GSB-forward-sol} and \eqref{eq:GSB-forward}.

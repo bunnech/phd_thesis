@@ -1,4 +1,4 @@
- Machine Learning - Main Conferences / Journals
+Machine Learning - Main Conferences / Journals
 @string{uaii="Uncertainty in Artificial Intelligence (UAI)"}
 @string{icml="International Conference on Machine Learning (ICML)"}
 @string{nips="Advances in Neural Information Processing Systems (NeurIPS)"}
@@ -6,21 +6,23 @@
 @string{iclr="International Conference on Learning Representations (ICLR)"}
 @string{iclrws="International Conference on Learning Representations (ICLR), Workshop Track"}
 @string{mlsp="IEEE International Workshop for Machine Learning in Signal Processing"}
+@string{tmlr="Transactions on Machine Learning Research (TMLR)"}
+@string{aabi="Advances in Approximate Bayesian Inference (AABI)"}
 
- NLP
+NLP
 @string{acl="Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL)"}
 @string{conll="SIGNLL Conference on Computational Natural Language Learning (CoNLL)"}
 @string{emnlp="Conference on Empirical Methods in Natural Language Processing (EMNLP)"}
 @string{tacl="Transactions of the Association for Computational Linguistics (TACL)"}
 
- Vision
+Vision
 @string{cvpr="IEEE Conference on Computer Vision and Pattern Recognition (CVPR)"}
 @string{ijcv="International Journal of Computer Vision"}
 @string{iccv="International Conference on Computer Vision (ICCV)"}
 @string{eccv="European Conference on Computer Vision (ECCV)"}
 @string{siggraph="Proceedings of SIGGRAPH"}
 
- Theory
+Theory
 @string{tcs="Theoretical Computer Science"}
 @string{soda="SIAM-ACM Symposium on Discrete Algorithms (SODA)"}
 @string{focs="IEEE Symposium on Foundations of Computer Science (FOCS)"}
@@ -28,13 +30,13 @@
 @string{stoc="Symposium on Theory of Computing (STOC)"}
 @string{icalp="International Colloquium on Automata, Languages and Programming (ICALP)"}
 
- Robotics
+Robotics
 @string{icra="IEEE International Conference on Robotics and Automation (ICRA)"}
 
- Statistics
+Statistics
 @string{uai="Conference on Uncertainty in Artificial Intelligence (UAI)"}
 
- Misc AI
+Misc AI
 @string{jair="Journal or Artificial Intelligence Research"}
 @string{aaai="AAAI Conference on Artificial Intelligence"}
 @string{aistats="International Conference on Artificial Intelligence and Statistics (AISTATS)"}
@@ -64,9 +66,92 @@
 @string{ang="Angew. Chem., Int. Ed."}
 
 
-@inproceedings{bunne2022supervised,
-  title={{Supervised Training of Conditional Monge Maps}},
-  author={Bunne, Charlotte and Krause, Andreas and Cuturi, Marco},
-  booktitle=nips,
-  year={2022}
+
+@Article{	  ownbunne2021learning,
+  title		= {{Learning Single-Cell Perturbation Responses using Neural
+		  Optimal Transport}},
+  author	= {Bunne, Charlotte and Stark, Stefan G and Gut, Gabriele and
+		  del Castillo, Jacobo Sarabia and Lehmann, Kjong-Van and
+		  Pelkmans, Lucas and Krause, Andreas and Ratsch, Gunnar},
+  journal	= {Nature Methods},
+  year		= {2023},
+  publisher	= {Nature Publishing Group}
+}
+
+@InProceedings{	  ownbunne2022proximal,
+  title		= {{Proximal Optimal Transport Modeling of Population
+		  Dynamics}},
+  author	= {Bunne, Charlotte and Meng-Papaxanthos, Laetitia and
+		  Krause, Andreas and Cuturi, Marco},
+  booktitle	= aistats,
+  year		= {2022},
+  volume	= {25}
+}
+
+@InProceedings{	  ownbunne2022recovering,
+  title		= {{The Schr\"odinger Bridge between Gaussian Measures has a
+		  Closed Form}},
+  author	= {Bunne, Charlotte and Hsieh, Ya-Ping and Cuturi, Marci and
+		  Krause, Andreas},
+  booktitle	= aistats,
+  year		= {2023}
+}
+
+@InProceedings{	  ownbunne2022supervised,
+  title		= {{Supervised Training of Conditional Monge Maps}},
+  author	= {Bunne, Charlotte and Krause, Andreas and Cuturi, Marco},
+  booktitle	= nips,
+  year		= {2022}
+}
+
+@Article{	  owncuturi2022optimal,
+  title		= {{Optimal Transport Tools (OTT): A JAX Toolbox for all
+		  things Wasserstein}},
+  author	= {Cuturi, Marco and Meng-Papaxanthos, Laetitia and Tian,
+		  Yingtao and Bunne, Charlotte and Davis, Geoff and Teboul,
+		  Olivier},
+  journal	= {arXiv Preprint arXiv:2201.12324},
+  year		= {2022}
+}
+
+@InProceedings{	  ownganea2022independent,
+  title		= {{Independent {SE}(3)-Equivariant Models for End-to-End
+		  Rigid Protein Docking}},
+  author	= {Octavian-Eugen Ganea and Xinyuan Huang and Charlotte Bunne
+		  and Yatao Bian and Regina Barzilay and Tommi S. Jaakkola
+		  and Andreas Krause},
+  booktitle	= iclr,
+  year		= {2022}
+}
+
+
+@Article{	  ownlubeck2022neural,
+  title		= {{Neural Unbalanced Optimal Transport via Cycle-Consistent
+		  Semi-Couplings}},
+  author	= {L{\"u}beck, Frederike and Bunne, Charlotte and Gut,
+		  Gabriele and del Castillo, Jacobo Sarabia and Pelkmans,
+		  Lucas and Alvarez-Melis, David},
+  journal	= {arXiv preprint arXiv:2209.15621},
+  year		= {2022}
+}
+
+@Article{	  ownschwaller2022machine,
+  title		= {Machine intelligence for chemical reaction space},
+  author	= {Schwaller, Philippe and Vaucher, Alain C and Laplaza,
+		  Ruben and Bunne, Charlotte and Krause, Andreas and
+		  Corminboeuf, Clemence and Laino, Teodoro},
+  journal	= {Wiley Interdisciplinary Reviews: Computational Molecular
+		  Science},
+  year		= {2022},
+  publisher	= {Wiley Online Library}
+}
+
+
+@InProceedings{	  ownsomnath2023aligned,
+  title		= {{Aligned Diffusion Schr\"odinger Bridges}},
+  author	= {Somnath, Vignesh Ram and Pariset, Matteo and Hsieh,
+		  Ya-Ping and Martinez, Maria Rodriguez and Krause, Andreas
+		  and Bunne, Charlotte},
+  booktitle	= uai,
+  year		= {2023}
 }
