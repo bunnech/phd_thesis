@@ -600,7 +600,7 @@ where \eqref{eq:GSB-sde-backward} runs backward in time. After parameterizing $\
 \begin{figure}[t]
      \centering
          \centering
-         \includegraphics[width=0.9\linewidth]{figures/fig_pred_gsbve_toy_spiral_moon.pdf}
+         \includegraphics[width=0.8\linewidth]{figures/fig_pred_gsbve_toy_spiral_moon.pdf}
          \caption{Illustration of the time-dependent drifts learned by \textsc{GSBflow} with VE SDE for two toy marginal distributions. \emph{Top.} Evolution of $\distend$ (moons) $\rightarrow \distinit$ (spiral) via backward policy {\color{blue} $\SBb$}. \emph{Bottom.} Evolution of $\distinit$ (spiral) $\rightarrow \distend$ (moons) via forward policy {\color{pink} $\SBf$}.}
         \label{fig:res_synthetic}
 \end{figure}
@@ -698,7 +698,7 @@ The evaluation is conducted on the first 20 or 30 components of the PCA space of
 % (\texttt{OTT}\footnote{\url{https://github.com/ott-jax/ott}})
 (see \cref{tab:exp_wasserstein_cells}) and by visualizing the first two principal components (PC), see \cref{fig:all_results}a,~b.
 \textsc{GSBflow} performs competitively on reconstructing embryoid body differentiation landscapes \citep{moon2019visualizing}, and outperforms score-based generative models baselines on the iPSC reprogramming task \citep{schiebinger2019optimal} as quantified by $W_\varepsilon$ between data and predictions.
-Further, we analyze \textsc{GSBflow}'s ability to predict the temporal evolution of embryoid body differentiation \citep{moon2019visualizing}, where cells measured at day 1 to 3 serve as samples of $\distinit$, while $\distend$ is constructed from samples between day 12 to 27. As no ground truth trajectories are available in the data, we compare the predicted evolution to the data and compare how well the heterogeneity of lineage (\cref{fig:all_results}c, upper panel) or sublineage branches (\cref{fig:res_evo_subbranches}a) is captured.
+Further, we analyze \textsc{GSBflow}'s ability to predict the temporal evolution of embryoid body differentiation \citep{moon2019visualizing}, where cells measured at day 1 to 3 serve as samples of $\distinit$, while $\distend$ is constructed from samples between day 12 to 27. As no ground truth trajectories are available in the data, we compare the predicted evolution to the data and compare how well the heterogeneity of lineage (\cref{fig:all_results}c, upper panel) is captured.
 \cref{fig:all_results}c (lower panel) thereby closely resembles the data (see $W_\varepsilon$ in \cref{fig:all_results}c) and thus demonstrate \textsc{GSBflow}'s ability to learn cell differentiation into various lineages and to capture biological heterogeneity on a more macroscopic level.
 
 

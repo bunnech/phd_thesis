@@ -7,7 +7,7 @@
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\linewidth]{figures/fig_overview_cells.pdf}
+    \includegraphics[width=.8\linewidth]{figures/fig_overview_cells.pdf}
     \caption{Overview of \textsc{SBalign}: In biological tasks such as protein docking, one is naturally provided with {\em aligned} data in the form of unbound and bound structures of participating proteins. Our goal is to therefore recover a stochastic trajectory from $\x_0$ to $\x_1$. To achieve this, we connect the characterization of an SDE conditioned on $\x_0$ and $\x_1$ (utilizing the Doob's \emph{$h$-transform}) with that of a Brownian bridge between $\x_0$ and $\x_1$ (classical Schr\"odinger bridge theory). We show that this leads to a simpler training procedure with lower variance and strong empirical results.}
     \label{fig:overview_proteins}
 \end{figure}
@@ -251,7 +251,7 @@ In this section, we evaluate \textsc{SBalign} in different settings involving 2-
     \label{fig:results_cell_traj}
 \end{figure*}
 
-We run our algorithm on two synthetic datasets (figures in \S~\ref{app:datasets}), and compare the results with classic Schr\"odinger bridge models, i.e., the forward-backward SB formulation proposed by \cite{chen2021likelihood}, herein referred to as \textsc{fbSB}. We equip the baseline with prior knowledge, as elaborated below, to further challenge \textsc{SBalign}.
+We run our algorithm on two synthetic datasets and compare the results with classic Schr\"odinger bridge models, i.e., the forward-backward SB formulation proposed by \cite{chen2021likelihood}, herein referred to as \textsc{fbSB}. We equip the baseline with prior knowledge, as elaborated below, to further challenge \textsc{SBalign}.
 
 \paragraph{Moon dataset.}
 The first synthetic dataset (Fig.~\ref{fig:results_spiral}a-c) consists of two distributions, each supported on two semi-circles ($\distinit$ drawn in \textit{blue} and $\distend$ in \textit{red}).

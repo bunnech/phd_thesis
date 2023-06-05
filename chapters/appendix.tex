@@ -8,7 +8,7 @@
      \includegraphics[width=\textwidth]{figures/fig_4i_analysis_extended.pdf}
 \end{figure}
 \captionof{figure}{
-\textbf{a.} High similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the single-cell level. Scatter plots compares the relationship between measured pERK values of cells (left) treated with Midostaurin (green dots), Palbociclib (blue dots), Panobinostat (red dots), and MLN2480 (purple dots) or (right) predicted for those drugs along the horizontal axis to their corresponding 3NN cells on the vertical axis. X mark, square, inverted triangle, and circle represent the mean of the respective measurements per drug. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{b.} The high similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the population level across all drug perturbations. Drug average of measured (blue dots) and predicted (green dots) pERK values compared to their respective 3NN measurement. Drug treatments highlighted in color correspond the those presented in panel \textbf{a.}. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{c.} Projection of measured perturbed and predicted perturbed cells in a shared UMAP space. Each cell is color-coded according to the perturbation from which it originates. \textbf{d.} Projection of mean-corrected measured perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation from which it originates. Mean correction was achieved by subtracting calculating the mean of every feature for all cells in the control condition and subtracting the calculated feature means from the feature values of individual cells. \textbf{e.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation model with which it was predicted. \textbf{f.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to its assignment to one of the 12 cell states. \textbf{g.} Feature value overview of the 12 identified cell states in DMSO-treated (control) cells. Each column represents a cell state, each row a feature. Circles are colored and scaled based on feature value, from small size in blue for low feature values, to large circles in yellow for high feature values. \textbf{h-j.} Drug effect overview of the 12 identified cell states in \textbf{h.} Staurosporine (apoptosis ind.m apoptosis inducer, \textbf{i.} Trametinib (MEKi, MEK inhibitor), MLN2480 (panRAFi, panRAF inhibitor), \textbf{j.} Trametinib + Midostaurin (Tram + Mido, MEK inhibitor + pan Receptor Tyrosine Kinase inhibitor (panRTK)), Midostaurin (panRTK). Each column represents a cell state, rows represent features. `cell-' stands for mean cell intensity. Circles are scaled based on drug effect, the larger the $\pm$ effect the larger the circles. Negative values are encoded in hues of blue, positive values in red hues of the respective circles. \textbf{k.} Effect of drug treatments on levels of cleaved Caspase 3 (cleaved Caspase 3) in the 12 identified cell states. Each column represents a cell state, each row a drug treatment.}
+\textbf{a.} High similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the single-cell level. Scatter plots compares the relationship between measured pERK values of cells (left) treated with Midostaurin (green dots), Palbociclib (blue dots), Panobinostat (red dots), and MLN2480 (purple dots) or (right) predicted for those drugs along the horizontal axis to their corresponding 3NN cells on the vertical axis. X mark, square, inverted triangle, and circle represent the mean of the respective measurements per drug. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{b.} The high similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the population level across all drug perturbations. Drug average of measured (blue dots) and predicted (green dots) pERK values compared to their respective 3NN measurement. Drug treatments highlighted in color correspond the those presented in panel \textbf{a.}. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{c.} Projection of measured perturbed and predicted perturbed cells in a shared UMAP space. Each cell is color-coded according to the perturbation from which it originates. \textbf{d.} Projection of mean-corrected measured perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation from which it originates. Mean correction was achieved by subtracting calculating the mean of every feature for all cells in the control condition and subtracting the calculated feature means from the feature values of individual cells. \textbf{e.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation model with which it was predicted. \textbf{f.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to its assignment to one of the 12 cell states. \textbf{g.} Feature value overview of the 12 identified cell states in DMSO-treated (control) cells. Each column represents a cell state, each row a feature. Circles are colored and scaled based on feature value, from small size in blue for low feature values, to large circles in yellow for high feature values. \textbf{h-j.} Drug effect overview of the 12 identified cell states in \textbf{h.} Staurosporine (apoptosis ind.m apoptosis inducer, \textbf{i.} Trametinib (MEKi, MEK inhibitor), MLN2480 (panRAFi, panRAF inhibitor), \textbf{j.} Trametinib + Midostaurin (Tram + Mido, MEK inhibitor + pan Receptor Tyrosine Kinase inhibitor (panRTK)), Midostaurin (panRTK). Each column represents a cell state, rows represent features. "cell-" stands for mean cell intensity. Circles are scaled based on drug effect, the larger the $\pm$ effect the larger the circles. Negative values are encoded in hues of blue, positive values in red hues of the respective circles. \textbf{k.} Effect of drug treatments on levels of cleaved Caspase 3 (cleaved Caspase 3) in the 12 identified cell states. Each column represents a cell state, each row a drug treatment.}
 \label{fig:4i_analysis_extended}
 
 \newpage
@@ -162,7 +162,7 @@ We now compute the two sides of \eqref{eq:el-bw} separately:
 Define the matrix $\Ht$ to be:
 \begin{equation}
 \label{eq:Ht}
-\Ht \defeq \ctime\Sigma' + \ctimebar \C - \ctimebar\Sigma - \ctime\C^\top + \frac{\sdev^2}{2}(\ctimebar-\ctime)\eye.
+\Ht \defeq \ctime\Sigma\prime + \ctimebar \C - \ctimebar\Sigma - \ctime\C^\top + \frac{\sdev^2}{2}(\ctimebar-\ctime)\eye.
 \end{equation}Then $\lyap = \Ht^\top \Sigcurveinv$. In other words, $\Ht^\top \Sigcurveinv$ is symmetric and solves the Lyapunov equation:
 \begin{equation}
   A: \quad  A\Sigcurve + \Sigcurve A= \dSigcurve.
@@ -180,7 +180,7 @@ Before commencing the proof of \cref{lem:lyap}, let us show how it readily leads
 Recall the definition of $\coder$ in \eqref{eq:coderBW}. First, note that, by \eqref{eq:solMain} and \eqref{eq:Ht},
 \begin{align}
 \label{eq:ddot}
-\frac{1}{2}\ddSigcurve &=   \Sigma+\Sigma' -  \parens*{  \C + \C^\top+ \sdev^2\eye }   \\
+\frac{1}{2}\ddSigcurve &=   \Sigma+\Sigma\prime -  \parens*{  \C + \C^\top+ \sdev^2\eye }   \\
 &=  \dHt.
 \end{align}
 On the other hand, \cref{lem:lyap} entails that
@@ -232,39 +232,39 @@ We now prove \cref{lem:lyap}. We begin by proving some useful identities that wi
 Recall from \citep{janati2020entropic} that $\C$ solves the following matrix equation:
 \begin{align}
 \label{eq:C}
-\C^2 + \sdev^2\C =  \Sigma\Sigma'.
+\C^2 + \sdev^2\C =  \Sigma\Sigma\prime.
 \end{align}
 We therefore have
 \begin{align*}
-\C &= \C^{-1} \Sigma\Sigma' - \sdev^2\eye, \\
-\C^\top &= \Sigma'\Sigma\C^{-\top} - \sdev^2\eye,
+\C &= \C^{-1} \Sigma\Sigma\prime - \sdev^2\eye, \\
+\C^\top &= \Sigma\prime\Sigma\C^{-\top} - \sdev^2\eye,
 \end{align*}which, together with \eqref{eq:Csym}, implies
 \begin{align}
 \nn
-\C^\top \Sigma' &= \Sigma'\Sigma \C^{-\top}\Sigma'-\sdev^2\Sigma'  \\
+\C^\top \Sigma\prime &= \Sigma\prime\Sigma \C^{-\top}\Sigma\prime-\sdev^2\Sigma\prime  \\
 \nn
-&=\Sigma' \C^{-1}\Sigma \Sigma'-\sdev^2\Sigma'   \\
+&=\Sigma\prime \C^{-1}\Sigma \Sigma\prime-\sdev^2\Sigma\prime   \\
 \label{eq:Ctsym}
-&= \Sigma' \C.
+&= \Sigma\prime \C.
 \end{align}
 
 
 Now, set $\Ht = \Pt - \Qt^\top + \frac{\sdev^2}{2}(\ctimebar-\ctime)\eye$ where
 \begin{align}
-\Pt \defeq \ctime \Sigma' + \ctimebar \C, \quad \Qt \defeq \ctimebar \Sigma + \ctime \C.
+\Pt \defeq \ctime \Sigma\prime + \ctimebar \C, \quad \Qt \defeq \ctimebar \Sigma + \ctime \C.
 \end{align}
 Note that, by \eqref{eq:Ctsym}, 
 \begin{align}
 \nn
-\Sigma'\Pt^{-1}  &= \parens*{ \Pt\Sigma'^{-1} }^{-1} \\
+\Sigma\prime\Pt^{-1}  &= \parens*{ \Pt\Sigma\prime^{-1} }^{-1} \\
 \nn
-&= \parens*{\ctime\eye + \ctimebar  \C \Sigma'^{-1} }^{-1} \\
+&= \parens*{\ctime\eye + \ctimebar  \C \Sigma\prime^{-1} }^{-1} \\
 \nn
-&=  \parens*{\ctime\eye + \ctimebar \Sigma'^{-1} \C^\top  }^{-1} \\
+&=  \parens*{\ctime\eye + \ctimebar \Sigma\prime^{-1} \C^\top  }^{-1} \\
 \nn
-&= \parens*{ \Sigma'^{-1} \Pt^\top  }^{-1} \\
+&= \parens*{ \Sigma\prime^{-1} \Pt^\top  }^{-1} \\
 \label{eq:Ptsym}
-&= \Pt^{-\top}\Sigma'.
+&= \Pt^{-\top}\Sigma\prime.
 \end{align}A similar calculation leading to \eqref{eq:Ptsym} shows
 \begin{align}
 \label{eq:Qtsym}
@@ -276,29 +276,29 @@ Note that, by \eqref{eq:Ctsym},
 
 \begin{align}
 \nn
-\Pt^2 + \sdev^2\ctimebar\Pt &= t^2 \Sigma'^2 + \ctimebar^2\C^2 + \ctime\ctimebar\parens*{ \Sigma'\C + \C\Sigma' } + \sdev^2 \ctime\ctimebar \Sigma' + \sdev^2\ctimebar^2 \C \\
+\Pt^2 + \sdev^2\ctimebar\Pt &= t^2 \Sigma\prime^2 + \ctimebar^2\C^2 + \ctime\ctimebar\parens*{ \Sigma\prime\C + \C\Sigma\prime } + \sdev^2 \ctime\ctimebar \Sigma\prime + \sdev^2\ctimebar^2 \C \\
 \nn
-&= t^2 \Sigma'^2 + \ctimebar^2 \parens*{ \C^2 + \sdev^2\C } + \ctime\ctimebar\parens*{ \C^\top\Sigma' + \C\Sigma' } + \sdev^2 \ctime\ctimebar \Sigma'\\
+&= t^2 \Sigma\prime^2 + \ctimebar^2 \parens*{ \C^2 + \sdev^2\C } + \ctime\ctimebar\parens*{ \C^\top\Sigma\prime + \C\Sigma\prime } + \sdev^2 \ctime\ctimebar \Sigma\prime\\
 \label{eq:Pteq}
-&= t^2 \Sigma'^2 + \ctimebar^2 \Sigma\Sigma' + \ctime\ctimebar\parens*{ \C^\top + \C + \sdev^2\eye}\Sigma' = \Sigcurve\Sigma'.
+&= t^2 \Sigma\prime^2 + \ctimebar^2 \Sigma\Sigma\prime + \ctime\ctimebar\parens*{ \C^\top + \C + \sdev^2\eye}\Sigma\prime = \Sigcurve\Sigma\prime.
 \end{align}
 
 It then follows from \eqref{eq:Pteq} that
 
 \begin{align}
 \label{eq:Pt2}
-\Pt &=  \Sigcurve\Sigma'\Pt^{-1} - \sdev^2 \ctimebar\eye, \\
+\Pt &=  \Sigcurve\Sigma\prime\Pt^{-1} - \sdev^2 \ctimebar\eye, \\
 \label{eq:Ptt2}
-\Pt^\top &=  \Pt^{-\top} \Sigma'\Sigcurve - \sdev^2\ctimebar\eye.
+\Pt^\top &=  \Pt^{-\top} \Sigma\prime\Sigcurve - \sdev^2\ctimebar\eye.
 \end{align}
 
 As a result, we get, by \eqref{eq:Ptsym} and \eqref{eq:Pt2}-\eqref{eq:Ptt2},
 
 \begin{align}
 \nn
-\Sigcurveinv \Pt &= \Sigma'\Pt^{-1} - \sdev^2\ctimebar\Sigcurveinv \\
+\Sigcurveinv \Pt &= \Sigma\prime\Pt^{-1} - \sdev^2\ctimebar\Sigcurveinv \\
 \nn
-&= \Pt^{-\top}\Sigma' - \sdev^2\ctimebar\Sigcurveinv \\
+&= \Pt^{-\top}\Sigma\prime - \sdev^2\ctimebar\Sigcurveinv \\
 \label{eq:PtSig}
 &= \Pt^\top\Sigcurve^{-1}.
 \end{align}
@@ -318,7 +318,7 @@ as well as
 \end{align}The symmetry of $\Ht^\top\Sigcurveinv$ is then an immediate consequence of \eqref{eq:PtSig} and \eqref{eq:QtSig}. In addition, we have
 \begin{align}
 \nn
-\dSigcurve &= 2\ctime\Sigma' - 2 \ctimebar\Sigma + (\ctimebar-\ctime)\parens*{   \C +\C^\top  + \sdev^2\eye } \\
+\dSigcurve &= 2\ctime\Sigma\prime - 2 \ctimebar\Sigma + (\ctimebar-\ctime)\parens*{   \C +\C^\top  + \sdev^2\eye } \\
 \label{eq:HtHtt2}
 &=  \Ht + \Ht^\top.
 \end{align}
@@ -336,11 +336,11 @@ i.e., $\lyap = \Ht^\top\Sigcurveinv$.
 We next compute
 \begin{align}
 \nn
-\Pt \Qt^\top &= \parens*{\ctime \Sigma' + \ctimebar \C}\parens*{\ctimebar \Sigma + \ctime \C^\top} \\
+\Pt \Qt^\top &= \parens*{\ctime \Sigma\prime + \ctimebar \C}\parens*{\ctimebar \Sigma + \ctime \C^\top} \\
 \nn
-&= \ctime\ctimebar\Sigma'\Sigma + \ctime^2\Sigma'\C^\top + \ctimebar^2\C\Sigma + \ctime\ctimebar\C\C^\top \\
+&= \ctime\ctimebar\Sigma\prime\Sigma + \ctime^2\Sigma\prime\C^\top + \ctimebar^2\C\Sigma + \ctime\ctimebar\C\C^\top \\
 \nn
-&= \ctimebar^2\Sigma \C^\top + \ctime^2\Sigma'\C^\top+ \ctime\ctimebar \parens*{ \C^{\top 2}+ \sdev^2\C^\top }+ \ctime\ctimebar  \C\C^\top
+&= \ctimebar^2\Sigma \C^\top + \ctime^2\Sigma\prime\C^\top+ \ctime\ctimebar \parens*{ \C^{\top 2}+ \sdev^2\C^\top }+ \ctime\ctimebar  \C\C^\top
 \\
 \label{eq:PtQtt}
 &= \Sigcurve\C^\top
@@ -359,9 +359,9 @@ We thus get, by combining \eqref{eq:Pteq} \eqref{eq:Qteq}
 \nn
 &= \Pt^2 + \sdev^2(\ctimebar-\ctime)\Pt + \Qt^{\top2} - \sdev^2(\ctimebar-\ctime)\Qt^\top - \parens*{ \Pt\Qt^\top + \Qt^\top \Pt }  + \frac{\sdev^4}{4}(\ctimebar-\ctime)^2\eye\\
 \nn
-&= \Sigcurve\Sigma' - \sdev^2\ctime\Pt + \Sigcurve \Sigma - \sdev^2 \ctimebar\Qt^\top - \parens*{  \Sigcurve \C^\top + \Sigcurve \C }  + \frac{\sdev^4}{4}(\ctimebar-\ctime)^2\eye - \sdev^2 \Sigcurve + \sdev^2\Sigcurve\\
+&= \Sigcurve\Sigma\prime - \sdev^2\ctime\Pt + \Sigcurve \Sigma - \sdev^2 \ctimebar\Qt^\top - \parens*{  \Sigcurve \C^\top + \Sigcurve \C }  + \frac{\sdev^4}{4}(\ctimebar-\ctime)^2\eye - \sdev^2 \Sigcurve + \sdev^2\Sigcurve\\
 \nn
-&= \Sigcurve\parens*{  \Sigma + \Sigma' - \parens*{\C + \C^\top + \sdev^2\eye }} + \sdev^2 \parens*{\Sigcurve -  \ctime\Pt - \ctimebar\Qt^\top }+ \frac{\sdev^4}{4}(\ctimebar-\ctime)^2\eye  \\
+&= \Sigcurve\parens*{  \Sigma + \Sigma\prime - \parens*{\C + \C^\top + \sdev^2\eye }} + \sdev^2 \parens*{\Sigcurve -  \ctime\Pt - \ctimebar\Qt^\top }+ \frac{\sdev^4}{4}(\ctimebar-\ctime)^2\eye  \\
 \nn 
 &= \Sigcurve \dHt + \sdev^2 \cdot\ctime\ctimebar\sdev^2 \eye +  \frac{\sdev^4}{4}(\ctimebar-\ctime)^2\eye \\
 \label{eq:holdBW3}
@@ -389,7 +389,7 @@ We first note that, by \eqref{eq:BW-tensor} and \cref{lem:lyap},
 
 To proveed, we will need another formulation of \eqref{eq:GaussianSBWiener}, which is \citep{chen2016relation, gentil2017analogy} specialized to our case: 
 \begin{lemma}\label{lem:EntOT}
-Let $\Ncal_0 \defeq \Ncal(0,\Sigma)$ and $\Ncal_\horizon \defeq \Ncal(0,\Sigma')$. Then \eqref{eq:GaussianSBWiener} is equivalent to
+Let $\Ncal_0 \defeq \Ncal(0,\Sigma)$ and $\Ncal_\horizon \defeq \Ncal(0,\Sigma\prime)$. Then \eqref{eq:GaussianSBWiener} is equivalent to
 \begin{align}
 \label{eq:LagMeasure}
 \min_{\ssstyle\substack{{\measure[0] = \Ninit, \measure[\horizon] = \Nend}}} \int_{0}^\horizon  \exof*{\frac{1}{2} \norm{\vecsol}^2 + \frac{\sdev^4}{8} \norm{ \nabla \log \measure }^2} \dt
@@ -452,7 +452,7 @@ Furthermore, we have
 Finally, since the optimal vector field $\vecsol$ is a gradient field, we must have $\Ht^\top \Sigmasolinv = \Sigmasolinv\Ht$. Combing all the above, we see that \eqref{eq:LagMeasure} is equivalent to
 \begin{align}
 \label{eq:LagMeasureEquiv}
-\min_{\ssstyle\substack{{\Sigcurve[0] = \Sigma, \Sigcurve[\horizon] = \Sigma'} \\ { \Ht^\top\Sigcurveinv =  \Sigcurveinv\Ht }}} \int_{0}^\horizon  \tr\ \parens*{\frac{1}{2}\Ht^\top\Sigcurveinv \Ht  + \frac{\sdev^4}{8} \Sigcurveinv} \dt
+\min_{\ssstyle\substack{{\Sigcurve[0] = \Sigma, \Sigcurve[\horizon] = \Sigma\prime} \\ { \Ht^\top\Sigcurveinv =  \Sigcurveinv\Ht }}} \int_{0}^\horizon  \tr\ \parens*{\frac{1}{2}\Ht^\top\Sigcurveinv \Ht  + \frac{\sdev^4}{8} \Sigcurveinv} \dt
 \end{align}which, in view of \eqref{eq:holdBW2}, is exactly the same as \eqref{eq:LagBW}.
 
 
@@ -478,7 +478,7 @@ Define the \textbf{Hamiltonian} associated with \eqref{eq:LagBW} to be
 &=  \tr  \parens*{\frac{1}{2} \Ht^\top\Sigmasolinv\Ht - \frac{\sdev^4}{8} \Sigmasolinv}.
 \end{align}Then the Hamiltonian is conserved along $\Sigmasol$: 
 \begin{align}
-\dot{\hambase} \equiv 0,  \text{ or, equivalently, }  \ham = \tr \parens*{\Sigma + \Sigma' - \D} \textup{ for all $\ctime$.}
+\dot{\hambase} \equiv 0,  \text{ or, equivalently, }  \ham = \tr \parens*{\Sigma + \Sigma\prime - \D} \textup{ for all $\ctime$.}
 \end{align}
 \end{corollary}
 
@@ -486,7 +486,7 @@ The fact that the Hamiltonian, commonly interpreted as the \emph{total energy}, 
 
 \subsubsection{Connection to Fisher Information}
 
-The ``potential energy'' term $\penergyBW$ in \eqref{eq:LagBW} has an interesting origin: It is, up to a constant, the \emph{entropy production rate}, i.e., the \emph{Fisher information}.
+The "potential energy" term $\penergyBW$ in \eqref{eq:LagBW} has an interesting origin: It is, up to a constant, the \emph{entropy production rate}, i.e., the \emph{Fisher information}.
 
 
 \begin{lemma}\label{lem:Fisher}
@@ -574,7 +574,7 @@ Notice that
 \label{app:prelimproof_gsb}
 
 
-We need a technical lemma that is intimately related to the ``central identity of quantum field theory'' \citep{zee2010quantum}; the version below is adopted from \citep{126767}, wherein the readers can find an easy proof.
+We need a technical lemma that is intimately related to the "central identity of quantum field theory" \citep{zee2010quantum}; the version below is adopted from \citep{126767}, wherein the readers can find an easy proof.
 \begin{lemma}[The central identity of Quantum Field Theory]
 \label[lemma]{lem:centralid}
 The following identity holds for all matrix $\mat \mg 0$ and all sufficiently regular analytic function $v$ (e.g., polynomials or $v\in \mathcal{C}^\infty(\RR^\vdim)$ with compact support):
@@ -638,7 +638,7 @@ where
 \end{align}
 is the generator for the process \eqref{eq:GSB-forward-sol}.
 
-\item Since the marginal/joint/conditional distributions of a Gaussian process are still Gaussian, the expectation in \eqref{eq:semi-gen} requires to express Gaussian integrals as differential operators. To this end, the appropriate tool is the ``central identity in quantum field theory'' \citep{zee2010quantum}.%; see \cref{lem:centralid}.
+\item Since the marginal/joint/conditional distributions of a Gaussian process are still Gaussian, the expectation in \eqref{eq:semi-gen} requires to express Gaussian integrals as differential operators. To this end, the appropriate tool is the "central identity in quantum field theory" \citep{zee2010quantum}.%; see \cref{lem:centralid}.
 
 \item Proof concludes by matching terms in \eqref{eq:semi-gen} and \eqref{eq:gen-def}.\qed
 \end{enumerate}
@@ -671,11 +671,11 @@ Therefore, abusing the notation by continually writing $\Psta$ as the relative d
 \label{eq:KLsta}
 \KL{\Psta}{\Qsta} &= \int_{\R^\vdim \times \R^\vdim}  \log \frac{\dd \Psta } {\dd \Qsta} \dd \Psta \\
 \label{eq:hold}
-&=   \const +  \frac{1}{2 \kernel[\horizon][\horizon]} \int_{\R^\vdim \times \R^\vdim}  \norm*{  y' - \aggtime[\horizon] y   - \aggtime[\horizon]\tshift[\horizon]    }^2  \dd \Psta(y,y') \\
+&=   \const +  \frac{1}{2 \kernel[\horizon][\horizon]} \int_{\R^\vdim \times \R^\vdim}  \norm*{  y\prime - \aggtime[\horizon] y   - \aggtime[\horizon]\tshift[\horizon]    }^2  \dd \Psta(y,y\prime) \\
 \nn &\qquad\qquad+  \intRR \log  \Psta  \dd \Psta.
 \end{align}
 
-If $\Psta$ is a joint distribution with marginals $Y \sim \Ncal\parens*{ \m, \covar}$ and $Y'\sim\Ncal\parens*{ \malt, \covaralt}$, then the change of variable $\tilde{Y} = \aggtime[\horizon]Y + \tshift[\horizon]$ gives rise to a joint distribution $\tPsta$ having marginals $\tilde{Y} \sim \Ncal\parens*{ \tm, \tcovar}$ and $Y'\sim\Ncal\parens*{ \malt, \covaralt}$, where
+If $\Psta$ is a joint distribution with marginals $Y \sim \Ncal\parens*{ \m, \covar}$ and $Y\prime\sim\Ncal\parens*{ \malt, \covaralt}$, then the change of variable $\tilde{Y} = \aggtime[\horizon]Y + \tshift[\horizon]$ gives rise to a joint distribution $\tPsta$ having marginals $\tilde{Y} \sim \Ncal\parens*{ \tm, \tcovar}$ and $Y\prime\sim\Ncal\parens*{ \malt, \covaralt}$, where
 
 \begin{align}
 \tm &= \aggtime[\horizon]\m + \tshift[\horizon], \\
@@ -684,7 +684,7 @@ If $\Psta$ is a joint distribution with marginals $Y \sim \Ncal\parens*{ \m, \co
 
 Obviously, there is a one-to-one correspondence between $\Psta$ and $\tPsta$.
 
-The first integral in \eqref{eq:hold} is equal to $ \exof*{  \norm*{  Y'- \tilde{Y} }^2 }$. On the other hand, we always have 
+The first integral in \eqref{eq:hold} is equal to $ \exof*{  \norm*{  Y\prime- \tilde{Y} }^2 }$. On the other hand, we always have 
 
 \begin{equation}
 \nn
@@ -696,7 +696,7 @@ Therefore, minimizing \eqref{eq:KLsta} over $\Psta$ is equivalent to
 
 \begin{align}
 \label{eq:tPstasol}
-\min_{ \tPsta} \KL{ \tPsta }{ \Qsta}\equiv &\min_{ \tPsta}\; \intRR  \frac{ \norm*{ y - y'}_2^2}{2} \dd \tPsta(y, y') \\
+\min_{ \tPsta} \KL{ \tPsta }{ \Qsta}\equiv &\min_{ \tPsta}\; \intRR  \frac{ \norm*{ y - y\prime}_2^2}{2} \dd \tPsta(y, y\prime) \\
 &+  \kernel[\horizon][\horizon]\intRR \log  \tPsta  \dd \tPsta.
 \end{align}
 
@@ -764,13 +764,13 @@ Therefore, \cref{lem:Cond-Gaussians} applied implies that, conditioned on $\refs
 &= \ratioc \refsde[0] + \ratio \refsde[\horizon] + \tshift - \aggtime \tshift[\horizon]
 \end{align}
 
-and covariance process (for any $\ctime' \geq \ctime$)
+and covariance process (for any $\ctime\prime \geq \ctime$)
 
 \begin{align}
 \label{eq:QBridgecov}
-&\exof*{ \parens*{ \refsde - \exof{  \refsde \given \refsde[0], \refsde[\horizon] } }\parens*{ \refsde[\ctime'] - \exof{  \refsde[\ctime'] \given \refsde[0], \refsde[\horizon] } }^\top \given \refsde[0], \refsde[\horizon]  } \\
+&\exof*{ \parens*{ \refsde - \exof{  \refsde \given \refsde[0], \refsde[\horizon] } }\parens*{ \refsde[\ctime\prime] - \exof{  \refsde[\ctime\prime] \given \refsde[0], \refsde[\horizon] } }^\top \given \refsde[0], \refsde[\horizon]  } \\
 \nn 
-&\quad\quad\quad= \parens*{   \kernel - \frac{\kernel[\ctime][\horizon] \kernel[\ctime'][\horizon]}{ \kernel[\horizon][\horizon]} } \eye.
+&\quad\quad\quad= \parens*{   \kernel - \frac{\kernel[\ctime][\horizon] \kernel[\ctime\prime][\horizon]}{ \kernel[\horizon][\horizon]} } \eye.
 \end{align}
 
 Since a Gaussian process is uniquely determined by its mean and covariance processes, we have, for some Gaussian process $\xi_t$ independent of $\refsde$ having zero mean and covariance process \eqref{eq:QBridgecov},
@@ -844,13 +844,13 @@ K_{\ctime, \ctime + h} &\defeq \exof*{  \parens*{\Xsol-\meansol} \parens*{\Xsol[
 \nn
 &\qquad- \kernel[\ctime][\ctime] - \ratio[\ctime+h] \kernel[\ctime][\horizon] + \ratio\kernel[\ctime][\horizon] \Big)\eye \\
 \label{eq:hold5}
-&= \Sigmasol + h \braces*{  \Pt - \Qt^\top +  \bracks*{ \parens*{\frac{\del}{\del \ctime'}\kernelbase }(\ctime, \ctime) - \dratio \kernel[\ctime][\horizon] } \eye } + o(h),
+&= \Sigmasol + h \braces*{  \Pt - \Qt^\top +  \bracks*{ \parens*{\frac{\del}{\del \ctime\prime}\kernelbase }(\ctime, \ctime) - \dratio \kernel[\ctime][\horizon] } \eye } + o(h),
 \end{align}
 
-where $\parens*{\frac{\del}{\del \ctime'}\kernelbase }(\ctime,\ctime') \defeq \lim_{h\to 0} \frac{ \kernel[\ctime][\ctime'+h] -\kernel[\ctime][\ctime']}{h} $ denotes the derivative of the function $\kernel[\ctime][\cdot]$. Using \eqref{eq:covYdef} and $\daggtime=\drift \aggtime$, we have
+where $\parens*{\frac{\del}{\del \ctime\prime}\kernelbase }(\ctime,\ctime\prime) \defeq \lim_{h\to 0} \frac{ \kernel[\ctime][\ctime\prime+h] -\kernel[\ctime][\ctime\prime]}{h} $ denotes the derivative of the function $\kernel[\ctime][\cdot]$. Using \eqref{eq:covYdef} and $\daggtime=\drift \aggtime$, we have
 
 \begin{align}
-\parens*{\frac{\del}{\del \ctime'}\kernelbase }(\ctime, \ctime) &= \frac{\del}{\del \ctime'} \parens*{  \aggtime[\ctime]\aggtime[\ctime'] \intdasq }\Bigg\vert_{\ctime' = \ctime} \\
+\parens*{\frac{\del}{\del \ctime\prime}\kernelbase }(\ctime, \ctime) &= \frac{\del}{\del \ctime\prime} \parens*{  \aggtime[\ctime]\aggtime[\ctime\prime] \intdasq }\Bigg\vert_{\ctime\prime = \ctime} \\
 \nn
 &= \daggtime\aggtime\intdasq \\
 \label{eq:6}
@@ -900,10 +900,10 @@ and, by \eqref{eq:dsigmasol} and \eqref{eq:hold5},
 \nn
 &= h \Bigg[  \Pt + \Pt^\top - \Qt - \Qt^\top +  \parens*{  \frac{\del}{\del \ctime} \kernel[\ctime][\ctime] -2 \dratio \kernel[\ctime][\horizon]  }\eye  \\
 \nn
-&\hspace{15mm}- \parens*{ \Pt - \Qt^\top + \bracks*{\parens*{ \frac{\del}{\del \ctime'}\kernelbase }(\ctime, \ctime) - \dratio \kernel[\ctime][\horizon] } \eye  }^\top \\
-&\hspace{15mm}- \parens*{ \Pt - \Qt^\top + \bracks*{\parens*{\frac{\del}{\del \ctime'}\kernelbase }(\ctime, \ctime) - \dratio \kernel[\ctime][\horizon] } \eye  }  \Bigg] + o(h) \\
+&\hspace{15mm}- \parens*{ \Pt - \Qt^\top + \bracks*{\parens*{ \frac{\del}{\del \ctime\prime}\kernelbase }(\ctime, \ctime) - \dratio \kernel[\ctime][\horizon] } \eye  }^\top \\
+&\hspace{15mm}- \parens*{ \Pt - \Qt^\top + \bracks*{\parens*{\frac{\del}{\del \ctime\prime}\kernelbase }(\ctime, \ctime) - \dratio \kernel[\ctime][\horizon] } \eye  }  \Bigg] + o(h) \\
 \label{eq:2}
-&=  h\parens*{\frac{\del}{\del \ctime} \kernel[\ctime][\ctime]- 2 \parens*{\frac{\del}{\del \ctime'}\kernelbase }(\ctime, \ctime)}\eye + o(h).
+&=  h\parens*{\frac{\del}{\del \ctime} \kernel[\ctime][\ctime]- 2 \parens*{\frac{\del}{\del \ctime\prime}\kernelbase }(\ctime, \ctime)}\eye + o(h).
 \end{align}
 
 However, by \eqref{eq:covYdef}, we have
@@ -913,7 +913,7 @@ However, by \eqref{eq:covYdef}, we have
 \frac{\del}{\del \ctime} \kernel[\ctime][\ctime] &= \frac{\del}{\del \ctime} \parens*{  \aggtimesq[\ctime] \intdasq } \\
 \nn
 &= 2 \daggtime\aggtime\intdasq + \volatsq[\ctime], \\
-\parens*{\frac{\del}{\del \ctime'}\kernelbase }(\ctime, \ctime) &= \frac{\del}{\del \ctime'} \parens*{  \aggtime[\ctime]\aggtime[\ctime'] \intdasq }\Bigg\vert_{\ctime' = \ctime} \\
+\parens*{\frac{\del}{\del \ctime\prime}\kernelbase }(\ctime, \ctime) &= \frac{\del}{\del \ctime\prime} \parens*{  \aggtime[\ctime]\aggtime[\ctime\prime] \intdasq }\Bigg\vert_{\ctime\prime = \ctime} \\
 &= \daggtime\aggtime\intdasq, 
 \end{align} 
 

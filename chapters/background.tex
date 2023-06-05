@@ -37,6 +37,12 @@ Beyond PDEs, we will explore the relation between the optimal transport problem 
 
 ...
 
+\begin{figure}[t]
+  \includegraphics[width=\textwidth]{figures/fig_ot_background.pdf}
+  \caption{\textbf{Overview on different formulations of the static OT problem for discrete and continuous measures.} \textbf{a.} ... \textbf{b.} ... \textbf{c.} ... \textbf{d.} .... Figure adapted from \citet{peyre2019computational}.}	
+  \label{fig:ot_principles}
+\end{figure}
+
 \subsection{...}
 
 For two probability measures $\mu, \nu$ in $\mathcal{P}(\mathbb{R}^d)$, their squared 2-Wasserstein distance is
@@ -92,15 +98,4 @@ where the set of admissible potentials is $\Phi_c \defeq \{(f, g) \in L^{1}(\mu)
 where $\Tilde{\Phi}$ is the set of all convex functions in $L^1(d\mu) \times L^1(d\nu)$, $L^{1}(\mu) \defeq \{f \text{ is measurable } \& \int f d\mu<\infty\}$, $f^*(y) = \sup_x \dotp{x}{y} - f(x)$ is $f$'s convex conjugate, and the optimal transport plan corresponds to gradient of the convex conjugate, $\gamma = \nabla f^\star$. %, reparameterizing $f(\cdot) = \frac{1}{2}\norm{\cdot}^2_2 - f(\cdot)$ and $g(\cdot) = \frac{1}{2}\norm{\cdot}^2_2 - g(\cdot)$, 
 \citet[Theorem 2.9]{villani2021topics} then proves the existence of an optimal pair $(f, f^*)$ of lower semi-continuous proper conjugate convex functions on $\mathbb{R}^n$ minimizing \eqref{eq:dual-ot}.
 
-
-\paragraph{OT and Convexity.} 
-An alternative formulation for OT is given by the \citet{monge1781histoire} problem  
-\begin{align}\label{eq:monge}
-W_2^2(\mu,\nu) &= \inf_{T:T_{\#} \mu = \nu} \int_\mathcal{X} ||x - T(x)||^2d\mu(x) \,
-\end{align}
-where $\#$ is the push-forward operator, and the optimal solution $T^\star$ is known as the \citeauthor{monge1781histoire} map between $\mu$ and $\nu$. The \citeauthor{brenier1987decomposition} theorem \citeyear{brenier1987decomposition} states that if $\mu$ has a density, the Monge map $T^\star$ between $\mu$ and $\nu$ can be recovered as the gradient of a unique (up to constants) convex function $\psi$ whose gradient pushes forward $\mu$ to $\nu$. Namely, if $\psi:\mathbb{R}^d \rightarrow \mathbb{R}$ is convex and $(\nabla \psi)_{\#}\mu = \nu$, then $T^\star(x)=\nabla \psi(x)$ and
-\begin{align}\label{eq:brenier}
-W_2^2(\mu,\nu) &= \int_\mathcal{X} ||x - \nabla \psi(x)||^2 d\mu(x)\,.
-\end{align}
-%establishing an equivalence between the Kantorovich formulation of OT~\eqref{eq:ot} with optimal transport plan $\gamma$, and the Monge formulation involving map $T$. %, which consists of finding a map that associates points coming from both probability measures. 
 

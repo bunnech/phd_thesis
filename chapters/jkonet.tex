@@ -282,7 +282,7 @@ In the following, we evaluate our method empirically on a variety of tasks. This
 
 \subsection{...} \label{sec:eval_synt}
 \paragraph{Energy-Driven Trajectories.} The first task involves evolutions of partial differential equations with known potential. We hereby consider both convex (e.g., the quadratic function $J(x) = \|x\|^2_2$) and nonconvex potentials (e.g., Styblinski function) (see Fig.~\ref{fig:task_overview}). These two-dimensional synthetic flows are generated using the Euler-Maruyama method~\citep{kloeden1992stochastic}. 
-To recover the true potential via \textsc{JKOnet}, we parameterize both energy $J_\xi$ and ICNN $\psi_\theta$ with linear layers ($\epsilon = 1.0$, $\tau = 1.0$. More details on the architectures can be found in \S~\ref{app:architecure}.
+To recover the true potential via \textsc{JKOnet}, we parameterize both energy $J_\xi$ and ICNN $\psi_\theta$ with linear layers ($\epsilon = 1.0$, $\tau = 1.0$.
 Figure~\ref{fig:exp_jkonet_pot_traj}a-b demonstrate \textsc{JKOnet}'s ability to recover convex and nonconvex potentials via energy $J_\xi$.
 
 \paragraph{Arbitrary Trajectories.} As a sanity check, we evaluate if \textsc{JKOnet} can recover an energy functional $J_\xi$ from trajectories that are not necessarily arising from the gradient of an energy. Here, a 2-dimensional Gaussian moves along a predefined trajectory with nonconstant speed. 
@@ -338,7 +338,7 @@ While facilitating training of the forward method in some settings, it likewise 
 %    \captionof{figure}{Distribution of cell lineage branch classes in the data or  predicted by \textsc{JKOnet} or the forward method.}
 	\qquad
 	\resizebox{.45\linewidth}{!}{%
-    \begin{tabular}{lcc}
+    \begin{tabular}[b]{lcc}
     \toprule
          \textbf{Method} & \multicolumn{2}{c}{\textbf{Cell Lineage Classification}} \\
          & $\ell_1$ & $H^2$ \\
