@@ -16,63 +16,123 @@
 \vskip 1em
 
 
-Optimal transport theory~\citep{santambrogio2015optimal} is a central component of the machine learning toolbox and has become within a few years the go-to framework to analyze, model, and solve an ever-increasing variety of tasks involving probability measures. This is best exemplified by its increasing importance to fitting generative models, where the goal is to learn a map~\citep{arjovsky2017wasserstein, genevay2018learning, salimans2018improving}, or more generally a diffusion \citep{song2020score, de2021diffusion} to morph a simple measure (e.g., Gaussian) onto a data distribution of interest (e.g., images). This is also apparent in the many applications that use OT to align probability measures that have since arisen, e.g., to transfer label knowledge between datasets~\citep{flamary2016optimal, singh2020model}, to analyze sampling schemes~\citep{dalalyan2017theoretical}, or study population trajectories~\citep{schiebinger2019optimal, bunne2021learning}.
-In this chapter, we primarily cast light on the static and dynamic formulation of optimal transport, and simultaneously establishing their theoretical nexus to provide a solid foundation for the discussion ahead.
+Optimal transport theory~\citep{santambrogio2015optimal} is a core element of the machine learning toolbox and has become within a few years the go-to framework to analyze, model, and solve an ever-increasing variety of tasks involving probability measures. This is best exemplified by its increasing importance to fitting generative models, where the goal is to learn a map~\citep{arjovsky2017wasserstein, genevay2018learning, salimans2018improving}, or more generally a diffusion \citep{song2020score, de2021diffusion} to morph a simple measure (e.g., Gaussian) onto a data distribution of interest (e.g., images). This is also apparent in the many applications that use OT to align probability measures that have since arisen, e.g., to transfer label knowledge between datasets~\citep{flamary2016optimal, singh2020model}, to analyze sampling schemes~\citep{dalalyan2017theoretical}, or study population trajectories~\citep{schiebinger2019optimal, bunne2021learning}.
+
+In this chapter, we primarily cast light on the static and dynamic formulation of optimal transport, and simultaneously establish their theoretical nexus by recalling its mathematical history from \citet{monge1781histoire} and \citet{kantorovich1942transfer} to modern Fields medal winners \citet{villani2009optimal}, \citeauthor{figalli2010optimal}, and Abel prize recipient \citet{caffarelli1990interior} in order to provide a solid foundation for the discussion ahead.
 
 
 \section{Static Optimal Transport} \label{sec:background_ot_static}
 
 Optimal transport takes dual roles as it induces a mathematically well-characterized distance measure between distributions as well as provides a geometry-based approach to realize mappings between two probability distributions.
-This section introduces the mathematical foundations of the \textbf{static} OT problem and recalls its mathematical history from \citeauthor{monge1781histoire} (\citeyear{monge1781histoire}) and \citeauthor{kantorovich1942transfer} (\citeyear{kantorovich1942transfer}) to modern Fields medal winners \citeauthor{villani2009optimal} (\citeyear{villani2009optimal}) and \citeauthor{figalli2010optimal} (\citeyear{figalli2010optimal}). 
-It further provides an extended analysis of the \citeauthor{monge1781histoire} map, which provides an actionable way to flow from one probability distribution onto another, and in particular provide a complete proof of the celebrated \citeauthor{brenier1987decomposition} theorem for general costs, which will require an introduction to the notion of $c$-concavity. This quintessential result and its particularization to translation-invariant costs will lay the foundation of the flurry of neural approaches proposed in the literature and subject of this thesis. 
-In particular, with respect to approaches that are a direct consequence of the \citeauthor{brenier1987decomposition} theorem, modeling Monge maps as gradients of convex functions, parameterized through convex neural networks \citep{amos2017input, huang2021convex, makkuva2020optimal, korotin2021neural, lubeck2022neural, bunne2022supervised}, via regularizers \citep{uscidda2023monge}, amortized optimization \citep{amos2022amortizing, amos2022meta}, or entropic maps \citep{pooladian2021entropic, pooladian2023minimax, divol2022optimal, cuturi2023monge}.
+In this section, we introduce the mathematical foundations of the \textbf{static} OT problem. Further, we will provide an extended analysis of the \citeauthor{monge1781histoire} map, which provides an actionable way to flow from one probability distribution onto another.
+We conclude with a complete proof of the celebrated \citeauthor{brenier1987decomposition} theorem. This quintessential result and its particularization to translation-invariant costs will lay the foundation of the flurry of neural approaches proposed in the literature. This includes modeling Monge maps as gradients of convex functions parameterized through convex neural networks \citep{amos2017input, huang2021convex, makkuva2020optimal, korotin2021neural, lubeck2022neural, bunne2022supervised}, i.e., approaches that are a direct consequence of the \citeauthor{brenier1987decomposition} theorem and subject of this thesis, regularizers \citep{uscidda2023monge}, amortized optimization \citep{amos2022amortizing, amos2022meta}, or entropic maps \citep{pooladian2021entropic, pooladian2023minimax, divol2022optimal, cuturi2023monge}.
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_ot_background.pdf}
-  \caption{\textbf{Overview on different formulations of the static OT problem for discrete and continuous measures.} \textbf{a.} ... \textbf{b.} ... \textbf{c.} ... \textbf{d.} .... Figure adapted from \citet{peyre2019computational}.}	
+  \caption{\textbf{Overview on different formulations of the static OT problem for discrete and continuous measures.} Monge map for \textbf{a.} discrete and\textbf{b.} continuous measures $\mu, \nu$. The optimal map $T^\star$ minimizes \eqref{eq:monge}. \textbf{c.} Optimal coupling $\pi$ \eqref{eq:kantorovich} for discrete measures $\mu$ and $\nu$. \textbf{d.} Mass splitting principle of the Kantorovich relaxation for discrete measures $\mu$ and $\nu$ of the optimal transport plan $\bP^\star$ and a non-optimal plan $\bP$. Figure adapted from \citet{peyre2019computational}.}	
   \label{fig:ot_principles}
 \end{figure}
 
 \subsection{Monge Problem} \label{sec:background_monge}
 
-In the 18th century "M{\'e}moire sur la th{\'e}orie des d{\'e}blais et des remblais", Gaspard Monge sets out to solve what is now known as the \citeauthor{monge1781histoire} problem; posing a seemingly simple, yet fundamentally complex question: Given two quantities of mass located at two different sites, what is the most efficient way to transport one to the other?
+In the 18th century "M{\'e}moire sur la th{\'e}orie des d{\'e}blais et des remblais", Gaspard Monge sets out to solve what is now known as the \citeauthor{monge1781histoire} problem, posing a seemingly simple, yet fundamentally complex question: Given two quantities of mass located at two different sites, what is the most efficient way into transport one to the other?
 In more formal terms, provided with two measures $\mu, \nu\in \mathcal{P}(\mathbb{R}^d)$, here restricted to measures supported on $\mathbb{R}^d$, Monge's initial approach was to find a map $T$ that pushes one mass onto the other in a way that minimizes the total cost of transport.
 Given a measurable const function $c: \mathcal{X} \times \mathcal{Y} \rightarrow \mathbb{R}$, the \citeauthor{monge1781histoire} problem then reads
 \begin{equation}\label{eq:monge}
 T^\star := \arg\inf_{T\sharp\mu=\nu}\int_{\mathbb{R}^d} c(x, T(x)) d\mu(x)\,.
 \end{equation}
 For two discrete measures $\mu=\sum_{i=1}^n u_i \delta_{x_{i}}, \nu=\sum_{j=1}^m v_j \delta_{y_{j}}$, it seeks a transport map $T: \mathcal{X} \rightarrow \mathcal{Y}$ associating each source point $x_i$ to a target point $x_j$ (see \cref{fig:ot_principles}a for the discrete and \cref{fig:ot_principles}b for the continuous setting).
+...
 The existence of $T^\star$ is guaranteed under fairly general conditions \citep[Theorem 1.22]{santambrogio2015optimal}, which require that $\mu$ and $\nu$ have finite $L_2$ norm, and that $\mu$ puts no mass on $(d-1)$ surfaces of class $\mathcal{C}_2$.
 
 
 \subsection{Kantorovich Relaxation} \label{sec:background_kantorovich}
 
 It was not until the 20th century, however, that the concept found a more tractable development. In \citeyear{kantorovich1942transfer}, Leonid \citeauthor{kantorovich1942transfer} provided a relaxation to this non-convex and difficult-to-solve problem.
-Instead of the deterministic matching proposed by \citeauthor{monge1781histoire}, Kantorovich considered probabilistic correspondences that allow for transportation of mass from a single source point to various target points (mass splitting).
+Instead of the deterministic matching proposed by \citeauthor{monge1781histoire}, Kantorovich considered probabilistic correspondences that allow for transportation of mass from a single source point to various target points (mass splitting), resulting in
 \begin{equation} \label{eq:kantorovich}
     W(\mu, \nu) = \inf_{\pi\in \Pi(\mu,\nu)}\iint c(x, y) \pi(dx, dy),
 \end{equation}
-where $\Pi(\mu, \nu)$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$ (see \cref{fig:ot_principles}c). 
+where $\Pi(\mu, \nu) \defeq \left\{\pi \in \gP(\mathcal{X} \times \mathcal{Y}): P_{\gX \sharp} \pi=\mu \quad \text { and } \quad P_{\gY \sharp} \pi=\nu\right\}$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$ (see \cref{fig:ot_principles}c).
+For his work, \citeauthor{kantorovich1942transfer} received the Nobel prize in economics. The connections of \acrshort{OT} to basic questions in economy becomes clear when interpreting $\mu$ as a density of resource units, and $\nu$ a density of factories, where the coupling $\pi$ denotes the optimal transportation plan of distributing resources to factories.
 When instantiated on finite discrete measures, such as $\mu=\sum_{i=1}^n u_i\delta_{x_i}$ and $\nu=\sum_{j=1}^m v_j\delta_{y_j}$, this problem translates to a linear program, which can be regularized using an entropy term~\citep{cuturi2013sinkhorn,peyre2019computational}. For $\varepsilon\geq0$, set 
-\begin{equation}\label{eq:reg-ot}
+\begin{equation} \label{eq:reg-ot}
 \We(\mu,\nu) \defeq \min_{\bP\in U(u, v)} \dotp{\bP}{[c(x_i, y_j)]_{ij}}  \,-\varepsilon H(\bP),
 \end{equation}
-where the discrete entropy is defined as $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(u, v)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m =u, \bP^\top\mathbf{1}_n=v\}$. 
+where the discrete en    tropy is defined as $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(u, v)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m =u, \bP^\top\mathbf{1}_n=v\}$. 
 Notice that the definition above reduces to the usual Wasserstein distance when $\varepsilon=0$. Setting $\varepsilon>0$ yields a faster and differentiable proxy to approximate $W_{0}$, but introduces a bias, since $\We(\mu,\mu)\ne 0$ in general.
-Regularizing objective \eqref{eq:kantorovich} with an entropy term results in significantly more efficient optimization \citep{cuturi2013sinkhorn} and differentiability w.r.t. its inputs, and thus commonly used as a loss function in machine learning applications, e.g., for structured prediction \citep{frogner2015learning,janati2020multi} or generative model fitting \citep{arjovsky2017wasserstein, salimans2018improving, genevay2018learning}.
+Thus, regularizing objective \eqref{eq:kantorovich} with an entropy term results in a significantly more efficient optimization \citep{cuturi2013sinkhorn} and differentiability w.r.t. its inputs. As a consequence, \eqref{eq:reg-ot} is commonly used as a loss function in machine learning applications, e.g., for structured prediction \citep{frogner2015learning,janati2020multi} or generative model fitting \citep{arjovsky2017wasserstein, salimans2018improving, genevay2018learning}.
 
 
 \subsection{Kantorovich Duality} \label{sec:background_dual}
 
-...
+The Kantorovich formulation \eqref{eq:kantorovich} is a \emph{convex} problem on $\gP(\mathcal{X} \times \mathcal{Y})$ and thus admits a dual formulation by \citet{kantorovich1942transfer}, i.e., a constrained concave maximization problem defined as
+\begin{equation} \label{eq:kantorovich-dual}
+    W(\mu, \nu)=\sup _{(f, g) \in \Phi_{c}} \int f \mathrm{~d} \mu+\int g \mathrm{~d} v,
+\end{equation}
+where the set of admissible potentials is $\Phi_c \defeq \{(f, g) \in L^{1}(\mu) \times L^{1}(\nu): f(x)+g(y) \leq c(x,y)$, $\forall(x, y) d\mu \otimes d\nu \text{ a.e.}\}$.
+$(f, g)$ is thus a pair of continuous functions, often referred to as \emph{Kantorovich potentials}.
+An informal interpretation of \eqref{eq:kantorovich-dual} was provided by \citet{caffarelli2003monge}, revisiting the connection of \acrshort{OT} to economics: 
+A logistics company is concerned with transporting products from each resource unit $x$ to a factory $y$. The transportation company thereby charges $f(x)$ for loading resources at point $x$ and $g(y)$ of unloading it at destination $y$, but is constrained to charge $f(x)+g(y) \le c(x,y)$. In order to arrange prizes $f$ and $g$ that increase profit, they thus maximize objective \eqref{eq:kantorovich-dual}.
+
+Problem \eqref{eq:kantorovich-dual} further allows us to characterize the optimal transport plans that emerge as the solution to the Kantorovich optimal transportation problem \eqref{eq:kantorovich} and show sufficient conditions for the existence of optimal transport maps.
+
+Using the notion of $c$-transforms, i.e.,
+\begin{equation}
+	\tag{$c$-transform}
+	\forall y \in \mathcal{Y}, \quad f^c(y) \defeq \inf _{x \in \mathcal{X}} c(x, y)-f(x) \,,
+\end{equation}
+we can reduce \eqref{eq:kantorovich-dual} to a single potential: Assume we keep dual potential $f$ fixed, the potential $g$ needs to satisfy for all $x, y$
+\begin{align*}
+	f(x) + g(y) \le c(x, y).
+\end{align*}
+For a given $f$, the optimal potential $g$ is thereby given by
+\begin{align*}
+	 f^c(y) \defeq \inf_x c(x, y) - f(x),
+\end{align*}
+i.e., the $c$-transform of $f$, resulting in the semi-dual
+\begin{equation}\label{eq:semi-dual}
+\arg\!\!\max_{f\, c\text{-concave}} \int f \textrm{d}\mu + \int f^c\textrm{d}\nu\,.
+\end{equation}
+
+\paragraph{Euclidean case.} For the cost $c(x, y) = \norm{x-y}^2$ in $\gX = \gY = \mathbb{R}^d$, one can replace the constraint of \eqref{eq:kantorovich-dual} using the Legendre-Fenchel transformation
+\begin{equation} \label{eq:legendre_fenchel}
+	\tag{Legendre-Fenchel transform}
+	\forall y, \quad g(y) \geq f^*(y) \defeq \sup _x\langle x, y\rangle-f(x)\,,
+\end{equation}
+where $f^*$ is the convex conjugate of $f$ and is a convex function as a supremum of linear forms. Then, the semi-dual in the Euclidean setting reads
+\begin{equation} \label{eq:dual-cvx}
+	\arg\!\!\min_{f\, \text{convex}} \int f \textrm{d}\mu + \int f^*\textrm{d}\nu\,.
+\end{equation}
+Following further the double convexification trick as outlined in \citet[Lemma 2.10]{villani2021topics}, we see that applying \eqref{eq:legendre_fenchel} twice results in function pair $(f^{**},f^{*})$ and thus,  as each of them is defined as the supremum of a family of linear functions, an optimization problem over two convex lower semi-continuous functions.
 
 \subsection{Brenier's Theorem} \label{sec:background_brenier}
+
+Although a large part of optimal transport theory can be developed in a general framework as above, for the rest of the section, we will resort to the case $c(x, y):=\|x-y\|^2$ on $\mathbb{R}^d \times \mathbb{R}^d$.
+\citep{mccann2001polar} \citep{knott1984optimal}
+
+\begin{theorem}[Knott-Smith Optimality Criterion]
+	...
+\end{theorem}
+
+\begin{theorem}[Brenier's Theorem] \label{thm:brenier}
+	In the setting where both $\mathcal{X}$ and $\mathcal{Y}$ are equal to $\mathbb{R}^d$, and the cost function $c(x, y) = |x-y|^2$ is employed, and at least one of the two input measures $\mu$ possesses a density $\rho_\mu$ in relation to the Lebesgue measure, then there exists a unique optimal solution $\pi$ in the Kantorovich formulation \eqref{eq:kantorovich}.
+	This solution is exclusively supported on the graph $(x, T(x))$ of Monge map $T: \mathbb{R}^d \rightarrow \mathbb{R}^d$.
+	In other terms, we can express $\pi$ as $(\operatorname{Id}, T)_{\sharp} \alpha$, meaning that for any function $h$ belonging to the set $\forall h \in \mathcal{C}(\mathcal{X} \times \mathcal{Y})$, the following equality holds
+	$$
+	\quad \int_{\mathcal{X} \times \mathcal{Y}} h(x, y) \mathrm{d} \pi(x, y)=\int_{\mathcal{X}} h(x, T(x)) \mathrm{d} \mu(x).
+	$$
+Moreover, this map $T$ is uniquely determined by the gradient of a convex function $\varphi$, denoted as $T(x)=\nabla \varphi(x)$. The function $\varphi$ is the unique convex function, up to an additional constant, for which $(\nabla \varphi)_{\sharp} \mu=\nu$. We can establish a relationship between this convex function $\varphi$ and the dual potential $f$ that solves \eqref{eq:kantorovich-dual} by expressing $\varphi(x)$ as $\frac{|x|^2}{2}-f(x)$.
+\end{theorem}
+\begin{proof}
+	...
+\end{proof}
 
 celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition}, which states that there must exist  a unique (up to the addition of a constant) potential $f^\star:\mathbb{R}^d\rightarrow \mathbb{R}$ such that $T^\star = \nabla f^\star$. 
 This theorem has far-reaching implications: It is sufficient, when seeking optimal transport maps, to restrict the computational effort to seek a "good" convex potential, such that its gradient pushes $\mu$ towards $\nu$. 
 
 This result has been exploited to propose neural OT solvers, and  will recurrently permeate this thesis, proving its essential nature in multiple instances and modern developments of optimal transport.
-In practice, Monge maps can be estimated using a dual formulation~\citep{makkuva2020optimal, korotin2020wasserstein, bunne2022proximal, alvarez2021optimizing, mokrov2021large}. 
+In practice, Monge maps can be estimated using a dual formulation~\citep{makkuva2020optimal, korotin2020wasserstein, bunne2022proximal, alvarez2022optimizing, mokrov2021large}. 
 Indeed, $T^\star$ in~\eqref{eq:monge} is recovered as $\nabla f^\star$, where $f^\star$ is defined in~\eqref{eq:dual}, writing $f^*$ for the Legendre transform of $f$.
 
 \section{Dynamic Optimal Transport} \label{sec:background_ot_dynamic}
@@ -84,8 +144,12 @@ it has found application in inferring the evolution of populations over time, cr
 Beyond PDEs, the optimal transport problem is closely connected to the Schr\"odinger bridge problem from stochastic control. It represents a key connection that has recently fueled the development of \acrlongpl{DSB} \citep{de2021diffusion, chen2021stochastic, bunne2022recovering, liu2022deep}. Compared to classical diffusion-based generative models \citep{daniels2021score, song2020score}, these algorithms allow interpolation between complex distributions. Extended to the Riemannian geometry \citep{thornton2022riemannian, de2022riemannian}, it has found applications in molecular dynamics \citep{holdijk2022path} and cell differentiation processes \citep{tong2023conditional, bunne2022recovering}.
 
 
+
 \subsection{Monge-Ampere Equation} \label{sec:background_monge_ampere}
 
+% Caffarelli's regularity theorems from the 1990s represented a major breakthrough in our understanding of the Monge-Ampere equation, a highly nonlinear, quintessential partial differential equation, that for instance is used to construct surfaces of prescribed Gaussian curvature. Important existence results were established by Alexandrov, and earlier central properties had been shown by Caffarelli in collaboration with Nirenberg and Spruck, with further key contributions by Evans and Krylov. Caffarelli however closed the gap in our understanding of singularities by proving that the explicitly known examples of singular solutions are the only ones.
+
+% Caffarelli has, together with collaborators, applied these results to the Monge-Kantorovich optimal mass transportation problem, based on previous work by Brenier. Caffarelli and Vasseur gave deep regularity results for the quasi-geostrophic equation in part by applying the exceptionally influential paper by Caffarelli and Silvestre on the fractional Laplacian.
 ...
 
 \subsection{Benamou-Brenier Formulation} \label{sec:background_benamou_brenier}
@@ -127,16 +191,7 @@ It's connections to optimal transport might not be clear at first. ...
 %% with entropy $H(\gamma) = -\sum_{ij} \gamma_{ij} (\log \gamma_{ij} - 1)$ and parameter $\varepsilon$ controlling the strength of the regularization. $W_{2}^\varepsilon$ is further differentiable w.r.t. its inputs and thus 
 %as a loss function in machine learning applications.
 %
-%\begin{equation}\label{eq:dual}
-%f^\star:=\arg\!\!\sup_{f\,\text{convex}}\mathcal{E}_{\mu,\nu}(f):=\int_{\mathbb{R}^d}f^*\textrm{d}\mu+\int_{\mathbb{R}^d}f\textrm{d}\nu.
-%\end{equation}
-%
-%
-%Problem~\eqref{eq:ot} denotes the primal formulation for the Wasserstein distance. The corresponding dual introduced by \citeauthor{kantorovich1942transfer} in \citeyear{kantorovich1942transfer} is a constrained concave maximization problem defined as
-%\begin{equation} \label{eq:dual-ot}
-%    W(\mu, \nu)=\sup _{(f, g) \in \Phi_{c}} \mathbb{E}_{\mu}[f(x)]+\mathbb{E}_{\nu}[g(y)],
-%\end{equation}
-%where the set of admissible potentials is $\Phi_c \defeq \{(f, g) \in L^{1}(\mu) \times L^{1}(\nu): f(x)+g(y) \leq \frac{1}{2}\|x-y\|_{2}^{2}$, $\forall(x, y) d\mu \otimes d\nu \text{ a.e.}\}$ \citep[Theorem 1.3]{villani2021topics}.
+
 %\citet[Theorem 2.9]{villani2021topics} further simplifies the dual problem~\eqref{eq:dual-ot} over the pair of functions $(f, g)$ to
 %\begin{equation} \label{eq:dual-ot-cvx}
 %    W(\mu, \nu)= \underbrace{\frac{1}{2}\mathbb{E}\left[\|x\|_{2}^{2}+\|y\|_{2}^{2}\right]}_{\mathcal{C}_{\mu, \nu}}-\inf _{f \in \Tilde{\Phi}} \mathbb{E}_{\mu}[f(X)]+\mathbb{E}_{\nu}\left[f^{*}(Y)\right],
