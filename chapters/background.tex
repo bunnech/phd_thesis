@@ -194,8 +194,26 @@ Reciting \cref{thm:brenier}, with $T = \nabla \varphi$, $\mu_t$ is equal to \cit
 
 \subsection{Jordan-Kinderlehrer-Otto Flows} \label{sec:background_jko}
 
-...
-In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} it has found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
+$\{ \mu_t ; 0 \leq  t \leq  1\}$ may be seen as a constant-speed geodesic interpolating between population $\mu_0$ and $\mu_1$ in the space of measures \citep{otto2001geometry}.
+The analysis of such curves, Wasserstein geodesics often referred to as displacement or \citeauthor{mccann1997convexity} interpolation, has led to a variety of applications:
+In particular, following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of PDEs may be viewed as gradient flows on the Wasserstein space \citet{jordan1998variational}.
+A gradient flow is a curve following the direction of steepest descent of a function $F$.
+Considering the evolution of a vector $x$ over time in the Euclidean space, with $F$ being smooth, this can be realized through the standard gradient descent (forward) scheme
+\begin{equation*}
+	x_{t+1} \defeq x_{t}-\tau \nabla F\left(x_{t}\right)\,,
+\end{equation*}
+where $\tau$ is the step size. For non-smooth functions, on can resort to a proximal (backward) scheme, i.e.,
+\begin{equation*}
+	x_{t+1} \defeq \operatorname{Prox}_{\tau F}^{\|\cdot\|}\left(x_{t}\right) \defeq \arg\!\min_x \frac{1}{2}\left\| x-x_t\right\|^2+\tau F(x)\,.
+\end{equation*}
+When studying the evolution of measure $\mu_t$ over time, we will resort to optimal transport metrics the $\ell_2$-norm $\norm{\cdot}$.
+Considering a functionals $F$ taking a measure as input, a gradient flow of $\mu$ w.r.t. to $F$ 
+\begin{equation}
+	\mu_{t+1} \defeq \arg\!\min_\nu W(\mu, \mu_t)^2+\tau F(\mu)\,.
+\end{equation}
+
+
+In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} \acrshort{JKO} flows have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
 
 \subsection{Stochastic Control Perspective} \label{sec:background_control}
 
