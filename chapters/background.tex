@@ -211,7 +211,7 @@ Considering a functionals $F$ taking a measure as input, a gradient flow of $\mu
 \begin{equation}
 	\mu_{t+1} \defeq \arg\!\min_\nu W(\mu, \mu_t)^2+\tau F(\mu)\,.
 \end{equation}
-
+k
 
 In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} \acrshort{JKO} flows have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
 
@@ -228,3 +228,7 @@ It's connections to optimal transport might not be clear at first. ...
 
 It represents a key connection that has recently fueled the development of \acrlongpl{DSB} \citep{de2021diffusion, chen2021stochastic, bunne2022recovering, liu2022deep}. Compared to classical diffusion-based generative models \citep{daniels2021score, song2020score}, these algorithms allow interpolation between complex distributions. Extended to the Riemannian geometry \citep{thornton2022riemannian, de2022riemannian}, it has found applications in molecular dynamics \citep{holdijk2022path, somnath2023aligned} and cell differentiation processes \citep{vargas2021solving, bunne2022recovering, tong2023conditional}.
 
+
+\begin{theorem}[Girsanov's Theorem] \label{thm:girsanov}
+	...
+\end{theorem}
