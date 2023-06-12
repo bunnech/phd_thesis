@@ -23,5 +23,6 @@ ltxpng/
 *.bak
 cover/*
 raw/*
+thesis.pdf
 
 .DS_Store
