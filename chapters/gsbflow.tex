@@ -73,12 +73,14 @@ Throughout this paper, let $\xi \sim \Ncal(\mu, \Sigma)$ and $\xi' \sim \Ncal(\m
 
 \subsubsection{Static Gaussian Optimal Transport}
 \label{sec:staticGOT}
+
+% TODO: Give reference to Background chapter.
 The \emph{static} entropy-regularized \acrshort{OT} between Gaussians refers to the following minimization problem \citep{peyre2019computational}:
 % An important class of problems which generalizes \eqref{eq:W2Gaussian}, is the static entropy-regularized \acrshort{OT} between Gaussians:
 \begin{equation}
 \label{eq:RegW2Gaussian}
 %\tag{OT$_\sigma$}
-\min_{\coupling \in \Coupling(\xi, \xi')} \int  \norm{\point-\pointalt}^2  \drm \coupling(\point, \pointalt) + 2\sigma^2 \KL{\pi}{ \xi \otimes \xi'  },
+\min_{\coupling \in \Coupling(\xi, \xi')} \int  \norm{\point-\pointalt}^2  \drm \coupling(\point, \pointalt) + 2\sigma^2 \KL(\pi \| \xi \otimes \xi'),
 \end{equation}where $\xi\otimes\xi'$ denotes the product measure of $\xi$ and $\xi'$, and $\sigma \geq 0$ is a regularization parameter. When $\sigma = 0$, \eqref{eq:RegW2Gaussian} reduces to the classical 2-Wasserstein distance between $\xi$ and $\xi'$ \citep{villani2009optimal}, whose closed-form solution is classical \citep{dowson1982frechet, olkin1982distance}. The case for general $\sigma$ is more involved, and an analytical expression was only recently found \citep{bojilov2016matching, del2020statistical, janati2020entropic, mallasto2021entropy}: Setting% the specific form is quite convoluted, and thus we defer it to \cref{app:gaussian_sb}.
 \begin{equation}
 \label{eq:Cstar}
@@ -128,7 +130,7 @@ Let $\nu, \nu'$ be two given measures and let $\refpro$ be an arbitrary stochast
 \begin{equation}
 \label{eq:SB}
 %\tag{SB}
-\min_{ \substack{ \Pinit = \nu, \; \Pend = \nu'} } \KL{\Pmargin}{\refpro}.% \quad \sigma >0 \textup{ and \Wiener
+\min_{ \substack{ \Pinit = \nu, \; \Pend = \nu'} } \KL(\Pmargin \|\refpro).% \quad \sigma >0 \textup{ and \Wiener
 \end{equation}
 
 
@@ -148,7 +150,7 @@ Consider the \acrlong{SB} problem with $\refsde$ as the reference process:
 \begin{equation}
 \label{eq:YtSB}
 %\tag{$\refsde$-SB}
-\min_{ \substack{ \Pinit = \nu, \; \Pend = \nu'} } \KL{\Pmargin}{\refsde}.% \quad \sigma >0 \textup{ and \Wiener
+\min_{ \substack{ \Pinit = \nu, \; \Pend = \nu'} } \KL(\Pmargin \|\refsde).% \quad \sigma >0 \textup{ and \Wiener
 \end{equation}
 Then \eqref{eq:YtSB} is equivalent to
 \begin{align}
@@ -170,7 +172,7 @@ The central goal of our paper is to derive the closed-form solution of \acrshort
 \begin{equation}
 \label{eq:GSB}
 \tag{GSB}
-\min_{ \substack{ \Pinit = \xi, \; \Pend = \xi'} } \KL{\Pmargin}{\refsde}.% \quad \sigma >0 \textup{ and \Wiener
+\min_{ \substack{ \Pinit = \xi, \; \Pend = \xi'} } \KL( \Pmargin \| \refsde).% \quad \sigma >0 \textup{ and \Wiener
 \end{equation}
 To emphasize the dependence on the reference \acrshort{SDE}, we will sometimes call \eqref{eq:GSB} the $\refsde$-\acrshort{GSB}. 
 
@@ -221,7 +223,7 @@ This section illustrates the simple geometric intuition that underlies the somew
 %\vspace{-8pt}
 \label{sec:actionRd}
 
-Consider the following \emph{action minimization} problem with fixed endpoints $\point, \point' \in \R^\vdim$:
+Following the connections established in \cref{sec:background_control}, let us consider the following \emph{action minimization} problem with fixed endpoints $\point, \point' \in \R^\vdim$:
 \begin{align}
 \label{eq:Euclid_Lag}
 \min_{x(0) = \point, x(\horizon) = \point\prime} \int_0^\horizon {\frac{1}{2} \norm{\dot{x}(t)}^2 - U(x(t)) } \dt,
@@ -267,7 +269,7 @@ We are now ready to state the main result of the section. Let $\normBW[\cdot][\S
 \begin{equation}
 \label{eq:GaussianSBWiener}
 %\tag{$\Wiener$-SB$_{\ssstyle\Ncal}$}
-\min_{ \Pinit = \Ncal(0, \Sigma),\; \Pend = \Ncal(0, \Sigma') } \KL{\Pmargin}{\sigma\Wiener}.
+\min_{ \Pinit = \Ncal(0, \Sigma),\; \Pend = \Ncal(0, \Sigma') } \KL(\Pmargin \| \sigma\Wiener).
 \end{equation}
 %For the purpose of illustration, we assume that $\mu = \mu' = 0$.% the mean of both initial and final distributions to be zero.
 Then we have:
@@ -496,7 +498,7 @@ Our framework captures most popular reference \acrshortpl{SDE} in the machine le
 
 \subsection{\textsc{GSBflow}: ...}
 
-Building on the closed-form solutions in \cref{sec:results}, we present an end-to-end learning paradigm that takes two marginal distributions $\distinit$, $\distend$ to output the reconstruction of the underlying stochastic dynamics $\Pmargin$. Because our framework relies on \acrshortpl{GSB}, we call our algorithm the \textsc{GSBflow}.
+Building on the closed-form solutions in \cref{sec:results_gsbflow}, we present an end-to-end learning paradigm that takes two marginal distributions $\distinit$, $\distend$ to output the reconstruction of the underlying stochastic dynamics $\Pmargin$. Because our framework relies on \acrshortpl{GSB}, we call our algorithm the \textsc{GSBflow}.
 
 
 \textbf{Step 1: Moment estimates and \acrshort{GSB} initialization.} We first compute the means $\mu_0, \mu_\horizon$ and covariances $\Sigma_0, \Sigma_\horizon$ of the input distributions, and plug them into \eqref{eq:GSB-forward} and \eqref{eq:cmean-marginal-0}-\eqref{eq:csigma-marginal-T}. Note that these computations are done only \emph{once} for every dataset, and can be reused for all subsequent training.
@@ -506,7 +508,7 @@ Building on the closed-form solutions in \cref{sec:results}, we present an end-t
 \begin{equation}
 \label{eq:GSBflow}
 % \tag{\acroalg}
-\min_{ \Pinit = \distinit,\; \Pend = \distend } \KL{\Pmargin}{ \refapprox}.
+\min_{ \Pinit = \distinit,\; \Pend = \distend } \KL(\Pmargin \| \refapprox).
 \end{equation}
 Following the framework of \citet{chen2021likelihood}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acrshortpl{SDE} of the form:
 %Following \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acp{SDE} of the form:
@@ -635,7 +637,7 @@ The purpose of our experiments is to demonstrate that, by leveraging moment info
 \label{sec:synthetic}
 Before conducting the single-cell genomics experiments, we first test \textsc{GSBflow} on a synthetic setting. 
 Our first task involves recovering the stochastic evolution of two-dimensional synthetic data containing two interleaving half circles ($\distend$) into a spiral ($\distinit$). 
-\cref{fig:res_synthetic} shows the trajectories learned by \textsc{GSBflow} based on the \acrshort{VESDE} (see \cref{tab:examples} and \cref{app:vesde}). 
+\cref{fig:res_synthetic} shows the trajectories learned by \textsc{GSBflow} based on the \acrshort{VESDE} (see \cref{tab:examples}). 
 
 
 While it is sufficient to parameterize only a single policy ({\color{blue} $\SBb$}) in generative modeling, the task of learning to evolve $\distinit$ into $\distend$ requires one to recover \emph{both} vector fields {\color{blue} $\SBb$} and {\color{pink} $\SBf$}.

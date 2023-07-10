@@ -57,10 +57,10 @@ The Fokker-Planck equation for the \acrshort{SDE} \eqref{eq:holddd} is
 \label{eq:FK}
 \del_t \measure = - \Div \parens*{  \measure(  \driftf +\vectalt  ) } + \frac{\volatsq[\ctime]}{2}\Laplace \measure.
 \end{align}
-A simple application of the Girsanov's theorem then shows, up to a constant, 
+A simple application of the Girsanov theorem then shows, up to a constant, 
 \begin{align}
 \label{eq:KLobj}
-\KL{ \Pmargin }{ \refsde} = \exof*{ \int_0^\horizon\frac{\norm{\vectalt}^2}{2\volatsq[\ctime]}   \dt}.
+\KL(Pmargin \| \refsde) = \exof*{ \int_0^\horizon\frac{\norm{\vectalt}^2}{2\volatsq[\ctime]}   \dt}.
 \end{align}
 Using a change of variable $\vect = \vectalt - \frac{\volatsq[\ctime]}{2}\nabla\log\measure$, we see that \eqref{eq:FK} is equivalent to
 \begin{equation}
@@ -523,6 +523,7 @@ We refer the interested readers to \citep{gentil2020dynamical} for details.
 
 \subsubsection{Solution of the Schr\"odinger Systems}
 
+For convenience, we restate the solutions of the Schr\"odinger system introduced in \cref{sec:background_sb}, i.e., Equations \eqref{eq:sb_hb} and \eqref{eq:sb_optimality}.
 Another way of solving a system of the form \eqref{eq:LagMeasure} is via the so-called forward \emph{Schr\"odinger system} \citep{chen2021stochastic, leonard2013survey}:
 \begin{align}
 \label{eq:SchSys}
@@ -541,9 +542,6 @@ This is in fact the same solution of the \emph{fluid mechanical} problem
 \begin{align}
 \min_{\ssstyle\substack{{\measure[0] = \Ninit, \measure[\horizon] = \Nend} \\ {\pt\measure +\Div(\measure \vecsol) =\Laplace \measure }}} \int_{0}^\horizon  \exof*{\frac{1}{2} \norm{\vecsol}^2 } \dt
 \end{align}which is yet another equivalent formulation of \eqref{eq:GaussianSBWiener}.
-
-
-
 
 There is also a backward Schr\"odinger system:
 \begin{align}
@@ -608,16 +606,10 @@ Then $Y_0 \vert Y_1 = y \sim \Ncal( \check{\mu}, \check{\Sigma})$ where
 \end{align}
 \end{lemma}
 
-
-\subsection{The Proof}
-\label{app:proofGSB}
-
-
+\subsection{The Proof} \label{app:proofGSB}
 
 We are now ready for the proof. For convenience, we restate \cref{thm:gaussian_sb} below:
 \GaussianSB*
-
-
 
 As the proof is quite complicated, we first outline the main steps below:
 \begin{enumerate}[leftmargin=.5cm,itemsep=.01cm,topsep=0cm]
@@ -651,7 +643,7 @@ From now on, we will invoke the notations in \eqref{eq:functions} without explic
 
 \begin{align}
 \label{eq:staticGSB}
-\min_{ \Psta}\KL{\Psta}{\Qsta} 
+\min_{ \Psta}\KL(\Psta \| \Qsta)
 \end{align}
 
 over all $\Psta$ having marginals $\Ncal\parens*{  \m, \covar }$ and $\Ncal\parens*{  \malt, \covaralt }$.
@@ -669,7 +661,7 @@ Therefore, abusing the notation by continually writing $\Psta$ as the relative d
 
 \begin{align}
 \label{eq:KLsta}
-\KL{\Psta}{\Qsta} &= \int_{\R^\vdim \times \R^\vdim}  \log \frac{\dd \Psta } {\dd \Qsta} \dd \Psta \\
+\KL(\Psta \| \Qsta) &= \int_{\R^\vdim \times \R^\vdim}  \log \frac{\dd \Psta } {\dd \Qsta} \dd \Psta \\
 \label{eq:hold}
 &=   \const +  \frac{1}{2 \kernel[\horizon][\horizon]} \int_{\R^\vdim \times \R^\vdim}  \norm*{  y\prime - \aggtime[\horizon] y   - \aggtime[\horizon]\tshift[\horizon]    }^2  \dd \Psta(y,y\prime) \\
 \nn &\qquad\qquad+  \intRR \log  \Psta  \dd \Psta.
@@ -696,7 +688,7 @@ Therefore, minimizing \eqref{eq:KLsta} over $\Psta$ is equivalent to
 
 \begin{align}
 \label{eq:tPstasol}
-\min_{ \tPsta} \KL{ \tPsta }{ \Qsta}\equiv &\min_{ \tPsta}\; \intRR  \frac{ \norm*{ y - y\prime}_2^2}{2} \dd \tPsta(y, y\prime) \\
+\min_{ \tPsta} \KL( \tPsta \| \Qsta)\equiv &\min_{ \tPsta}\; \intRR  \frac{ \norm*{ y - y\prime}_2^2}{2} \dd \tPsta(y, y\prime) \\
 &+  \kernel[\horizon][\horizon]\intRR \log  \tPsta  \dd \tPsta.
 \end{align}
 
@@ -782,7 +774,7 @@ Since a Gaussian process is uniquely determined by its mean and covariance proce
 
 
 \paragraph{From $\refprobase$\textendash bridges to $\meansol$ and $\Sigmasol$}
-The disintegration formula of $\KL{\cdot}{\cdot}$ \citep{leonard2013survey} implies that the solution to \eqref{eq:GSB} is given by first generating $(\Xsol[0], \Xsol[\horizon]) \sim \Pstasol$ for $\Pstasol$ in \eqref{eq:Pstasol}, and then connecting $\Xsol[0]$ and $\Xsol[\horizon]$ using the $\refprobase$\textendash bridges \eqref{eq:QBridge}. Namely,
+The disintegration formula of $\KL(\cdot \| \cdot)$ \citep{leonard2013survey} implies that the solution to \eqref{eq:GSB} is given by first generating $(\Xsol[0], \Xsol[\horizon]) \sim \Pstasol$ for $\Pstasol$ in \eqref{eq:Pstasol}, and then connecting $\Xsol[0]$ and $\Xsol[\horizon]$ using the $\refprobase$\textendash bridges \eqref{eq:QBridge}. Namely,
 
 \begin{align}
 \label{eq:Xsol}
@@ -876,7 +868,6 @@ K_{\ctime, \ctime + h} &= \Sigmasol + h \braces*{  \Pt - \Qt^\top + \bracks*{\dr
 \label{eq:kapprox}
 &= \Sigmasol + h \St + o(h).
 \end{align}
-
 
 
 We are now ready to derive \eqref{eq:GSB-forward-sol}. By \cref{lem:Cond-Gaussians}, the random variable $\Xsol[\ctime+h]$ conditioned on $\Xsol = \point$ follows $\Ncal\parens*{  \muc, \Sigmac }$ where, by \eqref{eq:kapprox},
@@ -976,9 +967,9 @@ This is exactly \eqref{eq:gensde} with $\GSBf \subs \St^\top \Sigmasolinv\parens
 Finally, by \cite[(4.2)]{leonard2013survey}, the optimal drift $\GSBf$ is a \emph{gradient field}: 
 
 \begin{equation}
-\GSBf = \nabla \psi(\ctime,\point)
+\GSBf = \nabla \varphi(\ctime,\point)
 \end{equation}
 
-for some function $\psi: \R^+ \times \R^\vdim \to \R$, implying that $\St^\top\Sigmasolinv$ must be symmetric.
+for some function $\varphi: \R^+ \times \R^\vdim \to \R$, implying that $\St^\top\Sigmasolinv$ must be symmetric.
 \end{proof}
 
