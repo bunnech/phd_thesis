@@ -221,39 +221,44 @@ Despite their simplicity, this concept possesses remarkable applications beyond 
 \subsection{Jordan-Kinderlehrer-Otto Flows} \label{sec:background_jko}
 
 The time-dependent Benamou-Brenier formulation \eqref{eq:benamou_brenier} not only provides us with a more complete description of optimal transport, but also the discovery that the resulting path $(\mu_t)_{t=0}^1$ may be seen as a constant-speed geodesic interpolating between population $\mu_0$ and $\mu_1$ in the space of measures, i.e., a Wasserstein geodesic.
-When studying dynamic processes in biomedicine, however, phenomena such as cellular differentiation in developmental processes or tissue formation and cell migration involve intricate spatiotemporal dynamics that cannot be adequately captured by solely studying the interpolation between two measures $\mu_0$ and $\mu_1$.
+When studying dynamic processes in biomedicine, however, phenomena such as cellular differentiation in developmental processes, tissue formation, or cell migration involve intricate spatiotemporal dynamics that cannot be adequately captured by solely studying the interpolation between two measures $\mu_0$ and $\mu_1$.
 Instead, many phenomenons in biology and physics can be described through an energy functional $F$ such that the minimization of $F$ describes the observed dynamics of the studied system.
-In developmental biology, for example, $F$ might describe an epigenetic landscape: Drawing from the metaphor of \citeauthor{waddington1957strategy}'s landscape, developmental biology commonly visualizes cellular developmental pathways as marbles rolling down a complex landscape $F$ \citep{waddington1957strategy}.
-% , transforming cells from a pluripotent states (capable of becoming any cell type) to a highly specialized ones. 
-Each valley within this landscape represents a specific fate a cell might take, with the depth of the valley signifying the stability of the differentiated state \citep{schiebinger2021reconstructing}.
-Paths on the developmental manifold then describe the evolution of a time-varying probability distribution on a high-dimensional expression space, representing the continuous changes in cellular differentiation profiles over time.
+In developmental biology, for example, $F$ might describe an epigenetic landscape: Drawing from the metaphor of \citeauthor{waddington1957strategy}'s landscape, developmental biology commonly visualizes cellular developmental pathways as marbles rolling down a complex landscape $F$ \citep{waddington1957strategy}, e.g., transforming cells from a pluripotent states (capable of becoming any cell type) to a highly specialized ones \citep{schiebinger2021reconstructing}. 
+% Each valley within this landscape represents a specific fate a cell might take, with the depth of the valley signifying the stability of the differentiated state.
+% Paths on the developmental manifold then describe the evolution of a time-varying probability distribution on a high-dimensional expression space, representing the continuous changes in cellular differentiation profiles over time.
 
-% Gradient flows, or steepest descent curves, are a very classical topic in evolution equations: take a functional F defined on a vector space X, and, instead of looking at points x minizing F (which is related to the static equation \nablaF(x) = 0), we look, given an initial point x0, for a curve starting at x0 and trying to minimize F as fast as possible (in this case, we will solve equations of the form x'(t) = -\nablaF(x(t))). As we speak of gradients (which are element of X, and not of X' as the differential of F should be), it is natural to impose that X is an Hilbert space (so as to identify it with its dual and produce a gradient vector).
+Gradient flows, or steepest descent curves, are a very classical topic when modeling the evolution of dynamical systems.
+A gradient flow is thereby a curve following the direction of steepest descent of a function $F$.
+In the following, we will study gradient flows in the Euclidean setting before considering generalizations to arbitrary measures that allow studying the evolution of populations over time.
+
 % It is natural to derive various partial differential equations (PDE's) as gradient flows of certain energy functionals.
 
-A gradient flow is thereby a curve following the direction of steepest descent of a function $F$.
-
-
-
-\paragraph{Euclidean case.} Considering the evolution of a vector $x$ over time in the Euclidean space, with $F$ being smooth, this can be realized through the standard gradient descent (forward) scheme
+\paragraph{Euclidean case.} Considering the evolution of a vector $x$ over time in the Euclidean space. Provided with a smooth functional $F$, this can be realized through the standard gradient descent (forward) scheme
 \begin{equation*}
 	x_{t+1} \defeq x_{t}-\tau \nabla F\left(x_{t}\right),
 \end{equation*}
-where $\tau$ is the step size. For non-smooth functions, on can resort to a proximal (backward) scheme, i.e.,
+where $\tau$ is the step size. The resulting sequence ${x_0, \dots, x_{t-1}, x_{t}, x_{t+1}, \dots, \x_T}$ then describes the trajectory of a single particle $x$ over time.
+For non-smooth functions, on can resort to a proximal scheme, i.e.,
 \begin{equation*}
 	x_{t+1} \defeq \operatorname{Prox}_{\tau F}^{\|\cdot\|}\left(x_{t}\right) \defeq \arg\!\min_x \frac{1}{2}\left\| x-x_t\right\|^2+\tau F(x).
 \end{equation*}
+The proximal scheme can thereby be seen as a \emph{backward} Euler discretization of the gradient flow.
 
-\paragraph{Wasserstein case.} When studying the evolution of measure $\mu_t$ over time, we will resort to optimal transport metrics the $\ell_2$-norm $\norm{\cdot}$.
-Considering a functionals $F$ taking a measure as input, a gradient flow of $\mu$ w.r.t. to $F$ 
+\paragraph{Wasserstein case.} When studying the evolution of measure $\mu_t$ over time, we will resort to optimal transport metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
+Considering a functionals $F$ that take a measure or population as input, a gradient flow of $\mu$ w.r.t. to $F$ can be similarly expressed through forward and backward schemes. The forward scheme thereby reads
+\begin{equation*}
+	...
+\end{equation*}
+with the corresponding backward formulation defined as
 \begin{equation}
 	\mu_{t+1} \defeq \arg\!\min_\mu W(\mu, \mu_t)^2+\tau F(\mu).
 \end{equation}
+This implicit time stepping is a useful tool to construct continuous flows: In the limit $\tau \rightarrow 0$ the resulting sequence $\{\mu_t\}_{t=0}^T$ approximates a continuous flow $\mu_t$, i.e., a path in the Wasserstein space.
 ...
+In fact, following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of \acrlong{PDE} may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
+...
+In recent works, \acrshort{JKO} flows have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}, which we will discuss in \cref{cha:neural_pde}.
 
-In recent works, \acrshort{JKO} flows have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}.
-...
-Following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of PDEs may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
 
 \subsection{Stochastic Control Perspective} \label{sec:background_control}
 
