@@ -231,8 +231,6 @@ Gradient flows, or steepest descent curves, are a very classical topic when mode
 A gradient flow is thereby a curve following the direction of steepest descent of a function $F$.
 In the following, we will study gradient flows in the Euclidean setting before considering generalizations to arbitrary measures that allow studying the evolution of populations over time.
 
-% It is natural to derive various partial differential equations (PDE's) as gradient flows of certain energy functionals.
-
 \paragraph{Euclidean case.} Considering the evolution of a vector $x$ over time in the Euclidean space. Provided with a smooth functional $F$, this can be realized through the standard gradient descent (forward) scheme
 \begin{equation*}
 	x_{t+1} \defeq x_{t}-\tau \nabla F\left(x_{t}\right),
@@ -245,19 +243,56 @@ For non-smooth functions, on can resort to a proximal scheme, i.e.,
 The proximal scheme can thereby be seen as a \emph{backward} Euler discretization of the gradient flow.
 
 \paragraph{Wasserstein case.} When studying the evolution of measure $\mu_t$ over time, we will resort to optimal transport metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
-Considering a functionals $F$ that take a measure or population as input, a gradient flow of $\mu$ w.r.t. to $F$ can be similarly expressed through forward and backward schemes. The forward scheme thereby reads
+Considering a functionals $F$ that take a measure or population as input, a gradient flow of $\mu$ w.r.t. to $F$ can be similarly expressed through forward and backward schemes. Assuming $F(\mu) 
+\defeq \int E(x) d \mu(x)$, the forward scheme thereby reads
 \begin{equation*}
-	...
+	\mu_{t+1} \defeq \left(I-\frac{1}{\tau} \nabla E\right)_{\#} \mu_t
 \end{equation*}
 with the corresponding backward formulation defined as
 \begin{equation}
+	\label{eq:prox_measure}
 	\mu_{t+1} \defeq \arg\!\min_\mu W(\mu, \mu_t)^2+\tau F(\mu).
 \end{equation}
 This implicit time stepping is a useful tool to construct continuous flows: In the limit $\tau \rightarrow 0$ the resulting sequence $\{\mu_t\}_{t=0}^T$ approximates a continuous flow $\mu_t$, i.e., a path in the Wasserstein space.
-...
+
+\begin{table}[t]
+\caption{Equivalence between gradient flows and PDEs where the gradient flow of flow functional $F(\mu_t)$ in Wasserstein space satisfies the corresponding PDE. The function $f : \mathbb{R} \rightarrow \mathbb{R}$ is convex and superlinear and $V, W : \gX \rightarrow \mathbb{R}$ are convex and sufficiently smooth.}
+\label{tab:examples_gradient_flows}
+\centering
+\adjustbox{max width=\linewidth}{%
+\begin{tabular}{lll}
+\toprule
+\textbf{Class} & \textbf{PDE} $\frac{\partial \mu_t}{\partial t} $ & \textbf{Flow Functional} $F(\mu_t)=$ \\
+\midrule Heat Equation & $\Delta \mu_t$ & $\int \mu_t(x) \log \mu_t(x) \mathrm{d} x$ \\
+Advection & $\nabla \cdot(\mu_t \nabla V)$ & $\int V(x) \mathrm{d} \mu_t(x)$ \\
+Fokker-Planck & $\Delta \mu_t+\nabla \cdot(\mu_t \nabla V)$ & $\int \mu_t(x) \log \mu_t(x) \mathrm{d} x+\int V(x) \mathrm{d} \mu_t(x)$ \\
+Porous Media & $\Delta\left(\mu_t^m\right)+\nabla \cdot(\mu_t \nabla V)$ & $\frac{1}{m-1} \int \mu_t(x)^m \mathrm{~d} x+\int V(x) \mathrm{d} \mu_t(x)$ \\
+Adv.+Diff.+Inter. & $\nabla \cdot\left[\mu_t\left(\nabla f^{\prime}(\mu_t)+\nabla V+(\nabla W) * \mu_t\right)\right]$ & \makecell[l]{$\int V(x) \mathrm{d} \mu_t(x)+\int f(\mu_t(x)) \mathrm{d} x$ \\ $+\frac{1}{2} \iint W\left(x-x^{\prime}\right) \mathrm{d} \mu_t(x) \mathrm{d} \mu_t\left(x^{\prime}\right)$} \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
 In fact, following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of \acrlong{PDE} may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
-...
-In recent works, \acrshort{JKO} flows have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}, which we will discuss in \cref{cha:neural_pde}.
+For instance, the standard heat equation of physics, i.e.,
+\begin{equation*}
+	\frac{\partial \mu_t}{\partial t} = \Delta \mu_t,
+\end{equation*}
+with $\Delta$ being the spatial Laplacian, can be expressed as a gradient flow of the energy $F(\mu) = \int_{\mathbb{R}^d} \mu_t_\mu \log \mu_t_\mu$, i.e., Gibbs-Boltzmann's famous $H$ functional with the physical interpretation of the negative of an entropy.
+Among further examples displayed in \cref{tab:examples_gradient_flows} \citep{alvarez2021optimizing, villani2021topics}, a classic subject of the theory of PDEs also comprises the linear Fokker-Planck equation
+\begin{equation}
+	\label{eq:linear_fokker_planck}
+	\frac{\partial \mu_t}{\partial t} = \Delta \mu_t+\nabla \cdot(\mu_t \nabla V),
+\end{equation}
+that results in flow functional $F(\mu_t) = \int \mu_t(x) \log \mu_t(x) \mathrm{d} x+\int V(x) \mathrm{d} \mu_t(x)$, where the first term again represents the negative Gibbs-Boltzmann entropy and the second term plays the role of an energy functional with a smooth potential function $V : \mathbb{R}^d \rightarrow \mathbb{R}$.
+
+Interest in Wasserstein gradient flows was sparked by the seminal work of Jordan, Kinderlehrer, and Otto (\citeyear{jordan1998variational}) proposing to discretize the gradient flow and thus the corresponding PDE. 
+For a broad class of potentials $F$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{JKO step}\eqref{eq:prox_measure} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of the corresponding PDE, and the resulting evolutions are often referred to as \emph{JKO flows}.
+
+In recent works, \acrshort{JKO} flows thus have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}.
+In fact, this formulation is particular interesting for studying dynamical systems in biomedicine, as the exact expression of the PDE corresponding to functional $F$ does not need to be known.
+Instead we can propose parameterizations of energy functional $F$ that can be learned from data, an idea we will explore in \cref{sec:learn_energy}.
+While providing a general framework for studying general and complex population dynamics, each step of the JKO scheme is costly as it requires solving a minimization problem involving the Wasserstein distance. Beyond introducing learning schemes for functional $F$ the design of efficient and differentiable  schemes for solving JKO flows is required, which we will discuss in \cref{sec:jko_icnn}.
 
 
 \subsection{Stochastic Control Perspective} \label{sec:background_control}

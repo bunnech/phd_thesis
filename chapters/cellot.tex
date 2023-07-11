@@ -74,11 +74,10 @@ The resulting approximate Wasserstein distance is thus defined as
     \hat{W}_2^2(\rho_c, \rho_k) = \sup _{\phi} \newinf_{\theta}  \mathcal{C}_{\rho_c, \rho_k} - \mathcal{V}_{\rho_c, \rho_k}(f_{\phi}, g_{\theta}),
 \end{equation}
 where $\theta$ and $\phi$ are the parameters of each \acrshort{ICNN}.
-% The resulting $g_{\theta}^*$ produces an approximate optimal transport plan $\gamma \approx (\nabla g_{\theta}^* \times Id)_{\#} \rho_c$. 
+% The resulting $g_{\theta}^*$ produces an approximate optimal transport plan $\gamma \approx (\nabla g_{\theta}^* \times Id)_{\#} \rho_c$.
 
-
-
-\subsubsection{Alternative Approaches}  We focus in this work on neural approaches that parameterize the optimal maps $T$ as neural networks. An early approach is the work on Wasserstein GANs~\citep{arjovsky2017wasserstein}, albeit the transport map is not explicitly estimated. 
+\subsubsection{Alternative Approaches}
+We focus in this work on neural approaches that parameterize the optimal maps $T$ as neural networks. An early approach is the work on Wasserstein GANs~\citep{arjovsky2017wasserstein}, albeit the transport map is not explicitly estimated. 
 % Here, the authors parameterize \textit{dual potentials} as Lipschitz neural networks, in the case $p=1$. In that case, the interplay between OT and estimation does not concern the map $T$ itself (which can be interpreted as a generator), but rather an auxiliary function (the discriminator). 
 %Closer to the spirit of OT, s
 Several recent results have exploited a more explicit connection between OT and NNs, derived from the celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition}, which states that Monge maps are necessarily gradients of convex functions.
