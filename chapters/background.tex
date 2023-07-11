@@ -7,6 +7,7 @@
 
 ...
 
+
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_bio_problems.pdf}
   \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} ... \textbf{b.} ...}	
@@ -205,7 +206,9 @@ resulting, in the case of $\gX = \gY = \mathbb{R}^d$ and $c(x, y)=\|x-y\|^2$, in
 	& \nonumber \frac{\partial \mu_t}{\partial t}+\nabla \cdot(v \mu_t)=0 \\
 	& \nonumber \mu_{t=0}=\mu_0, \mu_{t=1}=\mu_1\, .
 \end{align}
-Taking the perspective of fluid dynamics, \eqref{eq:vector_field_length} can also be interpreted as the \emph{kinetic energy} of the particles. The Benamou-Brenier formulation \eqref{eq:benamou_brenier} then selects the vector field $v_t$ that minimizes the total efforts or the total kinetic energy one has to spend in order to move particles around according to the vector field $v_t$.
+Thus, path $\mu_t$ describes the time-evolving density of a set of particles moving continuously with velocity $v_t$.
+Taking the perspective of fluid dynamics, \eqref{eq:vector_field_length} can also be interpreted as the \emph{kinetic energy} of the particles.
+The Benamou-Brenier formulation \eqref{eq:benamou_brenier} then selects the vector field $v_t$ that minimizes the total efforts or the total kinetic energy one has to spend in order to move particles around according to the vector field $v_t$.
 
 \paragraph{Euclidean case.} A particular important case occurs again in the Euclidean setting, i.e., for cost $c(x, y) = \norm{x-y}^2$ in $\gX = \gY = \mathbb{R}^d$. The solution of the time-dependent OT problem \eqref{eq:benamou_brenier} then coincides with \citeauthor{mccann1997convexity}'s displacement interpolation between two measures.
 Reciting \cref{thm:brenier}, with $T = \nabla \psi$, $\mu_t$ is equal to \citeauthor{mccann1997convexity}'s interpolation between $\mu_0$ and $\mu_1$ given by
@@ -218,8 +221,19 @@ Despite their simplicity, this concept possesses remarkable applications beyond 
 \subsection{Jordan-Kinderlehrer-Otto Flows} \label{sec:background_jko}
 
 The time-dependent Benamou-Brenier formulation \eqref{eq:benamou_brenier} not only provides us with a more complete description of optimal transport, but also the discovery that the resulting path $(\mu_t)_{t=0}^1$ may be seen as a constant-speed geodesic interpolating between population $\mu_0$ and $\mu_1$ in the space of measures, i.e., a Wasserstein geodesic.
-Following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of PDEs may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
+When studying dynamic processes in biomedicine, however, phenomena such as cellular differentiation in developmental processes or tissue formation and cell migration involve intricate spatiotemporal dynamics that cannot be adequately captured by solely studying the interpolation between two measures $\mu_0$ and $\mu_1$.
+Instead, many phenomenons in biology and physics can be described through an energy functional $F$ such that the minimization of $F$ describes the observed dynamics of the studied system.
+In developmental biology, for example, $F$ might describe an epigenetic landscape: Drawing from the metaphor of \citeauthor{waddington1957strategy}'s landscape, developmental biology commonly visualizes cellular developmental pathways as marbles rolling down a complex landscape $F$ \citep{waddington1957strategy}.
+% , transforming cells from a pluripotent states (capable of becoming any cell type) to a highly specialized ones. 
+Each valley within this landscape represents a specific fate a cell might take, with the depth of the valley signifying the stability of the differentiated state \citep{schiebinger2021reconstructing}.
+Paths on the developmental manifold then describe the evolution of a time-varying probability distribution on a high-dimensional expression space, representing the continuous changes in cellular differentiation profiles over time.
+
+% Gradient flows, or steepest descent curves, are a very classical topic in evolution equations: take a functional F defined on a vector space X, and, instead of looking at points x minizing F (which is related to the static equation \nablaF(x) = 0), we look, given an initial point x0, for a curve starting at x0 and trying to minimize F as fast as possible (in this case, we will solve equations of the form x'(t) = -\nablaF(x(t))). As we speak of gradients (which are element of X, and not of X' as the differential of F should be), it is natural to impose that X is an Hilbert space (so as to identify it with its dual and produce a gradient vector).
+% It is natural to derive various partial differential equations (PDE's) as gradient flows of certain energy functionals.
+
 A gradient flow is thereby a curve following the direction of steepest descent of a function $F$.
+
+
 
 \paragraph{Euclidean case.} Considering the evolution of a vector $x$ over time in the Euclidean space, with $F$ being smooth, this can be realized through the standard gradient descent (forward) scheme
 \begin{equation*}
@@ -238,6 +252,8 @@ Considering a functionals $F$ taking a measure as input, a gradient flow of $\mu
 ...
 
 In recent works, \acrshort{JKO} flows have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}.
+...
+Following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of PDEs may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
 
 \subsection{Stochastic Control Perspective} \label{sec:background_control}
 
