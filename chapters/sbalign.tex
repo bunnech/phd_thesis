@@ -45,23 +45,24 @@ Suppose that we are given access to i.i.d. \emph{aligned} data $(\x_0^i,\x_1^i)_
 Such a task is ubiquitous in biological applications. For instance, understanding how proteins dock to other biomolecules is of significant interest in biology and has become a topic of intense study in recent years \citep{ganea2022independent, tsaban2022harnessing, corso2022diffdock}. In the protein docking task, $\x_0^i$ represents the 3D structures of the unbound proteins, while $\x_1^i$ represents the 3D structure of the bound complex. Reconstructing a stochastic process that diffuses $\x_0^i$'s to $\x_1^i$'s is tantamount to recovering the energy landscape governing the docking process.  Similarly, in molecular dynamics simulations, we have access to trajectories $\left(\x_t^i\right)_{t \in [0, 1]}$, where $\x_0^i$ and $\x_1^i$ represent the initial and final positions of the $i$-th molecule respectively. Any learning algorithm using these simulations should be able to respect the provided alignment. 
 
 
-%\paragraph{Diffusion Schr\"odinger bridges}
+% \paragraph{Diffusion Schr\"odinger bridges.}
+
+% To solve the interpolation problem, in \cref{sec:Methods}, we will invoke the framework of \acrshortpl{DSB}, which are designed to solve interpolation problems with \emph{unaligned} data. More specifically, given two marginals $\distinit$ and $\distend$, the \acrshort{DSB} framework proceeds by first choosing a reference process $\refpro$ using prior knowledge, for instance a simple Brownian motion, and then solve the entropy-minimization problem over all stochastic processes $\Pmargin$:
+% \begin{equation}
+% \label{eq:SB}
+% \tag{SB}
+% \min_{ \substack{ \Pinit = \distinit, \; \Pend = \distend} } \KL(\Pmargin \| \refpro).
+% \end{equation}
 %
-%To solve the interpolation problem, in \cref{sec:Methods}, we will invoke the framework of \acrshortpl{DSB}, which are designed to solve interpolation problems with \emph{unaligned} data. More specifically, given two marginals $\distinit$ and $\distend$, the \acrshort{DSB} framework proceeds by first choosing a reference process $\refpro$ using prior knowledge, for instance a simple Brownian motion, and then solve the entropy-minimization problem over all stochastic processes $\Pmargin$:
-%\begin{equation}
-%\label{eq:SB}
-%\tag{SB}
-%\min_{ \substack{ \Pinit = \distinit, \; \Pend = \distend} } \KL(\Pmargin \| \refpro).
-%\end{equation}
-%
-%Despite the fact that many methods exist for solving \eqref{eq:SB}  \citep{de2021diffusion,chen2021likelihood,vargas2021solving,bunne2022recovering}, none of these approaches are capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:SB}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein. Unfortunately, it is well-known that tackling the marginals separately necessitates a forward-backward learning process known as the \acrlong{IPF} procedure \citep{fortet1940resolution,kullback1968probability}, which constitutes the primary reason of high variance training, thereby confronting \acrshortpl{DSB} with numerical and scalability issues. Our major contribution, detailed in the next section, is therefore to devise the first algorithmic framework that solves the interpolation problem with aligned data \emph{without} resorting to IPF.
-%
+% Despite the fact that many methods exist for solving \eqref{eq:SB}  \citep{de2021diffusion,chen2021likelihood,vargas2021solving,bunne2022recovering}, none of these approaches are capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:SB}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein. Unfortunately, it is well-known that tackling the marginals separately necessitates a forward-backward learning process known as the \acrlong{IPF} procedure \citep{fortet1940resolution,kullback1968probability}, which constitutes the primary reason of high variance training, thereby confronting \acrshortpl{DSB} with numerical and scalability issues. Our major contribution, detailed in the next section, is therefore to devise the first algorithmic framework that solves the interpolation problem with aligned data \emph{without} resorting to IPF.
+
+% TODO: Update this section with camera-ready version of the paper.
 
 \subsection{\textsc{SBalign}: Aligned Diffusion Schr\"odinger Bridges}
 
 In this section, we derive a novel loss function for \acrshortpl{DSB} with aligned data by combining two classical notions: The theory of \acrlongpl{SB} \citep{schrodinger1931umkehrung,leonard2013survey,chen2021stochastic} and Doob's $h$-transform \citep{doob1984classical, rogers2000diffusions}. We then describe how solutions to DSBs with aligned data can be leveraged in the context of classical \acrshortpl{DSB}.
 
-\paragraph{Static SB and aligned data}
+\paragraph{Static SB and aligned data.}
 
 Our starting point is the simple and classical observation that \eqref{eq:SB} is the continuous-time analogue of the \emph{entropic optimal transport}, also known as the \emph{static} \acrlong{SB} problem \citep{leonard2013survey,chen2021stochastic,peyre2019computational}:
 \begin{equation}
@@ -78,10 +79,10 @@ Our central idea is to represent $\Psol$ via two different, but equivalent, char
 
 
 
-\paragraph{$\Psol$ from $\Pssol$: $\refpro$ with pinned end points}
+\paragraph{$\Psol$ from $\Pssol$: $\refpro$ with pinned end points.}
 
 For illustration purposes, from now on, we will assume that the reference process $\refpro$ is a Brownian motion with diffusion coefficient $\volat$:
-%\footnote{\looseness -1 Extension to more involved reference processes is conceptually straightforward but notationally clumsy. Furthermore, reference processes of the form \eqref{eq:gtWt} are dominant in practical applications \citep{song2020score, bunne2022recovering}, so we omit the general case. }
+% \footnote{\looseness -1 Extension to more involved reference processes is conceptually straightforward but notationally clumsy. Furthermore, reference processes of the form \eqref{eq:gtWt} are dominant in practical applications \citep{song2020score, bunne2022recovering}, so we omit the general case. }
 \begin{equation}
 \label{eq:gtWt}
 \dd \refpro = \volat \dWiener.
@@ -99,7 +100,7 @@ where $X_0 = \x_0$ and %, $\dWiener$ is itself a Brownian motion, and
 The first characterization of $\Psol$ is then an immediate consequence the following classical result in \acrlong{SB} theory: Draw a sample $(\x_0, \x_1) \sim \Pssol$ and connect them via \eqref{eq:BB}. The resulting path is a sample from $\Psol$ \citep{leonard2013survey, chen2021stochastic}. In other words, $\Psol$ is a \emph{mixture} of scaled Brownian bridges, with the mixing weight given by $\Pssol$.
 
 
-\paragraph{$\Psol$ from $\Pssol$: SDE representation}
+\paragraph{$\Psol$ from $\Pssol$: SDE representation.}
 
 
 
@@ -116,17 +117,17 @@ Now, by Doob's h-transform, we know that the \acrshort{SDE} \eqref{eq:SB-SDE} \e
 \label{eq:SB-SD-conditioned}
 \dd X_t = \volatsq[\ctime]\bracks*{\fdrift(X_t) + \nabla \log \doob(X_t) }\dt +\volat \dWiener
 \end{equation}
-where $\doob(\x) \defeq \prob(X_1 = \x_1\vert X_t = \x)$ is the \emph{Doob's $h$ function}. Notice that we have suppressed the dependence of $\doob$ on $\x_0$ and $\x_1$ for notational simplicity.%\footnote{The fact $\doob$ does not depend on the starting point $\x_0$ is easily understood: An \acrshort{SDE} remains the same no matter where it starts.}
+where $\doob(\x) \defeq \prob(X_1 = \x_1\vert X_t = \x)$ is the \emph{Doob's $h$ function}. Notice that we have suppressed the dependence of $\doob$ on $\x_0$ and $\x_1$ for notational simplicity. % \footnote{The fact $\doob$ does not depend on the starting point $\x_0$ is easily understood: An \acrshort{SDE} remains the same no matter where it starts.}
 
 
 
-\paragraph{Loss function}
+\paragraph{Loss function.}
 
 Since both \eqref{eq:BB} and \eqref{eq:SB-SD-conditioned} represent $\Psol$, the solution of the \acrshortpl{DSB}, the two \acrshortpl{SDE} must coincide. 
-%This in turn implies that, for all $(\x_0,\x_1)\sim\Pssol$, we must have
-%\begin{equation}
-%\fdrift(X_t) + \nabla \log \doob(X_t) =  \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}.
-%\end{equation}
+% This in turn implies that, for all $(\x_0,\x_1)\sim\Pssol$, we must have
+% \begin{equation}
+% \fdrift(X_t) + \nabla \log \doob(X_t) =  \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}.
+% \end{equation}
 ~In other words, suppose we parametrize $\fdrift$ as $\fdrift^\theta$, then, by matching terms in \eqref{eq:BB} and \eqref{eq:SB-SD-conditioned}, we can learn the optimal parameter $\theta^\star$ via optimization of the loss function
 \begin{equation}
 \label{eq:loss}
@@ -134,7 +135,7 @@ Since both \eqref{eq:BB} and \eqref{eq:SB-SD-conditioned} represent $\Psol$, the
 \end{equation}where $\doob^\theta$ is determined by $\fdrift^\theta$ as well as the drawn samples $(\x_0,\x_1)$. In short, assuming that, for each $\theta$, we can compute $\doob^\theta$ \emph{based only on} $\fdrift^\theta$, we can then backprop through \eqref{eq:loss} and optimize it using any off-the-shelf algorithm.
 
 
-\paragraph{A slightly modified \eqref{eq:loss}}
+\paragraph{A slightly modified \eqref{eq:loss}.}
 Even with infinite data and a neural network with sufficient capacity, the loss function defined in \eqref{eq:loss} does converge to 0. For the purpose of numerical stability, we instead propose to modify \eqref{eq:loss} to:
 \begin{equation}
 \label{eq:loss_modified}
@@ -185,7 +186,7 @@ Inspecting $\doob$ in \eqref{eq:SB-SD-conditioned}, we see that, given $(\x_0,\x
 \doob(\x) = \prob(X_1 = \x_1\vert X_t = \x) = \exof*{
 \one_{\{\x_1\}}\vert X_t = \x}
 \end{equation}where the expectation is over \eqref{eq:SB-SDE}. Functions of the form \eqref{eq:h-semigroup} lend itself well to computation since it solves simulating the \emph{unconditioned} paths.
-%since the Feymann-Kac formula, which offers an representation via simulating the \emph{unconditional} paths and has been well-studied in fields such as physics \cite{}, financial engineering \citep{}, and machine learning \citep{}. 
+% since the Feymann-Kac formula, which offers an representation via simulating the \emph{unconditional} paths and has been well-studied in fields such as physics \cite{}, financial engineering \citep{}, and machine learning \citep{}. 
 Furthermore, in order to avoid overfitting on the given samples, it is customary to replace the "hard" constraint $\one_{\{\x_1\}}$ by its \emph{smoothed} version \citep{zhang2021path, holdijk2022path}: 
 \begin{equation}
 \label{eq:softdoob}
@@ -195,15 +196,15 @@ Furthermore, in order to avoid overfitting on the given samples, it is customary
 
 Although the computation of \eqref{eq:softdoob} can be done via a standard application of the Feynman-Kac formula \citep{rogers2000diffusions}, an altogether easier approach is to parametrize $\doobs$ by a second neural network $m^{\phi}$ and perform alternating minimization steps on $\fdrift^\theta$ and $m^{\phi}$. This way, we can also avoid simulating even the unconditional paths of \eqref{eq:SB-SDE}, and thereby further reducing the variance in training.
 
-%To summarize, we have
-%%Combining the above, we shall adopt the Feymann-Kac formula for computing $\doobs$:
-%\begin{align}
-%\label{eq:logdoobs}
-%&\nabla \log \doobs(\x) \\ 
-%\nn
-%&\hspace{5mm}=\lim_{\ctimealt \searrow \ctime} \frac{\mathbb{E}_{\textup{\eqref{eq:SB-SDE}}} \bracks*{  \exp\parens*{-\frac{1}{2\reg}\norm{X_\horizon-\x_1}^2 } \int_\ctime^{\ctimealt} \volat[s]\dWiener \vert X_t = \x  }  }{(\ctimealt-\ctime) \mathbb{E}_{\textup{\eqref{eq:SB-SDE}}} \bracks*{ \exp\parens*{-\frac{1}{2\reg}\norm{X_\horizon-\x_1}^2 }  \vert X_t = \x} }.
-%\end{align}
-%The generalization of \eqref{eq:logdoobs} to the case of $\fdrift^\theta$ is straightforward. It remains to neural net everything.
+% To summarize, we have
+% Combining the above, we shall adopt the Feymann-Kac formula for computing $\doobs$:
+% \begin{align}
+% \label{eq:logdoobs}
+% &\nabla \log \doobs(\x) \\ 
+% \nn
+% &\hspace{5mm}=\lim_{\ctimealt \searrow \ctime} \frac{\mathbb{E}_{\textup{\eqref{eq:SB-SDE}}} \bracks*{  \exp\parens*{-\frac{1}{2\reg}\norm{X_\horizon-\x_1}^2 } \int_\ctime^{\ctimealt} \volat[s]\dWiener \vert X_t = \x  }  }{(\ctimealt-\ctime) \mathbb{E}_{\textup{\eqref{eq:SB-SDE}}} \bracks*{ \exp\parens*{-\frac{1}{2\reg}\norm{X_\horizon-\x_1}^2 }  \vert X_t = \x} }.
+% \end{align}
+% The generalization of \eqref{eq:logdoobs} to the case of $\fdrift^\theta$ is straightforward. It remains to neural net everything.
 
 \begin{figure*}[t]
     \centering
@@ -212,12 +213,12 @@ Although the computation of \eqref{eq:softdoob} can be done via a standard appli
     \label{fig:results_spiral}
 \end{figure*}
 
-\paragraph{Regularization}
+\paragraph{Regularization.}
 Since it is well-known that $\nabla \log\doob$ typically explodes when $\ctime\to 1$ \citep{liu2023learning}, it is important to regularize the behavior of $m^{\phi}$ for numerical stability, especially when $\ctime\to 1$. Moreover, in practice, it is desirable to learn a drift $\fdrift^\theta$ that respects the data alignment \emph{in expectation}: If $(\x_0,\x_1)$ is an input pair, then multiple runs of the \acrshort{SDE} \eqref{eq:SB-SDE} starting from $\x_0$ should, on average, produce samples that are in the proximity of $\x_1$. This observation implies that we should search for drifts whose corresponding $h$-transforms are diminishing.
 
 A simple way to simultaneously achieve the above two requirements is to add an $\ell^2$-regularization term, resulting in the loss function:
-%\eqref{eq:logdoobs} is computationally expensive to simulate, because of repeated function calls to to $\fdrift^\theta$, and also suffers from high variance especially in the initial stages of training. 
-%Note $\nabla \log \doobs(\x_1) = 0$. We replace $\nabla \log \doobs(\x)$ with a neural network $m^{\phi}$ such that $\norm{m^{\phi}(\x_1)}$ is minimized. The final loss function looks like
+% \eqref{eq:logdoobs} is computationally expensive to simulate, because of repeated function calls to to $\fdrift^\theta$, and also suffers from high variance especially in the initial stages of training. 
+% Note $\nabla \log \doobs(\x_1) = 0$. We replace $\nabla \log \doobs(\x)$ with a neural network $m^{\phi}$ such that $\norm{m^{\phi}(\x_1)}$ is minimized. The final loss function looks like
 \begin{align}
 \label{eq:loss_final}
 \Loss(\theta,\phi) &\defeq \mathbb{E} \Bigg[\int_0^1 \norm*{\frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}- \left(\fdrift^\theta + m^{\phi}(X_t)\right)}^2
@@ -228,21 +229,34 @@ A simple way to simultaneously achieve the above two requirements is to add an $
 
 \subsection{Aligned Schr\"odinger Bridges as Prior Processes}
 \label{subsec:prior_drift}
-Classical SBs are unsuitable in cases where the alignments are known, because they only consider samples from $\distinit$ and $\distend$ and disregard those drawn from the (optimal) coupling $\pi^\star$. However, the reliance of our method on this crucial knowledge is critical to avoid the necessity of IPF-like iterates but may become a limitation when insufficient information on alignments is available. 
+% Classical SBs are unsuitable in cases where the alignments are known, because they only consider samples from $\distinit$ and $\distend$ and disregard those drawn from the (optimal) coupling $\pi^\star$. However, the reliance of our method on this crucial knowledge is critical to avoid the necessity of IPF-like iterates but may become a limitation when insufficient information on alignments is available. 
 
-In such a situation, while it is unrealistic to hope for an accurate solution to the aligned SB problem, the interpolation between $\distinit$ and $\distend$ learned by \textsc{SBalign} (\ref{eq:SB-SDE}) can potentially still be leveraged to obtain a better reference process, when solving a classical SB on the same marginals ---i.e. the term $b_t(X_t)$ learned via \textsc{SBalign} can, in fact, be used \textit{as is} to construct a data-informed alternative $\Tilde{\refpro}$ to the standard Brownian motion (\ref{eq:gtWt}).
+% In such a situation, while it is unrealistic to hope for an accurate solution to the aligned SB problem, the interpolation between $\distinit$ and $\distend$ learned by \textsc{SBalign} (\ref{eq:SB-SDE}) can potentially still be leveraged to obtain a better reference process, when solving a classical SB on the same marginals ---i.e. the term $b_t(X_t)$ learned via \textsc{SBalign} can, in fact, be used \textit{as is} to construct a data-informed alternative $\Tilde{\refpro}$ to the standard Brownian motion (\ref{eq:gtWt}).
 
-Improved reference processes, either using pre-trained or data-informed ones, have been previously considered in the literature. 
-For instance, both \citet{de2021diffusion} and \citet{chen2021likelihood} use a pre-trained reference process for challenging image interpolation tasks. This approach, however, relies on DSBs trained using the classical score-based generative modeling objective between a Gaussian and the data distribution. It therefore pre-trains the reference process on a related ---but different--- process, i.e., the one mapping Gaussian noise to data rather than $\distinit$ to $\distend$.
-An alternative, proposed by \citet{bunne2022recovering}, draws on the closed-form solution of SBs between two Gaussian distributions, which are chosen to approximate $\distinit$ and $\distend$, respectively.
-Unlike our method, these alternatives construct better prior drifts by falling back to simpler and related tasks, or approximations of the original problem. We instead propose to shape a coarse-grained description of the drift based on alignments sampled directly from $\mathbb{P}_{0,1}$. 
+% Improved reference processes, either using pre-trained or data-informed ones, have been previously considered in the literature. 
+% For instance, both \citet{de2021diffusion} and \citet{chen2021likelihood} use a pre-trained reference process for challenging image interpolation tasks. This approach, however, relies on DSBs trained using the classical score-based generative modeling objective between a Gaussian and the data distribution. It therefore pre-trains the reference process on a related ---but different--- process, i.e., the one mapping Gaussian noise to data rather than $\distinit$ to $\distend$.
+% An alternative, proposed by \citet{bunne2022recovering}, draws on the closed-form solution of SBs between two Gaussian distributions, which are chosen to approximate $\distinit$ and $\distend$, respectively.
+% Unlike our method, these alternatives construct better prior drifts by falling back to simpler and related tasks, or approximations of the original problem. We instead propose to shape a coarse-grained description of the drift based on alignments sampled directly from $\mathbb{P}_{0,1}$. 
+
+% TODO: Adjust this section and polish.
+Our algorithm finds solutions to SBs on aligned data by relying on samples drawn from the (optimal) coupling $\pi^\star$. This is what differentiates it from classical SBs --which instead only consider samples from $\hat{\mathbb{P}}_0$ and $\hat{\mathbb{P}}_1$-- and plays a critical role in avoiding IPF-like iterates. However, \textsc{SBalign} reliance on samples from $\pi^\star$ may become a limitation, when the available information on alignments is insufficient. 
+
+If the number of pairings is limited,  it is unrealistic to hope for an accurate solution to the aligned SB problem. However, the interpolation between $\hat{\mathbb{P}}_0$ and $\hat{\mathbb{P}}_1$ learned by \textsc{SBalign} can potentially be leveraged as a starting point to obtain a better reference process, which can then be used when solving a classical SB on the same marginals. In other words, the drift $b^\text{aligned}_t(X_t)$ learned through \textsc{SBalign} can be used \textit{as is} to construct a data-informed alternative $\tilde{\mathbb{Q}}$ to the standard Brownian motion, defined by paths:
+\[
+    \tilde{X}_t = b^\text{aligned}_t(\tilde{X}_t) dt + g_t dW_t
+\]
+Intuitively, solving a standard SB problem with $\tilde{\mathbb{Q}}$ as reference is beneficial because the (imperfect) coupling of marginals learned by \textsc{SBalign} ($\tilde{\mathbb{Q}}_{01}$) is, in general, closer to the truth than $\mathbb{Q}_{01}$.
+
+Improving reference processes through pre-training or data-dependent initialization has been previously considered in the literature. For instance, both \citet{de2021diffusion} and \citet{chen2021likelihood} use a pre-trained reference process for challenging image interpolation tasks. This approach, however, relies on DSBs trained using the classical score-based generative modeling objective between a Gaussian and the data distribution. It, therefore, pre-trains the reference process on a related --but different-- process, i.e., the one mapping Gaussian noise to data rather than $\hat{\mathbb{P}}_0$ to $\hat{\mathbb{P}}_1$.
+An alternative, proposed by \citet{bunne2022recovering} draws on the closed-form solution of SBs between two Gaussian distributions, which are chosen to approximate $\hat{\mathbb{P}}_0$ and $\hat{\mathbb{P}}_1$, respectively.
+Unlike our method, these alternatives construct prior drifts by falling back to simpler and related tasks, or approximations of the original problem. We instead propose to shape a coarse-grained description of the drift based on alignments sampled directly from $\pi^\star_{01}$. 
 
 
 \subsection{Empirical Evaluation}
 In this section, we evaluate \textsc{SBalign} in different settings involving 2-dimensional synthetic datasets, the task of reconstructing cellular differentiation processes, as well as predicting the conformation of a protein structure and its ligand formalized as rigid protein docking problem.
 
-\subsubsection{Synthetic Experiments}
-\label{sec:synthetic}
+\subsubsection{Synthetic Dynamics}
+\label{sec:sbalign_synthetic}
 
 \begin{figure*}
     \centering
@@ -251,14 +265,14 @@ In this section, we evaluate \textsc{SBalign} in different settings involving 2-
     \label{fig:results_cell_traj}
 \end{figure*}
 
-We run our algorithm on two synthetic datasets and compare the results with classic Schr\"odinger bridge models, i.e., the forward-backward SB formulation proposed by \cite{chen2021likelihood}, herein referred to as \textsc{fbSB}. We equip the baseline with prior knowledge, as elaborated below, to further challenge \textsc{SBalign}.
+We run our algorithm on two synthetic datasets, and compare the results with classic diffusion Schr\"odinger bridge models, i.e., the forward-backward SB formulation proposed by \cite{chen2021likelihood}, herein referred to as \textsc{fbSB}. We equip the baseline with prior knowledge, as elaborated below, to further challenge \textsc{SBalign}.
 
 \paragraph{Moon dataset.}
 The first synthetic dataset (Fig.~\ref{fig:results_spiral}a-c) consists of two distributions, each supported on two semi-circles ($\distinit$ drawn in \textit{blue} and $\distend$ in \textit{red}).
 $\distend$ was obtained from $\distinit$ by applying a clockwise rotation around the center, i.e., by making points in the upper blue arm correspond to those in the right red one.
 This transformation is clearly not the most likely one under the assumption of Brownian motion of particles and should therefore not be found as the solution of a classical SB problem. 
 This is confirmed by \textsc{fbSB} trajectories (Fig.~\ref{fig:results_spiral}a), which tend to map points to their closest neighbor in $\distend$ (e.g., some points in the upper arm of $\distinit$ are brought towards the left rather than towards the right). 
-While being a minimizer of \eqref{eq:SB}, such a solution completely disregards our prior knowledge on the alignment of particles, which is instead reliably reproduced by the dynamics learned by \textsc{SBalign} (Fig.~\ref{fig:results_spiral}b).
+While being a minimizer of \eqref{eq:SB}, such a solution completely disregards our prior knowledge on the alignment of particles, which is instead reliably reproduced by the dynamics learned by \textsc{SBalign} (Fig.~\ref{fig:results_spiral}c).
 
 One way of encoding this additional information on the nature of the process is to modify $\refpro$ by introducing a clockwise radial drift, which describes the prior tangential velocity of particles moving circularly around the center.
 Solving the classical SB with this updated reference process indeed generates trajectories that respect most alignments (Fig.~\ref{fig:results_spiral}b), but requires a hand-crafted expression of the drift that is only possible in very simple cases.
@@ -269,7 +283,7 @@ In this dataset, $\distinit$ and $\distend$ are both bi-modal distributions, eac
 We target alignments that connect the two arms of the T as well as the top cloud with the bottom one. We succeed in learning them with \textsc{SBalign} (Fig.~\ref{fig:results_spiral}e) but unsurprisingly fail when using the baseline \textsc{fbSB} (Fig.~\ref{fig:results_spiral}d) with a Brownian motion prior.
 
 \looseness -1 In this case, however, attempts at designing a better reference drift for \textsc{fbSB} must take into account the additional constraint that the horizontal and vertical particle trajectories intersect (see Fig.~\ref{fig:results_spiral}e), i.e., they cross the same area at times $t_h$ and $t_v$ (with $t_h > t_v$). This implies that the drift $b_t$, which initially points downwards (when $t < t_v$), should swiftly turn rightwards (for $t > t_h$).
-Setting imprecise values for one of $t_h$ and $t_v$ when defining custom reference drifts for classical \acrshortpl{SB} would hence not lead to the desired result and, worse, would actively disturb the flow of the other particle group.
+Setting imprecise values for one of $t_h$ and $t_v$ when defining custom reference drifts for classical SBs would hence not lead to the desired result and, worse, would actively disturb the flow of the other particle group.
 
 \looseness -1 As described in \S~\ref{subsec:prior_drift}, in presence of hard-to-capture requirements on the reference drift, the use of \textsc{SBalign} offers a remarkably easy and efficient way of learning a parameterization of it. For instance, when using the drift obtained by \textsc{SBalign} as reference drift for the computation of the SB baseline (\textsc{fbSB}), we find the desired alignments (Fig.~\ref{fig:results_spiral}f).
 
@@ -280,38 +294,45 @@ Setting imprecise values for one of $t_h$ and $t_v$ when defining custom referen
     \label{fig:results_cell_class}
 \end{figure*}
 
-\subsubsection{Cell Differentiation}
-\label{sec:cell}
+\subsubsection{Single-Cell Dynamics}
+\label{sec:sbalign_cell}
 
 \looseness -1 Biological processes are determined through heterogeneous responses of single cells to external stimuli, i.e., developmental factors or drugs. Understanding and predicting the dynamics of single cells subject to a stimulus is thus crucial to enhance our understanding of health and disease and the focus of this task.
 Most single-cell high-throughput technologies are destructive assays ---i.e., they destroy cells upon measurement--- allowing us to only measure \textit{unaligned} snapshots of the evolving cell population. Recent methods address this limitation by proposing (lower-throughput) technologies that keep cells alive after transcriptome profiling \citep{chen2022live} or that genetically tag cells to obtain a clonal trace upon cell division \citep{weinreb2020lineage}.
 
-\paragraph{Dataset} To showcase \textsc{SBalign}'s ability to make use of such (partial) alignments when inferring cell differentiation processes, we take advantage of the genetic barcoding system developed by \citet{weinreb2020lineage}. With a focus on fate determination in hematopoiesis, \citet{weinreb2020lineage} use expressed DNA barcodes to clonally trace single-cell transcriptomes over time. The dataset consists of two snapshots: the first, recorded on day 2, when most cells are still undifferentiated (see Fig.~\ref{fig:results_cell_class}a), and a second, on day 4, comprising many different mature cell types (see Fig.~\ref{fig:results_cell_class}b). Using \textsc{SBalign} as well as the baseline \textsc{fsSB}, we attempt to reconstruct cell evolution between day 2 and day 4, all while capturing the heterogeneity of emerging cell types.
+To showcase \textsc{SBalign}'s ability to make use of such (partial) alignments when inferring cell differentiation processes, we take advantage of the genetic barcoding system developed by \citet{weinreb2020lineage}. With a focus on fate determination in hematopoiesis, \citet{weinreb2020lineage} use expressed DNA barcodes to clonally trace single-cell transcriptomes over time. The dataset consists of two snapshots: the first, recorded on day 2, when most cells are still undifferentiated (see Fig.~\ref{fig:results_cell_class}a), and a second, on day 4, comprising many different mature cell types (see Fig.~\ref{fig:results_cell_class}b). Using \textsc{SBalign} as well as the baseline \textsc{fsSB}, we attempt to reconstruct cell evolution between day 2 and day 4, all while capturing the heterogeneity of emerging cell types.
 
 \begin{table}
-    \caption{\textbf{Cell differentiation prediction results.} Shown are distributional metrics (MMD, $\text{W}_{\varepsilon}$), alignment-based metrics ($\ell_2$, RMSD), and cell type classification accuracy for different methods on the cell differentiation dataset. \vspace{-5pt}}
+    \caption{\textbf{Cell differentiation prediction results.} Means and standard deviations (in parentheses) of distributional metrics (MMD, $\text{W}_{\epsilon}$), alignment-based metrics ($\ell_2$, RMSD), and cell type classification accuracy.  \vspace{-5pt}}
     \label{tab:results_cells}
      \centering
-    \adjustbox{max width=.8\linewidth}{%
+    \adjustbox{max width=\linewidth}{%
     \begin{tabular}{lccccc}
     \toprule
      & \multicolumn{5}{c}{\textbf{Cell Differentiation}} \\
     \cmidrule(lr){2-6}
     \textbf{Methods} & MMD $\downarrow$ & $\text{W}_\varepsilon \downarrow$ & $\ell_2(\text{PS}) \downarrow$ & RMSD $\downarrow$ & Class. Acc. $\uparrow$ \\
     \midrule
-     \textsc{fbSB}& 1.58e-2 & 12.6 & 4.07  & 9.63e-1 & 58.0\% \\
-     \textsc{fbSB} with \textsc{SBalign} & 5.15e-3 & 10.6 & 0.95  & 9.88e-1 & 49.0\% \\
-     \textsc{\textbf{\textsc{SBalign}}}& 9.77e-3 & 11.2 & 1.24 & 9.28e-1 & 56.0\% \\
+     \textsc{fbSB}& \makecell{1.55e-2\\(0.03e-2)} & \makecell{12.50\\(0.04)} & \makecell{4.08\\(0.04)} & \makecell{9.64e-1\\(0.02e-1)} & \makecell{56.2\%\\(0.7\%)} \\
+     \textsc{fbSB} with \textsc{SBalign} & \makecell{5.31e-3\\(0.25e-3)} & \makecell{10.54\\(0.08)} & \makecell{0.99\\(0.12)} & \makecell{9.85e-1\\(0.07e-1)} & \makecell{47.0\%\\(1.5\%)} \\
+     \textsc{SBalign} & \makecell{1.07e-2\\(0.01e-2)} & \makecell{11.11\\(0.02)} & \makecell{1.24\\(0.02)} & \makecell{9.21e-1\\(0.01e-1)} & \makecell{56.3\%\\(0.7\%)} \\
      \bottomrule \vspace{-15pt}
     \end{tabular}
 }
 \end{table}
 
-\paragraph{Baselines} \looseness -1 We benchmark \textsc{SBalign} against previous \acrshortpl{DSB} such as \citep[\textsc{fbSB}]{chen2021likelihood}. Beyond, we compare \textsc{SBalign} in the setting of learning a prior reference process. Naturally, cell division processes and subsequently the propagation of the barcodes are very noisy. While this genetic annotation provides some form of assignment, it does not capture the full developmental process. We thus test \textsc{SBalign} in a setting where it learns a prior from such partial alignments and, plugged into \textsc{fbSB}, is fine-tuned on the full dataset.
- 
-\paragraph{Evaluation metrics} To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\varepsilon}$~\citep{cuturi2013sinkhorn}, as well as average scores, i.e., $\ell_2(\text{PS})$ \citep{bunne2021learning} and RMSD. Moreover, we also train a simple neural network-based classifier to annotate the cell type on day 4 and we report the accuracy of the predicted vs. true cell type for all the models. 
+We benchmark \textsc{SBalign} against previous \acrshortpl{DSB} such as \citep[\textsc{fbSB}]{chen2021likelihood}. Beyond, we compare \textsc{SBalign} in the setting of learning a prior reference process. Naturally, cell division processes and subsequently the propagation of the barcodes are very noisy. While this genetic annotation provides some form of assignment, it does not capture the full developmental process. We thus test \textsc{SBalign} in a setting where it learns a prior from such partial alignments and, plugged into \textsc{fbSB}, is fine-tuned on the full dataset.
+To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\epsilon}$~\citep{cuturi2013sinkhorn}, as well as average (perturbation scores), i.e., $\ell_2(\text{PS})$, and RMSD. Details on the evaluation metrics can be found in \cref{app:evaluation_metrics}.
+Moreover, we also train a simple neural network-based classifier to annotate the cell type on day 4 and we report the accuracy of the predicted vs. actual cell type for all the models.
 
-\paragraph{Results} \textsc{SBalign} accurately predicts cellular differentiation processes in hematopoiesis from day 2 to day 4, as visible from the (2D projections of the) learned trajectories and alignments (Fig.~\ref{fig:results_cell_traj}c) and the quantitative evaluation in Table~\ref{tab:results_cells}. \textsc{SBalign} outperforms \textsc{fbSB} in all but the cell-type accuracy metric: Remarkably, our method exceeds the performances of the baseline also on distributional metrics and not uniquely on alignment-based ones. Further, we evaluate how well \textsc{SBalign} recovers the heterogeneity of emerging cell types throughout the developmental process on day 4. The results are displayed in Fig.~\ref{fig:results_cell_class}d and show that, while capturing the overall differentiation trend, \textsc{SBalign} (as well as \textsc{fbSB}) struggles to isolate rare cell types.
+
+\textsc{SBalign} finds matching between cell states on days 2 and 4 (Fig.~\ref{fig:results_cell_traj}c, bottom) which resemble the observed ones (Fig.~\ref{fig:results_cell_traj}a) but also reconstructs the entire evolution path of transcriptomic profiles (Fig.~\ref{fig:results_cell_traj}c, top).
+It outperforms the baseline \textsc{fbSB} (Table \ref{tab:results_cells}) in all metrics: Remarkably, our method exceeds the performances of the baseline also on distributional metrics and not uniquely on alignment-based ones.
+We also leverage \textsc{SBalign} predictions to recover the type of cells at the end of the differentiation process (Fig.~\ref{fig:results_cell_class}d). We do that by training a classifier on differentiated cells observed on day 4, and subsequently classify our predictions. % and applying it to cell statuses predicted by our method.
+While capturing the overall differentiation trend, \textsc{SBalign} (as well as \textsc{fbSB}) struggles to isolate rare cell types.
+Lastly, we employ \textsc{SBalign} to learn a prior process from noisy alignments based on genetic barcode annotations. When using this reference process within \textsc{fbSB}, we learn an SB which compensates for inaccuracies stemming from the stochastic nature of cell division and barcode redistribution and which achieves better scores on distributional metrics (see Tab.~\ref{tab:results_cells}).
+
+\textsc{SBalign} accurately predicts cellular differentiation processes in hematopoiesis from day 2 to day 4, as visible from the (2D projections of the) learned trajectories and alignments (Fig.~\ref{fig:results_cell_traj}c) and the quantitative evaluation in Table~\ref{tab:results_cells}. \textsc{SBalign} outperforms \textsc{fbSB} in all but the cell-type accuracy metric: Remarkably, our method exceeds the performances of the baseline also on distributional metrics and not uniquely on alignment-based ones. Further, we evaluate how well \textsc{SBalign} recovers the heterogeneity of emerging cell types throughout the developmental process on day 4. The results are displayed in Fig.~\ref{fig:results_cell_class}d and show that, while capturing the overall differentiation trend, \textsc{SBalign} (as well as \textsc{fbSB}) struggles to isolate rare cell types.
 Lastly, we employ \textsc{SBalign} to learn a prior process from noisy alignments based on genetic barcode annotations. When using this reference process within \textsc{fbSB}, we learn an SB which compensates for inaccuracies stemming from the stochastic nature of cell division and barcode redistribution and which achieves better scores on distributional metrics (see Tab.~\ref{tab:results_cells}).
 
 \subsection{Discussion}

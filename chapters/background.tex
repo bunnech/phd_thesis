@@ -8,12 +8,20 @@
 ...
 
 
+
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_bio_problems.pdf}
   \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} ... \textbf{b.} ...}	
   \label{fig:bio_problems}
 \end{figure}
 
+\looseness -1 With increasing data availability, a diverse set of approaches has been proposed to model cellular perturbation responses, ranging from mechanistic to current deep learning-based approaches.
+Mechanistic models \citep{yuan2021cellbox, frohlich2018efficient} define mathematical models of molecular interactions to model the effect of perturbation.
+These methods, however, are restricted to simpler and well-understood systems as they do not capture highly nonlinear perturbation responses of a heterogeneous cell population. Further, these methods are limited in their applicability as they do not scale to genome-wide measurements \citep{snijder2012single, berchtold2018systems, green2016systems}.
+Linear models \citep{dixit2016perturb, kamimoto2020celloracle}, on the other hand,  predict changes in cellular gene expression levels using regularized regression methods, where the model predicts a gene's expression level as a linear combination of effects of different perturbations, fitting the regulatory effect of each perturbation on each gene.
+Due to assuming only linear relationships of individual genes in response to a perturbation, these methods are similarly  unable to capture complex and inhomogeneous population responses upon perturbation.
+\citet{heydari2022iqcell}, on the other hand, predict perturbation responses through inferring the underlying gene regulatory network. Prediction of the perturbed states is achieved through a dynamic simulation of those logical gene networks. Thus, the predicted perturbed states are restricted to only the selected set of genes used to build the corresponding regulatory network.
+Lastly, current state-of-the-art methods~\citep{lopez2018scvi, lotfollahi2019scgen, yang2020predicting} aim to learn low-dimensional representations of inputs using autoencoders such that perturbation effects can be applied with simple linear interpolations in representation space. Thus, they predict perturbation responses via linear shifts in a learned low-dimensional latent space. These models are attractive because they are fully parameterized, enabling us to make predictions on unseen cells. By tackling the task of perturbation response predictions via the even more challenging task of learning a meaningful low-dimensional embedding, these methods can be expected to, at best, only perform moderately well. Therefore, we sought to learn a fully parameterized perturbation model that robustly describes the cellular dynamics upon intervention while accounting for underlying variability across samples.
 
 \chapter{Optimal Transport for Dynamical Systems}
 \label{cha:theory_background}
@@ -65,14 +73,14 @@ A visualization of the discrete setting is provided in \cref{fig:ot_principles}c
 
 For his work, \citeauthor{kantorovich1942transfer} received the Nobel Prize in economics. The connections of \acrshort{OT} to basic questions in economy becomes clear when interpreting $\mu$ as a density of resource units, and $\nu$ a density of factories, where the coupling $\pi$ denotes the optimal transportation plan of distributing resources to factories.
 
-% TODO: Add general formulation of regularized OT problem.
 When instantiated on finite discrete measures, such as $\mu=\sum_{i=1}^n u_i\delta_{x_i}$ and $\nu=\sum_{j=1}^m v_j\delta_{y_j}$, this problem translates to a linear program, which can be regularized using an entropy term~\citep{cuturi2013sinkhorn,peyre2019computational}. For $\varepsilon\geq0$, set 
-\begin{equation} \label{eq:reg-ot}
+% TODO: Switch to continuous version of the entropy-regularized OT problem.
+\begin{equation} \label{eq:ot-entropy}
 \We(\mu,\nu) \defeq \min_{\bP\in U(u, v)} \dotp{\bP}{[c(x_i, y_j)]_{ij}}  \,-\varepsilon H(\bP),
 \end{equation}
 where the discrete entropy of transportation plan $\bP$ is defined as $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(u, v)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m =u, \bP^\top\mathbf{1}_n=v\}$. 
 Notice that the definition above reduces to the usual Wasserstein distance when $\varepsilon=0$. Setting $\varepsilon>0$ yields a faster and differentiable proxy to approximate $W_{0}$, but introduces a bias, since $\We(\mu,\mu)\ne 0$ in general.
-Thus, regularizing objective \eqref{eq:kantorovich} with an entropy term results in a significantly more efficient optimization \citep{cuturi2013sinkhorn} and differentiability w.r.t. its inputs. As a consequence, \eqref{eq:reg-ot} is commonly used as a loss function in machine learning applications, e.g., for structured prediction \citep{frogner2015learning,janati2020multi} or generative model fitting \citep{arjovsky2017wasserstein, salimans2018improving, genevay2018learning}.
+Thus, regularizing objective \eqref{eq:kantorovich} with an entropy term results in a significantly more efficient optimization \citep{cuturi2013sinkhorn} and differentiability w.r.t. its inputs. As a consequence, the discrete formulation of \eqref{eq:ot-entropy} (see \ref{eq:reg-ot}) is commonly used as a loss function in machine learning applications, e.g., for structured prediction \citep{frogner2015learning,janati2020multi} or generative model fitting \citep{arjovsky2017wasserstein, salimans2018improving, genevay2018learning}.
 
 
 \subsection{Kantorovich Duality} \label{sec:background_dual}
@@ -102,7 +110,8 @@ resulting in the semi-dual
 \arg\!\!\max_{f\, c\text{-concave}} \int f \textrm{d}\mu + \int f^c\textrm{d}\nu\,.
 \end{equation}
 
-\paragraph{Euclidean case.} For the cost $c(x, y) = \norm{x-y}^2$ in $\gX = \gY = \mathbb{R}^d$, one can replace the constraint of \eqref{eq:kantorovich-dual} using the Legendre-Fenchel transform
+\paragraph{Euclidean case.}
+For the cost $c(x, y) = \norm{x-y}^2$ in $\gX = \gY = \mathbb{R}^d$, one can replace the constraint of \eqref{eq:kantorovich-dual} using the Legendre-Fenchel transform
 \begin{equation} \label{eq:legendre_fenchel}
 	\tag{Legendre-Fenchel transform}
 	\forall y, \quad g(y) \geq f^*(y) \defeq \sup _x \langle x, y\rangle-f(x)\,,
@@ -210,7 +219,8 @@ Thus, path $\mu_t$ describes the time-evolving density of a set of particles mov
 Taking the perspective of fluid dynamics, \eqref{eq:vector_field_length} can also be interpreted as the \emph{kinetic energy} of the particles.
 The Benamou-Brenier formulation \eqref{eq:benamou_brenier} then selects the vector field $v$ that minimizes the total efforts or the total kinetic energy one has to spend in order to move particles around according to the vector field $v$.
 
-\paragraph{Euclidean case.} A particular important case occurs again in the Euclidean setting, i.e., for cost $c(x, y) = \norm{x-y}^2$ in $\gX = \gY = \mathbb{R}^d$. The solution of the time-dependent OT problem \eqref{eq:benamou_brenier} then coincides with \citeauthor{mccann1997convexity}'s displacement interpolation between two measures.
+\paragraph{Euclidean case.}
+A particular important case occurs again in the Euclidean setting, i.e., for cost $c(x, y) = \norm{x-y}^2$ in $\gX = \gY = \mathbb{R}^d$. The solution of the time-dependent OT problem \eqref{eq:benamou_brenier} then coincides with \citeauthor{mccann1997convexity}'s displacement interpolation between two measures.
 Reciting \cref{thm:brenier}, with $T = \nabla \psi$, $\mu_t$ is equal to \citeauthor{mccann1997convexity}'s interpolation between $\mu_0$ and $\mu_1$ given by
 \begin{equation} \label{eq:mccann_interpolation}
 	\mu_t = [(1-t) I+t \nabla \psi]_\sharp \mu_0 = [(1-t) I+t T]_\sharp \mu_0\,.
@@ -232,7 +242,8 @@ In the following, we will study gradient flows in the Euclidean setting before c
 
 % It is natural to derive various partial differential equations (PDE's) as gradient flows of certain energy functionals.
 
-\paragraph{Euclidean case.} Considering the evolution of a vector $x$ over time in the Euclidean space. Provided with a smooth functional $J$, this can be realized through the standard gradient descent (forward) scheme
+\paragraph{Euclidean case.}
+Considering the evolution of a vector $x$ over time in the Euclidean space. Provided with a smooth functional $J$, this can be realized through the standard gradient descent (forward) scheme
 \begin{equation*}
 	x_{t+1} \defeq x_{t}-\tau \nabla J\left(x_{t}\right),
 \end{equation*}
@@ -243,7 +254,8 @@ For non-smooth functions, on can resort to a proximal scheme, i.e.,
 \end{equation*}
 The proximal scheme can thereby be seen as a \emph{backward} Euler discretization of the gradient flow.
 
-\paragraph{Wasserstein case.} When studying the evolution of a population or measure $\mu_t$ over time, however, we need resort to optimal transport metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
+\paragraph{Wasserstein case.}
+When studying the evolution of a population or measure $\mu_t$ over time, however, we need resort to optimal transport metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
 Considering a functionals $J$ that take a measure or population as input, a gradient flow of $\mu$ w.r.t. to $J$ can be similarly expressed through forward and backward schemes. Assuming $J(\mu) 
 \defeq \int E(x) d \mu(x)$, the forward scheme thereby reads
 \begin{equation*}
@@ -251,7 +263,7 @@ Considering a functionals $J$ that take a measure or population as input, a grad
 \end{equation*}
 with the corresponding backward formulation defined as
 \begin{equation}
-	\label{eq:prox_measure}
+	\label{eq:jko}
 	\mu_{t+1}\defeq\underset{\mu}{\operatorname{argmin}} \enspace \frac{1}{2\tau}W\left(\mu, \mu_t\right)+ J(\mu).
 \end{equation}
 This implicit time stepping is a useful tool to construct continuous flows: In the limit $\tau \rightarrow 0$ the resulting sequence $\{\mu_t\}_{t=0}^T$ approximates a continuous flow $\mu_t$, i.e., a path in the Wasserstein space.
@@ -263,7 +275,7 @@ In their seminal paper, \citet{jordan1998variational} study diffusion processes 
 The \acrshort{JKO} flow can thus be seen as the analogy of the usual proximal descent scheme, tailored for probability measures~\citep[p.285]{santambrogio2015optimal}.
 
 
-For a broad class of potentials $J$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{JKO step} \eqref{eq:prox_measure} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of the corresponding PDE, and the resulting evolutions are often referred to as \emph{JKO flows}.
+For a broad class of potentials $J$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{JKO step} \eqref{eq:jko} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of the corresponding PDE, and the resulting evolutions are often referred to as \emph{JKO flows}.
 \citet{jordan1998variational} show that as step size $\tau \rightarrow 0$, and for a specific energy $J$ that is the sum of a linear term and the negentropy, the measures describing the \acrshort{JKO} flow recover solutions to a Fokker-Planck equation. 
 
 \begin{table}[t]
@@ -301,13 +313,13 @@ that results in flow functional $J(\mu_t) = \int \mu_t(x) \log \mu_t(x) \mathrm{
 In recent works, \acrshort{JKO} flows thus have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}.
 In fact, this formulation is particular interesting for studying dynamical systems in biomedicine, as the exact expression of the PDE corresponding to functional $J$ does not need to be known.
 Instead we can propose parameterizations of energy functional $J$ that can be learned from data, an idea we will explore in \cref{sec:learn_energy}.
-While providing a general framework for studying general and complex population dynamics, each step of the JKO scheme \eqref{eq:prox_measure} is costly as it requires solving a minimization problem involving the Wasserstein distance \eqref{eq:kantorovich}. Beyond introducing learning schemes for functional $J$ the design of efficient and differentiable we will thus introduce novel schemes for solving JKO flows in \cref{sec:jko_icnn}.
+While providing a general framework for studying general and complex population dynamics, each step of the JKO scheme \eqref{eq:jko} is costly as it requires solving a minimization problem involving the Wasserstein distance \eqref{eq:kantorovich}. Beyond introducing learning schemes for functional $J$ the design of efficient and differentiable we will thus introduce novel schemes for solving JKO flows in \cref{sec:jko_icnn}.
 
 
 \subsection{Stochastic Control Perspective} \label{sec:background_control}
 
 Benamou-Brenier motivated the introduction of the dynamic optimal transport problem from a perspective of fluid dynamics.
-As we shall see, both the OT problem \eqref{eq:kantorovich} and its regularized version \eqref{eq:reg-ot} can be viewed as stochastic \textit{optimal control} problems.
+As we shall see, both the OT problem \eqref{eq:kantorovich} and its regularized version \eqref{eq:ot-entropy} can be viewed as stochastic \textit{optimal control} problems.
 ... % why do we want this?
 Control theory at the heart is concerned with finding optimal policies for dynamic systems subject to constraints. Despite wide-ranging progress on both the theory and applications, deploying control theory to large-scale and often unknown systems remains a grand challenge.
 As we will explore in the following, stochastic optimal control problems to regulate dynamic systems emerge from the theory of optimal transport \citep{santambrogio2015optimal} that provides geometric variational framework for studying flows of distributions on metric spaces \citep{chen2021optimal}.
@@ -336,7 +348,7 @@ The above strategy, however, differs from standard optimal control in the added 
 
 \subsubsection*{... on Regularized Optimal Transport}
 
-Similarly, the regularized OT problem \eqref{eq:reg-ot} can be casted as a stochastic control problem.
+Similarly, the regularized OT problem \eqref{eq:ot-entropy} can be casted as a stochastic control problem.
 \begin{align}
 \label{eq:sb_control}
 & \inf _{v \in \mathcal{V}} \mathbb{E}\left\{\int_0^1 \frac{1}{2}\norm{v(t, X^v_t)}^2 \mathrm{d} t\right\}\\

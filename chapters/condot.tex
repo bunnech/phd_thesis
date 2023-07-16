@@ -54,7 +54,7 @@ By \citeauthor{brenier1987decomposition}'s theorem, we know, however, that such 
 \end{align}
 We detail in App.~\ref{app:algorithm} how the Legendre transforms that appear in the energy terms $\mathcal{E}_{\mu_i,\nu_i}$ are handled with an auxiliary function.
 
-\subsection{Integrating Context in Convex Architectures}%\paragraph{Towards Parameterized Monge Maps}
+\subsection{Integrating Context in Convex Architectures}
 We propose to incorporate context variables, in order to modulate a family of convex functions $f_{\theta}(x, c)$
 using \acrlongpl{PICNN}. \acrshortpl{PICNN} are neural networks that can be evaluated over a pair of inputs $(x,\cont)$, but which are only required to be convex w.r.t.~$x$. Given an input vector $x$ and context vector $\cont$, a $K$-layer PICNN is defined as $\psi_\theta(x, c) = z_{K},$ where, recursively for $0\leq k \leq K-1$ one has
 \begin{equation} \label{eq:picnn}
@@ -82,17 +82,30 @@ Using PICNNs as a base module, the \textsc{CondOT} architecture integrates opera
 
 To provide a flexible architecture capable of modeling different types of conditions as well as conditions appearing in combinations, the more general \textsc{CondOT} architecture consists of the hypernetwork $\mathcal{T}_\theta$ that is fed a context vector through embedding and combinator modules. This generic architecture provides a one-size fits all approach to integrate all types of contexts $\cont$.
 
-\paragraph{Embedding Module}
+\subsubsection{Embedding Module $\mathcal{E}$}
 To give greater flexibility when setting the context variable $c$, \textsc{CondOT} contains an embedding module $\mathcal{E}$ that translates arbitrary contexts into real-valued vectors. Besides simple scalars $t$ (Fig.~\ref{fig:overview}a) for which no embedding is required, discrete contexts can be handled with an embedding module $\mathcal{E}_\phi$.
+
+\paragraph{One-Hot Embedding $\mathcal{E}_\text{ohe}$}
 When the set $\gC$ is small, this can be done effectively using one-hot embeddings $\mathcal{E}_\text{ohe}$.
+Thus, covariates, such as subpopulation or patient identifiers, can be simply embedded via one-hot encodings. These embeddings, however, are not able to capture unknown covariates after training.
+
 For more complicated actions $a$ such as treatments, there is no simple way to vectorize a context $c$. Similarly to action embeddings in reinforcement learning \citep{chandak2019learning, tennenholtz2019natural}, we can learn embeddings for discrete actions into a learned continuous representation.
-This often requires domain-knowledge on the context values. For molecular drugs, for example, we can learn molecular representations $\mathcal{E}_\text{mol}$ such as chemical, motif-based~\citep{rogers2010extended} or neural fingerprints~\citep{rong2020grover, schwaller2022machine}.
-However, often this domain knowledge is not available.
+This often requires domain-knowledge on the context values. For molecular drugs, for example, we can learn molecular representations $\mathcal{E}_\text{mol}$ such as chemical, motif-based~\citep{rogers2010extended} or neural fingerprints~\citep{rong2020grover, schwaller2022machine, rogers2010extended}.
+However, often this domain knowledge is not available. 
+% In the case of genetic perturbations, for example, no straightforward embedding is available.
 % We might, however, have some sparse sample-access to an action $a$'s target effects (i.e., when modeling the effect of actions in combination, we often have sample access to an action applied in isolation).
+
+\paragraph{Mode-of-Action Embedding $\mathcal{E}_\text{moa}$}
 In this work, we thus construct so-called \emph{mode-of-action} embeddings, by computing an embedding $\mathcal{E}_\text{moa}$ that encourages actions $a$ with similar effect on target population $\nu$ to have a similar representation.
+Such mode-of-action embeddings map actions into a latent space-based on their mechanism of action and effect on the target population.
+In the fashion of word embeddings \citep{mikolov2013efficient, mikolov2013distributed, mikolov2013linguistic}, we require actions with similar effect to be closely embedded in the learned representation.
+This means, however, that we require some sample access of target population particles, i.e., perturbed cells by individual compounds (not in combination).
+While several metric embeddings are possible \citep{chopra2005learning}, we here test a simple multi-dimensional scaling-based embedding \citep{mead1992review}.
+For this we compute the pairwise Wasserstein distance matrix between all target populations of different individual perturbations. We then compute a 10-dimensional MDS embedding-based on the stress minimization using majorization algorithm (\texttt{smacof}) \citep{de2009multidimensional} of \texttt{sklearn} \citep{pedregosa2011scikit}, which serves as descriptor for each individual perturbation.
+
 In \S~\ref{sec:evaluation}, we analyze several embedding types for different use-cases.
 
-\paragraph{Combinator Module}
+\subsubsection{Combinator Module $\mathcal{C}$}
 \begin{wrapfigure}{r}{0.4\textwidth}
     \centering
     %\vskip-0.1cm
@@ -103,11 +116,18 @@ In \S~\ref{sec:evaluation}, we analyze several embedding types for different use
 \looseness -1 While we often have access to contexts $c$ in isolation, it is crucial to infer the effect of contexts applied in combination. A prominent example are cancer combination therapies, in which multiple treatment modalities are administered in combination to enhance treatment efficacy~\citep{kummar2010utilizing}.
 In these settings, the mode of operation between individual contexts $c$ is often not known, and can thus not be directly modeled via simple arithmetic operations such as 
 \texttt{min, max, sum, mean}.
-While we test as a baseline the case, applicable to one-hot-embeddings, where simple additions are used to model these combinations, we propose to augment the \textsc{CondOT} architecture with a parameterized combinator module $\mathcal{C}_\Phi$.
-If the order in which the actions are applied is irrelevant or unknown, the corresponding network $\mathcal{C}_\Phi$ needs to be permutation-invariant,
-which can be achieved by using a deep set architecture~\citep{zaheer2017deep}.
+While we test as a baseline the case, applicable to one-hot-embeddings, where simple additions are used to model these combinations, we propose to augment the \textsc{CondOT} architecture with a parameterized combinator module $\mathcal{C}_\Phi$. In this work, we consider the following combinator modules:
+
+\paragraph{Multi-hot combinator $\mathcal{C}^\text{ohe}_+$.}
+A na\"ive way of constructing the combinator is to combine different actions via a multi-hot encoding. If all single perturbations are observed during training, each individual action can be represented via a one-hot encoding. The potential combination of different actions, is then encoded by adding the respective one-hot encodings, resulting in a multi-hot encoding for each combination.
+A limitation of this embedding, however, is that it cannot generalize to unknown action after training.
+
+\paragraph{Deep set combinator $\mathcal{C}^\text{moa}_\Phi$.}
+When not considering one-hot-based embeddings and when aiming to generalize to unseen perturbations, we need a combinator module which learns how to associate different individual embeddings with each other to receive a joint embedding.
+As we for now do not make an assumption on the order of the perturbation, we consider a permutation-invariance network architecture such as deep sets~\citep{zaheer2017deep} with parameters $\Phi$. Taking a set of arbitrary size $k$ containing individual context embeddings $\{\mathcal{E}_\text{moa}(c^1), \mathcal{E}_\text{moa}(c^2), \dots, \mathcal{E}_\text{moa}(c^k)\}$, it returns a learned combination embedding $\hat{c}_i = \mathcal{C}_\Phi(\mathcal{E}_\text{moa}(c^1), \mathcal{E}_\text{moa}(c^2), \dots, \mathcal{E}_\text{moa}(c^k))$.
 % If interactions between the context variables exist, $\mathcal{C}_\Phi$ can be represented via classical message-passing network architectures~\citep{gilmer2020message,kipf2018neural}.
 Receiving a flexible number of inputs from the embedding module $\mathcal{E}_\phi$, \textsc{CondOT} allows for a joint training of the PICNN parameters $\theta$, embedding parameters $\phi$, and combinator parameters $\Phi$ in a single, end-to-end differentiable architecture.
+
 
 \paragraph{Training procedure.}
 \looseness -1 Given a dataset $\mathcal{D}=\{c_i, (\mu_i, \nu_i) \}_{i=0}^N$ of $N$ pairs of populations before $\mu_i$ and after transport $\nu_i$ connected to a context $c_i$, we detail in Algorithm~\ref{algo:condot} provided in \S~\ref{app:algorithm}, a training loop that incorporates all of the architecture proposals described above. The training loss aims at making sure the map $\mathcal{T}_\theta(c_i)$ is an OT map from $\mu_i$ to $\nu_i$, where $c_i$ may either be the original label itself or its embedded/combined formulation in more advanced tasks. To handle the Legendre transform in \eqref{eq:dual}, we use the proxy dual objective defined in \citep[Eq. 6]{makkuva2020optimal} \eqref{eq:makkuva_f_loss}-\eqref{eq:makkuva_g_loss} in place of \eqref{eq:dual} in our overall loss~\eqref{eq:supdual}.

@@ -61,7 +61,6 @@ Despite of these impressive achievements, a common limitation of the existing wo
     \label{fig:overview_gsbflow}
 \end{figure}
 
-\paragraph{Contributions.}
 The goal of our paper is to continue this pursuit of closed-form solutions and thereby extending these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see Fig.~\ref{fig:overview_gsbflow}. To this end, we make the following contributions: \vspace{8pt}
 %As a central contribution, we derive a set of new expressions for \acrfullp{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures, that covers a wide range of applications. Furthermore, our analysis reveals a
 \begin{enumerate}[leftmargin=.4cm,itemsep=.0cm,topsep=.0cm]
@@ -196,7 +195,7 @@ To emphasize the dependence on the reference \acrshort{SDE}, we will sometimes c
 %\subsubsection{Technical Challenges and Related Work} 
 %\label{sec:tere}
 
-\paragraph{Technical challenges; related work.} In order to analyze \eqref{eq:GSB}, we first notice that the objective in \eqref{eq:dynamicGSB} becomes $\sigma^{-2}\exof*{\int_{0}^\horizon  \frac{1}{2} \norm{\vect}^2 + \frac{\sigma^4}{8} \norm*{\nabla\log\measure}^2 \dt}$ for $\sigma\Wiener$-\acrshortpl{GSB}. Up to a constant factor, this is simply \eqref{eq:BBGaussian}, so \cref{thm:gsbtobb} reduces to the well-known fact that $\sigma\Wiener$-\acrshortpl{GSB} are a reformulation of the dynamic Gaussian \acrshort{OT} \citep{leonard2013survey, chen2016relation, gentil2017analogy}. 
+\paragraph{Technical challenges and related work.} In order to analyze \eqref{eq:GSB}, we first notice that the objective in \eqref{eq:dynamicGSB} becomes $\sigma^{-2}\exof*{\int_{0}^\horizon  \frac{1}{2} \norm{\vect}^2 + \frac{\sigma^4}{8} \norm*{\nabla\log\measure}^2 \dt}$ for $\sigma\Wiener$-\acrshortpl{GSB}. Up to a constant factor, this is simply \eqref{eq:BBGaussian}, so \cref{thm:gsbtobb} reduces to the well-known fact that $\sigma\Wiener$-\acrshortpl{GSB} are a reformulation of the dynamic Gaussian \acrshort{OT} \citep{leonard2013survey, chen2016relation, gentil2017analogy}. 
 
 At first sight, this might suggest that one can extend existing tools in Gaussian \acrshort{OT} to analyze \acrshortpl{GSB}.%\eqref{eq:BBGaussian} to \eqref{eq:dynamicGSB}.
 ~Unfortunately, the major difficulty of tackling \acrshortpl{GSB} is that these existing tools are fundamentally insufficient for the generalized objective \eqref{eq:dynamicGSB}. 
@@ -217,7 +216,7 @@ To conclude, in order to find an analytic expression for general \acrshortpl{GSB
 
 
 
-\paragraph{Our approach}
+\paragraph{Our approach.}
 
 To overcome the aforementioned challenges, in \cref{sec:mechanics_gsbflow}, we will first develop a principled framework for analyzing the closed-form expressions of $\sigma\Wiener$-\acrshortpl{GSB}, i.e., \eqref{eq:BBGaussian}. Unlike the ad hoc approach of \citet{mallasto2021entropy} which is very specific to \acrlongpl{BM}, our analysis reveals the general role played by the \emph{Lyapunov operator} (see \eqref{eq:lya}) on covariance matrices, thereby essentially reducing the solutions of \acrshortpl{GSB} to solving a matrix equation. This route is enabled via yet another equivalent formulation of \eqref{eq:BBGaussian}, namely the action minimization problem on the \emph{Bures-Wasserstein geometry}, which has recently emerged as a rich source for inspiring new computational methods \citep{chewi2020gradient, altschuler2021averaging, han2021riemannian}. In \cref{sec:results_gsbflow}, we show how the insight gained from our geometric framework in \cref{sec:mechanics_gsbflow} can be easily adapted to \acrshortpl{GSB} with general reference processes, which ultimately leads to the full resolution of \eqref{eq:GSB}.
 
@@ -298,7 +297,8 @@ where $\penergyBW \defeq - \frac{\sigma^4}{8} \tr \Sigcurveinv$ and the minimum 
 where $\nabla_{\ssstyle\dSigcurve}\dSigcurve$ denotes the Riemannian acceleration and $\gradBW$ the Riemannian gradient in the Bures-Wasserstein sense.
 \end{restatable}
 
-\paragraph{An important implication}As alluded to in \cref{sec:overview_gsbflow}, the solution curve to \eqref{eq:BBGaussian} or \eqref{eq:GaussianSBWiener} is not new; it is derived in \citet{mallasto2021entropy} via a strenuous and rather unenlightening calculation:
+\paragraph{An important implication.}
+As alluded to in \cref{sec:overview_gsbflow}, the solution curve to \eqref{eq:BBGaussian} or \eqref{eq:GaussianSBWiener} is not new; it is derived in \citet{mallasto2021entropy} via a strenuous and rather unenlightening calculation:
 \begin{equation}
 \label{eq:solMain}
 \Sigmasol \defeq \ctimebar^2 \Sigma + \ctime^2 \Sigma' + \ctime\cdot\ctimebar\parens*{\C+\C^\top+ \sigma^2 \eye}.
@@ -641,9 +641,9 @@ where \eqref{eq:GSB-sde-backward} runs backward in time. After parameterizing $\
 
 The purpose of our experiments is to demonstrate that, by leveraging moment information, \textsc{GSBflow} is significantly more stable compared to other \acrshort{SB}-based objectives, especially when moving beyond the \emph{generative} setting where $\distend$ is a simple Gaussian. Indeed, while performing competitively in the {generative} setting ($\Ncal_0 \rightarrow \distend$), our method \textit{outperforms} when modeling the evolution of two complex distributions ($\distinit \rightarrow \distend$), the most general and ambitious setting to estimate a bridge. This is demonstrated on synthetic data as well as a task from molecular biology concerned with modeling the dynamics of cellular systems, i.e., single-cell genomics \citep{macosko2015highly, frangieh2021multimodal, kulkarni2019beyond}.
 
-\subsubsection{Synthetic Dynamics}
+\subsubsection{Synthetic Dynamics} 
+\label{sec:gsbflow_synthetic}
 
-\label{sec:synthetic}
 Before conducting the single-cell genomics experiments, we first test \textsc{GSBflow} on a synthetic setting. 
 Our first task involves recovering the stochastic evolution of two-dimensional synthetic data containing two interleaving half circles ($\distend$) into a spiral ($\distinit$). 
 \cref{fig:res_synthetic} shows the trajectories learned by \textsc{GSBflow} based on the \acrshort{VESDE} (see \cref{tab:examples}). 
@@ -662,11 +662,11 @@ As demonstrated in \cref{fig:res_synthetic}, \textsc{GSBflow} is able to success
 \end{figure*}
 
 \subsubsection{Single-Cell Dynamics}
+\label{sec:gsbflow_cell}
 
 \looseness -1 Modern single-cell profiling technologies are able to provide rich feature representations (e.g., gene expression) of \textit{individual} cells at any development state. A crucial issue that arises with such profiling methods is their destructive nature: Measuring a cell requires destroying it and thus a cell cannot be measured twice. As a result, independent samples are collected at each snapshot, with no access to ground-truth single-cell trajectories throughout time, resulting in challenging, \emph{unaligned}, datasets.
 Recovering cellular dynamics from such unaligned snapshots, i.e., $\distinit$ to $\distend$, has, however, extremely important scientific and biomedical relevance \citep{kulkarni2019beyond}. For example, it determines our understanding on how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or unveils mechanisms of cell differentiation and development \citep{schiebinger2019optimal}. Following related work, in particular previous methods based on optimal transport \citep{schiebinger2019optimal, bunne2021learning, bunne2022supervised, tong2020trajectorynet}, the task is thus to learn the stochastic process that described the evolution of single cells from $\distinit$ to $\distend$.
 
-\paragraph{Experimental Setup.}
 
 \paragraph{Single-cell genomics via SBs.}
 Let us consider the evolution of a gene, for which we can collect the empirical distributions $\distinit,\distend$ of its expression levels at the times $t=0,1$ \citep{schiebinger2019optimal,moon2019visualizing}. Our goal is to two-fold: 
@@ -688,9 +688,6 @@ Since the solutions of \acrshortpl{SB} are Lipschitz in terms of $\distinit,\dis
 
 Motivated by these observations, we propose a simple modification of the framework in \citet{chen2021likelihood}: Replace the prior process $\refsde$ by its \acrshort{GSB} approximation and keep everything else the same. The resulting scheme, which we term the \textsc{GSBflow}, learns a pair of forward {\color{pink} $\SBf$} and backward parametrized drifts {\color{blue} $\SBb$} that progressively transport samples from $\distinit \rightarrow \distend$ and $\distend \rightarrow \distinit$, respectively. The full algorithm is presented in \cref{alg:GSBflow} for completeness.
 
-
-\paragraph{Results.}
-\label{sec:cell}
 
 
 \begin{figure*}

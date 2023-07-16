@@ -87,11 +87,11 @@ where $\theta$ and $\phi$ are the parameters of each \acrshort{ICNN}.
 \subsubsection{Alternative Approaches}
 We focus in this work on neural approaches that parameterize the optimal maps $T$ as neural networks. An early approach is the work on Wasserstein GANs~\citep{arjovsky2017wasserstein}, albeit the transport map is not explicitly estimated. 
 % Here, the authors parameterize \textit{dual potentials} as Lipschitz neural networks, in the case $p=1$. In that case, the interplay between OT and estimation does not concern the map $T$ itself (which can be interpreted as a generator), but rather an auxiliary function (the discriminator). 
-%Closer to the spirit of OT, s
+% Closer to the spirit of OT, s
 Several recent results have exploited a more explicit connection between OT and NNs, derived from the celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition}, which states that Monge maps are necessarily gradients of convex functions.
 %, which themselves are solutions to the dual formulation of OT. 
 Such convex functions can be represented using \acrshortpl{ICNN}~\citep{amos2017input}, to parameterize either the Monge map~\citep{korotin2021wasserstein,yang2018scalable,bunne2021learning,bunne2022proximal} or a dual potential~\citep{makkuva2020optimal,korotin2021wasserstein} as, respectively, the gradient of an \acrshort{ICNN} or an \acrshort{ICNN} itself.
-% \paragraph{Conditional Extensions} As our ability to accurately compute the OT map between two measures improves~\citep{korotin2021neural}, there is a growing consensus in the community that practitioners expect methods that can do more than handle just a pair of measures. 
+% As our ability to accurately compute the OT map between two measures improves~\citep{korotin2021neural}, there is a growing consensus in the community that practitioners expect methods that can do more than handle just a pair of measures. 
 %This prior work, however, learns a single parametrized transport map
 In this paper, we build on this line of work, but substantially generalize it, to learn a {\em parametric} family of context-aware transport maps, using a collection of labeled pairs of measures.
 

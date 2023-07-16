@@ -35,6 +35,144 @@
 
 \clearpage
 
+
+\section{Datasets} \label{app:datasets}
+% TODO: Clean and finalize section.
+% TODO: 
+
+We evaluate methods introduced in this thesis on different tasks, consisting of a pair of source $\mu$ and target measures $\nu$, as well as context variables $c$ of different nature.
+In particular, we consider single-cell datasets in which populations of single cells have been monitored with modern high-throughput methods such as single-cell RNA sequencing technologies.
+In the following, we introduce the datasets in more depth, describe preprocessing steps, feature selection, and data splits.
+
+\subsection{\citet{srivatsan2020massively}}
+\looseness -1 Cancer drugs reduce uncontrolled cell growth and proliferation by inhibiting DNA replication and RNA transcription as well as targeting proteins crucial for cancer progression. In doing so, they modulate downstream signaling cascades, affect cell growth and morphology, and alter gene expression profiles of single cells. 
+\citet{srivatsan2020massively} conduct a scRNA-seq-based phenotyping screen of transcriptional responses to thousands of independent perturbations at single-cell resolution.
+The measured cell population contains three well-characterized cancer cell lines, including A549, a human lung adenocarcinoma, K562, a chronic myelogenous leukemia, and MCF7, a mammary adenocarcinoma cell line.
+Due to different transcriptional profiles of each cancer cell line, drug compounds might cause divergent cellular responses in each subpopulation.
+For our analysis, we consider the drug Givinostat, a histone deacetylase inhibitor with potential anti-inflammatory, anti-angiogenic, and antineoplastic activities \citep{rambaldi2010pilot}.
+The dataset contains $17,565$ control cells as well as $3,541$ cells perturbed by Givinostat with different dosages, i.e., $10\,$nM, $100\,$nM, $1,000\,$nM, $10,000\,$nM.
+
+\paragraph{Data preprocessing.}
+The data is available for download in the Gene Expression Omnibus (GEO) database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4150378}{GSM4150378}.
+For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}. The count matrix obtained from GEO consists of $581,777$ cells. The data was subset to half its size, with $290,888$ cells remaining after quality control for all $188$ different compounds. We proceeded with log-transformation and the the selection of $1,000$ highly-variant genes using \texttt{scanpy} \citep{wolf2018scanpy}.
+
+\paragraph{Feature selection.}
+Single-cell RNA sequencing data is very high-dimensional, even after selecting $1,000$ highly-variant genes.
+For the downstream analysis of how well the overall perturbation effect has been captured, we thus select the top $50$ marker genes, i.e., those genes which show strong differences between perturbed and unperturbed states. This analysis is conducted based on the \texttt{scanpy}'s function \texttt{rank\_genes\_groups}, setting unperturbed cells as reference ~\citep{wolf2018scanpy}. The influence on the number of considered marker genes on different evaluation metrics is further analyzed in \citet{bunne2021learning}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=.9\textwidth]{figures/fig_datasets_splits_processing.pdf}
+    \caption{\textbf{a.} The indicator matrix of all individual perturbations as well as those perturbation pairs available in combination (black) in the dataset by \citet{norman2019exploring}. \textbf{b.} Size of the different train / test splits of the dataset by \citet{norman2019exploring}. The train set contains all single perturbations as well as a decreasing number of combinations with increasing difficulty of the data split. For more details, see~\S\ref{app:datasplits}.}
+    \label{fig:datasets_processing}
+\end{figure}
+
+\subsection{\citet{norman2019exploring}} 
+\looseness -1 Genetic interactions and their joint expression give rise to an inconceivable organismal complexity and uncountable many diverse phenotypes and behaviors.
+Constructing a systematic genetic interaction map is crucial for a better understanding of cellular mechanisms in health and disease.
+Thus, \citet{norman2019exploring} conducted single-cell, pooled transcriptional profiling of CRISPR-mediated perturbations to link genetic perturbation to its transcriptional consequences using the Perturb-Seq technology \citep{dixit2016perturb}.
+The dataset consists of individual perturbations as well as joint knockouts of different genes, allowing us to study the phenotypic consequences of perturbing a pair of genes alone or in combination. The indicator matrix of all individual perturbations as well as those pairs available in combination can be found in Fig.~\ref{fig:datasets_processing}a.
+
+\paragraph{Data preprocessing.}
+\looseness -1 The data is available for download in the Gene Expression Omnibus (GEO) database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE133344}{GSE133344}.
+For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}. 
+We discarded those genetic perturbations with less than $250$ cells, resulting in a dataset with $92$ individual perturbations and $84$ perturbations in combination.
+This further included, the exclusion of particular subsets of control cells with in total $98,419$ remaining, data normalization, log-transformation, and selection of $1,500$ highly-variant genes using \texttt{scanpy} \citep{wolf2018scanpy}.
+
+\paragraph{Feature selection.}
+Similar as above, for evaluation we select the top $50$ marker genes, i.e., those genes most strongly affected by the particular genetic perturbation.
+
+\paragraph{Data splits.} \label{app:datasplits}
+For \cref{cha:condot}, we create different train / test dataset splits of increasing difficulty by following \citet{lotfollahi2021compositional}.
+The train splits hereby always contain all $92$ individual perturbations as well as varying numbers of combinations. The easiest train split contains 55 perturbations, while the test set only carries 28 combinations which are unknown in the evaluation. Consecutive splits get increasingly harder, comprising 42, 29, 16, and 4 combinations in the train set (besides all single perturbations) and 41, 54, 67, and 79 combinations in the test set, respectively (see Fig.~\ref{fig:datasets_processing}b).
+
+\subsection{\citet{moon2019visualizing}} 
+Developmental processes in biology involve tissue and organ development, body axis formation, cell division, and cell differentiation, e.g., the development of stem cells into functional cell types.
+An example of such a process is the differentiation of \acrshort{ESC} into  hematopoietic, cardiac, neural, pancreatic, hepatocytic and germ lineages.
+This development can be approximated \textit{in vitro} using \acrshort{EB} \citep{martin1975differentiation}, three-dimensional aggregates of pluripotent stem cells, including ESCs \citep{shamblott2009derivation}.
+Recently, \citet{moon2019} conducted a scRNA-seq analysis to unveil the developmental trajectories, as well as cellular and molecular identities through which early
+lineage precursors emerge from human ESCs.
+The dataset is available via \href{https://data.mendeley.com/datasets/v6n743h5ng}{Mendeley Data (V6N743H5NG)}\footnote{Dataset available via \url{https://data.mendeley.com/datasets/v6n743h5ng}.}.
+In the following, we describe the preprocessing of the raw scRNA-seq data as well as the lineage branch analysis extracting the functional cell types emerging in this developmental process.
+
+\paragraph{Data preprocessing.}
+To preprocess the data, we follow the analysis of \citet{moon2019visualizing} as well as \citet{luecken2019current}. \citet{moon2019} originally measure  approximately 31,000 cells over a 27 days differentiation time course, comprising gene expression matrices and barcodes, i.e., DNA tags used to identify reads originating from the same cell. The measured cells are then filtered in a quality control stage, their gene expression levels normalized and further processed in a feature selection step, where only highly-differentiated genes are selected.
+After quality control, the dataset consists of 15,150 cells and 17,945 genes.
+
+\paragraph{Feature selection.}
+We extract 4,000 \acrshort{HVG} using the 10X genomics preprocessing software \texttt{Cell Ranger} \citep{zheng2017massively} to further reduce the dimensionality of the dataset and include only the most informative genes.
+Given the resulting data matrix with 15,150 cells and 4,000 genes across 5 different time points, we compute a corresponding low-dimensional embedding using PCA. We use the first 20 or PCs for predicting population dynamics in Chapters \ref{cha:neural_pde} and \ref{cha:neural_sde}.
+This is in alignment with previous analysis of developmental trajectories, which use 5 \citep{tong2020trajectorynet} and 30 PCs \citep{schiebinger2019optimal}, respectively.
+
+\paragraph{Lineage branch analysis.}
+Besides evaluating how well methods presented in this thesis resemble the spatio-temporal dynamics, we analyze their ability to capture biological heterogeneity.
+Serving as an \emph{in vitro} model of early embryogenesis, embryoid bodies differentiation captures the development of \acrshortpl{ESC} into mesoderm, endoderm, neuroectoderm, neural crest and others.
+Using an initial $k$-means clustering ($k=30$) and following \citet[Fig. 6, Suppl. Note 4]{moon2019visualizing}, we compute lineage branch classes (\cref{fig:moon_analysis}c) for all cells in a 10-dimensional embedding space using PHATE, a non-linear dimensionality reduction method capturing a denoised representation of both local and global structure of a dataset.
+For details, see \cref{app:lineage_analysis}. Details of the annotation can be found in \citet{bunne2022proximal, bunne2022recovering}.
+
+We then train a $k$-NN classifier ($k=5$) to infer the lineage branch class based on a 30-dimensional PCA embedding of a cell (ESC: 0, neural crest: 1, neuroectoderm: 2, endoderm: 3, mesoderm: 4, other: 5).
+Sections \ref{sec:jkonet_cell} \ref{sec:gsbflow_cell} thereby contain an analysis on the captured lineage branch heterogeneity of the predictions by computing the lineage branch class of each cell using the $k$-NN classifier.
+
+\subsection{\citet{weinreb2020lineage}}
+...
+
+\paragraph{Data preprocessing.}
+...
+We obtain the data used in our \cref{sec:sbalign_cell} from the dataset generated by \citet{weinreb2020lineage}, which contains $130,861$ observations/cells.
+We follow the preprocessing steps in \citet{bunne2021learning} and use the Python package \texttt{scanpy} \citep{wolf2018scanpy}. 
+After processing, each observation records the level of expression of 1622 different highly-variable genes as well as the following meta information per cell:
+\begin{itemize}
+    \item a \texttt{timestamp}, expressed in days and taking values in \{2, 4, 6\};
+    \item a \texttt{barcode}, which is a short DNA sequence that allows tracing the identity of cells and their lineage by means of single-cell sequencing readouts;
+    \item an additional \texttt{annotation}, which describes the current differentiation fate of the cell.
+\end{itemize}
+
+For experiments conducted in \cref{sec:sbalign_cell}, we only retain cells with barcodes that appear both on days 2 and 4, taking care of excluding cells that are already differentiated on day 2.
+We construct matchings by pairing cells measured at two different times but which share the barcode. 
+Additionally, we filter cells to make sure that no one appears in more than one pair.
+
+\paragraph{Feature selection.}
+To reduce the dimensionality of these datapoints, we perform a PCA projection down to 50 components.
+
+\section{Other Datasets}
+Preprocessing for the lupus patients~\citep{kang2018multiplexed} and cross species dataset~\citep{hagai2018gene} were inherited from~\citep{Rybakov2020-up} 
+and \citet{lotfollahi2019scgen}, and we would like to thank the author for hosting this dataset.
+Lastly, the preprocessing of the glioblastoma patient dataset~\citep{zhao2021deconvolution} was adapted from \citet{peidli2022scperturb}.
+
+\section{Evaluation Metrics} \label{app:evaluation_metrics}
+
+\looseness -1 Since we lack access to the ground truth pair of perturbed and unperturbed observations on the single cell level, we consider evaluation metrics on the level of the distribution of real and predicted perturbation states to analyze the effectiveness of the approaches presented in this thesis.
+
+\paragraph{Average- and Correlation-based distance.} 
+Common evaluation metrics in single-cell biology rely on averages and correlation analysis. $\ell_2$ feature means thereby refers to the $\ell_2$-distance between means of the observed and predicted distributions. Similarly, $r_2$ feature means refers to the correlation of the means of the observed and predicted distributions.
+However, metrics based only on feature means can be insensitive in settings where crucial heterogeneity is not captured. Consider, for example, a target distribution with multiple modes. These metrics will favorably evaluate a uni-modal predicted distribution that simply models the mean of this multi-modal distribution. To this end, we include a distributional distance sensitive to this type of behavior by measuring differences in the properties of higher moments, i.e., the maximum mean discrepancy.
+We thus also report results based on several distributional metrics:
+
+\paragraph{Wasserstein distance.}
+We measure accuracy of the predicted target population $\hat{\nu}$ to the observed target population $\nu$ using the entropy-regularized Wasserstein distance \citep{cuturi2013sinkhorn} provided in the \texttt{OTT} library \citep{cuturi2022optimal} defined as
+\begin{equation}\label{eq:reg-ot}
+\We(\hat{\nu},\nu) \defeq \min_{\bP\in U(\hat{\nu},\nu)} \dotp{\bP}{[\|x_i - y_j\|^2]_{ij}}  \,-\varepsilon H(\bP),
+\end{equation}
+where $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(\hat{\nu},\nu)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m = \hat{\nu}, \bP^\top\mathbf{1}_n=\nu\}$.
+Throughout the evaluation, we set $\varepsilon = 0.1$.
+
+\paragraph{Maximum mean discrepancy.}
+Kernel maximum mean discrepancy~\citep{gretton2012kernel} is another metric to measure distances between distributions, i.e., for our purpose between the predicted target population $\hat{\nu}$ to the observed target population $\nu$.
+Given two random variables $x$ and $y$ with distributions $\hat{\nu}$ and $\nu$, and a kernel function $\omega$, \citet{gretton2012kernel} define the squared MMD as:
+\begin{equation*}
+    \text{MMD}(\hat{\nu},\nu; \omega) = \mathbb{E}_{x,x^\prime}[\omega(x, x^\prime)] + \mathbb{E}_{y,y^\prime}[\omega(y, y^\prime)] - 2\mathbb{E}_{x,y}[\omega(x, y)].
+\end{equation*}
+We report an unbiased estimate of $\text{MMD}(\hat{\nu},\nu)$, in which the expectations are evaluated by averages over the population particles in each set. We utilize the RBF kernel, and as is usually done, report the MMD as an average over several length scales, i.e., $2, 1, 0.5, 0.1, 0.01, 0.005$.
+
+\paragraph{Perturbation signatures.}
+A common method to quantify the effect of a perturbation on a population is to compute its perturbation signature \citep[(PS)]{stathias2018drug}, computed via the difference in means between the distribution of perturbed states and control states of each feature, e.g., here individual genes. $\ell_2$(PS) then refers to the $\ell_2$-distance between the perturbation signatures computed on the observed and predicted distributions, $\nu$ and $\hat{\nu}$. As before, let $\mu$ be the set of observed unperturbed population particles, $\nu$ the set of observed perturbed particles, as well as $\hat{\nu}$ the predicted perturbed state of population $\mu$. The $\ell_2$(PS) is then defined as
+\begin{equation*}
+    \text{PS}(\nu, \mu) = \frac{1}{m}\sum_{y_i \in \nu}{y_i} - \frac{1}{n}\sum_{x_i \in \mu}{x_i},
+\end{equation*}
+where $n$ is the size of the unperturbed and $m$ of the perturbed population.
+We report the $\ell_2$ distance between the observed signature $\text{PS}(\nu, \mu)$ and the predicted signature $\text{PS}(\hat{\nu}, \mu)$, which is equivalent to simply computing the difference in the means between the observed and predicted distributions.
+
+
 \numberwithin{equation}{section}		% for numbering  in the appendix
 \numberwithin{lemma}{section}		% for numbering  in the appendix
 \numberwithin{proposition}{section}		% for numbering  in the appendix
@@ -60,7 +198,7 @@ The Fokker-Planck equation for the \acrshort{SDE} \eqref{eq:holddd} is
 A simple application of the Girsanov theorem then shows, up to a constant, 
 \begin{align}
 \label{eq:KLobj}
-\KL(Pmargin \| \refsde) = \exof*{ \int_0^\horizon\frac{\norm{\vectalt}^2}{2\volatsq[\ctime]}   \dt}.
+\KL(\Pmargin \| \refsde) = \exof*{ \int_0^\horizon\frac{\norm{\vectalt}^2}{2\volatsq[\ctime]}   \dt}.
 \end{align}
 Using a change of variable $\vect = \vectalt - \frac{\volatsq[\ctime]}{2}\nabla\log\measure$, we see that \eqref{eq:FK} is equivalent to
 \begin{equation}
@@ -331,7 +469,7 @@ i.e., $\lyap = \Ht^\top\Sigcurveinv$.
 
 
 
-\paragraph{Proof of \eqref{eq:ht-id}}
+\paragraph{Proof of \eqref{eq:ht-id}.}
 
 We next compute
 \begin{align}
@@ -728,7 +866,7 @@ The optimal static Gaussian \acrshort{SB} $\Pstasol$ is then given by the invers
 \end{align}where $\sdev_\star = \frac{\kernel[\horizon][\horizon]}{ \aggtime[\horizon] }$.
 
 
-\paragraph{The $\refprobase$\textendash bridges}
+\paragraph{The $\refprobase$\textendash bridges.}
 
 For future use, we will need the distribution of $\refsde$ conditioned on $\refsde[0]$ and $\refsde[\horizon]$. When $\refsde \equiv \Wiener$, the distribution is called the \emph{Brownian bridge}, which is in itself an important subject in mathematics and financial engineering \citep{mansuy2008aspects}. We thus term the conditional distribution of $\refsde$ the \emph{$\refprobase$\textendash Bridges}.
 
@@ -773,7 +911,7 @@ Since a Gaussian process is uniquely determined by its mean and covariance proce
 \end{equation}
 
 
-\paragraph{From $\refprobase$\textendash bridges to $\meansol$ and $\Sigmasol$}
+\paragraph{From $\refprobase$\textendash bridges to $\meansol$ and $\Sigmasol$.}
 The disintegration formula of $\KL(\cdot \| \cdot)$ \citep{leonard2013survey} implies that the solution to \eqref{eq:GSB} is given by first generating $(\Xsol[0], \Xsol[\horizon]) \sim \Pstasol$ for $\Pstasol$ in \eqref{eq:Pstasol}, and then connecting $\Xsol[0]$ and $\Xsol[\horizon]$ using the $\refprobase$\textendash bridges \eqref{eq:QBridge}. Namely,
 
 \begin{align}
@@ -784,7 +922,7 @@ The disintegration formula of $\KL(\cdot \| \cdot)$ \citep{leonard2013survey} im
 from which \eqref{eq:meansol} and \eqref{eq:covsol} follow by a straightforward calculation. Furthermore, in view of \eqref{eq:Pstasol} and \eqref{eq:Xsol}, $\Xsol$ is obviously a Gaussian process. Finally, since $\refpro$ is a Markov process, \cite[Theorem 2.12]{leonard2013survey} implies that $\Psol$ is also Markov. This concludes the first half of \cref{thm:gaussian_sb}.
 
 
-\paragraph{The SDE representation of $\Xsol$}
+\paragraph{The SDE representation of $\Xsol$.}
 The main idea of proving \eqref{eq:GSB-forward} is to compute
 
 \begin{equation}
@@ -964,7 +1102,7 @@ whence
 
 This is exactly \eqref{eq:gensde} with $\GSBf \subs \St^\top \Sigmasolinv\parens*{ \point - \meansol  } + \dmeansol$, which concludes the proof for \eqref{eq:GSB-forward-sol} and \eqref{eq:GSB-forward}.
 
-Finally, by \cite[(4.2)]{leonard2013survey}, the optimal drift $\GSBf$ is a \emph{gradient field}: 
+Finally, by \citet[(4.2)]{leonard2013survey}, the optimal drift $\GSBf$ is a \emph{gradient field}: 
 
 \begin{equation}
 \GSBf = \nabla \varphi(\ctime,\point)
