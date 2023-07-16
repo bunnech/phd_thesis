@@ -5,19 +5,32 @@
   Ein solches mathematisch-definierbares System ist \"uberhaupt nicht die Wirklichkeit selbst, sondern nur ein Schema, welches zur Beschreibung der Wirklichkeit dienen kann.} % This mathematically defined system is not a reality itself, but a scheme that can be used to describe reality. From: On Analytical Methods in the Theory of Probability
 \vskip 1em
 
-When the observer only seeks to reconstruct particles' paths given starting and ending point cloud configurations, the machinery of optimal transport (OT)~\citep{schiebinger2019,yang2020predicting,yang2018scalable} or likelihood-based normalizing flows (NF)~\citep{rezende2015variational,grathwohl2018ffjord} can be used, either separately, or even combined: \citet{tong2020trajectorynet} use OT to motivate a regularizer (squared norm of displacements) in their NF estimation pipeline; ~\citet{huang2021convex} restrict their attention to flows expressed as gradients of convex functions. This choice is motivated by OT because it agrees with the \citet{Brenier1987} principle that displacements arising from convex potentials give rise to optimal flows.
+\verpar{Contributions}{
+Most of the material in this chapter has been already published in the following conference proceedings:
+\begin{itemize}
+	\item[] Charlotte Bunne, Laetitia Meng-Papaxanthos, Andreas Krause, and Marco Cuturi. Proximal Optimal Transport Modeling of Population Dynamics. In \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, volume 25, 2022.
+	\vspace{-9pt}
+\end{itemize}
+}
+
+...
+
+In this work, following in the footsteps of more general applications of the \acrshort{JKO} scheme~\citep[\S4.8]{santambrogio2017euclidean}, we model dynamics without necessarily having in mind PDE solutions in mind, to interpret instead the \acrshort{JKO} step as a more general parametric type of dynamic for probability measures, exclusively parameterized by the energy $J$ itself.
+
+
+When the observer only seeks to reconstruct particles' paths given starting and ending point cloud configurations, the machinery of optimal transport (OT)~\citep{schiebinger2019optimal,yang2020predicting,yang2018scalable} or likelihood-based normalizing flows (NF)~\citep{rezende2015variational,grathwohl2018ffjord} can be used, either separately, or even combined: \citet{tong2020trajectorynet} use OT to motivate a regularizer (squared norm of displacements) in their NF estimation pipeline; ~\citet{huang2021convex} restrict their attention to flows expressed as gradients of convex functions. This choice is motivated by OT because it agrees with the \citet{brenier1987decomposition} principle that displacements arising from convex potentials give rise to optimal flows.
 When the observer seeks instead a \textit{causal model}, namely one that is able to explain/predict future configurations of the point cloud (and not only interpolate between configurations), the parameters of that model can also be fitted with OT, as proposed by \citet{hashimoto2016learning}. Their model assumes a Langevin dynamic for the particles, driven by the gradient flow of a (neural) energy function; They fit the parameters of that network by minimizing regularized OT distances~\citep{cuturi2013sinkhorn} between their model's predictions and the corresponding ground truth snapshots. %Conceptually, the approach of \citet{hashimoto2016learning} can do more than just interpolation, to instead provide a model that can be used to extrapolate / predict future configurations from initial configurations.
 % Both methods restrict themselves to interpolations and require access to the start and end point of the underlying dynamics.
 
 In the following, we draw inspiration from both approaches above---the intuition from the recent \acrfull{NF} literature that flows should mimic an \acrlong{OT} (\acrshort{OT} as prior), and be able, through training, to predict future configurations (\acrshort{OT} as a loss)---to propose a causal model for population dynamics. Our approach relies on a powerful hammer: the \acrfull{JKO} flow~\citep{jordan1998variational}, widely regarded as one of the most influential mathematical breakthroughs in recent history. While the \acrshort{JKO} flow was initially introduced as an alternative method to solve the Fokker-Planck partial differential equation (PDE), its flexibility can be showcased to handle more complex PDEs \citep[\S4.7]{santambrogio2017euclidean}, or even describe the gradient flows of non-differentiable energies that have no PDE representation.
 On a purely mechanical level, a \acrshort{JKO} step is to measures what the proximal step~\citep{combettes2011proximal} is to vectors: In a \acrshort{JKO} step, particles move to decrease collectively an {\em energy} (a real-valued function defined on measures), yet remain close (in Wasserstein sense) to the previous configuration. Our goal in this paper is to treat \acrshort{JKO} steps as parameterized modules, and fit their parameter (the energy function) so that its outputs agree repeatedly over time with observed data. 
-This approach presents several challenges: While numerical approaches to solve \acrshort{JKO} steps have been proposed in low dimensional settings~\citep{burger2010a, carrillo2021primal, peyre2015entropic,benamou2016augmented}, scaling it to higher dimensions is an open problem. Moreover, minimizing a loss involving a \acrshort{JKO} step w.r.t. energy requires not only solving the \acrshort{JKO} problem, but also computing the (transpose) Jacobian of its output w.r.t. energy parameters.
+This approach presents several challenges: While numerical approaches to solve \acrshort{JKO} steps have been proposed in low dimensional settings~\citep{burger2010a, carrillo2021primal, peyre2015entropic,benamou2016augmented}, scaling it to higher dimensions is an open problem. Moreover, minimizing a loss involving a \acrshort{JKO} step w.r.t. energy requires not only solving the \acrshort{JKO} problem, but also computing the (transpose) Jacobian of its output w.r.t. energy parameters. \\
 
 % We wish to reconstruct that energy potential from observations, assuming each observations follows iteratively a \acrshort{JKO} flow.
 
-Our contributions are two-fold. First, we propose a method, given an input configuration and an energy function, to compute \acrshort{JKO} steps using input convex neural networks \acrlong{ICNN}~\citep{amos2017input,makkuva2020optimal} (see also concurrent works that have proposed similar approaches~\citep{alvarez2021optimizing, mokrov2021large}). Second, we view the \acrshort{JKO} step as an inner layer, a \textsc{JKOnet} module parameterized by an energy function, which is tasked with moving the particles of an input configuration along an OT flow (the gradient of an optimal ICNN), trading off a lower energy with proximity to the previous configuration.
-%This module, \textsc{JKOnet}, can be therefore seen as a parameterized \emph{mover} of particles that is constrained by design to produce locally (OT) optimal displacements. 
-We propose to estimate the parameters of the energy by minimizing a fitting loss %(as a function of the energy itself) 
+The contributions of this Chapter are two-fold. First, we propose a method, given an input configuration and an energy function, to compute \acrshort{JKO} steps using input convex neural networks \acrlong{ICNN}~\citep{amos2017input,makkuva2020optimal} (see also concurrent works that have proposed similar approaches~\citep{alvarez2021optimizing, mokrov2021large}). Second, we view the \acrshort{JKO} step as an inner layer, a \textsc{JKOnet} module parameterized by an energy function, which is tasked with moving the particles of an input configuration along an OT flow (the gradient of an optimal ICNN), trading off a lower energy with proximity to the previous configuration.
+% This module, \textsc{JKOnet}, can be therefore seen as a parameterized \emph{mover} of particles that is constrained by design to produce locally (OT) optimal displacements. 
+We propose to estimate the parameters of the energy by minimizing a fitting loss % (as a function of the energy itself) 
 computed between the outputs of the \textsc{JKOnet} module (the prediction) and the ground truth displacements, as illustrated in Figure~\ref{fig:overview_jkonet}.
 We demonstrate \textsc{JKOnet}'s range of applications by applying in on synthetic potential- and trajectory-based population dynamics, as well as developmental trajectories of human embryonic stem cells based on single-cell genomics data.
 
@@ -25,18 +38,10 @@ We demonstrate \textsc{JKOnet}'s range of applications by applying in on synthet
     \centering
     %\vskip-0.1cm
     \includegraphics[width=0.6\textwidth]{figures/fig_overview_jkonet.pdf}
-    \caption{Given an observed trajectory $(\mu_0,\dots,\mu_T)$ of point clouds (gray), we seek parameters $\xi$ for the energy $J_\xi$ such that the predictions $\rho_1, \dots, \rho_T$ (blue) following a \acrshort{JKO} flow from $\rho_0=\mu_0$ are close the observed trajectory (gray), by minimizing (as a function of $\xi$) the sum of Wasserstein distances between $\rho_{t+1}$, the \acrshort{JKO} step from $\rho_{t-1}$ using $J_\xi$, and data $\mu_{t+1}$.}
+    \caption{Given an observed trajectory $(\mu_0,\dots,\mu_T)$ of point clouds (gray), we seek parameters $\xi$ for the energy $J_\xi$ such that the predictions $\mu_1, \dots, \mu_T$ (blue) following a \acrshort{JKO} flow from $\mu_0=\mu_0$ are close the observed trajectory (gray), by minimizing (as a function of $\xi$) the sum of Wasserstein distances between $\mu_{t+1}$, the \acrshort{JKO} step from $\mu_{t-1}$ using $J_\xi$, and data $\mu_{t+1}$.}
     \label{fig:overview_jkonet}
+    % TODO: Change \mu to \mu!
 \end{figure}
-
-\section[On the Connection between OT and Fokker-Planck Equations]{On the Connection between Optimal Transport and Fokker-Planck Equations}
-
-\paragraph{JKO Flows.}
-In their seminal paper, \citet{jordan1998variational} study diffusion processes under the lens of the OT metric \citep[see also][]{ambrosio2006gradient} and introduce a scheme that is now known as the \acrshort{JKO} flow: Starting with $\rho_0$, and given a real-valued energy function $J:\mathcal{P}(\mathbb{R}^d)\rightarrow \mathbb{R}$ driving the evolution of the system, they define iteratively for $t\geq 0$, :
-\begin{equation} \label{eq:jko}
-    \rho_{t+1} = \arg \min_{\rho\in \mathcal{P}_2(\mathbb{R}^d)} J(\rho) + \frac{1}{2\tau} W^2(\rho, \rho_{t})\,,
-\end{equation}
-where $\tau$ is a time step parameter. These successive minimization problems result in a sequence of probability measures in $\mathcal{P}(\mathbb{R}^d)$. The \acrshort{JKO} flow can thus be seen as the analogy of the usual proximal descent scheme, tailored for probability measures~\citep[p.285]{santambrogio2015optimal}. \citet{jordan1998variational} show that as step size $\tau \rightarrow 0$, and for a specific energy $J$ that is the sum of a linear term and the negentropy, the measures describing the \acrshort{JKO} flow recover solutions to a Fokker-Planck equation. In this work, following in the footsteps of more general applications of the \acrshort{JKO} scheme~\citep[\S4.8]{santambrogio2017euclidean}, we model dynamics without necessarily having in mind PDE solutions in mind, to interpret instead the \acrshort{JKO} step as a more general parametric type of dynamic for probability measures, exclusively parameterized by the energy $J$ itself.
 
 
 \section{\textsc{JKOnet}: A Proximal Optimal Transport Model} 
@@ -46,25 +51,25 @@ Given $T$ discrete measures $\mu_0, \dots, \mu_T$ describing the time evolution 
 Fitting parameter $\xi$ with a reconstruction loss requires, using the chain rule, being able to differentiate the \acrshort{JKO} step's output w.r.t. $\xi$ (see Fig.~\ref{fig:overview_jkonet}), and more precisely provide a way to apply that transpose Jacobian to an arbitrary vector when using reverse-mode differentiation. To achieve this, we introduce a novel approach to numerically solve \acrshort{JKO} flows using \acrshortpl{ICNN} (\S~\ref{sec:jko_icnn}), resulting in a bilevel optimization problem targeting the energy $J_\xi$ (\S~\ref{sec:learn_energy}).
 
 \subsection{Reformulation of JKO Flows via ICNNs} \label{sec:jko_icnn}
-Given a starting condition $\rho_t$ and energy functional $J_\xi$, the \acrshort{JKO} step consists in producing a new measure $\rho_{t+1}$ implicitly defined as the minimizer of~\eqref{eq:jko}. Solving directly~\eqref{eq:jko} on the space of measures, involves substantial computational costs. Different numerical schemes have been developed, e.g., based notably on Eulerian discretization of measures \citep{carrillo2021primal, benamou2016discretization}, and/or entropy-regularized optimal transport \citep{peyre2015entropic}. However, these methods are limited to small dimensions since the cost of discretizing such spaces grows exponentially. Except for the Eulerian approach proposed in \citep{peyre2015entropic}, obtained as the fixed point of a Sinkhorn type iteration, the differentiation would also prove extremely challenging as a function of the energy parameter $\xi$.
+Given a starting condition $\mu_t$ and energy functional $J_\xi$, the \acrshort{JKO} step consists in producing a new measure $\mu_{t+1}$ implicitly defined as the minimizer of~\eqref{eq:jko}. Solving directly~\eqref{eq:jko} on the space of measures, involves substantial computational costs. Different numerical schemes have been developed, e.g., based notably on Eulerian discretization of measures \citep{carrillo2021primal, benamou2016discretization}, and/or entropy-regularized optimal transport \citep{peyre2015entropic}. However, these methods are limited to small dimensions since the cost of discretizing such spaces grows exponentially. Except for the Eulerian approach proposed in \citep{peyre2015entropic}, obtained as the fixed point of a Sinkhorn type iteration, the differentiation would also prove extremely challenging as a function of the energy parameter $\xi$.
 
-\looseness=-1 To reach scalability and differentiability, we build upon the approach outlined in \citet{benamou2016discretization} to reformulate the \acrshort{JKO} scheme as a problem solved over convex functions, rather than on measures $\rho$. Effectively, this is equivalent to making a change of variables in~\eqref{eq:jko}: Introduce a (variable) convex function $\psi$, and replace the variable $\rho$ by the variable $\nabla \psi_{\#}\rho_t$. Writing
+\looseness=-1 To reach scalability and differentiability, we build upon the approach outlined in \citet{benamou2016discretization} to reformulate the \acrshort{JKO} scheme as a problem solved over convex functions, rather than on measures $\mu$. Effectively, this is equivalent to making a change of variables in~\eqref{eq:jko}: Introduce a (variable) convex function $\psi$, and replace the variable $\mu$ by the variable $\nabla \psi_{\#}\mu_t$. Writing
 \begin{equation}\label{eq:en}
 \begin{split}
-\mathcal{E}_J(\rho, \nu) := J(\rho) +\frac{1}{2 \tau}W_2^2(\rho, \nu),\\
+\mathcal{E}_J(\mu, \nu) := J(\mu) +\frac{1}{2 \tau}W_2^2(\mu, \nu),\\
 \end{split}
 \end{equation}
 this identity states that, assuming $\mu$ and $\nu$ being absolutely continuous w.r.t. Lebesgue measure that
-$$\min_{\rho}\mathcal{E}_J(\rho,\nu) = \min_{\psi \text{ convex}} \mathcal{F}_J(\psi, \nu):= \mathcal{E}_J(\nabla \psi_{\#}\nu, \nu)\,,$$
+$$\min_{\mu}\mathcal{E}_J(\mu,\nu) = \min_{\psi \text{ convex}} \mathcal{F}_J(\psi, \nu):= \mathcal{E}_J(\nabla \psi_{\#}\nu, \nu)\,,$$
 simplifying the Wasserstein term in \eqref{eq:en}, using the assumption that $\psi$ is convex and \citeauthor{brenier1987decomposition}'s theorem \eqref{eq:brenier}:
 \begin{equation}\mathcal{F}_J(\psi, \nu) = J(\nabla \psi_{\#}\nu) +\frac{1}{2 \tau} \!\! \int\!\! \| x - \nabla \psi(x) \|^2 d \nu(x)\label{eq:jko_psi}
 \end{equation}
 
-We pick an ICNN architecture to optimize over a restricted family of convex functions, $\{\psi_{\theta}\}$, and define, starting from $\rho_0(\xi):=\mu_0$, the recursive sequence for $t\geq 0$,
+We pick an ICNN architecture to optimize over a restricted family of convex functions, $\{\psi_{\theta}\}$, and define, starting from $\mu_0(\xi):=\mu_0$, the recursive sequence for $t\geq 0$,
 \begin{equation} \label{eq:next_pop}
-\rho_{t+1}(\xi) := \nabla \psi_{\theta^\star\!(\xi, \rho_t(\xi))\, \#}\, \rho_{t}(\xi)\,,
+\mu_{t+1}(\xi) := \nabla \psi_{\theta^\star\!(\xi, \mu_t(\xi))\, \#}\, \mu_{t}(\xi)\,,
 \end{equation}
-with $\theta^\star(\xi, \rho_t)$ defined implicitly using $\xi$ and any $\nu$ as 
+with $\theta^\star(\xi, \mu_t)$ defined implicitly using $\xi$ and any $\nu$ as 
 \begin{align} \label{eq:thetastar}
     \theta^\star(\xi, \nu):=\arg \min_{\theta} \mathcal{F}_J(\psi_{\theta},\nu)
 \end{align}
@@ -77,9 +82,9 @@ While it is more difficult to enforce the $L$-smoothness of a neural network, an
 
 \subsection{Learning the Free Energy Functional}  \label{sec:learn_energy}
 The energy function $J_\xi : \mathcal{P}(\mathbb{R}^d) \rightarrow \mathbb{R}$ can be any parameterized function taking a measures as an input. 
-Since our model assumes that the observed dynamic is parameterized entirely by that energy (and the initial observation $\rho_0$), the more complex this dynamic, the more complex one would expect the energy $J_\xi$ to be. We focus in this first attempt on linear functions in the space of measures, that is expectations over $\rho$ of a vector-input neural network $E_\xi$
+Since our model assumes that the observed dynamic is parameterized entirely by that energy (and the initial observation $\mu_0$), the more complex this dynamic, the more complex one would expect the energy $J_\xi$ to be. We focus in this first attempt on linear functions in the space of measures, that is expectations over $\mu$ of a vector-input neural network $E_\xi$
 \begin{equation} \label{eq:energy}
-    J_\xi(\rho) := \int E_\xi(x) d\rho(x),
+    J_\xi(\mu) := \int E_\xi(x) d\mu(x),
 \end{equation}
 where $E_\xi:\mathbb{R}^d \rightarrow \mathbb{R}$ is a multi-layer perceptron (MLP).
 
@@ -103,15 +108,15 @@ where $E_\xi:\mathbb{R}^d \rightarrow \mathbb{R}$ is a multi-layer perceptron (M
    \IF{\texttt{TeacherForcing}}
     \STATE $\nu \leftarrow \mu_t$
    \ELSE
-   \STATE $\nu \leftarrow \rho_t(\xi)$
+   \STATE $\nu \leftarrow \mu_t(\xi)$
    \ENDIF
    \WHILE{$\frac{\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\xi}(\theta)}_2}{\sum_i \text{count}(\theta_i)} \ge \alpha$}
     
    \STATE $\theta \leftarrow \theta - \text{lr}_\theta \times \nabla_\theta \mathcal{F}_{J_\xi,\nu}(\theta)$
    \ENDWHILE
-   \STATE $\rho_{t+1}(\xi) \leftarrow \nabla \psi_{\theta \#} \nu$
+   \STATE $\mu_{t+1}(\xi) \leftarrow \nabla \psi_{\theta \#} \nu$
 
-   \STATE $\xi \leftarrow \xi - \text{lr}_\xi \times \nabla_\xi W_\varepsilon(\rho_{t+1}(\xi), \mu_{t+1})$
+   \STATE $\xi \leftarrow \xi - \text{lr}_\xi \times \nabla_\xi W_\varepsilon(\mu_{t+1}(\xi), \mu_{t+1})$
    \ENDFOR
    \ENDFOR
 	
@@ -163,8 +168,9 @@ To address slow convergence and instabilities for dynamics with many snapshots, 
          \centering
          \includegraphics[width=\textwidth]{figures/fig_prediction_implicit_semicircle_tf.pdf}
          \caption{Predicted Evolution \protect\newline on Semicircle Trajectory.}
+         % TODO: Change \mu to \mu!
      \end{subfigure}
-	 \caption{\textbf{Results of \textsc{JKOnet} on potential- and trajectory-based dynamics.} (a)-(c) Contour plots of the energy functionals $J_\xi$ of \textsc{JKOnet} on potential- and trajectory-based population dynamics, color gradients depict the magnitude of $J_\xi$. (d) Predicted population snapshots ($\hat{\rho}_1, \dots, \hat{\rho}_4$) (blue) and data trajectory ($\mu_0, \dots, \mu_4)$ (gray).}
+	 \caption{\textbf{Results of \textsc{JKOnet} on potential- and trajectory-based dynamics.} (a)-(c) Contour plots of the energy functionals $J_\xi$ of \textsc{JKOnet} on potential- and trajectory-based population dynamics, color gradients depict the magnitude of $J_\xi$. (d) Predicted population snapshots ($\hat{\mu}_1, \dots, \hat{\mu}_4$) (blue) and data trajectory ($\mu_0, \dots, \mu_4)$ (gray).}
 	 \label{fig:exp_jkonet_pot_traj}
 \end{figure}
 
@@ -174,13 +180,13 @@ Learning the free energy functional $J_\xi$ while solving each \acrshort{JKO} st
 At each time step, the predicted dynamics are compared to the ground truth trajectory $(\mu_0, \mu_1, \dots, \mu_T)$ with the entropy-regularized OT loss \eqref{eq:reg-ot},
 \begin{align} \label{eq:fittingloss}
 \begin{split}
-    \min_\xi & \sum_{t=0}^{T-1} W_\varepsilon(\rho_{t+1}(\xi), \mu_{t+1}), \\
-    \text{s.t. } & \rho_{0}(\xi) := \mu_0, \\
-      & \rho_{t+1}(\xi) := \nabla \psi_{\theta^\star\, \#}\, \rho_{t}(\xi)\,, \\
-      & \theta^\star:=\arg \min_{\theta} \mathcal{F}_{J_{\xi}}(\psi_{\theta},\rho_t(\xi))
+    \min_\xi & \sum_{t=0}^{T-1} W_\varepsilon(\mu_{t+1}(\xi), \mu_{t+1}), \\
+    \text{s.t. } & \mu_{0}(\xi) := \mu_0, \\
+      & \mu_{t+1}(\xi) := \nabla \psi_{\theta^\star\, \#}\, \mu_{t}(\xi)\,, \\
+      & \theta^\star:=\arg \min_{\theta} \mathcal{F}_{J_{\xi}}(\psi_{\theta},\mu_t(\xi))
 \end{split}
 \end{align}
-The dependence of the Sinkhorn divergence losses in \eqref{eq:fittingloss} on $\xi$ only appears in the fact that the predictions $\rho_{t+1}(\xi)$ are themselves implicitly defined as solving a \acrshort{JKO} step parameterized with the energy $J_\xi$. 
+The dependence of the Sinkhorn divergence losses in \eqref{eq:fittingloss} on $\xi$ only appears in the fact that the predictions $\mu_{t+1}(\xi)$ are themselves implicitly defined as solving a \acrshort{JKO} step parameterized with the energy $J_\xi$. 
 Learning  $J_\xi$ through the exclusive supervision of data observations requires therefore to differentiate the arg-minimum of a \acrshort{JKO} problem, down therefore through to the lower-level optimization of the ICNN. We achieve this by implementing a differentiable double loop in \texttt{JAX}, differentiating first the Sinkhorn divergence using the \texttt{OTT} package \citep{cuturi2022optimal}, and then backpropagating through the ICNN optimization by unrolling Adam steps \citep{kingma2014adam, metz2016unrolled, lorraine2020optimizing}.
 
 
@@ -190,6 +196,7 @@ Learning  $J_\xi$ through the exclusive supervision of data observations require
          \centering
          \includegraphics[width=\textwidth]{figures/fig_predictions_jko_noise.pdf}
          \caption{\textsc{JKOnet} (30\% corrupted data).}
+         % TODO: Change \mu to \mu!
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.47\textwidth}
@@ -244,15 +251,15 @@ Learning  $J_\xi$ through the exclusive supervision of data observations require
 \end{figure}
 
 
-\paragraph{Inner loop termination.} A question that arises when defining $\rho_{t+1}(\xi)$ lies in the budget of gradient steps needed or allowed to optimize the parameters $\theta$ of the ICNN, before taking a new gradient step on $\xi$ in the outer loss. A straightforward approach in \texttt{JAX} \citep{jax2018github} would be to use a preset number of iterations with a \texttt{for} loop (\texttt{jax.lax.scan}). 
+\paragraph{Inner loop termination.} A question that arises when defining $\mu_{t+1}(\xi)$ lies in the budget of gradient steps needed or allowed to optimize the parameters $\theta$ of the ICNN, before taking a new gradient step on $\xi$ in the outer loss. A straightforward approach in \texttt{JAX} \citep{jax2018github} would be to use a preset number of iterations with a \texttt{for} loop (\texttt{jax.lax.scan}). 
 We do observe, however, that the number of iterations needed to converge in relevant scenarios can vary significantly with the ICNN architecture and/or the hardness of the underlying task.
 We propose to use instead a differentiable fixed-point loop to solve each \acrshort{JKO} step up to a desired convergence threshold.
 We measure convergence of the optimization of the ICNN via the average norm of the gradient of the \acrshort{JKO} objective w.r.t. the ICNN parameters $\theta$, i.e., $\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\xi}(\theta_i, \xi)}_2/\sum_i \text{count}(\theta_i)$.
 We observe that this approach is robust across datasets and architectures of the ICNN. An exemplary training curve for the \acrshortpl{ICNN} updated successively along a time sequence is shown in Figure~\ref{fig:training_icnn}.
 
-\paragraph{Reverse-mode differentiation.} The Jacobian $\partial \rho_{t+1} / \partial\xi$ arising when computing the gradient $\nabla_\xi W_\varepsilon(\rho_{t+1}(\xi), \mu_{t+1})$ is obtained by unrolling the while loop above. The gradient term of the Sinkhorn divergence w.r.t the first argument is given by the Danskin envelope theorem \citep{danskin2012theory}.
+\paragraph{Reverse-mode differentiation.} The Jacobian $\partial \mu_{t+1} / \partial\xi$ arising when computing the gradient $\nabla_\xi W_\varepsilon(\mu_{t+1}(\xi), \mu_{t+1})$ is obtained by unrolling the while loop above. The gradient term of the Sinkhorn divergence w.r.t the first argument is given by the Danskin envelope theorem \citep{danskin2012theory}.
 
-% The Jacobian $\partial \rho^\xi_{t+1} / \partial\xi$ that appears when computing $\nabla_\xi W_\varepsilon(\text{data}_{t+1}, \rho_{t+1}(\xi))$ is computed by unrolling the iterations of the while loop above.
+% The Jacobian $\partial \mu^\xi_{t+1} / \partial\xi$ that appears when computing $\nabla_\xi W_\varepsilon(\text{data}_{t+1}, \mu_{t+1}(\xi))$ is computed by unrolling the iterations of the while loop above.
 
 \paragraph{Setting $\tau$ in \eqref{eq:jko_psi}.} 
 In usual \acrshort{JKO} applications, $\tau$ needs to be tuned manually. In this work, the energy $J_\xi$ is not fixed, but trained to fit data. Since we put no constraints on the scaling of $J_\xi$, $\tau$ can be set to $1$ without loss of generality, as the parameter $\xi$ will automatically adjust so that the scale of $J_\xi$ induces steps of a relevant length to fit data. This only holds (as with a usual \acrshort{JKO} step) if the trajectories are sampled regularly. For irregularly spaced time series, $\tau$ can be adapted at train and test time to the spacing of timestamps (shorter steps requiring larger $\tau$).
@@ -293,9 +300,9 @@ We consider a line, a spiral, and movement along a semicircle (Fig.~\ref{fig:tas
 These trajectory-based dynamics are learned using the strong convexity regularizer ($\ell=0.8$, see \S~\ref{sec:jko_icnn}).
 
 \paragraph{Comparison to Forward Methods.} \label{sec:eval_comp_fb}
-Instead of parameterizing the next iteration $\rho_{t+1}(\xi)$ as we do in the \textsc{JKOnet} formulation~\eqref{eq:jko}, the \emph{forward} scheme states that the prediction at time $t+1$, $\eta_{t+1}$, can be obtained as $(\nabla F_\xi)_{\#} \eta_t(\xi)$, where $F_\xi$ is any arbitrary neural network, as considered in \citet{hashimoto2016learning}, namely $\eta_0:=\mu_0$ and subsequently $\eta_{t+1}(\xi):=(\nabla F_\xi)_{\#} \eta_t(\xi)$. Although OT still plays an important role in that paper, since the potential $F$ is estimated by minimizing a Sinkhorn loss $W_\varepsilon(\eta_{t+1},\mu_{t+1})$, as we do in \eqref{eq:fittingloss}, the forward displacement operator $(\nabla F_\xi)_{\#}$ has no spatial regularity. Because of that, we observe that the forward method can get more easily trapped in local minima, and, in particular, overfits the training data as shown by a substantial decrease in performance in the presence of noise.
+Instead of parameterizing the next iteration $\mu_{t+1}(\xi)$ as we do in the \textsc{JKOnet} formulation~\eqref{eq:jko}, the \emph{forward} scheme states that the prediction at time $t+1$, $\eta_{t+1}$, can be obtained as $(\nabla F_\xi)_{\#} \eta_t(\xi)$, where $F_\xi$ is any arbitrary neural network, as considered in \citet{hashimoto2016learning}, namely $\eta_0:=\mu_0$ and subsequently $\eta_{t+1}(\xi):=(\nabla F_\xi)_{\#} \eta_t(\xi)$. Although OT still plays an important role in that paper, since the potential $F$ is estimated by minimizing a Sinkhorn loss $W_\varepsilon(\eta_{t+1},\mu_{t+1})$, as we do in \eqref{eq:fittingloss}, the forward displacement operator $(\nabla F_\xi)_{\#}$ has no spatial regularity. Because of that, we observe that the forward method can get more easily trapped in local minima, and, in particular, overfits the training data as shown by a substantial decrease in performance in the presence of noise.
 We demonstrate this by comparing the robustness of both \textsc{JKOnet} and the forward method to noise. For this, we corrupt $20\%$ or $30\%$ of the training data on the example of the semicircle trajectory with different levels of noise (see Fig.~\ref{fig:task_overview}). We insist that noise is only added at training time, as random shifts on both feature dimensions, while we test on the original semicircle trajectory.
-In low noise regimes, where train and test data are similar, the forward method overfits and performs marginally better than \textsc{JKOnet} (see Fig.~\ref{fig:exp_comp_noise}c,d). As noise increases, the performance of the forward method deteriorates (Fig.~\ref{fig:exp_comp_noise}b), while \textsc{JKOnet}, constrained to move points with OT maps, is robust (Fig.~\ref{fig:exp_comp_noise}a).% This shows that the forward method is able to learn a network such that, on average, the ensemble of particles $(\nabla F_\xi)_{\#} \rho_t$ fits $\mu_{t+1}$, without, however
+In low noise regimes, where train and test data are similar, the forward method overfits and performs marginally better than \textsc{JKOnet} (see Fig.~\ref{fig:exp_comp_noise}c,d). As noise increases, the performance of the forward method deteriorates (Fig.~\ref{fig:exp_comp_noise}b), while \textsc{JKOnet}, constrained to move points with OT maps, is robust (Fig.~\ref{fig:exp_comp_noise}a).% This shows that the forward method is able to learn a network such that, on average, the ensemble of particles $(\nabla F_\xi)_{\#} \mu_t$ fits $\mu_{t+1}$, without, however
 
 %In a second experiment, we evaluate the capacity of \textsc{JKOnet} and the forward method to extrapolate and generalize the learned trajectories, e.g., when vertically translating a line during test time (Fig.~\ref{fig:task_overfitting}).
 %Due to the less constrained energy, the \emph{forward} method perfectly resembles the seen trajectory during training, but fails to extrapolate to shifted test data (Table~\ref{tab:comp_line} in \S~\ref{app:overfitting}).

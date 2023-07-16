@@ -84,7 +84,7 @@ The Kantorovich formulation \eqref{eq:kantorovich} is a \emph{convex} problem on
 \looseness -1 where the set of admissible dual potentials is given by $\Phi_c \defeq \{(f, g) \in L^{1}(\mu) \times L^{1}(\nu): f(x)+g(y) \leq c(x,y)$, $\forall(x, y) d\mu \otimes d\nu \text{ a.e.}\}$.
 $(f, g)$ is thus a pair of continuous functions, often referred to as \emph{Kantorovich potentials}.
 An informal interpretation of \eqref{eq:kantorovich-dual} was provided by \citet{caffarelli2003monge}, revisiting the connection of \acrshort{OT} to economics: 
-A logistics company is concerned with transporting products from each resource unit $x$ to a factory $y$. The transportation company thereby charges $f(x)$ for loading resources at point $x$ and $g(y)$ of unloading it at destination $y$, but is constrained to charge $f(x)+g(y) \le c(x,y)$. In order to arrange prizes $f$ and $g$ that increase profit, they thus maximize objective \eqref{eq:kantorovich-dual}.
+A logistics company is concerned with transporting products from each resource unit $x$ to a factory $y$. The transportation company thereby charges $f(x)$ for loading resources at point $x$ and $g(y)$ of unloading it at destination $y$, but is constrained to charge $f(x)+g(y) \le c(x,y)$. In order to arrange prizes $J$ and $g$ that increase profit, they thus maximize objective \eqref{eq:kantorovich-dual}.
 
 % TODO: Provide a better transition. 
 Beyond, using the notion of $c$-transforms, i.e.,
@@ -92,7 +92,7 @@ Beyond, using the notion of $c$-transforms, i.e.,
 	\tag{$c$-transform}
 	\forall y \in \mathcal{Y}, \quad f^c(y) \defeq \inf _{x \in \mathcal{X}} c(x, y)-f(x) \,,
 \end{equation}
-we can reduce \eqref{eq:kantorovich-dual} to a single potential: Assume we keep dual potential $f$ fixed, the potential $g$ needs to satisfy for all $x, y$
+we can reduce \eqref{eq:kantorovich-dual} to a single potential: Assume we keep dual potential $J$ fixed, the potential $g$ needs to satisfy for all $x, y$
 \begin{align*}
 	f(x) + &g(y) \le c(x, y)\,,
 	\forall y \in \mathcal{Y}, \quad  &g(t) \ge f^c(y) \defeq \inf _{x \in \mathcal{X}} c(x, y) - f(x)\,,
@@ -107,7 +107,7 @@ resulting in the semi-dual
 	\tag{Legendre-Fenchel transform}
 	\forall y, \quad g(y) \geq f^*(y) \defeq \sup _x \langle x, y\rangle-f(x)\,,
 \end{equation}
-where $f^*$ is the convex conjugate of $f$ and a convex function (as a supremum of linear functions). Then, the semi-dual in the Euclidean setting reads
+where $f^*$ is the convex conjugate of $J$ and a convex function (as a supremum of linear functions). Then, the semi-dual in the Euclidean setting reads
 \begin{equation} \label{eq:dual-cvx}
 	\arg\!\!\min_{f\, \text{convex}} \int f \textrm{d}\mu + \int f^*\textrm{d}\nu\,.
 \end{equation}
@@ -139,7 +139,7 @@ More formally:
 	$$
 	\quad \int_{\mathcal{X} \times \mathcal{Y}} h(x, y) \mathrm{d} \pi(x, y)=\int_{\mathcal{X}} h(x, T(x)) \mathrm{d} \mu(x).
 	$$
-Moreover, this map $T$ is uniquely determined by the gradient of a convex function $\psi$, denoted as $T(x)=\nabla \psi(x)$. The function $\psi$ is the unique convex function, up to an additional constant, for which $(\nabla \psi)_{\sharp} \mu=\nu$. We can establish a relationship between this convex function $\psi$ and the dual potential $f$ that solves \eqref{eq:kantorovich-dual} by expressing $\psi(x)$ as $\frac{|x|^2}{2}-f(x)$.
+Moreover, this map $T$ is uniquely determined by the gradient of a convex function $\psi$, denoted as $T(x)=\nabla \psi(x)$. The function $\psi$ is the unique convex function, up to an additional constant, for which $(\nabla \psi)_{\sharp} \mu=\nu$. We can establish a relationship between this convex function $\psi$ and the dual potential $J$ that solves \eqref{eq:kantorovich-dual} by expressing $\psi(x)$ as $\frac{|x|^2}{2}-f(x)$.
 \end{theorem}
 \begin{proof}
 	...
@@ -189,16 +189,16 @@ The regularity of the solutions of \eqref{eq:monge_ampere}, with implications on
 
 Avoiding solving \eqref{eq:monge_ampere} directly, \citet{benamou2000computational} introduce an alternative numerical framework by connecting the optimal mass transfer problem to continuum mechanic frameworks.
 Deviating from the previous notation of $(\mu, \nu)$, in the following sections we study the dynamic problem via the evolution from measure $\mu_0$ at time $t=0$ to $\mu_1$ at $t=1$. The solution of \eqref{eq:kantorovich} then coincides with finding the minimal path $(\mu_t)_{t=0}^1$, or more concretely, a curve in the space of measures, minimizing a total length.  
-Such path $\mu_t$ can be described through a vector field $v_t$ which moves particles around, satisfying the continuity equation in fluid dynamics or conservation of mass formula
+Such path $\mu_t$ can be described through a vector field $v$ which moves particles around, satisfying the continuity equation in fluid dynamics or conservation of mass formula
 \begin{equation} \label{eq:continuity_equation}
-	\frac{\partial \mu_t}{\partial t}+\nabla\left(\mu_t v_t\right)= 0, \qquad \mu_{t=0}=\mu_0, \mu_{t=1}=\mu_1\,,
+	\frac{\partial \mu_t}{\partial t}+\nabla\left(\mu_t v\right)= 0, \qquad \mu_{t=0}=\mu_0, \mu_{t=1}=\mu_1\,,
 \end{equation}
-where the vector field $v_t$ denotes the speed and $\mu_t v_t = J_t$ corresponds to the momentum.
+where the vector field $v_t$ denotes the speed and $\mu_t v = J_t$ corresponds to the momentum.
 Reformulating the optimal transportation problem in a differential way, an "Eulerian" formulation inspired by fluid mechanics, will be crucial for the subsequent study of dynamical problems.
 Every curve $\mu_t$ describing the evolution of the measure over time can thereby be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v_t$ that (i.) that satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimized the path length.
 The infinitesimal length of such a vector field can be computed via 
 \begin{equation} \label{eq:vector_field_length}
-	\left\|v_t\right\|_{\ell^2\left(\mu_t\right)}=\left(\int_{\mathbb{R}^d}\left\|v(t, x)\right\|^2 \mathrm{~d} \mu_t(x)\right)^{1 / 2}.
+	\left\|v\right\|_{\ell^2\left(\mu_t\right)}=\left(\int_{\mathbb{R}^d}\left\|v(t, x)\right\|^2 \mathrm{~d} \mu_t(x)\right)^{1 / 2}.
 \end{equation}
 resulting, in the case of $\gX = \gY = \mathbb{R}^d$ and $c(x, y)=\|x-y\|^2$, in the minimal-path reformulation of \eqref{eq:kantorovich}
 \begin{align}  \label{eq:benamou_brenier}
@@ -208,7 +208,7 @@ resulting, in the case of $\gX = \gY = \mathbb{R}^d$ and $c(x, y)=\|x-y\|^2$, in
 \end{align}
 Thus, path $\mu_t$ describes the time-evolving density of a set of particles moving continuously with velocity $v_t$.
 Taking the perspective of fluid dynamics, \eqref{eq:vector_field_length} can also be interpreted as the \emph{kinetic energy} of the particles.
-The Benamou-Brenier formulation \eqref{eq:benamou_brenier} then selects the vector field $v_t$ that minimizes the total efforts or the total kinetic energy one has to spend in order to move particles around according to the vector field $v_t$.
+The Benamou-Brenier formulation \eqref{eq:benamou_brenier} then selects the vector field $v$ that minimizes the total efforts or the total kinetic energy one has to spend in order to move particles around according to the vector field $v$.
 
 \paragraph{Euclidean case.} A particular important case occurs again in the Euclidean setting, i.e., for cost $c(x, y) = \norm{x-y}^2$ in $\gX = \gY = \mathbb{R}^d$. The solution of the time-dependent OT problem \eqref{eq:benamou_brenier} then coincides with \citeauthor{mccann1997convexity}'s displacement interpolation between two measures.
 Reciting \cref{thm:brenier}, with $T = \nabla \psi$, $\mu_t$ is equal to \citeauthor{mccann1997convexity}'s interpolation between $\mu_0$ and $\mu_1$ given by
@@ -222,52 +222,63 @@ Despite their simplicity, this concept possesses remarkable applications beyond 
 
 The time-dependent Benamou-Brenier formulation \eqref{eq:benamou_brenier} not only provides us with a more complete description of optimal transport, but also the discovery that the resulting path $(\mu_t)_{t=0}^1$ may be seen as a constant-speed geodesic interpolating between population $\mu_0$ and $\mu_1$ in the space of measures, i.e., a Wasserstein geodesic.
 When studying dynamic processes in biomedicine, however, phenomena such as cellular differentiation in developmental processes, tissue formation, or cell migration involve intricate spatiotemporal dynamics that cannot be adequately captured by solely studying the interpolation between two measures $\mu_0$ and $\mu_1$.
-Instead, many phenomenons in biology and physics can be described through an energy functional $F$ such that the minimization of $F$ describes the observed dynamics of the studied system.
-In developmental biology, for example, $F$ might describe an epigenetic landscape: Drawing from the metaphor of \citeauthor{waddington1957strategy}'s landscape, developmental biology commonly visualizes cellular developmental pathways as marbles rolling down a complex landscape $F$ \citep{waddington1957strategy}, e.g., transforming cells from a pluripotent states (capable of becoming any cell type) to a highly specialized ones \citep{schiebinger2021reconstructing}. 
+Instead, many phenomenons in biology and physics can be modeled through an energy functional $J$ such that the minimization of $J$ describes the observed dynamics of the studied system ---a concept known as gradient flows.
+At their core, gradient flows provide a powerful framework for understanding the evolution of functions or systems towards an optimal state through the direction of steepest descent of a function $J$. 
+More concretely, gradient flows capture the intuitive idea of objects moving in a direction that decreases their energy, seeking a state of minimum potential or maximum stability. 
+In developmental biology, for example, $J$ might represent an epigenetic landscape: Drawing from the metaphor of \citeauthor{waddington1957strategy}'s landscape, developmental biology commonly visualizes cellular developmental pathways as marbles rolling down a complex landscape $J$ \citep{waddington1957strategy}, e.g., transforming cells from a pluripotent states (capable of becoming any cell type) to a highly specialized ones \citep{schiebinger2021reconstructing}. 
 % Each valley within this landscape represents a specific fate a cell might take, with the depth of the valley signifying the stability of the differentiated state.
 % Paths on the developmental manifold then describe the evolution of a time-varying probability distribution on a high-dimensional expression space, representing the continuous changes in cellular differentiation profiles over time.
-
-Gradient flows, or steepest descent curves, are a very classical topic when modeling the evolution of dynamical systems.
-A gradient flow is thereby a curve following the direction of steepest descent of a function $F$.
 In the following, we will study gradient flows in the Euclidean setting before considering generalizations to arbitrary measures that allow studying the evolution of populations over time.
 
-\paragraph{Euclidean case.} Considering the evolution of a vector $x$ over time in the Euclidean space. Provided with a smooth functional $F$, this can be realized through the standard gradient descent (forward) scheme
+% It is natural to derive various partial differential equations (PDE's) as gradient flows of certain energy functionals.
+
+\paragraph{Euclidean case.} Considering the evolution of a vector $x$ over time in the Euclidean space. Provided with a smooth functional $J$, this can be realized through the standard gradient descent (forward) scheme
 \begin{equation*}
-	x_{t+1} \defeq x_{t}-\tau \nabla F\left(x_{t}\right),
+	x_{t+1} \defeq x_{t}-\tau \nabla J\left(x_{t}\right),
 \end{equation*}
-where $\tau$ is the step size. The resulting sequence ${x_0, \dots, x_{t-1}, x_{t}, x_{t+1}, \dots, \x_T}$ then describes the trajectory of a single particle $x$ over time.
+where $\tau$ is the step size. The resulting sequence ${x_0, \dots, x_{t-1}, x_{t}, x_{t+1}, \dots, x_T}$ then describes the trajectory of a single particle $x$ over time.
 For non-smooth functions, on can resort to a proximal scheme, i.e.,
 \begin{equation*}
-	x_{t+1} \defeq \operatorname{Prox}_{\tau F}^{\|\cdot\|}\left(x_{t}\right) \defeq \arg\!\min_x \frac{1}{2}\left\| x-x_t\right\|^2+\tau F(x).
+	x_{t+1} \defeq \operatorname{Prox}_{\tau F}^{\|\cdot\|}\left(x_{t}\right) \defeq \arg\!\min_x \frac{1}{2\tau}\left\| x-x_t\right\|^2+ J(x).
 \end{equation*}
 The proximal scheme can thereby be seen as a \emph{backward} Euler discretization of the gradient flow.
 
-\paragraph{Wasserstein case.} When studying the evolution of measure $\mu_t$ over time, we will resort to optimal transport metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
-Considering a functionals $F$ that take a measure or population as input, a gradient flow of $\mu$ w.r.t. to $F$ can be similarly expressed through forward and backward schemes. Assuming $F(\mu) 
+\paragraph{Wasserstein case.} When studying the evolution of a population or measure $\mu_t$ over time, however, we need resort to optimal transport metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
+Considering a functionals $J$ that take a measure or population as input, a gradient flow of $\mu$ w.r.t. to $J$ can be similarly expressed through forward and backward schemes. Assuming $J(\mu) 
 \defeq \int E(x) d \mu(x)$, the forward scheme thereby reads
 \begin{equation*}
-	\mu_{t+1} \defeq \left(I-\frac{1}{\tau} \nabla E\right)_{\#} \mu_t
+	\mu_{t+1}\defeq\left(I-\tau \nabla E\right)_{\#} \mu_t
 \end{equation*}
 with the corresponding backward formulation defined as
 \begin{equation}
 	\label{eq:prox_measure}
-	\mu_{t+1} \defeq \arg\!\min_\mu W(\mu, \mu_t)^2+\tau F(\mu).
+	\mu_{t+1}\defeq\underset{\mu}{\operatorname{argmin}} \enspace \frac{1}{2\tau}W\left(\mu, \mu_t\right)+ J(\mu).
 \end{equation}
 This implicit time stepping is a useful tool to construct continuous flows: In the limit $\tau \rightarrow 0$ the resulting sequence $\{\mu_t\}_{t=0}^T$ approximates a continuous flow $\mu_t$, i.e., a path in the Wasserstein space.
 
+% TODO: Rework and fully integrate paragraphs.
+Interest in Wasserstein gradient flows was sparked by the seminal work of Jordan, Kinderlehrer, and Otto (\citeyear{jordan1998variational}) proposing to discretize the gradient flow and thus the corresponding PDE. 
+In their seminal paper, \citet{jordan1998variational} study diffusion processes under the lens of the OT metric \citep[see also][]{ambrosio2006gradient} and introduce a scheme that is now known as the \acrshort{JKO} flow.
+ These successive minimization problems result in a sequence of probability measures in $\mathcal{P}(\mathbb{R}^d)$.  
+The \acrshort{JKO} flow can thus be seen as the analogy of the usual proximal descent scheme, tailored for probability measures~\citep[p.285]{santambrogio2015optimal}.
+
+
+For a broad class of potentials $J$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{JKO step} \eqref{eq:prox_measure} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of the corresponding PDE, and the resulting evolutions are often referred to as \emph{JKO flows}.
+\citet{jordan1998variational} show that as step size $\tau \rightarrow 0$, and for a specific energy $J$ that is the sum of a linear term and the negentropy, the measures describing the \acrshort{JKO} flow recover solutions to a Fokker-Planck equation. 
+
 \begin{table}[t]
-\caption{Equivalence between gradient flows and PDEs where the gradient flow of flow functional $F(\mu_t)$ in Wasserstein space satisfies the corresponding PDE. The function $f : \mathbb{R} \rightarrow \mathbb{R}$ is convex and superlinear and $V, W : \gX \rightarrow \mathbb{R}$ are convex and sufficiently smooth.}
+\caption{Equivalence between gradient flows and PDEs where the gradient flow of flow functional $J(\mu_t)$ in Wasserstein space satisfies the corresponding PDE \citep{alvarez2021optimizing, villani2021topics}. The function $f : \mathbb{R} \rightarrow \mathbb{R}$ is convex and superlinear and $V, W : \gX \rightarrow \mathbb{R}$ are convex and sufficiently smooth.}
 \label{tab:examples_gradient_flows}
 \centering
 \adjustbox{max width=\linewidth}{%
 \begin{tabular}{lll}
 \toprule
-\textbf{Class} & \textbf{PDE} $\frac{\partial \mu_t}{\partial t} $ & \textbf{Flow Functional} $F(\mu_t)=$ \\
+\textbf{Class} & \textbf{PDE} $\frac{\partial \mu_t}{\partial t} =$ & \textbf{Flow Functional} $J(\mu_t)=$ \\
 \midrule Heat Equation & $\Delta \mu_t$ & $\int \mu_t(x) \log \mu_t(x) \mathrm{d} x$ \\
 Advection & $\nabla \cdot(\mu_t \nabla V)$ & $\int V(x) \mathrm{d} \mu_t(x)$ \\
 Fokker-Planck & $\Delta \mu_t+\nabla \cdot(\mu_t \nabla V)$ & $\int \mu_t(x) \log \mu_t(x) \mathrm{d} x+\int V(x) \mathrm{d} \mu_t(x)$ \\
 Porous Media & $\Delta\left(\mu_t^m\right)+\nabla \cdot(\mu_t \nabla V)$ & $\frac{1}{m-1} \int \mu_t(x)^m \mathrm{~d} x+\int V(x) \mathrm{d} \mu_t(x)$ \\
-Adv.+Diff.+Inter. & $\nabla \cdot\left[\mu_t\left(\nabla f^{\prime}(\mu_t)+\nabla V+(\nabla W) * \mu_t\right)\right]$ & \makecell[l]{$\int V(x) \mathrm{d} \mu_t(x)+\int f(\mu_t(x)) \mathrm{d} x$ \\ $+\frac{1}{2} \iint W\left(x-x^{\prime}\right) \mathrm{d} \mu_t(x) \mathrm{d} \mu_t\left(x^{\prime}\right)$} \\
+\makecell[l]{Advection, Diffusion, \\ and Interaction} & $\nabla \cdot\left[\mu_t\left(\nabla f^{\prime}(\mu_t)+\nabla V+(\nabla W) * \mu_t\right)\right]$ & \makecell[l]{$\int V(x) \mathrm{d} \mu_t(x)+\int f(\mu_t(x)) \mathrm{d} x$ \\ $+\frac{1}{2} \iint W\left(x-x^{\prime}\right) \mathrm{d} \mu_t(x) \mathrm{d} \mu_t\left(x^{\prime}\right)$} \\
 \bottomrule
 \end{tabular}
 }
@@ -278,21 +289,19 @@ For instance, the standard heat equation of physics, i.e.,
 \begin{equation*}
 	\frac{\partial \mu_t}{\partial t} = \Delta \mu_t,
 \end{equation*}
-with $\Delta$ being the spatial Laplacian, can be expressed as a gradient flow of the energy $F(\mu) = \int_{\mathbb{R}^d} \mu_t_\mu \log \mu_t_\mu$, i.e., Gibbs-Boltzmann's famous $H$ functional with the physical interpretation of the negative of an entropy.
+with $\Delta$ being the spatial Laplacian, can be expressed as a gradient flow of the energy $J(\mu) = \int \mu_t(x) \log \mu_t(x) \mathrm{d} x$, i.e., Gibbs-Boltzmann's famous $H$ functional with the physical interpretation of the negative of an entropy.
 Among further examples displayed in \cref{tab:examples_gradient_flows} \citep{alvarez2021optimizing, villani2021topics}, a classic subject of the theory of PDEs also comprises the linear Fokker-Planck equation
 \begin{equation}
 	\label{eq:linear_fokker_planck}
 	\frac{\partial \mu_t}{\partial t} = \Delta \mu_t+\nabla \cdot(\mu_t \nabla V),
 \end{equation}
-that results in flow functional $F(\mu_t) = \int \mu_t(x) \log \mu_t(x) \mathrm{d} x+\int V(x) \mathrm{d} \mu_t(x)$, where the first term again represents the negative Gibbs-Boltzmann entropy and the second term plays the role of an energy functional with a smooth potential function $V : \mathbb{R}^d \rightarrow \mathbb{R}$.
+that results in flow functional $J(\mu_t) = \int \mu_t(x) \log \mu_t(x) \mathrm{d} x+\int V(x) \mathrm{d} \mu_t(x)$. Here, the first term again represents the negative Gibbs-Boltzmann entropy and the second term plays the role of an energy functional with a smooth potential function $V : \mathbb{R}^d \rightarrow \mathbb{R}$.
 
-Interest in Wasserstein gradient flows was sparked by the seminal work of Jordan, Kinderlehrer, and Otto (\citeyear{jordan1998variational}) proposing to discretize the gradient flow and thus the corresponding PDE. 
-For a broad class of potentials $F$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{JKO step}\eqref{eq:prox_measure} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of the corresponding PDE, and the resulting evolutions are often referred to as \emph{JKO flows}.
 
 In recent works, \acrshort{JKO} flows thus have found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}.
-In fact, this formulation is particular interesting for studying dynamical systems in biomedicine, as the exact expression of the PDE corresponding to functional $F$ does not need to be known.
-Instead we can propose parameterizations of energy functional $F$ that can be learned from data, an idea we will explore in \cref{sec:learn_energy}.
-While providing a general framework for studying general and complex population dynamics, each step of the JKO scheme is costly as it requires solving a minimization problem involving the Wasserstein distance. Beyond introducing learning schemes for functional $F$ the design of efficient and differentiable  schemes for solving JKO flows is required, which we will discuss in \cref{sec:jko_icnn}.
+In fact, this formulation is particular interesting for studying dynamical systems in biomedicine, as the exact expression of the PDE corresponding to functional $J$ does not need to be known.
+Instead we can propose parameterizations of energy functional $J$ that can be learned from data, an idea we will explore in \cref{sec:learn_energy}.
+While providing a general framework for studying general and complex population dynamics, each step of the JKO scheme \eqref{eq:prox_measure} is costly as it requires solving a minimization problem involving the Wasserstein distance \eqref{eq:kantorovich}. Beyond introducing learning schemes for functional $J$ the design of efficient and differentiable we will thus introduce novel schemes for solving JKO flows in \cref{sec:jko_icnn}.
 
 
 \subsection{Stochastic Control Perspective} \label{sec:background_control}
@@ -309,7 +318,7 @@ Further, celebrated control principles such as the Pontryagin maximum principle 
 
 Following \citet{chen2021optimal, chen2021stochastic}, we will establish this stochastic control viewpoint by studying the Benamou-Brenier formulation using elementary control considerations.
 % TODO: Introduce notion of control and states.
-For this, we consider a system with state distribution $\dot{x}^v_t = v(t, X^v_t)$ and initial state $X^v_0 \sim \mu_0$. Provided with a time-dependent control $v(t, \cdot)$, the objective of \eqref{eq:benamou_brenier} has the following stochastic interpretation
+For this, we consider a system with state distribution $\dot{x}^v_t = v(t, X^v_t)$ and initial state $X^v_0 \sim \mu_0$. Provided with a time-dependent feedback control $v(t, \cdot)$, the objective of \eqref{eq:benamou_brenier} has the following stochastic interpretation
 \begin{equation*}
 	\int_0^1 \int_{\mathbb{R}^n} \frac{1}{2}\norm{v(t, x)}^2 \mathrm{d}\mu_t(x) \mathrm{d}t = \mathbb{E}\left\{\int_0^1 \frac{1}{2}\left\|v(t, X^v_t)\right\|^2 \mathrm{d}t\right\},
 \end{equation*}
@@ -321,9 +330,9 @@ resulting in the stochastic control formulation of the OT problem
 \nonumber & X^v_0 \sim \mu_0, \quad X^v_1 \sim \mu_1.
 \end{align}
 $\mathcal{V}$ thereby represents the family of admissible state feedback control strategies.
-% In general, the goal of such a density/uncertainty control problem is to drive a dynamical system from a given initial uncertain state to a target uncertainty state with minimum cost. It differs from standard optimal control in the added constraint on the terminal state distribution and the absence of a terminal penalty in the index.
-% TODO: Add butter.
-...
+Typically, in a density control problem, the objective is to guide a dynamical system from an initial state $X_0$ characterized by $\mu_0$ to a desired state $\mu_1$ with minimum cost. 
+The above strategy, however, differs from standard optimal control in the added constraint on the terminal state distribution and the absence of a terminal penalty.
+
 
 \subsubsection*{... on Regularized Optimal Transport}
 
@@ -347,7 +356,7 @@ Besides, this problem exhibits a fluid-dynamic interpretation, i.e.,
 \end{align}
 where $\Delta$ denotes the Laplace operator.
 \eqref{eq:reg_bb_control_constraint} is the Fokker-Planck equation capturing the state distribution evolution.
-As $\sigma^2 \searrow 0$, the solution to this problem converges to the one of the Benamou-Brenier problem \eqref{eq:benamou_brenier} \citep{mikami2008optimal}.
+As $\sigma^2 \rightarrow 0$, the solution to this problem converges to the one of the Benamou-Brenier problem \eqref{eq:benamou_brenier} \citep{mikami2008optimal}.
 For an extended discussion, see \citet{dai1991stochastic, mikami2000dynamical, mikami2002optimal}.
 
 
@@ -372,15 +381,16 @@ This idea generalizes verbatim to any reference process $\mathbb{Q}_t$. Unfortun
 % By the Gaussian increments of $\mathbb{W}_t$, for any marginal $\hat{\mathbb{P}}_0$ at time $0, \mathbb{W}_t$ would predict the distribution at time $T$ to be $\hat{\mathbb{P}}_0 * \mathcal{N}(0, T \cdot I)$ where $*$ denotes the convolution operator. If this distribution differs from the actual data $\hat{\mathbb{P}}_T$, then $\mathbb{P}_t$ must also differ from $\mathbb{W}_t$. 
 Recovering the stochastic calculus of variations formulation of the \acrlong{SB} \eqref{eq:sb_control} can be achieved via the Girsanov theorem, which states that
 \begin{align*}
-	\frac{\mathrm{d}\mathbb{P}_{X^v}}{\mathrm{d} \mathbb{P}_{x^{v=0}}} = \exp \left\{ \int_0^1 \frac{1}{\sigma} v(t, x_v^t) \cdot \mathrm{d} \mathbb{W}_t +  \int_0^1 \frac{1}{2\sigma^2} \norm{v(t, x_v^t)}^2 dt \right\}& \\
+	\frac{\mathrm{d}\mathbb{P}_{X^v}}{\mathrm{d} \mathbb{P}_{X^{v=0}}} = \exp \left\{ \int_0^1 \frac{1}{\sigma} v(t, X_t^v) \cdot \mathrm{d} \mathbb{W}_t +  \int_0^1 \frac{1}{2\sigma^2} \norm{v(t, X_t^v)}^2 dt \right\}& \\
 	\text{and thus} \enspace \KL(\mathbb{P}_{X^v} \| \mathbb{P}_{X^{v=0}}) = \mathbb{E} \left\{ \int_0^1 \frac{1}{2\sigma^2}\norm{v(t, X^v_t)}^2 dt \right\}& ,
 \end{align*}
 where $\mathbb{P}_{X^v}$ and $\mathbb{P}_{X^{v=0}}$ denote the measures induced by $X^v$ and $X^{v=0}$.
 In other words, the relative entropy between the stochastic process describing the particle dynamics and the reference process is equal to the control energy (scaled by $\frac{1}{\sigma^2}$).
 
+% TODO: Remove ^v
 \paragraph{Optimality criteria.}
 Classical strategies for solving \eqref{eq:sb_control} commonly replace the boundary constraint $X^v_1 \sim \mu_1$ with a penalty or artificial terminal cost, thus transforming \eqref{eq:sb_control} to standard stochastic optimal control formulations. 
-The resulting optimality conditions read
+The resulting optimality conditions are
 \begin{align}
 \label{eq:sb_hb} & \frac{\partial \varphi}{\partial t} = -\frac{1}{2}\|\nabla \varphi\|^2 -\frac{1}{2}\sigma^2 \Delta \varphi \\
 % TODO: Is this a + or - \nabla?
@@ -389,20 +399,18 @@ The resulting optimality conditions read
 & \frac{\partial \mu_t}{\partial t} = - \nabla \cdot(\mu_t \nabla \varphi) +\frac{1}{2}\sigma^2 \Delta \mu_t
 \end{align}
 with value function $\varphi(t, x)$ and $\mu_t$ being the associated optimal marginal density. \cref{eq:sb_hb} is a second-order Hamilton-Jacobi-Bellman equation.
-After applying the \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform $(\varphi, \mu_t) \rightarrow (\Phi, \widehat{\Phi})$, we obtain the \acr{SB} system associated to the SDE class in \eqref{eq:sb_control_constraint}, which is given by
-\begin{equation}
-\left\{\begin{array}{l}
-\frac{\partial \Phi}{\partial t}=-\sigma^2}{2} \Delta \Phi \\
-\frac{\partial \widehat{\Phi}}{\partial t}=\sigma^2}{2} \Delta \widehat{\Phi}
-\end{array} \quad \text { s.t. } \Phi(0, \cdot) \widehat{\Phi}(0, \cdot)=\mu_0, \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1\right.
-\end{equation}
+After applying the \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform $(\varphi, \mu_t) \rightarrow (\Phi, \widehat{\Phi})$, we obtain the \acrshort{SB} system associated to the SDE class in \eqref{eq:sb_control_constraint}, which is given by
+\begin{align}
+& \frac{\partial \Phi}{\partial t}=-\frac{1}{2}\sigma^2 \Delta \Phi 
+\quad \text { s.t. } & \Phi(0, \cdot) \widehat{\Phi}(0, \cdot)=\mu_0, \\ \nonumber
+& \frac{\partial \widehat{\Phi}}{\partial t}=\frac{1}{2}\sigma^2 \Delta \widehat{\Phi} \quad & \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1.
+\end{align}
 i.e., a pair of a backward Kolmogorov and a Fokker-Planck equation. The optimal control is then given by $
 v(t, X_t)=\sigma^2 \nabla \log \Phi(t, x)$.
 
 \subsubsection*{Generalizations to Other SDE Classes}
-% TODO: Write section.
 To describe complex biological processes, however, we need to consider SDE classes comprising nonlinear drifts, affine control, and time-varying diffusion. 
-In the following, let us consider SDEs with drift $f(\cdot, t): \mathbb{R}^d \rightarrow \mathbb{R}^d$, diffusion $g(t) \in \mathbb{R}$, and standard Wiener process $\mathbb{W}_t \in \mathbb{R}^d$\footnote{Hereafter, we will sometimes drop $f \equal f(t, Xt)$ and $g \equal g(t)$ for brevity.}. \citet{caluya2021wasserstein, chen2021likelihood} provide a generalization of the above framework that reads
+In the following, let us consider SDEs with drift $f(\cdot, t): \mathbb{R}^d \rightarrow \mathbb{R}^d$, diffusion $g(t) \in \mathbb{R}$, and standard Wiener process $\mathbb{W}_t \in \mathbb{R}^d$\footnote{Hereafter, we will sometimes drop $f \equiv f(t, Xt)$ and $g \equiv g(t)$ for brevity.}. \citet{caluya2021wasserstein, chen2021likelihood} provide a generalization of the above framework that reads
 \begin{align}
 \label{eq:sb_control_gen}
 & \inf _{v \in \mathcal{V}} \mathbb{E}\left\{\int_0^1 \frac{1}{2}\norm{v(t, X_t)}^2 d t\right\}\\
@@ -415,20 +423,20 @@ with $g(t)$ being uniformly lower-bounded and $f(t, X_t)$ satisfying Lipschitz c
 
 \paragraph{Optimality criteria.}
 Again, we recover the optimality criteria via a \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform  of \eqref{eq:sb_control_gen} resulting in
-\begin{equation} \label{eq:sb_optimality_gen}
-\left\{\begin{array}{l}
-\frac{\partial \Phi}{\partial t}=-\nabla \Phi^{\top} f- \frac{1}{2}\sigma^2 \operatorname{Tr}\left(g^2 \nabla_{\boldsymbol{x}}^2 \Phi\right) \\
-\frac{\partial \widehat{\Phi}}{\partial t}=-\nabla \cdot(\widehat{\Phi} f)+\frac{1}{2}\sigma^2 \operatorname{Tr}\left(g^2 \nabla^2 \widehat{\Phi}\right)
-\end{array} \quad \text { s.t. } \Phi(0, \cdot) \widehat{\Phi}(0, \cdot)=\mu_0, \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1\right
-\end{equation}
+\begin{align} \label{eq:sb_optimality_gen}
+& \frac{\partial \Phi}{\partial t}=-\nabla \Phi^{\top} f- \frac{1}{2}\sigma^2 g^2 \Delta \Phi \quad \quad \text { s.t. } &\Phi(0, \cdot) \widehat{\Phi}(0,  \cdot)=\mu_0, \\
+\nonumber & \frac{\partial \widehat{\Phi}}{\partial t}=-\nabla \cdot(\widehat{\Phi} f)+\frac{1}{2}\sigma^2 g^2 \Delta \widehat{\Phi} \quad &  \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1
+\end{align}
 with the optimal control $v(t, X_t)= \sigma^2 g(t) \nabla \log \Phi\left(t, X_t\right)$.
 The solution in \eqref{eq:sb_optimality_gen} can be expressed through two coupled SDEs of the form \citep{leonard2013survey}
 \begin{align}
-\label{eq:sb_forward} \mathrm{d} X_t=\left[f+g^2 \nabla \log \Phi\left(t, X_t\right)\right] \mathrm{d} t+g \mathrm{~d} \mathbb{W}_t, \quad X_0 \sim \mu_0, \\
-\label{eq:sb_backward} \mathrm{d} X_t=\left[f-g^2 \nabla \log \widehat{\Phi}\left(t, X_t\right)\right] \mathrm{d} t+g \mathrm{~d} \mathbb{W}_t, \quad X_T \sim \mu_T,
+\label{eq:sb_forward} 
+& \mathrm{d} X_t=\left[f+g^2 \nabla \log \Phi\left(t, X_t\right)\right] \mathrm{d} t+g \mathrm{~d} \mathbb{W}_t, \quad & X_0 \sim \mu_0, \\
+\label{eq:sb_backward}
+& \mathrm{d} X_t=\left[f-g^2 \nabla \log \widehat{\Phi}\left(t, X_t\right)\right] \mathrm{d} t+g \mathrm{~d} \mathbb{W}_t, \quad & X_T \sim \mu_T,
 \end{align}
-where $T = 1$, $\sigma^2 = 0$, and $\nabla \log \Phi\left(t, X_t\right)\right$ and $\nabla \log \widehat{\Phi}\left(t, X_t\right)\right$ are the optimal forward and backward drifts for the \acrlong{SB}.
+where $T = 1$, $\sigma = 1$, and $\nabla \log \Phi\left(t, X_t\right)$ and $\nabla \log \widehat{\Phi}\left(t, X_t\right)$ are the optimal forward and backward drifts for the \acrlong{SB}.
 
-Interestingly, the underlying SDEs  \eqref{eq:sb_control_constraint_gen} coincides with the dynamic systems considered in score-based generative models \citep{song2020score}, an emerging generative model class that has achieved remarkable results in synthesizing high-fidelity data \citep{song2019generative, kong2020diffwave}.
+\looseness -1 Interestingly, the underlying SDEs  \eqref{eq:sb_control_constraint_gen} coincides with the dynamic systems considered in score-based generative models \citep{song2020score}, an emerging generative model class that has achieved remarkable results in synthesizing high-fidelity data \citep{song2019generative, kong2020diffwave}.
 It also represents a key connection that has recently fueled the development of \acrlongpl{DSB} \citep{de2021diffusion, chen2021stochastic, bunne2022recovering, liu2022deep}, and will be subject of \cref{cha:neural_sde}.
 Compared to classical diffusion-based generative models \citep{daniels2021score, song2020score}, these algorithms allow interpolation between complex distributions. Extended to the Riemannian geometry \citep{thornton2022riemannian, de2022riemannian}, it has found applications in molecular dynamics \citep{holdijk2022path, somnath2023aligned}, and cell differentiation processes \citep{vargas2021solving, bunne2022recovering, tong2023conditional}.

@@ -5,6 +5,16 @@
   Living matter evades the decay to equilibrium.}%
 \vskip 1em
 
+\verpar{Contributions}{
+Most of the material in this chapter has been already published in the following conference proceedings:
+\begin{itemize}
+	\item[] Charlotte Bunne, Ya-Ping Hsieh, Marco Cuturi, and Andreas Krause. The Schr{\"o}dinger Bridge between Gaussian Measures has a Closed Form. In \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2023.
+	\item[] Vignesh Ram Somnath, Matteo Pariset, Ya-Ping Hsieh, Maria Rodriguez Martinez, Andreas Krause, and Charlotte Bunne. Aligned Diffusion Schr{\"o}dinger Bridges. In \textit{Conference on Uncertainty in Artificial Intelligence (UAI)}, 2023.
+	\vspace{-9pt}
+\end{itemize}
+}
+
+...
 
 \section{Diffusion Schr\"odinger Bridges}
 \label{sec:background_dsb}
@@ -30,7 +40,7 @@ where $\SBfbase_\ctime, \SBbbase_\ctime \from \R^\vdim \to \R^\vdim$ are two tim
 
 
 
-\section{Data-Driven Priors for Diffusion Schr\"odinger Bridges}
+\section{Data-Driven Priors for Diffusion Schr\"odinger Bridges} \label{sec:gsbflow}
 
 The \acrfull{SB} \citep{leonard2013survey, chen2021stochastic}, alternatively known as the \emph{dynamic} entropy-regularized \acrlong{OT} (OT), has recently received significant attention from the machine learning community. In contrast to the classical \emph{static} \acrshort{OT} where one seeks a {coupling} between measures that minimizes the average cost \citep{villani2009optimal,peyre2019computational}, the goal of \acrshortpl{SB} is to find the optimal \emph{stochastic processes} that evolve a given measure into another. As such, \acrshortpl{SB} are particularly suitable for learning complex continuous-time systems, and have been successfully applied to a wide range of applications such as sampling \citep{bernton2019schr, huang2021schrodinger}, generative modeling \citep{chen2021likelihood,de2021diffusion,wang2021deep}, molecular biology \citep{holdijk2022path}, and mean-field games \citep{liu2022deep}. 
 
@@ -220,7 +230,6 @@ This section illustrates the simple geometric intuition that underlies the somew
 
  
 \subsubsection{A Brief Review on Action Minimization Problems}% in Euclidean and Riemannian Settings}
-%\vspace{-8pt}
 \label{sec:actionRd}
 
 Following the connections established in \cref{sec:background_control}, let us consider the following \emph{action minimization} problem with fixed endpoints $\point, \point' \in \R^\vdim$:
@@ -350,7 +359,7 @@ Another crucial fact in our analysis is that $\refsde$ is a \emph{Gaussian proce
 %----------------------------------------------------------------------
 %%% CLOSED-FORM OF GAUSSIAN SB
 %----------------------------------------------------------------------
-\subsubsection{Main Result}%\vspace{-8pt}
+\subsubsection{Main Result}
 \label{sec:GaussianSB-main}
 
 

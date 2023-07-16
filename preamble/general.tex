@@ -95,6 +95,22 @@
           minimum size=0.8\baselineskip] (char) {\figureversion{lining}#1};
   }
 }
+\usetikzlibrary{calc}
+
+% Vertical line
+\newcommand\verpar[2]{
+    \par\vskip1ex
+\noindent\begin{tikzpicture}[
+paragraph/.style = {inner sep=0pt,
+                    text width=\textwidth-\baselineskip}
+                            ]
+\node (p1) [paragraph] {#2 \vspace{1pt}};
+\path ([xshift=-0.75\baselineskip] p1.south west) coordinate (p2)
+            -- node (p3) [sloped] {\color{blue} \footnotesize #1} (p2 |- p1.north);
+\draw[very thick] (p2) -- (p3.west) (p3.east) -- (p2 |- p1.north);
+\end{tikzpicture}
+\vspace{5pt}}
+
 
 % Autoreferences
 \usepackage[hidelinks]{hyperref}

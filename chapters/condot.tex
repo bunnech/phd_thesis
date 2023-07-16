@@ -2,10 +2,17 @@
 \label{cha:condot}
 
 
-\dictum[..., \textit{...} (...)]{%
-  ...}%
+\dictum[Stefan Zweig, \textit{Verwirrung der Gef{\"u}hle} (1927)]{%
+  Auch die Pause geh{\"o}rt zur Musik.}%
 \vskip 1em
 
+\verpar{Contributions}{
+Most of the material in this chapter has been already published in the following conference proceedings:
+\begin{itemize}
+	\item[] Charlotte Bunne, Andreas Krause, and Marco Cuturi. Supervised Training of Conditional Monge Maps. In \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2022.
+	\vspace{-9pt}
+\end{itemize}
+}
 
 A key challenge in the treatment of cancer is to predict the effect of drugs, or a combination thereof, on cells of a particular patient. To achieve that goal, single-cell sequencing can now provide measurements for individual cells, in treated and untreated conditions, but these are, however, not in correspondence.  Given such examples of untreated and treated cells under different drugs, can we predict the effect of new drug combinations?  We develop a general approach motivated by this and related problems, through the lens of {\em optimal transport (OT) theory}, and, in that process, develop tools that might be of interest for other application domains of OT. Given a collection of $N$ pairs of measures $(\mu_i,\nu_i)$ over $\R^d$ (cell measurements), tagged with a context $c_i$ (encoding the treatment), we seek to learn a context-dependent, parameterized transport map $\mathcal{T}_{\theta}$ such that, on training data, that map $\mathcal{T}_{\theta}(c_i):\mathbb{R}^d\rightarrow\mathbb{R}^d$ fits the dataset, in the sense that $\mathcal{T}_{\theta}(c_i) \sharp\mu_i \approx \nu_i$. Additionally, we expect that this parameterized map can generalize to unseen contexts and patients, to predict, given a patient's cells described in $\mu_{\text{new}}$, the effect of applying context $c_{\text{new}}$ on these cells as $\mathcal{T}_{\theta}(c_{\text{new}})\sharp\mu$. \\
 

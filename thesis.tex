@@ -19,6 +19,8 @@
 \usepackage[round, sectionbib]{natbib}
 \usepackage[resetlabels]{multibib}
 \newcites{own}{ }
+\newcites{notthesis}{ }
+\newcites{incthesis}{ }
 
 % Math definitions
 \input{preamble/math}
@@ -65,12 +67,12 @@
 \cleardoublepage%
 \input{chapters/background}
 
-\part{Static Neural Optimal Transport}
+\part{Static Neural Optimal Transport} \label{part:static_not}
 \cleardoublepage%
 \input{chapters/cellot}
 \input{chapters/condot}
 
-\part{Dynamic Neural Optimal Transport}
+\part{Dynamic Neural Optimal Transport} \label{part:dynamic_not}
 \cleardoublepage%
 \input{chapters/jkonet}
 \input{chapters/gsbflow}

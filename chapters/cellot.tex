@@ -6,15 +6,23 @@
   Tout va par degr\'e dans la nature, et rien par saut, et cette regle \`a l'\'egard des changements est une partie de ma loi de la continuit\'e.}%
 \vskip 1em
 
-...
+\verpar{Contributions}{
+Most of the material in this chapter has been already published in the following journal article:
+\begin{itemize}
+	\item[] Charlotte Bunne, Stefan G Stark, Gabriele Gut, Jacobo Sarabia del Castillo, Kjong-Van Lehmann, Lucas Pelkmans, Andreas Krause, and Gunnar R{\"a}tsch. Learning Single-Cell Perturbation Responses using Neural Optimal Transport. \textit{Nature Methods}, 2023.
+	\vspace{-9pt}
+\end{itemize}
+}
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figures/fig_overview_cellot.pdf}
+    % TODO: Change \rho to \mu.
     \caption{\textbf{Overview of the \textsc{CellOT} Model.} \textbf{a.}~Distributions of single cells were measured in either an untreated control state ($\rho_c$) or in one of several perturbed states ($\rho_k, \rho_l, \rho_m,  \ldots$). These distributions lie in a high-dimensional space of profiled features. \textbf{b.}~For a perturbation $k$, we aim to model it with a function $T_k$ that maps untreated cells in $\rho_c$ to their treated counterparts in $\rho_k$. \textbf{c.}~Lacking paired measurements, we assume that the perturbation transforms $\rho_c$ into $\rho_k$ under a principle of minimal effort. In particular, we learn $T_k$ using optimal transport theory to directly estimate this distributional mapping as the gradient of the optimal transport dual potential $\nabla g_\theta$.
     \textbf{d.}~OT maps are learned for all perturbations independently. Because these maps are fully parameterized, \textsc{CellOT} can be trained, for example, on a set of initially provided samples to then make predictions on untreated cells originating from new, previously unseen samples.}
     \label{fig:overview_cellot}
 \end{figure}
+
 
 Characterizing and modeling perturbation responses at the single-cell level from non-time-resolved data remains one of biology's grand challenges. It finds applications in predicting cellular reactions to environmental stress or a patient's response to drug treatments. Accurate inference of perturbation responses at the single cell level allows us, for instance, to understand how and why individual tumor cells evade cancer therapies~\citep{frangieh2021multimodal}. More generally, it deepens the mechanistic understanding of the molecular machinery that determines the respective responses to perturbations. Single-cell responses to genetic or chemical perturbations are  highly heterogeneous~\citep{liberali2014hierarchical} due to multiple factors, including pre-existing variability in the abundance and subcellular organization of mRNA and proteins~\citep{battich2013image, battich2015control, gut2018multiplexed, shaffer2017rare}, cellular states~\citep{kramer2019cellular}, and the cellular microenvironment~\citep{snijder2009population}. To effectively predict the drug response of each cell in a  population, whether derived from tissue culture or as primary cells from a patient biopsy, it is thus crucial to incorporate this heterogeneous multivariate subpopulation structure into the analysis.
 
