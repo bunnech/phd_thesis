@@ -24,7 +24,7 @@ Similarly, most single-cell technologies require the physical dissection and dis
 These issues are well known challenges, and many technologies have tried to circumvent such destructive steps, notably through spatial-omics. The scalability of such methods does, however, lag behind that of single-cell sequencing, which calls for algorithmic solutions to this problem.
 
 
-Our goal in this review is to highlight that the common thread in all of these problems is the recurring need to realign datasets, and that such problems can be solved using optimal transport (OT) theory \citep{villani2021topics, santambrogio2015optimal}.
+Our goal in this review is to highlight that the common thread in all of these problems is the recurring need to realign datasets, and that such problems can be solved using \acrlong{OT} theory \citep{villani2021topics, santambrogio2015optimal}.
 OT theory, a major research area in pure mathematics in recent decades (with Fields Medals awarded to \citeauthor{villani2021topics} in 2010 and \citeauthor{figalli2017monge} in 2018), has emerged as a contender to fill in that gap \textit{in silico}. OT is best described as a toolbox that allows reconstructing how a \emph{source} population (represented as one probability distribution) can morph efficiently into another \emph{target} population, given only source and target samples. Taking for the source distribution a sample of cells pre-stimuli, and for the target, another sample of cells post-stimuli, OT can reconstruct the unobserved process and provide an informed guess to define a \emph{transport map} that relates these two cell populations. 
 
 \begin{figure}[t]
@@ -41,7 +41,7 @@ Applied to the analysis and modeling of single-cell biology problems, OT has bee
 In this primer, we introduce the mathematical and computational principles of OT, with the goal of facilitating its use by researchers that wish to apply to novel applications. We provide the reader with intuitive explanations of how seemingly unrelated mathematical approaches for analyzing single-cell data can be unified through OT theory, and how that theory has triggered recent advances in deep learning. We provide an overview of the broad range of biological applications, demonstrating the successes of OT in the field, especially within the field of single-cell biology. With its rich properties, astonishing mathematical connections, and its innovative numerical implementations \citep{cuturi2022optimal}, OT makes for an exciting avenue of future work to make novel biological discoveries, infer personalized cancer therapies from single-cell patient samples, and push the boundaries of regenerative medicine.
 
 \section{Contributions}
-
+...
 
 \section{Thesis Organization}
 
@@ -80,6 +80,6 @@ The following publications of the author and collaborators are more broadly rele
 
 \section{Collaborators}
 
-This thesis would not have been possible without my advisors, Andreas Krause and Marco Cuturi, and many of the ideas presented here have been shaped in our meetings. I further enjoyed collaborating with my colleagues on numerous ideas and the results presented and not otherwise cited are by the author and collaborators. In particular, \cref{cha:cellot} contains material of a publication with shared first authorship between the author, Stefan Stark, and Gabriele Gut. Besides Andreas Krause, Kjong-Van Lehmann, Lucas Pelkmans, and Gunnar R\"atsch serve as corresponding authors.
+This thesis would not have been possible without my advisors, Andreas Krause and Marco Cuturi, and many of the ideas presented here have been shaped in our meetings. I further enjoyed collaborating with my colleagues on numerous ideas, and the results presented and not otherwise cited are by the author and collaborators. In particular, \cref{cha:cellot} contains material of a publication with shared first authorship between the author, Stefan Stark, and Gabriele Gut. Besides Andreas Krause, the corresponding authors are Kjong-Van Lehmann, Lucas Pelkmans, and Gunnar R\"atsch.
 \cref{sec:gsbflow} is based on a joint first authorship project with Ya-Ping Hsieh who contributed the theoretical analysis of that work. Lastly, \cref{sec:sb_align} contains material from a publication where Vignesh Ram Somnath and Matteo Pariset share the first authorship while the author serves as corresponding author.
 

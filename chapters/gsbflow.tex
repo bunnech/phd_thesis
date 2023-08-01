@@ -15,6 +15,7 @@ Most of the material in this chapter has been already published in the following
 }
 
 ...
+ To draw parallels to \cref{cha:bio_background}, $\mu_0$ and $\mu_1$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\distinit = \mu_0$ to $\distend = \mu_1$ might provide us with an understanding on how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
 
 \section{Diffusion Schr\"odinger Bridges}
 \label{sec:background_dsb}
@@ -121,7 +122,7 @@ In the literature, \eqref{eq:RegW2Gaussian} is commonly referred to as the \emph
 \label{eq:Coneq}
 \pt\measure = - \Div(\measure \vect),
 \end{equation}
-where $\left(\Div \vect\right)(\point) \coloneqq \sum_{i=1}^d \frac{\partial}{\partial \point_i}v_t^{i}(\point)$ denotes the divergence operator with respect to the $\point$ variable. It can be shown that, if $\rho^\star_t$ is the optimal curve for \eqref{eq:BBGaussian}, then the joint distribution of the end marginals $(\rho^\star_0, \rho_1^\star)$ coincides with \eqref{eq:StaticGaussianSB-sol}, hence the interpretation of $\rho_t^\star$ as the optimal \emph{trajectory} in the space of measures  \citep{chen2016relation, gentil2017analogy, chen2021stochastic, gentil2020dynamical}.
+where $\left(\Div \vect\right)(\point) \coloneqq \sum_{i=1}^d \frac{\partial}{\partial \point_i}v_t^{i}(\point)$ denotes the divergence operator with respect to the $\point$ variable. It can be shown that, if $\measure^\star$ is the optimal curve for \eqref{eq:BBGaussian}, then the joint distribution of the end marginals $(\measurebase^\star_0, \measurebase_1^\star)$ coincides with \eqref{eq:StaticGaussianSB-sol}, hence the interpretation of $\measure^\star$ as the optimal \emph{trajectory} in the space of measures  \citep{chen2016relation, gentil2017analogy, chen2021stochastic, gentil2020dynamical}.
 
 To our knowledge, the only work that has partially addressed the closed-form solution of \eqref{eq:BBGaussian} is \citet{mallasto2021entropy}, whose results are nonetheless insufficient to cover important applications such as generative modeling. In \cref{sec:results_gsbflow}, we will derive a vast generalization of the results in \citet{mallasto2021entropy} and provide a detailed comparison in \crefrange{sec:overview_gsbflow}{sec:mechanics_gsbflow}.
 

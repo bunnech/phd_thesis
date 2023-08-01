@@ -10,6 +10,11 @@ build/
 *.slo
 *.toc
 *.xdy
+*.xref
+*.out.ps
+*.dvi
+*.4tc
+*.4ct
 
 # Emacs junk
 auto/

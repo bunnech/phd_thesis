@@ -10,8 +10,11 @@
 
 \chapter*{Abstract}
 
-English abstract here.
-
+Cell populations are almost always heterogeneous in function and fate. To understand the plasticity of cells and their responses to molecular perturbations, such as drugs or developmental signals, it is vital to recover the underlying population dynamics and fate decisions of single cells. However, measuring features of single cells requires destroying them. As a result, a cell population can only be monitored with sequential snapshots, obtained by sampling a few particles that are sacrificed in exchange for measurements.
+In order to reconstruct individual cell fate trajectories, as well as the overall dynamics, one needs to re-align these \emph{unpaired} snapshots, in order to guess for each cell what it might have become at the next step.
+Optimal transport theory can provide such maps, and reconstruct these incremental changes in cell states over time. %by minimizing an overall alignment cost between molecular profiles.
+This celebrated theory provides the mathematical link that unifies the several contributions to model cellular dynamics that we present here: Inference from data of an energy potential best able to describe the evolution of differentiation processes \citep{bunne2022proximal}, building on the Jordan-Kinderlehrer-Otto (JKO) flow; recovery of differential equations modeling the stochastic transitions between cell fates in developmental processes \citep{bunne2022recovering}; as well as zero-sum game theory models parameterizing distribution shifts upon interventions, which we employ to model heterogeneous responses of tumor cells to cancer drugs \citep{bunne2021learning}.
+Recently integrated into the JAX library \texttt{OTT} \citep{cuturi2022optimal}, these models extend the set of existing tools to handle cell dynamics with robust and flexible methods, and make for an exciting avenue of future work on inferring personalized cancer therapies from single-cell patient samples.
 \endgroup
 
 \cleardoublepage%
