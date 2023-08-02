@@ -1,39 +1,3 @@
-\chapter{Dynamical Processes in Biomedicine}
-\label{cha:bio_background}
-
-\dictum[Rosalind Franklin, \textit{Report} (1952)]{%
-  The results suggest a helical structure (which must be very closely packed) containing probably 2, 3 or 4 coaxial nucleic acid chains per helical unit and having the phosphate groups near the outside.}%
-\vskip 1em
-
-
-Small molecule drugs can have profound effects on the cellular phenotype by, for instance, altering signaling cascades. Most of these effects depend on the context in which the perturbation occurs. Given the heterogeneity among single cells in cell populations and tissues, predicting cellular responses requires understanding the rules by which context shapes genome activity and its response to drugs. High-dimensional single-cell data measured via single-cell genomics or multiplexed imaging technologies can provide this contextual information but only return  unpaired or unaligned observations of cell populations. Here, \textsc{CellOT} allows us to utilize such unpaired data and enables learning cell state transitions upon perturbation.
-
-
-Recent high-throughput methods provide great insights on how cell populations respond to various perturbations on the level of individual cells. The provided data, however, is non-time-resolved and unaligned. 
-Hence, snapshots taken of biological samples before and after perturbations do not provide information on single-cell trajectories.
-Perturbations might include the application of drugs affecting molecular functions in cells, or changes in the cellular environment causing shifts in biological signaling, thus impacting cells and their states in various ways.
-
-
-\begin{figure}[t]
-  \includegraphics[width=\textwidth]{figures/fig_bio_problems.pdf}
-  \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} ... \textbf{b.} ...}	
-  \label{fig:bio_problems}
-\end{figure}
-
-\looseness -1 With increasing data availability, a diverse set of approaches has been proposed to model cellular perturbation responses, ranging from mechanistic to current deep learning-based approaches.
-Mechanistic models \citep{yuan2021cellbox, frohlich2018efficient} define mathematical models of molecular interactions to model the effect of perturbation.
-These methods, however, are restricted to simpler and well-understood systems as they do not capture highly nonlinear perturbation responses of a heterogeneous cell population. Further, these methods are limited in their applicability as they do not scale to genome-wide measurements \citep{snijder2012single, berchtold2018systems, green2016systems}.
-Linear models \citep{dixit2016perturb, kamimoto2020celloracle}, on the other hand,  predict changes in cellular gene expression levels using regularized regression methods, where the model predicts a gene's expression level as a linear combination of effects of different perturbations, fitting the regulatory effect of each perturbation on each gene.
-Due to assuming only linear relationships of individual genes in response to a perturbation, these methods are similarly  unable to capture complex and inhomogeneous population responses upon perturbation.
-\citet{heydari2022iqcell}, on the other hand, predict perturbation responses through inferring the underlying gene regulatory network. Prediction of the perturbed states is achieved through a dynamic simulation of those logical gene networks. Thus, the predicted perturbed states are restricted to only the selected set of genes used to build the corresponding regulatory network.
-Lastly, current state-of-the-art methods \citep{lopez2018scvi, lotfollahi2019scgen, yang2020predicting} aim to learn low-dimensional representations of inputs using autoencoders such that perturbation effects can be applied with simple linear interpolations in representation space. Thus, they predict perturbation responses via linear shifts in a learned low-dimensional latent space. These models are attractive because they are fully parameterized, enabling us to make predictions on unseen cells. By tackling the task of perturbation response predictions via the even more challenging task of learning a meaningful low-dimensional embedding, these methods can be expected to, at best, only perform moderately well. Therefore, we sought to learn a fully parameterized perturbation model that robustly describes the cellular dynamics upon intervention while accounting for underlying variability across samples.
-
-\acrfull{DNA}
-\acrfull{RNA}
-\acrfull{sc}
-\acrfull{RNA-seq}
-
-
 \chapter{Optimal Transport for Dynamical Systems}
 \label{cha:theory_background}
 
@@ -315,9 +279,6 @@ When studying dynamic processes in biomedicine, however, phenomena such as cellu
 Instead, many phenomenons in biology and physics can be modeled through an energy functional $J$ such that the minimization of $J$ describes the observed dynamics of the studied system ---a concept known as gradient flows.
 At their core, gradient flows provide a powerful framework for understanding the evolution of functions or systems towards an optimal state through the direction of steepest descent of a function $J$. 
 More concretely, gradient flows capture the intuitive idea of objects moving in a direction that decreases their energy, seeking a state of minimum potential or maximum stability. 
-In developmental biology, for example, $J$ might represent an epigenetic landscape: Drawing from the metaphor of \citeauthor{waddington1957strategy}'s landscape, developmental biology commonly visualizes cellular developmental pathways as marbles rolling down a complex landscape $J$ \citep{waddington1957strategy}, e.g., transforming cells from a pluripotent states (capable of becoming any cell type) to a highly specialized ones \citep{schiebinger2021reconstructing}. 
-% Each valley within this landscape represents a specific fate a cell might take, with the depth of the valley signifying the stability of the differentiated state.
-% Paths on the developmental manifold then describe the evolution of a time-varying probability distribution on a high-dimensional expression space, representing the continuous changes in cellular differentiation profiles over time.
 In the following, we will study gradient flows in the Euclidean setting before considering generalizations to arbitrary measures that allow studying the evolution of populations over time.
 
 % It is natural to derive various partial differential equations (PDE's) as gradient flows of certain energy functionals.

@@ -32,7 +32,7 @@ Our framework is applied to three scenarios: Parameterization of transport throu
 
 \begin{figure*}
     \centering
-    \includegraphics[width= \textwidth]{figures/fig_overview.pdf}
+    \includegraphics[width= \textwidth]{figures/fig_overview_condot.pdf}
     \caption{The evolution from a source $\mu$ to a target measure $\nu$ can depend on context variables $\cont$ of various nature. This comprises \textbf{a.} scalars such as time or dosage $t$ which determine the magnitude of an optimal transport, \textbf{b.} flow of measures into another one based on additional information (possibly different between $\mu$ and $\nu$) stored in vectors $\mathbf{c}_{l,l^\prime}$, or \textbf{c.} discrete and complex actions $a_i$, possibly in combination $a_{ij}$. We seek a unified framework to produce a map $\mathcal{T}_\theta(\cont)$ from any type of condition $\cont$. \vspace{-15pt}}
     \label{fig:overview}
 \end{figure*}
@@ -224,7 +224,7 @@ Parameters of all three modules are jointly trained based on the derived optimal
 \end{figure*}
 
 \vspace{-5pt}
-\section{Empirical Evaluation} \label{sec:condot_evaluation}
+\section{Empirical Evaluation} \label{sec:evaluation_condot}
 \vspace{-5pt}
 
 \looseness -1 Biological cells undergo changes in their molecular profiles upon chemical, genetic, or mechanical perturbations. These changes can be measured using recent technological advancements in high-resolution multivariate single-cell biology. Measuring single cells in their unperturbed or perturbed state requires, however, to destroy them, resulting in populations $\mu$ and $\nu$ that are unpaired. The relevance of OT to that comes from its ability to resolve such ambiguities through OT maps, 

@@ -24,6 +24,7 @@
 
 % Math definitions
 \input{preamble/math}
+\input{preamble/acronyms}
 
 \begin{document}
 \frenchspacing
@@ -58,10 +59,11 @@
 \renewcommand{\sectionmark}[1]{\markright{\thesection\enspace\spacedlowsmallcaps{#1}}}
 
 % Notation and Acronyms
-\input{preamble/acronym}
+\input{preamble/notation}
+\newpage
 
 % Mainmatter
-\cleardoublepage\pagenumbering{arabic}%
+\pagenumbering{arabic}%
 \input{chapters/introduction}
 
 \cleardoublepage%
