@@ -67,7 +67,7 @@ While setting $\varepsilon>0$ yields a faster and differentiable proxy to approx
 
 The Kantorovich formulation \eqref{eq:kantorovich} is a \emph{convex} problem on $\gP(\mathcal{X} \times \mathcal{Y})$ and thus admits a dual formulation introduced by \citet{kantorovich1942transfer}, i.e., a constrained concave maximization problem defined as
 \begin{equation} \label{eq:kantorovich-dual}
-    W(\mu, \nu)=\sup _{(f, g) \in \Phi_{c}} \int f \mathrm{~d} \mu+\int g \mathrm{~d} v,
+    W(\mu, \nu)\defeq\sup _{(f, g) \in \Phi_{c}} \int f \mathrm{~d} \mu+\int g \mathrm{~d} v,
 \end{equation}
 \looseness -1 where the set of admissible dual potentials is given by $\Phi_c \defeq \{(f, g) \in L^{1}(\mu) \times L^{1}(\nu): f(x)+g(y) \leq c(x,y)$, $\forall(x, y) d\mu \otimes d\nu \text{ a.e.}\}$.
 $(f, g)$ is thus a pair of continuous functions, often referred to as \emph{Kantorovich potentials}.
@@ -151,7 +151,6 @@ Therefore, after inversion, we have $y_0=\nabla_1 c(x, \cdot)^{-1} \circ \nabla 
 \begin{equation*}
 		T^{\star}(x)=x-\nabla h^* \circ \nabla f^{\star}(x)\,.
 	\end{equation*}
-
 Applying this result to $c(x, y) = h(x-y)$, we get 
 \begin{align*}
   \nabla_1 c(x, y) & =\nabla h(x-y) \\
@@ -208,8 +207,8 @@ Further, it presents an elegant way to solve the Monge problem in a geometric se
 
 \section{Dynamic Optimal Transport} \label{sec:background_ot_dynamic}
 
+% TODO: Update figure with slide.
 \begin{figure}[t]
-  % TODO: Update figure with slide.
   \includegraphics[width=\textwidth]{figures/fig_dynamic_ot_background.pdf}
   \caption{\looseness -1 \textbf{Overview on different formulations of the dynamic OT problem.} \textbf{a.} We can model the evolution of a measure $\mu_t$ over time as minimal path on a time-varying vector field $v(t, \cdot)$ or according to the gradient of a convex potential $\nabla \varphi$. \textbf{b.} Alternatively, taking a stochastic perspective, we can study the dynamic formulation of the entropy-regularized \acrshort{OT} problem \eqref{eq:ot-entropy} and find a stochastic process $\mathbb{P}_t$ that describes the particle dynamics from $\mu_0$ to $\mu_1$.}	
   \label{fig:dynamic_ot_background}
@@ -414,7 +413,7 @@ For an extended discussion, see \citet{dai1991stochastic, mikami2000dynamical, m
 Interestingly, \cref{eq:sb_control} first emerged in a very different setting.
 In his work "{\"U}ber die Umkehrung der Naturgesetze" published in \citeyear{schrodinger1931umkehrung}, \citeauthor{schrodinger1931umkehrung} studied the most likely random evolution between two marginals, i.e., two point clouds of diffusive particles.
 His Gedankenexperiment is best illustrated through a population of independent and identically distributed particles in $\mathbb{R}^d$ observed at $t=0$ as the empirical distribution $\mu_0$, and again at $t=1$ as $\mu_1$.
-To describe the mostly likely dynamics of these particles over time, we aim at finding the stochastic process $\Pmargin$ on $[0,\horizon]$ such that $\Pinit \simeq \mu_0, \Pend \simeq \mu_1$.
+To describe the mostly likely dynamics of these particles over time, we aim at finding the stochastic process $\Pmargin$ on $[0,\horizon]$ such that $\Pinit = \mu_0, \Pend = \mu_1$.
 
 Provided with some prior knowledge of a reference process $\mathbb{Q}_t$, e.g., that the underlying dynamics follow a Brownian motion, we aim to identify the stochastic process $\mathbb{P}_t$ that best describes the particles evolution, i.e., minimizes the overall relative entropy
 \begin{equation}

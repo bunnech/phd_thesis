@@ -62,7 +62,7 @@ Despite of these impressive achievements, a common limitation of the existing wo
     \label{fig:overview_gsbflow}
 \end{figure}
 
-The goal of our paper is to continue this pursuit of closed-form solutions and thereby extending these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see Fig.~\ref{fig:overview_gsbflow}. To this end, we make the following contributions: \vspace{8pt}
+The goal of this section is to continue this pursuit of closed-form solutions and thereby extending these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see Fig.~\ref{fig:overview_gsbflow}. To this end, we make the following contributions: \vspace{8pt}
 %As a central contribution, we derive a set of new expressions for \acrfullp{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures, that covers a wide range of applications. Furthermore, our analysis reveals a
 \begin{enumerate}[leftmargin=.4cm,itemsep=.0cm,topsep=.0cm]
 \item As our central result, we derive the closed-form expressions for \acrfullpl{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures. This is a challenging task for which all existing techniques fail, and thus we need to resort to a number of new ideas from entropic \acrshort{OT}, Riemannian geometry, and generator theory; see \cref{sec:overview_gsbflow}.
@@ -78,7 +78,7 @@ The goal of our paper is to continue this pursuit of closed-form solutions and t
 \subsection{Preliminaries on Gaussian Optimal Transport}
 \label{sec:prelim_gsbflow}
 
-Throughout this paper, let $\xi \sim \Ncal(\mu, \Sigma)$ and $\xi' \sim \Ncal(\mu', \Sigma')$ denote two given Gaussian random variables. By abusing the notation, we will continue to denote the measures of these Gaussians by $\xi$ and $\xi'$, respectively. We will also denote by $\Pi(\xi,\xi')$ the set of all their couplings. 
+Throughout this chapter, let $\xi \sim \Ncal(\mu, \Sigma)$ and $\xi' \sim \Ncal(\mu', \Sigma')$ denote two given Gaussian random variables. By abusing the notation, we will continue to denote the measures of these Gaussians by $\xi$ and $\xi'$, respectively. We will also denote by $\Pi(\xi,\xi')$ the set of all their couplings. 
 
 
 \subsubsection{Static Gaussian Optimal Transport}
@@ -131,7 +131,7 @@ To our knowledge, the only work that has partially addressed the closed-form sol
 \label{sec:overview_gsbflow}
 
 
-The purpose of this section is to introduce the core objectives in our paper, the \acrlongpl{GSB}, and establish their connection to the Gaussian \acrshort{OT} problems in \cref{sec:prelim_gsbflow}. To help the reader navigate our somewhat technical proofs in \crefrange{sec:mechanics_gsbflow}{sec:results_gsbflow},  we illustrate in \cref{sec:tere} the high-level challenges as well as our new techniques for solving \acrlongpl{GSB}.
+The purpose of this section is to introduce the core objectives of this part of the thesis, i.e., the \acrlongpl{GSB}, and establish their connection to the Gaussian \acrshort{OT} problems in \cref{sec:prelim_gsbflow}. To help the reader navigate our somewhat technical proofs in \crefrange{sec:mechanics_gsbflow}{sec:results_gsbflow},  we illustrate in \cref{sec:tere} the high-level challenges as well as our new techniques for solving \acrlongpl{GSB}.
 
 \subsubsection{Schr\"odinger Bridges as Dynamic Entropy-Regularized Optimal Transport}
 
@@ -146,7 +146,7 @@ Let $\nu, \nu'$ be two given measures and let $\refpro$ be an arbitrary stochast
 
 In practice, $\nu$ and $\nu'$ typically arise as the (empirical) \emph{marginal} distributions of a complicated continuous-time dynamics observed at the starting and end times, and $\refpro$ is a ``prior process'' representing our belief of the dynamics before observing any data. The solution $\Pstar$ to \eqref{eq:SB} is thus interpreted as the best dynamics that conforms to the prior belief $\refpro$ while respecting the data marginals ($\Pstar[0] = \nu, \Pstar[\horizon] = \nu'$). 
 
-In this paper, we will consider a general class of $\refpro$'s that includes most existing processes in the machine learning applications of \acrshortpl{SB}. Specifically, with some initial condition $\refsde[0]$, we will take $\refpro$ to be the measure of the linear \acrfull{SDE}:
+We will consider a general class of $\refpro$'s that includes most existing processes in the machine learning applications of \acrshortpl{SB}. Specifically, with some initial condition $\refsde[0]$, we will take $\refpro$ to be the measure of the linear \acrfull{SDE}:
 % To facilitate the numerical solutions of \eqref{eq:SB}, $\refpro$ is typically chosen so that conditional distributions given initial points admit a simple expression. To this end, we will consider the following general class of \acrfullp{SDE} which incorporates, to our knowledge, all the existing processes in the literature: With some initial condition $\refsde[0]$, take $\refpro$ to be the measure of
 \begin{equation}
 \label{eq:linearsde}
@@ -178,7 +178,7 @@ The proof of \cref{thm:gsbtobb}, which we defer to \cref{app:gsbtobb}, is a stra
 \subsubsection{The Gaussian Schr\"odinger Bridge Problem}
 \label{sec:tere}
 
-The central goal of our paper is to derive the closed-form solution of \acrshortpl{SB} when the marginal constraints are Gaussians $\xi \sim \Ncal(\mu, \Sigma),\ \xi' \sim \Ncal(\mu', \Sigma')$. Namely, we are interested in the following class of the \acrshortpl{SB}, termed \acrlongpl{GSB}:% refers to the KL-minimization problem:
+The central goal of this section is to derive the closed-form solution of \acrshortpl{SB} when the marginal constraints are Gaussians $\xi \sim \Ncal(\mu, \Sigma),\ \xi' \sim \Ncal(\mu', \Sigma')$. Namely, we are interested in the following class of the \acrshortpl{SB}, termed \acrlongpl{GSB}:% refers to the KL-minimization problem:
 \begin{equation}
 \label{eq:GSB}
 \tag{GSB}
@@ -402,7 +402,7 @@ $\shift$-\acrshort{BDT}   & \makecell{$\scriptstyle\drift \equiv 0$\\$\scriptsty
 } 
 
 
-We now present the main result of our paper. With the important application of diffusion-based models in mind, we will not only derive solution curves as in \eqref{eq:solMain} but also their \acrshort{SDE} representations.
+We now present the main result of this section. With the important application of diffusion-based models in mind, we will not only derive solution curves as in \eqref{eq:solMain} but also their \acrshort{SDE} representations.
 
 Let $\xi= \Ncal(\m,\covar)$ and $\xi' = \Ncal(\malt,\covaralt)$ be two arbitrary Gaussian distributions in \eqref{eq:GSB}, and let $\D, \Cstar$ be as defined in \eqref{eq:Cstar}.
 %Set $D_\sigma \defeq \parens{ 4\covar^{\frac{1}{2}} \covaralt \covar^{\frac{1}{2}} +  \sigma^4\eye  }^{\frac{1}{2}}$ and $C_\sigma \defeq \frac{1}{2}\parens{\covar^{\frac{1}{2}} D_\sigma \covar^{-\frac{1}{2}} - \sigma^2\eye}$.

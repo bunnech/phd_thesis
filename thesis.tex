@@ -1,13 +1,13 @@
 \RequirePackage{fix-cm}
 \documentclass[
     twoside, openright, titlepage, numbers=noenddot,
-    cleardoublepage=empty,
+    cleardoublepage=empty, dottedtoc,
     headings=optiontoheadandtoc,
     abstract=false,
     BCOR=5.5mm, paper=a5, fontsize=10pt, % A5 soft cover
-    %BCOR=5.5mm, paper=17cm:24cm, fontsize=10pt, % 17 cm x 24 cm
-    %BCOR=5mm, paper=15.59cm:23.39cm, fontsize=10pt, % Royal soft cover
-    %BCOR=0mm, paper=15.24cm:22.86cm, fontsize=10pt, % US-Trade hard cover
+    % BCOR=5.5mm, paper=17cm:24cm, fontsize=10pt, % 17 cm x 24 cm
+    % BCOR=5mm, paper=15.59cm:23.39cm, fontsize=10pt, % Royal soft cover
+    % BCOR=0mm, paper=15.24cm:22.86cm, fontsize=10pt, % US-Trade hard cover
 ]{scrreprt}
 \usepackage{etex}
 \reserveinserts{10}
@@ -19,8 +19,6 @@
 \usepackage[round, sectionbib]{natbib}
 \usepackage[resetlabels]{multibib}
 \newcites{own}{ }
-\newcites{notthesis}{ }
-\newcites{incthesis}{ }
 
 % Math definitions
 \input{preamble/math}
@@ -60,6 +58,7 @@
 
 % Notation and Acronyms
 \input{preamble/notation}
+\newpage
 \cleardoublepage%
 
 % Mainmatter

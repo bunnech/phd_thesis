@@ -25,16 +25,14 @@ Our framework can be also interpreted as a hypernetwork \citep{ha2016hypernetwor
 Because both \acrshortpl{ICNN} ---and to a greater extent \acrshortpl{PICNN}--- are notoriously difficult to train~\citep{richter2021input,korotin2021wasserstein,korotin2021neural}, we use closed-form solutions between Gaussian approximations to derive relevant parameter initializations for (P)ICNNs:
 These choices ensure that, \textit{upon initialization}, the gradient of the (P)ICNNs mimics the affine Monge map obtained in closed form between Gaussian approximations of measures $\mu_i,\nu_i$~\citep{gelbrich1990formula}.
 %
-Our framework is applied to three scenarios: Parameterization of transport through a real variable (time or drug dosage), through an auxiliary informative variable (cell covariates) and through action variables (genetic perturbations in combination) (see Fig.~\ref{fig:overview}). Our results demonstrate the ability of our architectures to better capture on out-of-sample observations the effects of these variables in various settings, even when considering never-seen, composite context labels. These results suggest potential applications of conditional OT to model personalized medicine outcomes, or to guide novel experiments, where OT could serve as a predictor for never tested context labels.
-
-\section{...}
+Our framework is applied to three scenarios: Parameterization of transport through a real variable (time or drug dosage), through an auxiliary informative variable (cell covariates) and through action variables (genetic perturbations in combination) (see Fig.~\ref{fig:overview_condot}). Our results demonstrate the ability of our architectures to better capture on out-of-sample observations the effects of these variables in various settings, even when considering never-seen, composite context labels. These results suggest potential applications of conditional OT to model personalized medicine outcomes, or to guide novel experiments, where OT could serve as a predictor for never tested context labels.
 
 
 \begin{figure*}
     \centering
     \includegraphics[width= \textwidth]{figures/fig_overview_condot.pdf}
     \caption{The evolution from a source $\mu$ to a target measure $\nu$ can depend on context variables $\cont$ of various nature. This comprises \textbf{a.} scalars such as time or dosage $t$ which determine the magnitude of an optimal transport, \textbf{b.} flow of measures into another one based on additional information (possibly different between $\mu$ and $\nu$) stored in vectors $\mathbf{c}_{l,l^\prime}$, or \textbf{c.} discrete and complex actions $a_i$, possibly in combination $a_{ij}$. We seek a unified framework to produce a map $\mathcal{T}_\theta(\cont)$ from any type of condition $\cont$. \vspace{-15pt}}
-    \label{fig:overview}
+    \label{fig:overview_condot}
 \end{figure*}
 
 
@@ -69,11 +67,11 @@ where the PICNN is initialized as $u_{0}=\cont, z_0 = \mathbf{0}$, $\circ$ denot
 $$\theta = \{ V_{k}, W_{k}^{z}, W_{k}^{z u}, W_{k}^{x}, W_{k}^{x u} , W_{k}^{u}, v_{k}, b_{k}^{z}, b_{k}^{x}, b_{k}^u \}.$$ 
 Similar to ICNNs, the convexity w.r.t. input variable $x$ is guaranteed as long as activation functions $\sigma_i$ are convex and non-decreasing, and the weight matrices $W_{k}^{z}$ have non-negative entries. We parameterize this by storing them as element-wise applications of softplus operations on precursor matrices of the same size, or, alternatively, by regularizing their negative part. Finally, much like ICNNs, all matrices at the $K-1$ layer are line vectors, and their biases scalars.
 
-Such networks were proposed by \citet[Eq. 3]{amos2017input} to address a problem that is somewhat symmetric to ours: Their inputs were labeled as $(y, x)$, where $y$ is a label vector, typically much smaller than that of vector $x$. Their PICNN is convex w.r.t.~$y$, in order to easily recover, given a datapoint $x$ (e.g., an image) the best label $y$ that corresponds to $x$ using gradient descent as a subroutine, i.e. $y^\star(x) = \arg\min_y \text{PICNN}_\theta(x,y)$. PICNN were therefore originally proposed to learn a parameterized, implicit classification layer, amortized over samples, whose motivation rests on the property that it is convex w.r.t. label variable $y$. By contrast, we use PICNNs that are convex w.r.t. data points $x$. In addition to that swap, we do not use the convexity of the PICNN to define an implicit layer (or to carry out gradient descent). Indeed, it does not make sense in our setting to minimize $\varphi_\theta(x,\cont)$ as a function of $x$, since $x$ is an observation. Instead, our work rests on the property that $\nabla_1 \varphi_\theta(x,\cont)$ describes a parameterized family of OT maps. We note that PICNNs were considered within the context of OT in \cite[Appendix B]{fan2021scalable}. In that work, PICNN provide an elegant reformulation for neural Wasserstein barycenters. \citet{fan2021scalable} considered a context vector $c$ that was restricted to be a small vector of probabilities.
+Such networks were proposed by \citet[Eq. 3]{amos2017input} to address a problem that is somewhat symmetric to ours: Their inputs were labeled as $(y, x)$, where $y$ is a label vector, typically much smaller than that of vector $x$. Their PICNN is convex w.r.t.~$y$, in order to easily recover, given a datapoint $x$ (e.g., an image) the best label $y$ that corresponds to $x$ using gradient descent as a subroutine, i.e. $y^\star(x) = \arg\min_y \text{PICNN}_\theta(x,y)$. PICNN were therefore originally proposed to learn a parameterized, implicit classification layer, amortized over samples, whose motivation rests on the property that it is convex w.r.t. label variable $y$. By contrast, we use PICNNs that are convex w.r.t. data points $x$. In addition to that swap, we do not use the convexity of the PICNN to define an implicit layer (or to carry out gradient descent). Indeed, it does not make sense in our setting to minimize $\varphi_\theta(x,\cont)$ as a function of $x$, since $x$ is an observation. Instead, our proposal rests on the property that $\nabla_1 \varphi_\theta(x,\cont)$ describes a parameterized family of OT maps. We note that PICNNs were considered within the context of OT in \cite[Appendix B]{fan2021scalable}. In that work, PICNN provide an elegant reformulation for neural Wasserstein barycenters. \citet{fan2021scalable} considered a context vector $c$ that was restricted to be a small vector of probabilities.
 
 
 \subsection{Conditional Monge Map Architecture}\label{subsec:combin}
-Using PICNNs as a base module, the \textsc{CondOT} architecture integrates operations on the contexts $\gC$. As seen in Figure~\ref{fig:overview}, context values $\cont$ may take various forms:
+Using PICNNs as a base module, the \textsc{CondOT} architecture integrates operations on the contexts $\gC$. As seen in Figure~\ref{fig:overview_condot}, context values $\cont$ may take various forms:
 \begin{enumerate}[noitemsep,leftmargin=.35cm,topsep=0pt,parsep=0pt,partopsep=0pt]
 \item A scalar $t$ denoting a strength or a temporal effect. For instance, \citeauthor{mccann1997convexity}'s interpolation \eqref{eq:mccann_interpolation} and its time parameterization, $\alpha_{t}=((1-t) \text{Id}+t T)_{\sharp} \alpha_{0}$ \citep{mccann1997convexity} can be interpreted as a trivial conditional OT model that creates, from an OT map $\varphi_\theta$, a set of maps parameterized by $t$, $\mathcal{T}_\theta(t):=x\mapsto\nabla_x \left((1-t)\|x\|^2/2 +t \varphi_\theta(x)\right)$.
 % \textsc{CondOT} can describe consecutive optimal displacements $\alpha_t$ from $t=0$ to any time $t$, but which are not  Wasserstein geodesic.
@@ -84,7 +82,7 @@ Using PICNNs as a base module, the \textsc{CondOT} architecture integrates opera
 To provide a flexible architecture capable of modeling different types of conditions as well as conditions appearing in combinations, the more general \textsc{CondOT} architecture consists of the hypernetwork $\mathcal{T}_\theta$ that is fed a context vector through embedding and combinator modules. This generic architecture provides a one-size fits all approach to integrate all types of contexts $\cont$.
 
 \subsubsection{Embedding Module $\mathcal{E}$}
-To give greater flexibility when setting the context variable $c$, \textsc{CondOT} contains an embedding module $\mathcal{E}$ that translates arbitrary contexts into real-valued vectors. Besides simple scalars $t$ (Fig.~\ref{fig:overview}a) for which no embedding is required, discrete contexts can be handled with an embedding module $\mathcal{E}_\phi$.
+\looseness -1 To give greater flexibility when setting the context variable $c$, \textsc{CondOT} contains an embedding module $\mathcal{E}$ that translates arbitrary contexts into real-valued vectors. Besides simple scalars $t$ (Fig.~\ref{fig:overview_condot}a) for which no embedding is required, discrete contexts can be handled with an embedding module $\mathcal{E}_\phi$.
 
 \paragraph{One-Hot Embedding $\mathcal{E}_\text{ohe}$}
 When the set $\gC$ is small, this can be done effectively using one-hot embeddings $\mathcal{E}_\text{ohe}$.
@@ -96,28 +94,27 @@ However, often this domain knowledge is not available.
 % In the case of genetic perturbations, for example, no straightforward embedding is available.
 % We might, however, have some sparse sample-access to an action $a$'s target effects (i.e., when modeling the effect of actions in combination, we often have sample access to an action applied in isolation).
 
+\begin{wrapfigure}{r}{0.4\textwidth}
+    \centering
+    %\vskip-0.1cm
+    \includegraphics[width=\textwidth]{figures/fig_architecture.pdf}
+    \caption{\textbf{\textsc{CondOT} Architecture and Modules}. The embedding module $\mathcal{E}_\phi$ embeds arbitrary conditions $c$, which are then combined via module $\mathcal{C}_\Phi$. Using the processed contexts $c$, the map $\mathcal{T}_\theta(c)$ acts on $\mu$ to predict the target measure $\nu$. \vspace{-10pt}}
+    \label{fig:architecture}
+\end{wrapfigure}
 \paragraph{Mode-of-Action Embedding $\mathcal{E}_\text{moa}$}
-In this work, we thus construct so-called \emph{mode-of-action} embeddings, by computing an embedding $\mathcal{E}_\text{moa}$ that encourages actions $a$ with similar effect on target population $\nu$ to have a similar representation.
+In \textsc{CondOT}, we thus construct so-called \emph{mode-of-action} embeddings, by computing an embedding $\mathcal{E}_\text{moa}$ that encourages actions $a$ with similar effect on target population $\nu$ to have a similar representation.
 Such mode-of-action embeddings map actions into a latent space-based on their mechanism of action and effect on the target population.
 In the fashion of word embeddings \citep{mikolov2013efficient, mikolov2013distributed, mikolov2013linguistic}, we require actions with similar effect to be closely embedded in the learned representation.
 This means, however, that we require some sample access of target population particles, i.e., perturbed cells by individual compounds (not in combination).
 While several metric embeddings are possible \citep{chopra2005learning}, we here test a simple multi-dimensional scaling-based embedding \citep{mead1992review}.
 For this we compute the pairwise Wasserstein distance matrix between all target populations of different individual perturbations. We then compute a 10-dimensional MDS embedding-based on the stress minimization using majorization algorithm (\texttt{smacof}) \citep{de2009multidimensional} of \texttt{sklearn} \citep{pedregosa2011scikit}, which serves as descriptor for each individual perturbation.
-
 In \cref{sec:evaluation_condot}, we analyze several embedding types for different use-cases.
 
 \subsubsection{Combinator Module $\mathcal{C}$}
-\begin{wrapfigure}{r}{0.4\textwidth}
-    \centering
-    %\vskip-0.1cm
-    \includegraphics[width=\textwidth]{figures/fig_architecture.pdf}
-    \caption{\textbf{\textsc{CondOT} Architecture and Modules}. The embedding module $\mathcal{E}_\phi$ embeds arbitrary conditions $c$, which are then combined via module $\mathcal{C}_\Phi$. Using the processed contexts $c$, the map $\mathcal{T}_\theta(c)$ acts on $\mu$ to predict the target measure $\nu$.}
-    \label{fig:architecture}
-\end{wrapfigure}
 \looseness -1 While we often have access to contexts $c$ in isolation, it is crucial to infer the effect of contexts applied in combination. A prominent example are cancer combination therapies, in which multiple treatment modalities are administered in combination to enhance treatment efficacy~\citep{kummar2010utilizing}.
 In these settings, the mode of operation between individual contexts $c$ is often not known, and can thus not be directly modeled via simple arithmetic operations such as 
 \texttt{min, max, sum, mean}.
-While we test as a baseline the case, applicable to one-hot-embeddings, where simple additions are used to model these combinations, we propose to augment the \textsc{CondOT} architecture with a parameterized combinator module $\mathcal{C}_\Phi$. In this work, we consider the following combinator modules:
+While we test as a baseline the case, applicable to one-hot-embeddings, where simple additions are used to model these combinations, we propose to augment the \textsc{CondOT} architecture with a parameterized combinator module $\mathcal{C}_\Phi$. We consider the following combinator modules:
 
 \paragraph{Multi-hot combinator $\mathcal{C}^\text{ohe}_+$.}
 A na\"ive way of constructing the combinator is to combine different actions via a multi-hot encoding. If all single perturbations are observed during training, each individual action can be represented via a one-hot encoding. The potential combination of different actions, is then encoded by adding the respective one-hot encodings, resulting in a multi-hot encoding for each combination.
@@ -143,7 +140,7 @@ The PICNN is then trained using the entropy-regularized Wasserstein distance \eq
     \ell_\text{POT}(\mu, \nu, c; \theta) = \We(\nabla_1 \text{PICNN}_\theta (\cdot, c)_\sharp\mu,\nu).
 \end{equation}
 
-Throughout this work, we choose a different route and propose instead to learn $\mathcal{T}_{\theta}$ via the dual optimal transport problem. We consider the strategy proposed by \citet{makkuva2020optimal} and utilized by \citet{bunne2021learning} in the context of single-cell perturbation analyses.
+Throughout this chapter, we choose a different route and propose instead to learn $\mathcal{T}_{\theta}$ via the dual optimal transport problem. We consider the strategy proposed by \citet{makkuva2020optimal} and utilized by \citet{bunne2021learning} in the context of single-cell perturbation analyses.
  $\mathcal{T}_{\theta}$ is then parameterized via the pair of dual potentials $f$ and $g$, which  themselves are defined by a pair of PICNNs $g:\text{PICNN}_{\theta_g}(\cdot,c)$ and $f:\text{PICNN}_{\theta_f}(\cdot,c)$ such that $\hat{\nu} = \nabla g _\sharp \mu = \nabla_1 \text{PICNN}_{\theta_g} (\cdot,c)\sharp \mu$ is approximately $\nu$, as well as $\hat{\mu} = \nabla f _\sharp \nu = \nabla_1 \text{PICNN}_{\theta_f} (\cdot, c)_\sharp\nu$ is approximately $\mu$ on a labeled observation $((\mu,\nu),c)$ with parameters $\theta = (\theta_g, \theta_f)$.
 In order to optimize the pair of PICNNs, which parameterize the two dual functions, \citet{makkuva2020optimal} derive an approximate formulation of \eqref{eq:dual-cvx}.
 First, \citet[Theorem 2.9]{villani2021topics} rephrases~\eqref{eq:dual-cvx} over the pair of dual potentials $(f, g)$ to
@@ -271,7 +268,7 @@ To illustrate this problem, we consider cell populations comprising three differ
 Figure~\ref{fig:exp_scalar_sciplex}b displays a gene showing highly various responses towards the drug Givinostat dependent on the cell line. \textsc{CondOT} captures the distribution shift from control to target populations consistently across different cell lines.
 
 
-\subsection{Inferring Gene Knockout Responses}
+\subsection{Inferring Genetic Perturbation Responses}
 
 \looseness -1 To recommend personalized medical procedures for patients, or to improve our understanding of genetic circuits, it is key to be able to predict the outcomes of novel perturbations, arising from combinations of drugs or of genetic perturbations. 
 Rather than learning individual maps $T_\theta^a$ predicting the effect of individual treatments, we aim at learning a global map  $\mathcal{T}_\theta$ which, given as input the unperturbed population $\mu$ as well as the action $a$ of interest, predicts the cell state perturbed by $a$.

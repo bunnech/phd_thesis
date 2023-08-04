@@ -15,6 +15,16 @@ build/
 *.dvi
 *.4tc
 *.4ct
+*.bbl
+*.blg
+*.acr
+*.alg
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.ist
+*.synctex(busy)
 
 # Emacs junk
 auto/
