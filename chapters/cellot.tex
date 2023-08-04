@@ -38,44 +38,53 @@ latent space.
 While this can capture nonlinear cell-type-specific responses, the use of linear interpolations reduces the alignment problem to the possibly more challenging task of learning representations that are invariant to the corresponding perturbation. \\
 
 \looseness -1 In this chapter, we introduce \textsc{CellOT}, a novel approach that predicts perturbation responses of single cells by \emph{directly} learning and uncovering maps between control and perturbed cell states, thus explicitly accounting for heterogeneous subpopulation structures in multiplexed molecular readouts.
-Assuming perturbations incrementally alter molecular profiles of cells, such as gene expression or signaling activities, we learn these changes and alignments using static \acrlong{OT} formulations (see \cref{sec:background_ot_static}. 
-Optimal transport provides natural geometric and mathematical tools to manipulate probability distributions. It has found recent successes modeling cellular development processes~\citep{lavenant2021towards, schiebinger2019optimal}, albeit in a {\em non-parameterized} setting. Thus, current OT-based approaches are unable to make predictions on unseen cells, such as those from unseen samples, e.g., new patients. 
+Assuming perturbations incrementally alter molecular profiles of cells, such as gene expression or signaling activities, we learn these changes and alignments using a static \acrlong{OT} formulations (see \cref{sec:background_ot_static}. 
+As described in \cref{sec:ot_for_biology}, it has found recent successes modeling cellular developmental processes~\citep{lavenant2021towards, schiebinger2019optimal}, albeit in a {\em non-parameterized} setting. Thus, such OT-based approaches are unable to make predictions on unseen cells, such as those from unseen samples, e.g., new patients. 
 % One way to address the pairing problem is to assume that perturbed cellular states are coupled to their initial states under a principle of minimum action. That is, given unpaired observations of cells before and after perturbation, we would aim to pair cells to their treated states in such a way that the average distance between the pairs, in feature space, is minimal. This setting is ideally suited for acute cellular perturbations during which single cells do not redistribute entirely and randomly in multidimensional measurement space, but typically only in a few dimensions, maintaining the overall correlation structure.
 
-\looseness -1 Based on recent developments in neural optimal transport~\citep{makkuva2020optimal}, \textsc{CellOT} learns an optimal transport map for each perturbation in a fully parameterized and highly scalable manner. Instead of directly learning a transport map~\citep{korotin2021wasserstein, yang2018scalable, prasad2020optimal}, \textsc{CellOT} parameterizes a pair of dual potentials \eqref{eq:dual-cvx} with convex neural networks \citep{amos2017input}. This choice induces an important theory-motivated inductive bias essential to model stability~\citep{makkuva2020optimal}. 
+\looseness -1 In the following, we propose a neural optimal transport-based approach for inferring single-cell perturbation responses. 
+Our method, \textsc{CellOT}, learns an optimal transport map for each perturbation in a fully parameterized and highly scalable manner. Instead of directly learning a transport map~\citep{korotin2021wasserstein, yang2018scalable, prasad2020optimal}, \textsc{CellOT} parameterizes a pair of dual potentials \eqref{eq:dual-cvx} with convex neural networks \citep{amos2017input}. This choice induces an important theory-motivated inductive bias essential to model stability~\citep{makkuva2020optimal}. 
 
 \looseness -1 We demonstrate \textsc{CellOT}'s effectiveness by (i.) learning single-cell marker responses to different cancer drugs in melanoma cell lines, (ii.) predicting single-cell transcriptome responses in biopsies of patients with systemic lupus erythematosus as well as Panobinostat treatment outcomes of glioblastoma patients, (iii.) inferring LPS responses across different animal species, and (iv.) modeling the transcriptome evolution of cell fates in hematopoiesis. Moreover, we benchmark \textsc{CellOT} against current state-of-the-art methods on multiple tasks~\citep{lopez2018scvi, lotfollahi2019scgen, chen2020dissecting}.
 
 \section{Neural Optimal Transport Solvers} \label{sec:neural_solvers}
 ...
 
-\citet[Theorem 2.9]{villani2021topics} further simplifies the dual problem~\eqref{eq:kantorovich-dual} over the pair of functions $(f, g)$ to
-\begin{equation} \label{eq:dual-ot-cvx}
-    W(\mu, \nu)= \underbrace{\frac{1}{2}\mathbb{E}\left[\|x\|_{2}^{2}+\|y\|_{2}^{2}\right]}_{\mathcal{C}_{\mu, \nu}}-\inf _{f \in \Tilde{\Phi}} \mathbb{E}_{\mu}[f(X)]+\mathbb{E}_{\nu}\left[f^{*}(Y)\right],
-\end{equation}
-where $\Tilde{\Phi}$ is the set of all convex functions in $L^1(d\mu) \times L^1(d\nu)$, $L^{1}(\mu) \defeq \{f \text{ is measurable } \& \int f d\mu<\infty\}$, $f^*(y) = \sup_x \dotp{x}{y} - f(x)$ is $f$'s convex conjugate, and the optimal transport plan corresponds to gradient of the convex conjugate, $\gamma = \nabla f^\star$. %, reparameterizing $f(\cdot) = \frac{1}{2}\norm{\cdot}^2_2 - f(\cdot)$ and $g(\cdot) = \frac{1}{2}\norm{\cdot}^2_2 - g(\cdot)$, 
-\citet[Theorem 2.9]{villani2021topics} then proves the existence of an optimal pair $(f, f^*)$ of lower semi-continuous proper conjugate convex functions on $\mathbb{R}^n$ minimizing \eqref{eq:kantorovich-dual}.
+In the following, we consider neural \acrshort{OT} solvers that make directly use of the \citeauthor{brenier1987decomposition} theorem (\cref{thm:brenier}) and are based on the semi-dual \eqref{eq:dual-cvx}. For a review on alternative approaches, see \cref{sec:other_neural_solvers}.
+For convenience, let us restate the semi-dual formulation in \eqref{eq:dual-cvx}
+\begin{equation*}
+	\inf_{\varphi\, \text{convex}} \int \varphi \textrm{d}\mu + \int \varphi^*\textrm{d}\nu\,,
+\end{equation*}
+where the optimization problem is concerned with finding a convex function $\varphi$ and its convex conjugate (Legendre transform) $\varphi^*$ given by
+\begin{equation*}
+	... \,.	
+\end{equation*}
+As discussed in \cref{sec:background_brenier} , the optimal transport map $T^\star$ for cost $c(x,y) = \|x-y\|^2_2$ and $\gX = \gY = \mathbb{R}^d$ in~\eqref{eq:monge} is recovered as $\nabla \varphi^\star$.
 
-In practice, Monge maps can be estimated using a dual formulation. 
-Indeed, $T^\star$ in~\eqref{eq:monge} is recovered as $\nabla f^\star$, where $f^\star$ is defined in~\eqref{eq:dual-cvx}, writing $f^*$ for the Legendre transform of $f$.
-
-\subsection{...}
-
-To learn the optimal transport map, \citeauthor{makkuva2020optimal} build upon celebrated results by \citet{knott1984optimal} and \citet{brenier1991polar}, which relate the optimal solutions for the primal \eqref{eq:monge} and the dual form \eqref{eq:kantorovich-dual}, to derive a min-max formulation replacing the convex conjugate in \eqref{eq:dual-ot-cvx} \citep[Theorem 3.3]{makkuva2020optimal}
+To learn the optimal transport map, \citeauthor{makkuva2020optimal} thus build upon celebrated results by \citet{knott1984optimal} and \citet{brenier1991polar}, which relate the optimal solutions for the primal \eqref{eq:monge} and the dual form \eqref{eq:kantorovich-dual}, to derive a min-max formulation replacing the convex conjugate in \eqref{eq:dual-cvx} \citep[Theorem 3.3]{makkuva2020optimal}.
+The resulting objective reads
 \begin{equation} \label{eq:ot-minmax}
-    W_{2}^2(\mu, \nu_k)=\sup _{\substack{f \in \Tilde{\Phi} \\ f^{*} \in L^{1}(\nu_k)}} \newinf _{g \in \Tilde{\Phi}}  \mathcal{C}_{\mu, \nu_k} - \underbrace{\mathbb{E}_{\mu}[f(x)]-\mathbb{E}_{\nu_k}[\langle y, \nabla g(y)\rangle-f(\nabla g(y))]}_{\mathcal{V}_{\mu, \nu_k}(f, g)}.
+	\arg \max_{\varphi  \, \text{convex}} \min_{g \, \text{convex}}  -\int \varphi(x) \mathrm{d} \mu(x) -\int \langle y, \nabla g(y)\rangle - \varphi(\nabla g(y)) \,\mathrm{d} \nu(y)
 \end{equation}
-We can further relax the constraint $g \in \Tilde{\Phi}$ to $L^{1}(\nu_k)$, as a function $g \in L^{1}(\nu_k)$ minimizing \eqref{eq:ot-minmax} is convex and equal to $f^*$ for any convex function $f$.
-In order to learn the resulting optimal transport, i.e., the solution of the minimization problem in \eqref{eq:ot-minmax}, \citet{makkuva2020optimal} parameterize both dual variables $f$ and $g$ using input convex neural networks (\S~\ref{sec:icnns}) \citep{amos2017input} and yields a transport plan with the graident of $g$.
-The resulting approximate Wasserstein distance is thus defined as
-\begin{equation} \label{eq:cellot-optim}
-    \hat{W}_2^2(\mu, \nu_k) = \sup _{\phi} \newinf_{\theta}  \mathcal{C}_{\mu, \nu_k} - \mathcal{V}_{\mu, \nu_k}(f_{\phi}, g_{\theta}),
-\end{equation}
+
+In order to learn the resulting optimal transport, i.e., the solution of the minimization problem in \eqref{eq:ot-minmax}, \citet{makkuva2020optimal} parameterize both potentials $\varphi$ and $g$ using input convex neural networks (\cref{sec:icnns}), i.e., neural networks that parameterize the class of convex functions \citep{amos2017input}
+\begin{align} \label{eq:cellot-optim}
+	\nonumber \theta^\star, \phi^\star \leftarrow \arg \max_{\varphi_\theta  \, \text{convex}} \min_{g_\phi \, \text{convex}}  &-\int \varphi_\theta(x) \mathrm{d} \mu(x) -\int \langle y, \nabla g_\phi(y)\rangle \\
+	&- \varphi_\theta(\nabla g_\phi(y)) \,\mathrm{d} \nu(y),
+\end{align}
 where $\theta$ and $\phi$ are the parameters of each \acrshort{ICNN}.
-% The resulting $g_{\theta}^*$ produces an approximate optimal transport plan $\gamma \approx (\nabla g_{\theta}^* \times Id)_{\sharp} \mu$.
+Thus, the potentials $\varphi$ and $g$ can be learned via an alternate min-max optimization problem with loss functions
+% TODO: Double-check.
+\begin{align} 
+    \ell_\varphi(\mu, \nu; \theta) &= \mathbb{E}_{x \sim \mu}[\text{ICNN}_{\phi}(x)] - \mathbb{E}_{y \sim \nu}[\text{ICNN}_{\theta}(\nabla \text{PICNN}_{\phi}(y))],  \label{eq:makkuva_f_loss} \\
+    \ell_g(\mu, \nu; \phi) &= -\mathbb{E}_{y \sim \nu}[\langle y, \nabla \text{PICNN}_{\phi}(y)\rangle-\text{ICNN}_{\theta}(\nabla \text{PICNN}_{\phi}(y))]. \label{eq:makkuva_g_loss}
+\end{align}
+For more details, see \citet{makkuva2020optimal, korotin2021neural}.
 
 
-\subsection{Convex Neural Architectures} \label{sec:icnns}
+\subsection{Convex Neural Architectures}
+\label{sec:icnns}
+
 Input convex neural networks are neural networks $\varphi_\theta(x)$ with specific constraints on the architecture and parameters $\theta$, such that their output is a convex function of some (or all) elements of the input $x$~\citep{amos2017input}. We consider  \acrshortpl{ICNN}, such that the output is a convex function of the entire input $x$. A typical \acrshort{ICNN} is a $L$-layer, fully connected network such that, for $l = 0, \dots, L-1$:
 \begin{equation} \label{eq:icnn}
     z_{l+1} = a_l(W^x_lx + W^z_l z_l + b_l)  \text{ and } \varphi_\theta(x) = z_L,
@@ -83,16 +92,23 @@ Input convex neural networks are neural networks $\varphi_\theta(x)$ with specif
 where by convention, $z_0$ and $W^z_0$ are $0$, $a_l$ are convex non-decreasing (non-linear) activation functions, $\theta=\{b_l, W^z_l, W^x_l\}_{l=0}^{L-1}$ are the weights and biases of the neural network, with weight matrices $W^z_l$ associated to latent representations $z$ that have non-negative entries. Since \citet{amos2017input}'s work, convex neural architectures have been further extended and shown to capture relevant models despite these constraints~\citep{amos2017input, makkuva2020optimal, huang2021convex}. In particular, \citet{chen2018optimal} provide a theoretical analysis that any convex function over a convex domain can be approximated in sup norm by an \acrshort{ICNN}.
 
 
-\subsubsection{Alternative Approaches}
-We focus here on neural approaches that parameterize the optimal maps $T$ as neural networks. An early approach is the work on Wasserstein GANs~\citep{arjovsky2017wasserstein}, albeit the transport map is not explicitly estimated. 
+\subsection{Alternative Approaches}
+\label{sec:other_neural_solvers}
+
+Learning optimal transport problems based on neural networks is at the core of many machine learning applications, including normalizing flows \citep{rezende2015variational,huang2021convex} and generative models \citep{arjovsky2017wasserstein, genevay2018learning}, albeit the transport map is not explicitly estimated.
 % Here, the authors parameterize \textit{dual potentials} as Lipschitz neural networks, in the case $p=1$. In that case, the interplay between OT and estimation does not concern the map $T$ itself (which can be interpreted as a generator), but rather an auxiliary function (the discriminator). 
-% Closer to the spirit of OT, s
-Several recent results have exploited a more explicit connection between OT and NNs, derived from the celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition}, which states that Monge maps are necessarily gradients of convex functions.
-%, which themselves are solutions to the dual formulation of OT. 
-Such convex functions can be represented using \acrshortpl{ICNN}~\citep{amos2017input}, to parameterize either the Monge map~\citep{korotin2021wasserstein,yang2018scalable,bunne2022proximal} or a dual potential~\citep{makkuva2020optimal,korotin2021wasserstein} as, respectively, the gradient of an \acrshort{ICNN} or an \acrshort{ICNN} itself.
-% As our ability to accurately compute the OT map between two measures improves~\citep{korotin2021neural}, there is a growing consensus in the community that practitioners expect methods that can do more than handle just a pair of measures. 
-%This prior work, however, learns a single parametrized transport map
-In this thesis, we build on this line of work, but substantially generalize it, to learn a {\em parametric} family of context-aware transport maps, using a collection of labeled pairs of measures.
+The formulation introduced in \cref{sec:neural_solvers} proposes a neural optimal transport scheme via the semi-dual formulation. In fact, a stream of foundational papers have proposed methods to approximate the dual potential with a neural network.
+While a common strategy consists in parameterizing $\varphi$ through an \acrshort{ICNN} \citep{taghvaei20192, korotin2021wasserstein, makkuva2020optimal}, other works explore learning $\varphi$ using non-convex neural networks \citep{korotin2021neural, rout2021generative, nhan2019three}.
+As the convex conjugate $\varphi^*$ is hard to compute, several strategies have evolved to efficiently solve the conjugation operation in \eqref{}: \citet{taghvaei20192} thereby propose to exactly computing the conjugate, which, however, is computationally challenging. Besides approximations of the conjugate as considered in this thesis \citep{korotin2021wasserstein, makkuva2020optimal}, more recent approaches suggest (near-)exact conjugate computations through  amortized optimization \citep{amos2023amortizing}.
+
+Beyond approaches that parameterize the dual potentials of optimal transport, several approaches consider parameterizing map $T$ directly.
+... \citep{uscidda2023monge}
+Monge gap regularizer ...
+\begin{equation*}
+	\int c(x, T_\theta(x)) \textrm{d} \mu(x) - W_c(\mu, T_\theta \sharp \mu)
+\end{equation*}
+that quantifies how far a map $T_\theta$ deviates from the ideal properties we expect from a $c$-OT map. 
+... \citep{yang2018scalable}
 
 
 \section{Related Work}
@@ -257,18 +273,6 @@ To test the generalization capacity of \textsc{CellOT} in such an \acrfull{oos} 
 % The dataset contains two pools, IFN-$\beta$-treated and control, prepared with the same number of cells from each individual, thus allowing us to investigate the cell fate differences between unperturbed and perturbed cells.
 In the following, we compare the performance of \textsc{CellOT} and other baselines in an \acrfull{iid} setting, where models see cells from all patients, as well as in the out-of-sample setting, where models do not see cells from a specific holdout patient (see Fig.~\ref{fig:generalization_cellot}a).
 % A robust method should show little to no performance drop from the i.i.d. to the o.o.s. scenario.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{figures/fig_generalization_cellot.pdf}
- \end{figure}
- \captionof{figure}{
-    \textbf{\textsc{CellOT} generalizes to unseen patients and cell subpopulations.} Out-of-sample (o.o.s., \textbf{a-c}), and \acrlong{ood} (\acrshort{ood}, \textbf{d-k}) setting. \textbf{a.} Cells from eight lupus patients are measured in an untreated and IFN-$\beta$ treated state. 
-%    For each sample, we train two models, an o.o.s.~model trained on cells from all other samples and an i.i.d.~model trained with additional access to half of the cells in the holdout sample (not shown). 
-    \textbf{b.} Marginals of predicted cells from the holdout sample in the i.i.d.~(top) and o.o.s.~(bottom) setting. Predictions for both models are made on the same test set (not used for training the two models). \textbf{c.} \acrshort{MMD} scores between the predicted distribution and the observed treated distribution across all holdout samples in the i.i.d.~and o.o.s.~settings. Box plots indicate the median and quartiles.
-    \textbf{d.} As an \acrshort{ood} task, we train \textsc{CellOT} and baselines to predict the response to LPS across different species, and test on rat (or mouse) as a holdout species. \textbf{e.} Mean gene expression for i.i.d. and \acrshort{ood} predictions for \textsc{CellOT} and \textsc{scGen} for selected marker genes.  \textbf{f.} Comparison of \acrshort{ood} performance for $r^2$ correlation feature means and \acrshort{MMD} of \textsc{CellOT} and baselines. Data is depicted as the mean +/- standard deviation across n=10 bootstraps of the test set. \textbf{g.} Marginals of the \acrshort{ood} predictions for marker genes showing bimodal expression profiles when using rat as a holdout.
-    \textbf{h.} We apply \textsc{CellOT} to predict how cells from day 2 develop into the combined set of day 4 and 6, when trained on only multipotent cells ($T_m$) or oligopotent cells ($T_o$). We then apply $T_m$ to predict the \acrshort{ood}~oligopotent cells and $T_o$ to predict the \acrshort{ood}~multipotent cells. \textbf{i.} \acrshort{MMD} scores between the predicted and (observed) developed distributions for all models in both \acrshort{ood}~ and i.i.d.~prediction tasks (jointly for day 4 and 6). Performance of \textsc{CellOT}, when predicting \textbf{j.} day 4 states and day 6 states \textbf{k.} for different cell types in each setting using $T_m$. \vspace{10pt}}
-    \label{fig:generalization_cellot}
     
 As in the previous analysis, we evaluate how accurately \textsc{CellOT} captures the change in the overall expression of different marker genes from control to IFN-$\beta$-treated cells and thus how well the predicted gene expression marginals are aligned with the treated population (Fig.~\ref{fig:generalization_cellot}b). Here, we consider the genes \textit{CXCL11}, \textit{CCL2}, and \textit{APOBEC3A},
 since they are connected with autoimmune diseases, including systemic lupus erythematosus \citep{hedrich2011epigenetic, perez2021sustained}
@@ -286,6 +290,18 @@ These results suggest that the learned optimal transport maps correctly model th
 We repeat the same evaluation for a glioblastoma cohort consisting of seven patients \citep{zhao2021deconvolution}. However, generalization within this setting proved to be difficult for \textsc{CellOT} and all baselines, due to the small size of the cohort and high degree of variance within the responses of each individual. 
 % We have identified under which conditions generalization to unseen patients is feasible. 
 For a complete analysis, see Fig.~\ref{fig:gbm_patients_iid_ood}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig_generalization_cellot.pdf}
+ \end{figure}
+ \captionof{figure}{
+    \textbf{\textsc{CellOT} generalizes to unseen patients and cell subpopulations.} Out-of-sample (o.o.s., \textbf{a-c}), and \acrlong{ood} (\acrshort{ood}, \textbf{d-k}) setting. \textbf{a.} Cells from eight lupus patients are measured in an untreated and IFN-$\beta$ treated state. 
+%    For each sample, we train two models, an o.o.s.~model trained on cells from all other samples and an i.i.d.~model trained with additional access to half of the cells in the holdout sample (not shown). 
+    \textbf{b.} Marginals of predicted cells from the holdout sample in the i.i.d.~(top) and o.o.s.~(bottom) setting. Predictions for both models are made on the same test set (not used for training the two models). \textbf{c.} \acrshort{MMD} scores between the predicted distribution and the observed treated distribution across all holdout samples in the i.i.d.~and o.o.s.~settings. Box plots indicate the median and quartiles.
+    \textbf{d.} As an \acrshort{ood} task, we train \textsc{CellOT} and baselines to predict the response to LPS across different species, and test on rat (or mouse) as a holdout species. \textbf{e.} Mean gene expression for i.i.d. and \acrshort{ood} predictions for \textsc{CellOT} and \textsc{scGen} for selected marker genes.  \textbf{f.} Comparison of \acrshort{ood} performance for $r^2$ correlation feature means and \acrshort{MMD} of \textsc{CellOT} and baselines. Data is depicted as the mean +/- standard deviation across n=10 bootstraps of the test set. \textbf{g.} Marginals of the \acrshort{ood} predictions for marker genes showing bimodal expression profiles when using rat as a holdout.
+    \textbf{h.} We apply \textsc{CellOT} to predict how cells from day 2 develop into the combined set of day 4 and 6, when trained on only multipotent cells ($T_m$) or oligopotent cells ($T_o$). We then apply $T_m$ to predict the \acrshort{ood}~oligopotent cells and $T_o$ to predict the \acrshort{ood}~multipotent cells. \textbf{i.} \acrshort{MMD} scores between the predicted and (observed) developed distributions for all models in both \acrshort{ood}~ and i.i.d.~prediction tasks (jointly for day 4 and 6). Performance of \textsc{CellOT}, when predicting \textbf{j.} day 4 states and day 6 states \textbf{k.} for different cell types in each setting using $T_m$. \vspace{10pt}}
+    \label{fig:generalization_cellot}
 
 \subsection{Reconstructing Innate Immune Responses across Different Species}
 %\subsection{\textsc{CellOT} reconstructs innate immune responses across species}
