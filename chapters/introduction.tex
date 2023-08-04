@@ -158,9 +158,10 @@ Significantly, the diversity within a cell population, or cellular heterogeneity
 Rather than resorting to population averages, we need to model the problem at the single-cell level in order to capture and then further analyze the distinct cells' responses to a perturbation. This requires scalable and principled algorithms that are well aligned with the constrained experimental settings of high-throughput methods and incorporate the inherent structure of biological processes.
 
 The mathematical foundation of this work builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of optimal transport (OT) and serves naturally as an inductive bias of the learning algorithm. By providing tools for aligning and mapping two distributions, here the unperturbed and perturbed cell population, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation. 
-In recent years, OT has enabled significant advances in single-cell biology problems2. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
+In recent years, OT has enabled significant advances in single-cell biology problems. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
 They are thus unable to predict perturbation responses of cells from new incoming samples, such as those from unseen patients. 
 This thesis is thus concerned with the development of \textbf{neural optimal transport} methods for ...
+% TODO: Highlight out-of-sample setting.
 
 \subsection{Optimal Transport for Single-Cell Biology}
 \label{sec:ot_for_biology}
