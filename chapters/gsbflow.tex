@@ -15,7 +15,7 @@ Most of the material in this chapter has been already published in the following
 }
 
 ...
- To draw parallels to \cref{cha:bio_background}, $\mu_0$ and $\mu_1$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\distinit = \mu_0$ to $\distend = \mu_1$ might provide us with an understanding on how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
+ To draw parallels to \cref{sec:bio_background}, $\mu_0$ and $\mu_1$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\distinit = \mu_0$ to $\distend = \mu_1$ might provide us with an understanding on how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
 
 \section{Diffusion Schr\"odinger Bridges}
 \label{sec:background_dsb}
@@ -548,7 +548,7 @@ where \eqref{eq:GSB-sde-backward} runs backward in time. After parameterizing $\
 \looseness-1 Following existing work on training \acrshort{SB}-based objectives \citep{chen2021likelihood,de2021diffusion, vargas2021solving}, we propose to initialize $\tilde{\paramf}_{0}, \tilde{\paramb}_{0}$ such that $\SBf[\ctime][\point][\tilde{\paramf}_{0}], \SBb[\ctime][\point][\tilde{\paramb}_{0}] \equiv 0$, which can be easily achieved by zeroing out the last layer of the corresponding neural networks. In this case, estimating the conditional expectations in both \eqref{eq:loss-backward}-\eqref{eq:loss-forward} reduces to simulating \eqref{eq:GSB-forward} \emph{conditioned} on the given start or end data points. Thanks to our closed-form expressions, this can be easily achieved by drawing Gaussian variables with mean and covariance prescribed in  \eqref{eq:GSB-sde-forward}-\eqref{eq:GSB-sde-backward}. The pretraining procedure is summarized in \cref{alg:pretraining}.
 
 
-\textbf{Step 3: Alternating minimization.} After the pretraining phase, we switch to minimizing \eqref{eq:loss-backward}-\eqref{eq:loss-forward} with general drifts in \eqref{eq:GSB-sde-forward}-\eqref{eq:GSB-sde-backward}. We carry out this step in an alternating fashion: Since the bottleneck of our framework is to simulate the trajectories of \acrshortpl{SDE}, we perform several gradient updates for one parameter before drawing another batch of samples. See \cref{alg:GSBflow} for a summary, and \cref{fig:overview} for an illustration.
+\textbf{Step 3: Alternating minimization.} After the pretraining phase, we switch to minimizing \eqref{eq:loss-backward}-\eqref{eq:loss-forward} with general drifts in \eqref{eq:GSB-sde-forward}-\eqref{eq:GSB-sde-backward}. We carry out this step in an alternating fashion: Since the bottleneck of our framework is to simulate the trajectories of \acrshortpl{SDE}, we perform several gradient updates for one parameter before drawing another batch of samples. See \cref{alg:GSBflow} for a summary, and \cref{fig:overview_gsbflow} for an illustration.
 
 \begin{algorithm}
    \caption{Forward and Backward Pretraining}

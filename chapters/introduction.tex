@@ -166,15 +166,6 @@ This thesis is thus concerned with the development of \textbf{neural optimal tra
 \subsection{Optimal Transport for Single-Cell Biology}
 \label{sec:ot_for_biology}
 
-% Perturbation responses of cells are dynamic: After applying perturbation $k$, cell states evolve over time and thus can be modeled as a stochastic process in the cell data space.
-% While cell states change dynamically over time upon perturbation,
-% Despite this time-resolved nature of single-cell responses, we only have access to the distributions of cell states before, $\mu$, and after injecting perturbation $k$, $\nu_k$. 
-% We thus aim to understand the underlying stochastic process without access to time-resolved perturbation responses by uncovering the coupling $\gamma$ between $\mu$ and $\nu_k$.
-% Given prior biological knowledge, we can assume that perturbations do not drastically or totally alter underlying cellular processes. We thus posit that the evolution of probability distributions of single cells upon perturbation
-% and the coupling between the cell distribution before and after perturbation
-% can be modeled via the mathematical theory of optimal transport.
-% The coupling $\gamma$ then corresponds to an optimal transport plan \eqref{eq:monge} between $\mu$ and $\nu_k$.
-
 Applied to the analysis and modeling of single-cell biology problems, OT has been used to infer the distributions of cells' ancestors and descendants along development \citep{schiebinger2019optimal}, perform trajectory inference \citep{bunne2022proximal, forrow2021lineageot, bunne2022recovering, lavenant2021towards, schiebinger2019optimal, tong2020trajectorynet, yang2020predicting, zhang2021optimal, chizat2022trajectory}, predict perturbation responses \citep{bunne2021learning, yang2018scalable, lubeck2022neural}, integrate multi-omics data of different modalities \citep{demetci2022scot}, infer cell-cell similarity \citep{huizing2022optimal}, and integrate across scales (e.g., morphology and molecular profiling) \citep{yang2021multi}. The increasing data complexity across multiple levels of biological organization, from molecular and cellular through spatial profiling \citep{moriel2021novosparc} of tissues, and imaging of organs, cement further the status of OT as an indispensable framework for high-throughput, multimodal, and multi-scale molecular, cell, tissue, and organ biology. The effectiveness of OT comes, however, with drawbacks: because the theory builds on extremely sophisticated mathematics that blends optimization \citep{cuturi2013sinkhorn, cuturi2022optimal}, stochasticity \citep{chizat2022trajectory, bunne2022recovering} and partial differential equations \citep{bunne2022proximal}, and, more recently, deep learning \citep{tong2020trajectorynet, bunne2021learning, bunne2022supervised, yang2018scalable, lubeck2022neural, yang2021multi}, its computations are challenging even by modern ML standards.
 
 
