@@ -13,7 +13,8 @@ Most of the material in this chapter has been already published in the following
 \end{itemize}
 }
 
-...
+In \cref{part:static_not} we introduced \emph{static} neural optimal transport schemes to model how a distribution $\mu$ morphs into distribution $\nu$.
+The motivation of this work was derived from the
 
 Following in the footsteps of more general applications of the \acrshort{JKO} scheme~\citep[\S4.8]{santambrogio2017euclidean}, we model dynamics without necessarily having in mind PDE solutions in mind, to interpret instead the \acrshort{JKO} step as a more general parametric type of dynamic for probability measures, exclusively parameterized by the energy $J$ itself.
 
@@ -50,7 +51,7 @@ We demonstrate \textsc{JKOnet}'s range of applications by applying in on synthet
 
 Given $T$ discrete measures $\mathrm{data}_0, \dots, \mathrm{data}_T$ describing the time evolution of a population, we posit that such an evolution follows a \acrshort{JKO} flow for the free energy functional $J$, and assume that energy does not change throughout the dynamic. We parameterize the energy $J$ as a neural network with parameters $\xi$, and fit $\xi$ so that the \acrshort{JKO} flow model matches the observed data. 
 
-Fitting parameter $\xi$ with a reconstruction loss requires, using the chain rule, being able to differentiate the \acrshort{JKO} step's output w.r.t. $\xi$ (see Fig.~\ref{fig:overview_jkonet}), and more precisely provide a way to apply that transpose Jacobian to an arbitrary vector when using reverse-mode differentiation. To achieve this, we introduce a novel approach to numerically solve \acrshort{JKO} flows using \acrshortpl{ICNN} (\S~\ref{sec:jko_icnn}), resulting in a bilevel optimization problem targeting the energy $J_\xi$ (\S~\ref{sec:learn_energy}).
+Fitting parameter $\xi$ with a reconstruction loss requires, using the chain rule, being able to differentiate the \acrshort{JKO} step's output w.r.t. $\xi$ (see \cref{fig:overview_jkonet}), and more precisely provide a way to apply that transpose Jacobian to an arbitrary vector when using reverse-mode differentiation. To achieve this, we introduce a novel approach to numerically solve \acrshort{JKO} flows using \acrshortpl{ICNN} (\cref{sec:jko_icnn}), resulting in a bilevel optimization problem targeting the energy $J_\xi$ (\cref{sec:learn_energy}).
 
 \subsection{Reformulation of JKO Flows via ICNNs} \label{sec:jko_icnn}
 Given a starting condition $\mu_t$ and energy functional $J_\xi$, the \acrshort{JKO} step consists in producing a new measure $\mu_{t+1}$ implicitly defined as the minimizer of~\eqref{eq:jko}. Solving directly~\eqref{eq:jko} on the space of measures, involves substantial computational costs. Different numerical schemes have been developed, e.g., based notably on Eulerian discretization of measures \citep{carrillo2021primal, benamou2016discretization}, and/or entropy-regularized optimal transport \citep{peyre2015entropic}. However, these methods are limited to small dimensions since the cost of discretizing such spaces grows exponentially. Except for the Eulerian approach proposed in \citep{peyre2015entropic}, obtained as the fixed point of a Sinkhorn type iteration, the differentiation would also prove extremely challenging as a function of the energy parameter $\xi$.
@@ -246,7 +247,7 @@ Learning  $J_\xi$ through the exclusive supervision of data observations require
          \includegraphics[width=\textwidth]{figures/fig_energy_implicit_spiral.pdf}
          \caption{\textsc{JKOnet}, \protect\newline \emph{no} teacher forcing.}
      \end{subfigure}
-	 \caption{Comparison between energy functionals $J_\xi$ of the spiral trajectory task (see \ref{fig:task_overview}) between the forward method and \textsc{JKOnet}, trained with or without teacher forcing \S~\ref{sec:learn_energy}). When using teacher forcing, the forward method overfits a gap on the lower-right corner of the spiral, outputting a highly irregular energy. When taking into account the entire trajectory recursively, the Forward method does better overall, but is unable to recover an energy as precise as that returned by \textsc{JKOnet}.}
+	 \caption{Comparison between energy functionals $J_\xi$ of the spiral trajectory task (see \ref{fig:task_overview}) between the forward method and \textsc{JKOnet}, trained with or without teacher forcing \cref{sec:learn_energy}). When using teacher forcing, the forward method overfits a gap on the lower-right corner of the spiral, outputting a highly irregular energy. When taking into account the entire trajectory recursively, the Forward method does better overall, but is unable to recover an energy as precise as that returned by \textsc{JKOnet}.}
 	 \label{fig:exp_comp_spiral}
 \end{figure}
 
@@ -288,32 +289,32 @@ In usual \acrshort{JKO} applications, $\tau$ needs to be tuned manually. Here, t
 \end{table*}
 
 \section{Empirical Evaluation} \label{sec:jkonet_evaluation}
-In the following, we evaluate our method empirically on a variety of tasks. This includes recovering synthetic potential- and trajectory-based population dynamics (see Fig.~\ref{fig:task_overview}), as well as the evolution of high-dimensional single-cell populations during a developmental process. 
+In the following, we evaluate our method empirically on a variety of tasks. This includes recovering synthetic potential- and trajectory-based population dynamics (see \cref{fig:task_overview}), as well as the evolution of high-dimensional single-cell populations during a developmental process. 
 
 \subsection{Synthetic Dynamics}
 \label{sec:jkonet_synthetic}
 
-\paragraph{Energy-driven trajectories.} The first task involves evolutions of partial differential equations with known potential. We hereby consider both convex (e.g., the quadratic function $J(x) = \|x\|^2_2$) and nonconvex potentials (e.g., Styblinski function) (see Fig.~\ref{fig:task_overview}). These two-dimensional synthetic flows are generated using the Euler-Maruyama method~\citep{kloeden1992stochastic}. 
+\paragraph{Energy-driven trajectories.} The first task involves evolutions of partial differential equations with known potential. We hereby consider both convex (e.g., the quadratic function $J(x) = \|x\|^2_2$) and nonconvex potentials (e.g., Styblinski function) (see \cref{fig:task_overview}). These two-dimensional synthetic flows are generated using the Euler-Maruyama method~\citep{kloeden1992stochastic}. 
 To recover the true potential via \textsc{JKOnet}, we parameterize both energy $J_\xi$ and ICNN $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$.
 Figure~\ref{fig:exp_jkonet_pot_traj}a-b demonstrate \textsc{JKOnet}'s ability to recover convex and nonconvex potentials via energy $J_\xi$.
 
 \paragraph{Arbitrary trajectories.}
 As a sanity check, we evaluate if \textsc{JKOnet} can recover an energy functional $J_\xi$ from trajectories that are not necessarily arising from the gradient of an energy. Here, a 2-dimensional Gaussian moves along a predefined trajectory with nonconstant speed. 
-We consider a line, a spiral, and movement along a semicircle (Fig.~\ref{fig:task_overview}). As visible in Figure~\ref{fig:exp_jkonet_pot_traj}c (5 snapshots)], and Figure~\ref{fig:exp_comp_spiral}c-d (10 snapshots), \textsc{JKOnet} learns energy functionals $J_\xi$ that can then model the ground truth trajectories.
-These trajectory-based dynamics are learned using the strong convexity regularizer ($\ell=0.8$, see \S~\ref{sec:jko_icnn}).
+We consider a line, a spiral, and movement along a semicircle (\cref{fig:task_overview}). As visible in Figure~\ref{fig:exp_jkonet_pot_traj}c (5 snapshots)], and Figure~\ref{fig:exp_comp_spiral}c-d (10 snapshots), \textsc{JKOnet} learns energy functionals $J_\xi$ that can then model the ground truth trajectories.
+These trajectory-based dynamics are learned using the strong convexity regularizer ($\ell=0.8$, see \cref{sec:jko_icnn}).
 
 \paragraph{Comparison to forward methods.} \label{sec:eval_comp_fb}
 Instead of parameterizing the next iteration $\mu_{t+1}(\xi)$ as we do in the \textsc{JKOnet} formulation~\eqref{eq:jko}, the \emph{forward} scheme states that the prediction at time $t+1$, $\eta_{t+1}$, can be obtained as $(\nabla F_\xi)_{\sharp} \eta_t(\xi)$, where $F_\xi$ is any arbitrary neural network, as considered in \citet{hashimoto2016learning}, namely $\eta_0:=\mu_0$ and subsequently $\eta_{t+1}(\xi):=(\nabla F_\xi)_{\sharp} \eta_t(\xi)$. Although OT still plays an important role in that paper, since the potential $F$ is estimated by minimizing a Sinkhorn loss $W_\varepsilon(\eta_{t+1},\mathrm{data}_{t+1})$, as we do in \eqref{eq:fittingloss}, the forward displacement operator $(\nabla F_\xi)_{\sharp}$ has no spatial regularity. Because of that, we observe that the forward method can get more easily trapped in local minima, and, in particular, overfits the training data as shown by a substantial decrease in performance in the presence of noise.
-We demonstrate this by comparing the robustness of both \textsc{JKOnet} and the forward method to noise. For this, we corrupt $20\%$ or $30\%$ of the training data on the example of the semicircle trajectory with different levels of noise (see Fig.~\ref{fig:task_overview}). We insist that noise is only added at training time, as random shifts on both feature dimensions, while we test on the original semicircle trajectory.
-In low noise regimes, where train and test data are similar, the forward method overfits and performs marginally better than \textsc{JKOnet} (see Fig.~\ref{fig:exp_comp_noise}c,d). As noise increases, the performance of the forward method deteriorates (Fig.~\ref{fig:exp_comp_noise}b), while \textsc{JKOnet}, constrained to move points with OT maps, is robust (Fig.~\ref{fig:exp_comp_noise}a).% This shows that the forward method is able to learn a network such that, on average, the ensemble of particles $(\nabla F_\xi)_{\sharp} \mu_t$ fits $\mu_{t+1}$, without, however
+We demonstrate this by comparing the robustness of both \textsc{JKOnet} and the forward method to noise. For this, we corrupt $20\%$ or $30\%$ of the training data on the example of the semicircle trajectory with different levels of noise (see \cref{fig:task_overview}). We insist that noise is only added at training time, as random shifts on both feature dimensions, while we test on the original semicircle trajectory.
+In low noise regimes, where train and test data are similar, the forward method overfits and performs marginally better than \textsc{JKOnet} (see \cref{fig:exp_comp_noise}c,d). As noise increases, the performance of the forward method deteriorates (\cref{fig:exp_comp_noise}b), while \textsc{JKOnet}, constrained to move points with OT maps, is robust (\cref{fig:exp_comp_noise}a).% This shows that the forward method is able to learn a network such that, on average, the ensemble of particles $(\nabla F_\xi)_{\sharp} \mu_t$ fits $\mu_{t+1}$, without, however
 
-%In a second experiment, we evaluate the capacity of \textsc{JKOnet} and the forward method to extrapolate and generalize the learned trajectories, e.g., when vertically translating a line during test time (Fig.~\ref{fig:task_overfitting}).
-%Due to the less constrained energy, the \emph{forward} method perfectly resembles the seen trajectory during training, but fails to extrapolate to shifted test data (Table~\ref{tab:comp_line} in \S~\ref{app:overfitting}).
+%In a second experiment, we evaluate the capacity of \textsc{JKOnet} and the forward method to extrapolate and generalize the learned trajectories, e.g., when vertically translating a line during test time (\cref{fig:task_overfitting}).
+%Due to the less constrained energy, the \emph{forward} method perfectly resembles the seen trajectory during training, but fails to extrapolate to shifted test data (Table~\ref{tab:comp_line} in \cref{app:overfitting}).
 
-Second, we compare the resulting energy functionals $F_\xi$ and $J_\xi$ of the forward method and \textsc{JKOnet}, respectively, on the spiral trajectory (see Fig.~\ref{fig:exp_comp_spiral}).
-When learning long and complex population dynamics, teacher forcing improves training (see Fig.~\ref{fig:exp_jkonet_pot_traj}c-d).
-While facilitating training of the forward method in some settings, it likewise results in wrong energy functionals $F_\xi$ (Fig.~\ref{fig:exp_comp_spiral}a).
-\textsc{JKOnet}, on the other hand, is able to globally learn the energy functional $J_\xi$, despite being only exposed to a one-step history of snapshots during training with teacher forcing (see Fig.~\ref{fig:exp_comp_spiral}c).
+Second, we compare the resulting energy functionals $F_\xi$ and $J_\xi$ of the forward method and \textsc{JKOnet}, respectively, on the spiral trajectory (see \cref{fig:exp_comp_spiral}).
+When learning long and complex population dynamics, teacher forcing improves training (see \cref{fig:exp_jkonet_pot_traj}c-d).
+While facilitating training of the forward method in some settings, it likewise results in wrong energy functionals $F_\xi$ (\cref{fig:exp_comp_spiral}a).
+\textsc{JKOnet}, on the other hand, is able to globally learn the energy functional $J_\xi$, despite being only exposed to a one-step history of snapshots during training with teacher forcing (see \cref{fig:exp_comp_spiral}c).
 
 \subsection{Single-Cell Dynamics}
 \label{sec:jkonet_cell}
@@ -384,13 +385,13 @@ Given the samples from the cell population at day 1 to 3 (i.e., $\mathrm{data}_0
 As no ground truth trajectories are available in the data, we use distributional distances, i.e., the entropy-regularized Wasserstein distance $W_\varepsilon$ \eqref{eq:ot-reg} \citep{flamary2021pot}, to measure the correctness of the predictions at each time step.
 We hereby measure the $W_\varepsilon$ discrepancy between data and predictions for one-step ahead as well as inference of the entire evolution (all-steps ahead) for each time step $t_i$, see results in Table~\ref{tab:exp_jkonet_cell_pred}. \textsc{JKOnet} outperforms the forward method in terms of $W_\varepsilon$ \eqref{eq:ot-reg} distance for both one-step ahead and all-steps ahead predictions for all time steps. 
 The performance of both methods is relatively stable even until day 24 to 27, i.e., the $W_\varepsilon$ distance does not significantly grow for future snapshots.
-We further visualize the first two principal components of the entire dataset (Fig.~\ref{fig:exp_jkonet_cell}a) and of \textsc{JKOnet}'s predictions on the test dataset ($\sim 500$ cells per snapshot, Fig.~\ref{fig:exp_jkonet_cell}d). 
+We further visualize the first two principal components of the entire dataset (\cref{fig:exp_jkonet_cell}a) and of \textsc{JKOnet}'s predictions on the test dataset ($\sim 500$ cells per snapshot, \cref{fig:exp_jkonet_cell}d). 
 
 \paragraph{Capturing biological heterogeneity.}
 Besides measuring the ability of \textsc{JKOnet} to model and predict the spatio-temporal dynamics of embryonic stem cells, we would like to guarantee, at a more macroscopic level, that \textsc{JKOnet} is also able to learn the cell's differentiation into various cell lineages.
 Embryoid bodies differentiation covers key aspects of early embryogenesis and thus captures the development of \acrlongpl{ESC} into the mesoderm, endoderm, neuroectoderm, neural crest and others.
 
-Following \citet[Fig. 6, Suppl. Note 4]{moon2019visualizing}, we compute lineage branch classes (Fig.~\ref{fig:exp_jkonet_cell}b) for all cells based on an initial $k$-means clustering ($k=30$) in a 10-dimensional embedding space using PHATE, a non-linear dimensionality reduction method capturing a denoised representation of both local and global structure of a dataset.
+Following \citet[Fig. 6, Suppl. Note 4]{moon2019visualizing}, we compute lineage branch classes (\cref{fig:exp_jkonet_cell}b) for all cells based on an initial $k$-means clustering ($k=30$) in a 10-dimensional embedding space using PHATE, a non-linear dimensionality reduction method capturing a denoised representation of both local and global structure of a dataset.
 We then train a $k$-nearest neighbor ($k$-NN) classifier ($k=5$) to infer the lineage branch class based on a 20-dimensional \acrshort{PCA} embedding of a cell (classes: ESC: 0, neural crest: 1, neuroectoderm: 2, endoderm: 3, mesoderm: 4, other: 5).
 
 We analyze the captured lineage branch heterogeneity of the population predicted by \textsc{JKOnet} and the forward method by estimating the lineage branch class of each cell using the trained $k$-NN classifier. The predicted populations colored by the estimated lineage branch as well as the data with the true lineage branch labels are visualized in Figure~\ref{fig:exp_jkonet_cell}e and Figure~\ref{fig:exp_jkonet_cell}b, respectively.

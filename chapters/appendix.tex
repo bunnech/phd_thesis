@@ -82,7 +82,7 @@ A total of 47 features are reported, 21 morphological features and 26 protein in
 \begin{figure}
     \centering
     \includegraphics[width=.9\textwidth]{figures/fig_datasets_splits_processing.pdf}
-    \caption{\textbf{a.} The indicator matrix of all individual perturbations as well as those perturbation pairs available in combination (black) in the dataset by \citet{norman2019exploring}. \textbf{b.} Size of the different train / test splits of the dataset by \citet{norman2019exploring}. The train set contains all single perturbations as well as a decreasing number of combinations with increasing difficulty of the data split. For more details, see~\S\ref{app:datasplits}.}
+    \caption{\textbf{a.} The indicator matrix of all individual perturbations as well as those perturbation pairs available in combination (black) in the dataset by \citet{norman2019exploring}. \textbf{b.} Size of the different train / test splits of the dataset by \citet{norman2019exploring}. The train set contains all single perturbations as well as a decreasing number of combinations with increasing difficulty of the data split. For more details, see \cref{app:datasplits}.}
     \label{fig:datasets_processing}
 \end{figure}
 
@@ -91,7 +91,7 @@ A total of 47 features are reported, 21 morphological features and 26 protein in
 Constructing a systematic genetic interaction map is crucial for a better understanding of cellular mechanisms in health and disease.
 Thus, \citet{norman2019exploring} conducted single-cell, pooled transcriptional profiling of CRISPR-mediated perturbations to link genetic perturbation to its transcriptional consequences using the Perturb-Seq technology \citep{dixit2016perturb}.
 % TODO: Correct.
-The dataset consists of individual perturbations as well as joint knockouts of different genes, allowing us to study the phenotypic consequences of perturbing a pair of genes alone or in combination. The indicator matrix of all individual perturbations as well as those pairs available in combination can be found in Fig.~\ref{fig:datasets_processing}a.
+The dataset consists of individual perturbations as well as joint knockouts of different genes, allowing us to study the phenotypic consequences of perturbing a pair of genes alone or in combination. The indicator matrix of all individual perturbations as well as those pairs available in combination can be found in \cref{fig:datasets_processing}a.
 
 \paragraph{Data preprocessing.}
 \looseness -1 The data is available for download in the Gene Expression Omnibus (GEO) database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE133344}{GSE133344}.
@@ -104,7 +104,7 @@ Similar as above, for evaluation we select the top $50$ marker genes, i.e., thos
 
 \paragraph{Data splits.} \label{app:datasplits}
 For \cref{cha:condot}, we create different train / test dataset splits of increasing difficulty by following \citet{lotfollahi2021compositional}.
-The train splits hereby always contain all $92$ individual perturbations as well as varying numbers of combinations. The easiest train split contains 55 perturbations, while the test set only carries 28 combinations which are unknown in the evaluation. Consecutive splits get increasingly harder, comprising 42, 29, 16, and 4 combinations in the train set (besides all single perturbations) and 41, 54, 67, and 79 combinations in the test set, respectively (see Fig.~\ref{fig:datasets_processing}b).
+The train splits hereby always contain all $92$ individual perturbations as well as varying numbers of combinations. The easiest train split contains 55 perturbations, while the test set only carries 28 combinations which are unknown in the evaluation. Consecutive splits get increasingly harder, comprising 42, 29, 16, and 4 combinations in the train set (besides all single perturbations) and 41, 54, 67, and 79 combinations in the test set, respectively (see \cref{fig:datasets_processing}b).
 
 \subsection{\citet{moon2019visualizing}} 
 Developmental processes in biology involve tissue and organ development, body axis formation, cell division, and cell differentiation, e.g., the development of stem cells into functional cell types.
@@ -121,7 +121,7 @@ After quality control, the dataset consists of 15,150 cells and 17,945 genes.
 
 \paragraph{Feature selection.}
 We extract 4,000 \acrfull{HVG} using the 10X genomics preprocessing software \texttt{Cell Ranger} \citep{zheng2017massively} to further reduce the dimensionality of the dataset and include only the most informative genes.
-Given the resulting data matrix with 15,150 cells and 4,000 genes across 5 different time points, we compute a corresponding low-dimensional embedding using PCA. We use the first 20 or PCs for predicting population dynamics in Chapters \ref{cha:neural_pde} and \ref{cha:neural_sde}.
+Given the resulting data matrix with 15,150 cells and 4,000 genes across 5 different time points, we compute a corresponding low-dimensional embedding using PCA. We use the first 20 or PCs for predicting population dynamics in \cref{cha:neural_pde} and \ref{cha:neural_sde}.
 This is in alignment with previous analysis of developmental trajectories, which use 5 \citep{tong2020trajectorynet} and 30 PCs \citep{schiebinger2019optimal}, respectively.
 
 \paragraph{Lineage branch analysis.}
@@ -131,7 +131,7 @@ Using an initial $k$-means clustering ($k=30$) and following \citet[Fig. 6, Supp
 Details of the annotation can be found in \citet{bunne2022proximal, bunne2022recovering}.
 
 We then train a $k$-NN classifier ($k=5$) to infer the lineage branch class based on a 30-dimensional PCA embedding of a cell (ESC: 0, neural crest: 1, neuroectoderm: 2, endoderm: 3, mesoderm: 4, other: 5).
-Sections \ref{sec:jkonet_cell} \ref{sec:gsbflow_cell} thereby contain an analysis on the captured lineage branch heterogeneity of the predictions by computing the lineage branch class of each cell using the $k$-NN classifier.
+\cref{sec:jkonet_cell} and \ref{sec:gsbflow_cell} thereby contain an analysis on the captured lineage branch heterogeneity of the predictions by computing the lineage branch class of each cell using the $k$-NN classifier.
 
 \subsection{\citet{weinreb2020lineage}}
 ...
