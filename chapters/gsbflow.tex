@@ -1,7 +1,7 @@
 \chapter[Learning Dynamical Systems via OT and Stochastic Control]{Learning Dynamical Systems via Optimal Transport and Stochastic Control}
 \label{cha:neural_sde}
 
-\dictum[Erwin Schr\"odinger, \textit{What is Life?} (1944)]{%
+\dictum[Erwin Schr{\"o}dinger, \textit{What is Life?} (1944)]{%
   Living matter evades the decay to equilibrium.}%
 \vskip 1em
 
@@ -20,11 +20,11 @@ Stochastic processes provide an apt mathematical framework to encapsulate these 
 They enable us to model not just a smoothed behavior, but also the variance and distribution of outcomes, and thus allow us to capture rare but biologically significant events.
 Therefore, modeling cellular dynamics as stochastic processes is essential to capture the full spectrum of biological behaviors and understand the underlying mechanisms driving these intricate processes. 
 
-Consequently, the following chapter deals with the question on learning and identifying a stochastic process $\mathbb{P}_t$ that describes the evolution of a population at time point $t=0$, $\mu_0$ into a population at time $t=T$, where we set $T=1$ such that $\mu_1$.
-To draw parallels to \cref{sec:bio_background}, $\mu_0$ and $\mu_1$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\distinit = \mu_0$ to $\distend = \mu_1$ might provide us with an understanding on how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
+Consequently, the following chapter deals with the question of learning and identifying a stochastic process $\mathbb{P}_t$ that describes the evolution of a population at time point $t=0$, $\mu_0$ into a population at time $t=T$, where we set $T=1$ such that $\mu_1$.
+To draw parallels to \cref{sec:bio_background}, $\mu_0$ and $\mu_1$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\distinit = \mu_0$ to $\distend = \mu_1$ might provide us with an understanding of how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
 More concretely, the following chapter concerns \acrlongpl{SB}, a framework that combines the theory of optimal transport with stochastic optimal control formulations (see \cref{sec:background_sb}) and identifies a stochastic process $\mathbb{P}_t$ that represents the evolution of a thermodynamic system at almost equilibrium. 
 The chapter is thereby divided into two parts: 
-\cref{sec:gsbflow} builds on the realization that estimating such bridges is notoriously difficult. Here, we hypothesize that Gaussian approximations of the data can be used to construct a data-driven reference stochastic process needed to estimate SB. To that end, we solve the \acrshort{SB} problem with Gaussian marginals, for which we provide, as a central contribution, a closed-form solution and SDE-representation. We use these formulas to define the reference process used to estimate more complex SBs, and show that this does indeed help with its numerical solution.
+\cref{sec:gsbflow} builds on the realization that estimating such bridges is notoriously difficult. Here, we hypothesize that Gaussian approximations of the data can be used to construct a data-driven reference stochastic process needed to estimate SB. To that end, we solve the \acrshort{SB} problem with Gaussian marginals, for which we provide, as a central contribution, a closed-form solution and SDE representation. We use these formulas to define the reference process used to estimate more complex SBs and show that this does indeed help with its numerical solution.
 
 \cref{sec:sbalign} similarly proposes a new training objective for learning and parameterizing \acrshortpl{SB} by utilizing the structure of \emph{aligned} data, which naturally arises in many biological phenomena.
 While most single-cell measurement technologies are destructive (see \cref{sec:tech_background}), recent developments in molecular biology aim at overcoming this technological limitation. For example, \citet{chen2022live} propose a transcriptome profiling approach that preserves cell viability. \citet{weinreb2020lineage} clonal tracing evolving cells, allowing us to connect them to their progenitors.
@@ -34,7 +34,7 @@ Here we propose a novel algorithmic framework that, for the first time, learns \
 \label{sec:background_dsb}
 
 As described above, in order to learn the evolution of a population from $\mu_0$ to $\mu_1$, we will invoke the framework of \acrshortpl{SB}.
-Given two marginals $\distinit$ and $\distend$, we select a reference process $\refpro$ based on prior knowledge), for instance a simple Brownian motion. As discussed in \cref{sec:background_sb}, it turns out that  the solution to the general \acrshort{SB} problem \eqref{eq:schrodinger_bridge} is itself given by two coupled \acrshortpl{SDE} \eqref{eq:sb_forward}-\eqref{eq:sb_backward} \citep{leonard2013survey}, which we restate her for convenience
+Given two marginals $\distinit$ and $\distend$, we select a reference process $\refpro$ based on prior knowledge), for instance, a simple Brownian motion. As discussed in \cref{sec:background_sb}, it turns out that  the solution to the general \acrshort{SB} problem \eqref{eq:schrodinger_bridge} is itself given by two coupled \acrshortpl{SDE} \eqref{eq:sb_forward}-\eqref{eq:sb_backward} \citep{leonard2013survey}, which we restate her for convenience
 \begin{eqnarray}
 \label{eq:SB-sde-forward}
 \dsde &= \parens*{\tdriftbase +  \volatbase \SBfbase_\ctime} \dt + \volatbase \dWiener[\ctime],\quad \sde[0] \sim \distinit, \\ % \; & \sde[0] \sim \Pinit, \\
@@ -62,7 +62,7 @@ In this thesis, we consider the likelihood training framework by \citet{chen2021
 \end{subequations}
 and serve as loss functions for likelihood-based training of \acrshortpl{DSB}. Here, $\Div$ denotes the divergence operator w.r.t. the $\point$ variable: For any $v\from \R^\vdim \to \R^\vdim$, $\Div v(\point) \defeq \sum_{\coord=1}^{\vdim} \ddc v_\coord(\point)$.
 
-Unfortunately, such frameworks necessitates a forward-backward learning process known as the \acrfull{IPF} procedure \citep{fortet1940resolution, kullback1968probability}.
+Unfortunately, such frameworks necessitate a forward-backward learning process known as the \acrfull{IPF} procedure \citep{fortet1940resolution, kullback1968probability}.
 As both policies $\SBfbase_\ctime, \SBbbase_\ctime$ are initially unknown and randomly parameterized, training \acrshortpl{DSB} often results in numerical and scalability issues.
 
 Further, none of these approaches are capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:schrodinger_bridge}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein.  
@@ -71,16 +71,16 @@ In this chapter, we tackle both of these limitations: First, in \cref{sec:gsbflo
 
 \section{Data-Driven Priors for Diffusion Schr\"odinger Bridges} \label{sec:gsbflow}
 
-The \acrlong{SB} \citep{leonard2013survey, chen2021stochastic}, alternatively known as the \emph{dynamic} entropy-regularized \acrlong{OT}, has recently received significant attention from the machine learning community. In contrast to the classical \emph{static} \acrshort{OT} where one seeks a {coupling} between measures that minimizes the average cost \citep{villani2009optimal,peyre2019computational}, the goal of \acrshortpl{SB} is to find the optimal \emph{stochastic processes} that evolve a given measure into another. As such, \acrshortpl{SB} are particularly suitable for learning complex continuous-time systems, and have been successfully applied to a wide range of applications such as sampling \citep{bernton2019schr, huang2021schrodinger}, generative modeling \citep{chen2021likelihood,de2021diffusion,wang2021deep}, molecular biology \citep{holdijk2022path}, and mean-field games \citep{liu2022deep}. 
+The \acrlong{SB} \citep{leonard2013survey, chen2021stochastic}, alternatively known as the \emph{dynamic} entropy-regularized \acrlong{OT}, has recently received significant attention from the machine learning community. In contrast to the classical \emph{static} \acrshort{OT} where one seeks a coupling between measures that minimizes the average cost \citep{villani2009optimal,peyre2019computational}, the goal of \acrshortpl{SB} is to find the optimal \emph{stochastic processes} that evolve a given measure into another. As such, \acrshortpl{SB} are particularly suitable for learning complex continuous-time systems and have been successfully applied to a wide range of applications such as sampling \citep{bernton2019schr, huang2021schrodinger}, generative modeling \citep{chen2021likelihood,de2021diffusion,wang2021deep}, molecular biology \citep{holdijk2022path}, and mean-field games \citep{liu2022deep}. 
 
-%The \emph{static} optimal transport (OT) problems seek to find the optimal mapping which transforms a given probability measure into another while minimizing the 
+% The \emph{static} optimal transport (OT) problems seek to find the optimal mapping which transforms a given probability measure into another while minimizing the 
 
-%Comparing between probability measures is ubiquitous in machine learning, for which 
+% Comparing between probability measures is ubiquitous in machine learning, for which 
 %Optimal transport (OT) and entropy-regularized \acrshort{OT} problems play a pivotal role in machine learning \citep{villani2009optimal, peyre2019computational}, where one seeks a \emph{mapping} that transports between measures while minimizing the average cost. In recent years, there is a rapid growth of interest in solving the \emph{dynamical} extensions of these \acrshort{OT} problems, i.e., finding the optimal \emph{trajectories} that transport measures, with applications ranging from sampling and generative modeling \citep{} to molecular dynamics and mean-field games \citep{}. In the literature, these dynamical \acrshort{OT} problems are known as the \acrfull{SB} \citep{leonard2013survey, chen2021stochastic} due to an equivalent formulation that dates back to \citep{schrodinger1931umkehrung, schrodinger1932theorie}.
 
-%the dynamic extensions of these \acrshort{OT} problems, i.e., finding the optimal \emph{trajectories} that transport measures, have witnessed a sudden surge of interest. A particularly prominent instance of these extensions is the \acrfull{SB} \citep{schrodinger1931umkehrung, schrodinger1932theorie}, for comparing constrained \emph{stochastic processes} has attracted significant attention. Creative applications of \acrshort{SB} have already yielded success in sampling and generative modeling tasks \citep{}, while also witnessing a surging interest in fields like molecular dynamics and mean-field games \citep{}. 
+% the dynamic extensions of these \acrshort{OT} problems, i.e., finding the optimal \emph{trajectories} that transport measures have witnessed a sudden surge of interest. A particularly prominent instance of these extensions is the \acrfull{SB} \citep{schrodinger1931umkehrung, schrodinger1932theorie}, for comparing constrained \emph{stochastic processes} has attracted significant attention. Creative applications of \acrshort{SB} have already yielded success in sampling and generative modeling tasks \citep{}, while also witnessing a surging interest in fields like molecular dynamics and mean-field games \citep{}. 
 
-Despite of these impressive achievements, a common limitation of the existing works is that the \acrshortpl{SB} are typically solved in a purely {numerical} fashion. In sharp contrast, it is well-known that many important \acrshort{OT} problems for \emph{Gaussian} measures admit \emph{closed-form} solutions, and the advantages of such solutions are numerous: they have inspired new learning methods \citep{rabin2011wasserstein, vayer2019sliced, bonneel2015sliced}, they can serve as the ground truth for evaluating numerical schemes \citep{janati2020entropic}, and they have lead to the discovery of a new geometry that is both rich in theory and application \citep{takatsu2010wasserstein}. 
+Despite these impressive achievements, a common limitation of the existing works is that the \acrshortpl{SB} are typically solved in a purely {numerical} fashion. In sharp contrast, it is well-known that many important \acrshort{OT} problems for \emph{Gaussian} measures admit \emph{closed-form} solutions, and the advantages of such solutions are numerous: they have inspired new learning methods \citep{rabin2011wasserstein, vayer2019sliced, bonneel2015sliced}, they can serve as the ground truth for evaluating numerical schemes \citep{janati2020entropic}, and they have lead to the discovery of a new geometry that is both rich in theory and application \citep{takatsu2010wasserstein}. 
 
 \begin{figure}[t]
     \centering
@@ -90,29 +90,26 @@ Despite of these impressive achievements, a common limitation of the existing wo
     \label{fig:overview_gsbflow}
 \end{figure}
 
-The goal of this section is to continue this pursuit of closed-form solutions and thereby extending these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see \cref{fig:overview_gsbflow}. To this end, we make the following contributions: \vspace{8pt}
+The goal of this section is to continue this pursuit of closed-form solutions and thereby extend these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see \cref{fig:overview_gsbflow}. To this end, we make the following contributions: \vspace{8pt}
 %As a central contribution, we derive a set of new expressions for \acrfullp{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures, that covers a wide range of applications. Furthermore, our analysis reveals a
 \begin{enumerate}[leftmargin=.4cm,itemsep=.0cm,topsep=.0cm]
 \item As our central result, we derive the closed-form expressions for \acrfullpl{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures. This is a challenging task for which all existing techniques fail, and thus we need to resort to a number of new ideas from entropic \acrshort{OT}, Riemannian geometry, and generator theory; see \cref{sec:overview_gsbflow}.
-%, thereby filling the void of. %, that covers a wide range of applications.  %These formulas constitute the first non-trivial closed forms for \emph{dynamic} entropy-regularized \acrshort{OT}. %The proof combines a number of ideas from entropic optimal transport, Riemannian geometry, Gaussian analysis, and generator theory, which might be of independent interest; see \crefrange{sec:mechanics_gsbflow}{sec:results_gsbflow}.
+% These formulas constitute the first non-trivial closed forms for \emph{dynamic} entropy-regularized \acrshort{OT}. %The proof combines a number of ideas from entropic optimal transport, Riemannian geometry, Gaussian analysis, and generator theory, which might be of independent interest.
 
 \item We extend the deep connection between geometry and Gaussian \acrshort{OT} to \acrlongpl{GSB}. In particular, our results can be seen as a vast generalization of the classical Bures-Wasserstein geodesics between Gaussian measures \citep{takatsu2010wasserstein, bhatia2019bures}, which is the foundation of many computational methods \citep{chewi2020gradient, altschuler2021averaging, han2021riemannian}.
 
-\item Via a simple Gaussian approximation on real \emph{single-cell genomics} data, we numerically demonstrate that many benefits of the closed-form expressions in static \acrshort{OT} immediately carry over to \acrshort{SB}-based learning methods: We report improved numerical stability and tuning insensitivity when trained on benchmark datasets, which ultimately lead to an overall better performance.
-
+\item Via a simple Gaussian approximation on real \emph{single-cell genomics} data, we numerically demonstrate that many benefits of the closed-form expressions in static \acrshort{OT} immediately carry over to \acrshort{SB}-based learning methods: We report improved numerical stability and tuning insensitivity when trained on benchmark datasets, which ultimately lead to overall better performance.
 \end{enumerate}
-
 
 \subsection{Preliminaries on Gaussian Optimal Transport}
 \label{sec:prelim_gsbflow}
 
 Throughout this chapter, let $\xi \sim \Ncal(\mu, \Sigma)$ and $\xi' \sim \Ncal(\mu', \Sigma')$ denote two given Gaussian random variables. By abusing the notation, we will continue to denote the measures of these Gaussians by $\xi$ and $\xi'$, respectively. We will also denote by $\Pi(\xi,\xi')$ the set of all their couplings. 
 
-
 \subsubsection{Static Gaussian Optimal Transport}
 \label{sec:staticGOT}
 
-% TODO: Give reference to Background chapter.
+% TODO: Give reference to the Background chapter.
 The \emph{static} entropy-regularized \acrshort{OT} between Gaussians refers to the following minimization problem \citep{peyre2019computational}:
 % An important class of problems which generalizes \eqref{eq:W2Gaussian}, is the static entropy-regularized \acrshort{OT} between Gaussians:
 \begin{equation}
@@ -122,7 +119,7 @@ The \emph{static} entropy-regularized \acrshort{OT} between Gaussians refers to 
 \end{equation}where $\xi\otimes\xi'$ denotes the product measure of $\xi$ and $\xi'$, and $\sigma \geq 0$ is a regularization parameter. When $\sigma = 0$, \eqref{eq:RegW2Gaussian} reduces to the classical 2-Wasserstein distance between $\xi$ and $\xi'$ \citep{villani2009optimal}, whose closed-form solution is classical \citep{dowson1982frechet, olkin1982distance}. The case for general $\sigma$ is more involved, and an analytical expression was only recently found \citep{bojilov2016matching, del2020statistical, janati2020entropic, mallasto2021entropy}: Setting% the specific form is quite convoluted, and thus we defer it to \cref{app:gaussian_sb}.
 \begin{equation}
 \label{eq:Cstar}
-D_\sigma \defeq \parens{ 4\Sigma^{\frac{1}{2}} \Sigma' \Sigma^{\frac{1}{2}} +  \sigma^4\eye  }^{\frac{1}{2}},\quad C_\sigma \defeq \frac{1}{2}\parens{\Sigma^{\frac{1}{2}} D_\sigma \Sigma^{-\frac{1}{2}} - \sigma^2\eye},
+D_\sigma \defeq \parens{ 4\Sigma^{\frac{1}{2}} \Sigma' \Sigma^{\frac{1}{2}} + \sigma^4\eye  }^{\frac{1}{2}},\quad C_\sigma \defeq \frac{1}{2}\parens{\Sigma^{\frac{1}{2}} D_\sigma \Sigma^{-\frac{1}{2}} - \sigma^2\eye},
 \end{equation}
 then the solution $\pi^\star$ to \eqref{eq:RegW2Gaussian} is itself a Gaussian:
 \begin{align}
@@ -140,7 +137,7 @@ C_\sigma^\top&\Sigma'
 \label{sec:dynamicGOT-BB}
 
 % TODO: Homogenize v_t notation to Background chapter.
-In the literature, \eqref{eq:RegW2Gaussian} is commonly referred to as the \emph{static} \acrshort{OT} formulation, since it merely asks \emph{where} the mass should be transported to (i.e., $\pi(\point,\pointalt)$ dictates how much mass at $\point$ should be transported to $\pointalt$). In contrast, the more general problem of \emph{dynamic} Gaussian \acrshort{OT} seeks to answer \emph{how} the mass the should be transported:
+In the literature, \eqref{eq:RegW2Gaussian} is commonly referred to as the \emph{static} \acrshort{OT} formulation since it merely asks \emph{where} the mass should be transported to (i.e., $\pi(\point,\pointalt)$ dictates how much mass at $\point$ should be transported to $\pointalt$). In contrast, the more general problem of \emph{dynamic} Gaussian \acrshort{OT} seeks to answer \emph{how} the mass the should be transported:
 \begin{align}
 \label{eq:BBGaussian}
 \min_{\ssstyle\substack{{\measure[0] = \xi,\ \measure[\horizon] = \xi'}}} \exof*{\int_{0}^\horizon  \frac{1}{2} \norm{\vect}^2 + \frac{\sigma^4}{8} \norm*{\nabla\log\measure}^2 \dt}.
@@ -149,7 +146,7 @@ In the literature, \eqref{eq:RegW2Gaussian} is commonly referred to as the \emph
 \label{eq:Coneq}
 \pt\measure = - \Div(\measure \vect),
 \end{equation}
-where $\left(\Div \vect\right)(\point) \coloneqq \sum_{i=1}^d \frac{\partial}{\partial \point_i}v^{i}(\point)$ denotes the divergence operator with respect to the $\point$ variable. It can be shown that, if $\measure^\star$ is the optimal curve for \eqref{eq:BBGaussian}, then the joint distribution of the end marginals $(\measurebase^\star_0, \measurebase_1^\star)$ coincides with \eqref{eq:StaticGaussianSB-sol}, hence the interpretation of $\measure^\star$ as the optimal \emph{trajectory} in the space of measures  \citep{chen2016relation, gentil2017analogy, chen2021stochastic, gentil2020dynamical}.
+where $\left(\Div \vect\right)(\point) \coloneqq \sum_{i=1}^d \frac{\partial}{\partial \point_i}v^{i}(\point)$ denotes the divergence operator with respect to the $\point$ variable. It can be shown that if $\measure^\star$ is the optimal curve for \eqref{eq:BBGaussian}, then the joint distribution of the end marginals $(\measurebase^\star_0, \measurebase_1^\star)$ coincides with \eqref{eq:StaticGaussianSB-sol}, hence the interpretation of $\measure^\star$ as the optimal \emph{trajectory} in the space of measures  \citep{chen2016relation, gentil2017analogy, chen2021stochastic, gentil2020dynamical}.
 
 To our knowledge, the only work that has partially addressed the closed-form solution of \eqref{eq:BBGaussian} is \citet{mallasto2021entropy}, whose results are nonetheless insufficient to cover important applications such as generative modeling. In \cref{sec:results_gsbflow}, we will derive a vast generalization of the results in \citet{mallasto2021entropy} and provide a detailed comparison in \crefrange{sec:overview_gsbflow}{sec:mechanics_gsbflow}.
 
@@ -160,10 +157,10 @@ To our knowledge, the only work that has partially addressed the closed-form sol
 
 The purpose of this section is to introduce the core objectives of this part of the thesis, i.e., the \acrlongpl{GSB}, and establish their connection to the Gaussian \acrshort{OT} problems in \cref{sec:prelim_gsbflow}. To help the reader navigate our somewhat technical proofs in \crefrange{sec:mechanics_gsbflow}{sec:results_gsbflow},  we illustrate in \cref{sec:tere} the high-level challenges as well as our new techniques for solving \acrlongpl{GSB}.
 
-\subsubsection{Schr\"odinger Bridges as Dynamic Entropy-Regularized Optimal Transport}
+\subsubsection{Schr{\"o}dinger Bridges as Dynamic Entropy-Regularized Optimal Transport}
 
 
-Let $\nu, \nu'$ be two given measures and let $\refpro$ be an arbitrary stochastic process. In its most generic form, the \acrlong{SB} refers to the following constrained KL-minimization problem over all stochastic processes $\Pmargin$ \citep{leonard2013survey, chen2021stochastic}: 
+Let $\nu, \nu'$ be two given measures, and let $\refpro$ be an arbitrary stochastic process. In its most generic form, the \acrlong{SB} refers to the following constrained KL-minimization problem overall stochastic processes $\Pmargin$ \citep{leonard2013survey, chen2021stochastic}: 
 \begin{equation}
 \label{eq:SB}
 %\tag{SB}
@@ -171,7 +168,7 @@ Let $\nu, \nu'$ be two given measures and let $\refpro$ be an arbitrary stochast
 \end{equation}
 
 
-In practice, $\nu$ and $\nu'$ typically arise as the (empirical) \emph{marginal} distributions of a complicated continuous-time dynamics observed at the starting and end times, and $\refpro$ is a ``prior process'' representing our belief of the dynamics before observing any data. The solution $\Pstar$ to \eqref{eq:SB} is thus interpreted as the best dynamics that conforms to the prior belief $\refpro$ while respecting the data marginals ($\Pstar[0] = \nu, \Pstar[\horizon] = \nu'$). 
+In practice, $\nu$ and $\nu'$ typically arise as the (empirical) \emph{marginal} distributions of complicated continuous-time dynamics observed at the starting and end times, and $\refpro$ is a ``prior process'' representing our belief of the dynamics before observing any data. The solution $\Pstar$ to \eqref{eq:SB} is thus interpreted as the best dynamics that conforms to the prior belief $\refpro$ while respecting the data marginals ($\Pstar[0] = \nu, \Pstar[\horizon] = \nu'$). 
 
 We will consider a general class of $\refpro$'s that includes most existing processes in the machine learning applications of \acrshortpl{SB}. Specifically, with some initial condition $\refsde[0]$, we will take $\refpro$ to be the measure of the linear \acrfull{SDE}:
 % To facilitate the numerical solutions of \eqref{eq:SB}, $\refpro$ is typically chosen so that conditional distributions given initial points admit a simple expression. To this end, we will consider the following general class of \acrfullp{SDE} which incorporates, to our knowledge, all the existing processes in the literature: With some initial condition $\refsde[0]$, take $\refpro$ to be the measure of
@@ -233,30 +230,23 @@ At first sight, this might suggest that one can extend existing tools in Gaussia
 
 \item \textbf{Ad hoc computations:} When $\sigma>0$ in \eqref{eq:BBGaussian}, the problem is no longer reducible to a convex program \citep{leonard2013survey, chen2021stochastic}. In this case, the only technique we are aware of is the ad hoc approach of \citep{mallasto2021entropy}, which manages to find a closed form for \eqref{eq:BBGaussian} (and thus $\sigma\Wiener$-\acrshortpl{GSB}) through a series of brute-force computations.
 
-\item \textbf{Control theory:} On a related note, in a series of papers, \citet{chen2015optimal,chen2016relation,chen2018optimal} exploit the deep connection between $\sigma\Wiener$-\acrshortpl{GSB} and control theory to study the \emph{existence} and \emph{uniqueness} of the solutions. Although a variety of new optimality conditions are derived in these works, they are all expressed in terms differential equations with coupled initial conditions, and it is unclear whether solving these differential equations is an easier task than \eqref{eq:GSB} itself. In particular, no closed-form, even for $\sigma\Wiener$-\acrshortpl{GSB}, can be found therein.
+\item \textbf{Control theory:} On a related note, in a series of papers, \citet{chen2015optimal,chen2016relation,chen2018optimal} exploit the deep connection between $\sigma\Wiener$-\acrshortpl{GSB} and control theory to study the \emph{existence} and \emph{uniqueness} of the solutions. Although a variety of new optimality conditions are derived in these works, they are all expressed in terms of differential equations with coupled initial conditions, and it is unclear whether solving these differential equations is an easier task than \eqref{eq:GSB} itself. In particular, no closed-form, even for $\sigma\Wiener$-\acrshortpl{GSB}, can be found therein.
 \end{itemize}
 
 By \cref{thm:gsbtobb}, \acrshortpl{GSB} are more general than \eqref{eq:BBGaussian} and thus irreducible to convex programs, so there is no hope for the convex route. As for ad hoc computations, the time-dependent $\driftf$ and $\volat[\ctime]$ terms in \eqref{eq:dynamicGSB} present a serious obstruction for generalizing the approach of \citet{mallasto2021entropy} to $\refsde$-\acrshortpl{GSB} when $\driftf \neq 0$ or $\volat[\ctime]$ is not constant; this is exemplified by the convoluted expressions in our \cref{thm:gaussian_sb}, which hopefully will convince the reader that they are beyond any ad hoc guess. Finally, the control-theoretic view has so far fallen short of producing closed-form solutions even for $\sigma\Wiener$-\acrshortpl{GSB}, so it is essentially irrelevant for our purpose. 
 
 To conclude, in order to find an analytic expression for general \acrshortpl{GSB}, we will need drastically different techniques.
 
-
-
-
-
 \paragraph{Our approach.}
 
 To overcome the aforementioned challenges, in \cref{sec:mechanics_gsbflow}, we will first develop a principled framework for analyzing the closed-form expressions of $\sigma\Wiener$-\acrshortpl{GSB}, i.e., \eqref{eq:BBGaussian}. Unlike the ad hoc approach of \citet{mallasto2021entropy} which is very specific to \acrlongpl{BM}, our analysis reveals the general role played by the \emph{Lyapunov operator} (see \eqref{eq:lya}) on covariance matrices, thereby essentially reducing the solutions of \acrshortpl{GSB} to solving a matrix equation. This route is enabled via yet another equivalent formulation of \eqref{eq:BBGaussian}, namely the action minimization problem on the \emph{Bures-Wasserstein geometry}, which has recently emerged as a rich source for inspiring new computational methods \citep{chewi2020gradient, altschuler2021averaging, han2021riemannian}. In \cref{sec:results_gsbflow}, we show how the insight gained from our geometric framework in \cref{sec:mechanics_gsbflow} can be easily adapted to \acrshortpl{GSB} with general reference processes, which ultimately leads to the full resolution of \eqref{eq:GSB}.
 
-
 \subsection{The Bures-Wasserstein Geometry of $\sigma\Wiener$-Gaussian Schr\"odinger Bridges}
 \label{sec:mechanics_gsbflow}
 
-
 This section illustrates the simple geometric intuition that underlies the somewhat technical proof of our main result (cf. \cref{thm:gaussian_sb}). After briefly reviewing the action minimization problems on Euclidean spaces in \cref{sec:actionRd}, we present the main observation in \cref{sec:actionBW}: $\sigma\Wiener$-\acrshortpl{GSB} are but action minimization problems on the Bures-Wasserstein manifolds, which can be tackled by following a standard routine in physics. 
 
- 
-\subsubsection{A Brief Review on Action Minimization Problems}% in Euclidean and Riemannian Settings}
+\subsubsection{A Brief Review on Action Minimization Problems} % in Euclidean and Riemannian Settings}
 \label{sec:actionRd}
 
 Following the connections established in \cref{sec:background_control}, let us consider the following \emph{action minimization} problem with fixed endpoints $\point, \point' \in \R^\vdim$:
@@ -282,7 +272,6 @@ More generally, one can consider \eqref{eq:Euclid_Lag} on any \emph{Riemannian m
 % The Benamou-Brenier \acrshort{OT} problem \eqref{eq:BBGaussian} can be posed for any pair of measures and is thus not restricted to Gaussians. However, since Gaussians are uniquely determined by their means and covariances, specializing the Benamou-Brenier \acrshort{OT} to Gaussians 
 
 \looseness -1 We begin with the following simple observation. Based on the seminal work by \citet{otto2001geometry}, \citet{gentil2020dynamical} show that \acrshortpl{SB} between two arbitrary measures can be formally understood as an action minimization problem of the form \eqref{eq:Euclid_Lag} on an \emph{infinite}-dimensional manifold. Since we have restricted the measures in \eqref{eq:GSB} to be Gaussian, and since Gaussian measures are uniquely determined by their means and covariances, \citet{gentil2020dynamical} strongly suggests a \emph{finite}-dimensional geometric interpretation of $\sigma\Wiener$-\acrshortpl{GSB}. The main result in this section, \cref{thm:mechanics} below, makes this link precise.
-
 
 The proper geometry we need is the \emph{Bures-Wasserstein manifold} \citep{takatsu2010wasserstein, bhatia2019bures} defined as follows. Consider the space of covariance matrices (i.e., symmetric positive definite matrices) of dimension $\vdim$, which we denote by $\SPD$, and consider its natural {tangent space} as the space of symmetric matrices:
 \begin{equation}
@@ -345,13 +334,10 @@ Armed with \cref{lem:lyapMain}, it is straightforward to verify that $\lyap = \H
    \Ht^\top\Sigmasolinv \cdot \Sigmasolinv + \Sigmasolinv \cdot\Sigmasolinv \Ht &= \Ht^\top +  \Ht= \dSigmasol
 \end{align}which is more or less equivalent to the original Euler-Lagrange equation \eqref{eq:el-bw}; we defer the details to \cref{app:proofmechanics}.
 
-
 To conclude, in contrast to the purely technical approach of \citet{mallasto2021entropy}, our \cref{thm:mechanics} provides a geometric and conceptually clean solution for $\sigma\Wiener$-\acrshortpl{GSB}: Compute the Lyapunov operator $\lyap$ via verifying the symmetry of the matrix in \cref{lem:lyapMain}. \emph{It turns out that this technique can be readily extended to general \acrshortpl{GSB}}, and therefore serves as the foundation for the proof of our main result; see \cref{sec:results_gsbflow}.
 
-
 \paragraph{Remark.}
-It is interesting to note that the matrix $\Ht$ in \eqref{eq:HtMain} is itself \emph{not} symmetric. Other consequences of \cref{thm:mechanics} that might be of independent interest can be found in \cref{sec:interesting}. We also note that, when $\sigma = 0$, the solution to \eqref{eq:LagBW} is simply the Wasserstein geodesic between Gaussian measures, whose formula is well-known \citep{dowson1982frechet, takatsu2010wasserstein}. However, as explained in \cref{sec:overview_gsbflow}, the case of $\sigma > 0$ requires a completely different analysis since, unlike when $\sigma = 0$, it is not reducible to a convex program. This leads to the significantly more involved proofs of \cref{thm:mechanics} and of \eqref{eq:solMain} in \citet{mallasto2021entropy}.
-
+It is interesting to note that the matrix $\Ht$ in \eqref{eq:HtMain} is itself \emph{not} symmetric. Other consequences of \cref{thm:mechanics} that might be of independent interest can be found in \cref{sec:interesting}. We also note that when $\sigma = 0$, the solution to \eqref{eq:LagBW} is simply the Wasserstein geodesic between Gaussian measures, whose formula is well-known \citep{dowson1982frechet, takatsu2010wasserstein}. However, as explained in \cref{sec:overview_gsbflow}, the case of $\sigma > 0$ requires a completely different analysis since, unlike when $\sigma = 0$, it is not reducible to a convex program. This leads to the significantly more involved proofs of \cref{thm:mechanics} and of \eqref{eq:solMain} in \citet{mallasto2021entropy}.
 
 \subsection{Closed-Form Solutions of General Gaussian Schr\"odinger Bridges}
 \label{sec:results_gsbflow}
@@ -369,7 +355,7 @@ We need the following background knowledge on the linear \acrshort{SDE} $\refsde
 \label{eq:linearsdesol}
 \refsde = \aggtime  \parens*{\refsde[0] +  \int_0^\ctime  \aggtimeinv[\ctimealt]\shift[\ctimealt]  \dd \ctimealt + \int_0^\ctime {\aggtimeinv[\ctimealt]}{ \volat[\ctimealt] } \dWiener }.
 \end{align}
-%where $\aggtime \defeq \exp\parens*{  \int_0^\ctime \drift[\ctimealt] \dd \ctimealt}$.
+% where $\aggtime \defeq \exp\parens*{  \int_0^\ctime \drift[\ctimealt] \dd \ctimealt}$.
 
 Another crucial fact in our analysis is that $\refsde$ is a \emph{Gaussian process given $\refsde[0]$}, and is thus characterized by the first two moments. Using the independent increments of $\Wiener$ and It\^o's isometry \citep{protter2005stochastic}, we compute:
 \begin{align}
@@ -390,7 +376,7 @@ Another crucial fact in our analysis is that $\refsde$ is a \emph{Gaussian proce
 \subsubsection{Main Result}
 \label{sec:GaussianSB-main}
 
-% TODO: Increase size of table.
+% TODO: Increase the size of the table.
 {\setlength\doublerulesep{0.4pt}
 \begin{table*}[!ht]
 \vspace{-7mm}
@@ -428,26 +414,25 @@ $\shift$-\acrshort{BDT}   & \makecell{$\scriptstyle\drift \equiv 0$\\$\scriptsty
 \end{table*}
 } 
 
-
 We now present the main result of this section. With the important application of diffusion-based models in mind, we will not only derive solution curves as in \eqref{eq:solMain} but also their \acrshort{SDE} representations.
 
 Let $\xi= \Ncal(\m,\covar)$ and $\xi' = \Ncal(\malt,\covaralt)$ be two arbitrary Gaussian distributions in \eqref{eq:GSB}, and let $\D, \Cstar$ be as defined in \eqref{eq:Cstar}.
-%Set $D_\sigma \defeq \parens{ 4\covar^{\frac{1}{2}} \covaralt \covar^{\frac{1}{2}} +  \sigma^4\eye  }^{\frac{1}{2}}$ and $C_\sigma \defeq \frac{1}{2}\parens{\covar^{\frac{1}{2}} D_\sigma \covar^{-\frac{1}{2}} - \sigma^2\eye}$.
-%We will adopt the following notation from \citep{janati2020entropic}:
-%\begin{align}
-%\nn
-%D_\sigma \defeq \parens*{ 4\covar^{\frac{1}{2}} \covaralt \covar^{\frac{1}{2}} +  \sigma^4\eye  }^{\frac{1}{2}}, \quad
-%C_\sigma \defeq \frac{1}{2}\parens*{\covar^{\frac{1}{2}} D_\sigma \covar^{-\frac{1}{2}} - \sigma^2\eye},
-%\end{align}
-%where $\sigma>0$ is to be determined later.
-%Let $ \ratio \defeq {\frac{t}{T}}, \ratioc \defeq 1-\ratio$, and define $P_\ctime \defeq \ratio \covaralt + \ratioc C$, $Q_t \defeq \ratioc\covar + \ratio C$. Let $\xi_t \sim \Ncal\parens{\mu_t,\Sigma_t}$ where
-%\begin{align}
-%\label{eq:Psolmean}
-%\mu_t &= \ratioc\m + \ratio\malt, \\
-%\label{eq:Psolcov}
-%\Sigma_t &= \ratioc^2 \covar + \ratio^2 \covaralt + \ratio\ratioc\parens*{C + C^\top + \horizon\eye }.
-%\end{align}
-%Our main result in this section is:
+% Set $D_\sigma \defeq \parens{ 4\covar^{\frac{1}{2}} \covaralt \covar^{\frac{1}{2}} +  \sigma^4\eye  }^{\frac{1}{2}}$ and $C_\sigma \defeq \frac{1}{2}\parens{\covar^{\frac{1}{2}} D_\sigma \covar^{-\frac{1}{2}} - \sigma^2\eye}$.
+% We will adopt the following notation from \citep{janati2020entropic}:
+% \begin{align}
+% \nn
+% D_\sigma \defeq \parens*{ 4\covar^{\frac{1}{2}} \covaralt \covar^{\frac{1}{2}} +  \sigma^4\eye  }^{\frac{1}{2}}, \quad
+% C_\sigma \defeq \frac{1}{2}\parens*{\covar^{\frac{1}{2}} D_\sigma \covar^{-\frac{1}{2}} - \sigma^2\eye},
+% \end{align}
+% where $\sigma>0$ is to be determined later.
+% Let $ \ratio \defeq {\frac{t}{T}}, \ratioc \defeq 1-\ratio$, and define $P_\ctime \defeq \ratio \covaralt + \ratioc C$, $Q_t \defeq \ratioc\covar + \ratio C$. Let $\xi_t \sim \Ncal\parens{\mu_t,\Sigma_t}$ where
+% \begin{align}
+% \label{eq:Psolmean}
+% \mu_t &= \ratioc\m + \ratio\malt, \\
+% \label{eq:Psolcov}
+% \Sigma_t &= \ratioc^2 \covar + \ratio^2 \covaralt + \ratio\ratioc\parens*{C + C^\top + \horizon\eye }.
+% \end{align}
+% Our main result in this section is:
 \begin{restatable}{theorem}{GaussianSB}
 \label{thm:gaussian_sb}
 Denote by $\Psol$ the solution to \acrlongpl{GSB} \eqref{eq:GSB}. Set 
@@ -472,7 +457,7 @@ Then the following holds:
 \meansol &\defeq \ratioc \m + \ratio \malt + \tshift - \ratio \tshift[\horizon], \\
 \label{eq:covsol}
 \Sigmasol&\defeq \ratioc^2\covar + \ratio^2 \covaralt + \ratio\ratioc \parens*{ C_{\sigma_\star} + C_{\sigma_\star}^\top } +  \kernel[\ctime][\ctime]  \parens*{ 1- \efftr } \eye.
-\end{align}%Then the marginal variable $\Xsol \sim \Psol$ follows $\Ncal\parens*{\meansol,\Sigmasol}$.
+\end{align} % Then the marginal variable $\Xsol \sim \Psol$ follows $\Ncal\parens*{\meansol,\Sigmasol}$.
 \item $\Xsol$ admits a closed-form representation as the \acrshort{SDE}:
 \begin{align}
 \label{eq:GSB-forward-sol}
@@ -487,56 +472,52 @@ Then the following holds:
 
 As in \cref{thm:mechanics}, the key step in the proof of \cref{thm:gaussian_sb} is to recognize the symmetry of the matrix $\St^\top \Sigmasolinv$ where $\St$, defined in \eqref{eq:functions}, simply becomes the $\Ht$ in \cref{lem:lyapMain} (up to an additive factor of $\frac{\sigma^2\bar{t}}{2}\eye$) for $\sigma\Wiener$-\acrshortpl{GSB}. Although this can be directly verified via generalizing \cref{lem:lyapMain}, the computation becomes quite tedious, so our proof of \cref{thm:gaussian_sb} will follow a slightly different route. In any case, given the symmetry of $\St^\top \Sigmasolinv$, the proof simply boils down to a series of straightforward calculations; see \cref{app:gaussian_sb}.
 
-
 \paragraph{Closed forms for conditional distributions.}
 In many practical applications such as generative modeling, a requirement to employ the \acrshort{SDE} representation of \acrshortpl{GSB} in \eqref{eq:GSB-forward-sol} is that its \emph{conditional distributions} given the initial points can be computed efficiently. As an immediate corollary of \cref{thm:gaussian_sb}, we obtain the following closed-form expressions for these conditional distributions. % Importantly, this will allow us to perform a \emph{pretraining} procedure, described in detail in \cref{sec:methods}, for \emph{both} the forward and the backward drifts in the likelihood objectives \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}.%, which will prove extremely valuable in practice.
 \begin{restatable}{corollary}{GSBMargins}
 \label{cor:GSB-Margins}
-Let $\Xsol \sim \Psol$ be the the solution to \eqref{eq:GSB}. Then the conditional distribution of $\Xsol$ given end points has a simple solution: $\Xsol \vert \Xsol[0] = x_0 \sim \Ncal\parens*{  \cmeansol{\ctime}{0}, \cSigmasol{\ctime}{0} }$, where
+Let $\Xsol \sim \Psol$ be the solution to \eqref{eq:GSB}. Then the conditional distribution of $\Xsol$ given endpoints has a simple solution: $\Xsol \vert \Xsol[0] = x_0 \sim \Ncal\parens*{  \cmeansol{\ctime}{0}, \cSigmasol{\ctime}{0} }$, where
 \begin{align}
-%\nn
+% \nn
 \cmeansol{\ctime}{0} 
 &= \ratioc x_0 + \ratio \parens*{   \malt + C_{\sigma_\star}^\top \covar^{-1}(x_0 - \m) } + \tshift - \ratio \tshift[\horizon], %\\
 \label{eq:cmean-marginal-0}
-%&= \ratioc x_0 + \ratio \cmeansol{\horizon}{0} + \tshift - \ratio \tshift[\horizon], \\
+% &= \ratioc x_0 + \ratio \cmeansol{\horizon}{0} + \tshift - \ratio \tshift[\horizon], \\
 \\
-%\nn
+% \nn
 \cSigmasol{\ctime}{0} &= \ratio^2 \parens*{ \covaralt - \Cstar^\top \covar^{-1}\Cstar } + \kernel[\ctime][\ctime]  \parens*{ 1- \efftr } \eye. %\\
 \label{eq:csigma-marginal-0}
-%&= \ratio^2 \cSigmasol{\horizon}{0} +  \kernel[\ctime][\ctime]  \parens*{ 1- \efftr } \eye.
+% &= \ratio^2 \cSigmasol{\horizon}{0} +  \kernel[\ctime][\ctime]  \parens*{ 1- \efftr } \eye.
 \end{align}
 Similarly, $\Xsol \vert \Xsol[\horizon] = x_{\horizon} \sim \Ncal\parens*{  \cmeansol{\ctime}{\horizon}, \cSigmasol{\ctime}{\horizon} }$, where
 \begin{align}
-%\nn
+% \nn
 \cmeansol{\ctime}{\horizon} 
 &= \ratio x_{\horizon} + \ratioc \parens*{   \m + C_{\sigma_\star} \covaralt^{-1}(x_{\horizon} - \malt) } + \tshift - \ratio \tshift[\horizon], %\\
 \label{eq:cmean-marginal-T} \\
-%&= \ratio x_{\horizon} + \ratioc \cmeansol{0}{\horizon} + \tshift - \ratio \tshift[\horizon], \\
+% &= \ratio x_{\horizon} + \ratioc \cmeansol{0}{\horizon} + \tshift - \ratio \tshift[\horizon], \\
 %\nn
 \cSigmasol{\ctime}{\horizon} &= \ratioc^2 \parens*{ \covar - \Cstar \covaralt^{-1}\Cstar^{\top} } + \kernel[\ctime][\ctime]  \parens*{ 1- \efftr } \eye. %\\
 \label{eq:csigma-marginal-T}
-%&= \ratioc^2 \cSigmasol{0}{\horizon} +  \kernel[\ctime][\ctime]  \parens*{ 1- \efftr } \eye.
+% &= \ratioc^2 \cSigmasol{0}{\horizon} +  \kernel[\ctime][\ctime]  \parens*{ 1- \efftr } \eye.
 \end{align}
 \end{restatable}
-%The proof is a straightforward combination of \eqref{eq:Xsol}, \cref{lem:Cond-Gaussians}, and \eqref{eq:meansol}\textendash\eqref{eq:covsol}.
-
+% The proof is a straightforward combination of \eqref{eq:Xsol}, \cref{lem:Cond-Gaussians}, and \eqref{eq:meansol}\textendash\eqref{eq:covsol}.
 
 \textbf{Examples of \acrshortpl{GSB}.}
-Our framework captures most popular reference \acrshortpl{SDE} in the machine learning literature as well as other mathematical models in financial engineering; see \cref{tab:examples}.%, where one can simply plug in the corresponding entry into \eqref{eq:GSB-forward} to yield the desirable \acrshort{GSB}. 
-~A non-exhaustive list includes:
+Our framework captures the most popular reference \acrshortpl{SDE} in the machine learning literature as well as other mathematical models in financial engineering; see \cref{tab:examples}. % where one can simply plug in the corresponding entry into \eqref{eq:GSB-forward} to yield the desirable \acrshort{GSB}. 
+A non-exhaustive list includes:
 \begin{itemize}[leftmargin=.5cm,itemsep=.01cm,topsep=0cm]
-\item The basic \acrfull{BM} and the \acrfull{OU} processes, both widely adopted as the reference process for \acrshort{SB}-based models \citep{de2021simulating, de2021diffusion, lavenant2021towards, vargas2021solving, wang2021deep}. We also remark that, even though \eqref{eq:covsol} is known for \acrshort{BM} \citep{mallasto2021entropy}, what is crucial in these applications is the \acrshort{SDE} presentation \eqref{eq:GSB-forward-sol}, which is new even for BM.
+\item The basic \acrfull{BM} and the \acrfull{OU} processes, both widely adopted as the reference process for \acrshort{SB}-based models \citep{de2021simulating, de2021diffusion, lavenant2021towards, vargas2021solving, wang2021deep}. We also remark that even though \eqref{eq:covsol} is known for \acrshort{BM} \citep{mallasto2021entropy}, what is crucial in these applications is the \acrshort{SDE} presentation \eqref{eq:GSB-forward-sol}, which is new even for BM.
 \item The \acrfullpl{VESDE}, which underlies the training of \acrlong{SMLD} for diffusion-based generative modeling \citep{huang2021variational, song2019generative, song2020score}.
 \item The \acrfullpl{VPSDE}, which can be seen as the continuous limit of \acrlongpl{DDPM} \citep{ho2020denoising, sohl2015deep, song2020score}, another important class of algorithms for diffusion-based generative modeling.
 \item The \emph{sub-\acrshortpl{VPSDE}} proposed by \citep{song2020score}, which are motivated by reducing the variance of \acrshortpl{VPSDE}.
 \item Several important \acrshortpl{SDE} in financial engineering, such as the \emph{Vasicek model} (which generalizes \acrshort{OU} processes) and the \emph{constant volatility $\shift$-\acrfull{BDT} model} \citep{platen2010numerical}. 
 \end{itemize}
 
-
 \subsection{\textsc{GSBflow}: Recovering Stochastic Dynamics via Gaussian Schr{\"o}dinger Bridges}
 
-Building on the closed-form solutions in \cref{sec:results_gsbflow}, we present an end-to-end learning paradigm that takes two marginal distributions $\distinit$, $\distend$ to output the reconstruction of the underlying stochastic dynamics $\Pmargin$. Because our framework relies on \acrshortpl{GSB}, we call our algorithm the \textsc{GSBflow}.
-
+Building on the closed-form solutions in \cref{sec:results_gsbflow}, we present an end-to-end learning paradigm that takes two marginal distributions $\distinit$, $\distend$ to output the reconstruction of the underlying stochastic dynamics $\Pmargin$. Because our framework relies on \acrshortpl{GSB}, we call our algorithm the \textsc{GSBflow}. \\
 
 \textbf{Step 1: Moment estimates and \acrshort{GSB} initialization.} We first compute the means $\mu_0, \mu_\horizon$ and covariances $\Sigma_0, \Sigma_\horizon$ of the input distributions, and plug them into \eqref{eq:GSB-forward} and \eqref{eq:cmean-marginal-0}-\eqref{eq:csigma-marginal-T}. Note that these computations are done only \emph{once} for every dataset, and can be reused for all subsequent training. \\
 
@@ -547,7 +528,7 @@ Building on the closed-form solutions in \cref{sec:results_gsbflow}, we present 
 \min_{ \Pinit = \distinit,\; \Pend = \distend } \KL(\Pmargin \| \refapprox).
 \end{equation}
 Following the framework of \citet{chen2021likelihood}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acrshortpl{SDE} of the form:
-%Following \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acp{SDE} of the form:
+% Following \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acp{SDE} of the form:
 \begin{subequations}
 \begin{eqnarray}
 \label{eq:GSB-sde-forward}
@@ -562,7 +543,7 @@ where \eqref{eq:GSB-sde-backward} runs backward in time. After parameterizing $\
 \allowdisplaybreaks
 \begin{subequations}
 \begin{align}
-%\label{eq:SB-loss-forward}
+% \label{eq:SB-loss-forward}
 \label{eq:loss-backward}
 \lossb =  \int_0^\horizon \mathbb{E}_{\eqref{eq:GSB-sde-forward}}\Big[ \frac{1}{2}\norm{\SBbbase^{\paramb}_\ctime}^2 &+\volatbase \Div \SBbbase^{\paramb}_\ctime + \inner{\SBfbase^{\paramf}_\ctime}{\SBbbase^{\paramb}_\ctime} \dt \Big\vert \sde[0] = \point_0 \Big] ,  \\
 \label{eq:loss-forward}
@@ -629,11 +610,8 @@ Following existing work on training \acrshort{SB}-based objectives \citep{chen20
 \end{algorithmic}
 \end{algorithm}
 
-
-
 \subsection{Empirical Evaluation}
 \label{sec:experiments}
-
 
 The purpose of our experiments is to demonstrate that, by leveraging moment information, \textsc{GSBflow} is significantly more stable compared to other \acrshort{SB}-based objectives, especially when moving beyond the \emph{generative} setting where $\distend$ is a simple Gaussian. Indeed, while performing competitively in the {generative} setting ($\Ncal_0 \rightarrow \distend$), our method \textit{outperforms} when modeling the evolution of two complex distributions ($\distinit \rightarrow \distend$), the most general and ambitious setting to estimate a bridge. This is demonstrated on synthetic data as well as a task from molecular biology concerned with modeling the dynamics of cellular systems, i.e., single-cell genomics \citep{macosko2015highly, frangieh2021multimodal, kulkarni2019beyond}.
 
@@ -674,11 +652,10 @@ Before conducting the single-cell genomics experiments, we first test \textsc{GS
 Our first task involves recovering the stochastic evolution of two-dimensional synthetic data containing two interleaving half circles ($\distend$) into a spiral ($\distinit$). 
 \cref{fig:res_synthetic} shows the trajectories learned by \textsc{GSBflow} based on the \acrshort{VESDE} (see \cref{tab:examples}). 
 
-
 While it is sufficient to parameterize only a single policy ({\color{blue} $\SBb$}) in generative modeling, the task of learning to evolve $\distinit$ into $\distend$ requires one to recover \emph{both} vector fields {\color{blue} $\SBb$} and {\color{pink} $\SBf$}.
 As demonstrated in \cref{fig:res_synthetic}, \textsc{GSBflow} is able to successfully learn both policies {\color{pink} $\SBf$} and {\color{blue} $\SBb$} and reliably recovers the corresponding targets of the forward and backward evolution. While initializing the reference process through the closed-form SB between the Gaussian approximations of both synthetic datasets provides good results, the power of \textsc{GSBflow} becomes evident in more complex applications which we tackle next.
 
-% TODO: Increase font size of figure.
+% TODO: Increase the font size of the figure.
 \begin{figure*}
      \centering
          \centering
@@ -690,54 +667,46 @@ As demonstrated in \cref{fig:res_synthetic}, \textsc{GSBflow} is able to success
 \subsubsection{Single-Cell Dynamics}
 \label{sec:gsbflow_cell}
 
-\looseness -1 Modern single-cell profiling technologies are able to provide rich feature representations (e.g., gene expression) of \textit{individual} cells at any development state. A crucial issue that arises with such profiling methods is their destructive nature: Measuring a cell requires destroying it and thus a cell cannot be measured twice. As a result, independent samples are collected at each snapshot, with no access to ground-truth single-cell trajectories throughout time, resulting in challenging, \emph{unaligned}, datasets.
-Recovering cellular dynamics from such unaligned snapshots, i.e., $\distinit$ to $\distend$, has, however, extremely important scientific and biomedical relevance \citep{kulkarni2019beyond}. For example, it determines our understanding on how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or unveils mechanisms of cell differentiation and development \citep{schiebinger2019optimal}. Following related work, in particular previous methods based on optimal transport \citep{schiebinger2019optimal, bunne2021learning, bunne2022supervised, tong2020trajectorynet}, the task is thus to learn the stochastic process that described the evolution of single cells from $\distinit$ to $\distend$.
-
+\looseness -1 Modern single-cell profiling technologies are able to provide rich feature representations (e.g., gene expression) of \textit{individual} cells at any development stage. A crucial issue that arises with such profiling methods is their destructive nature: Measuring a cell requires destroying it and thus a cell cannot be measured twice. As a result, independent samples are collected at each snapshot, with no access to ground-truth single-cell trajectories throughout time, resulting in challenging, \emph{unaligned}, datasets.
+Recovering cellular dynamics from such unaligned snapshots, i.e., $\distinit$ to $\distend$, has, however, extremely important scientific and biomedical relevance \citep{kulkarni2019beyond}. For example, it determines our understanding of how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or unveils mechanisms of cell differentiation and development \citep{schiebinger2019optimal}. Following related work, in particular previous methods based on optimal transport \citep{schiebinger2019optimal, bunne2021learning, bunne2022supervised, tong2020trajectorynet}, the task is thus to learn the stochastic process that described the evolution of single cells from $\distinit$ to $\distend$.
 
 \paragraph{Single-cell genomics via SBs.}
-Let us consider the evolution of a gene, for which we can collect the empirical distributions $\distinit,\distend$ of its expression levels at the times $t=0,1$ \citep{schiebinger2019optimal,moon2019visualizing}. Our goal is to two-fold: 
+Let us consider the evolution of a gene, for which we can collect the empirical distributions $\distinit,\distend$ of its expression levels at the times $t=0,1$ \citep{schiebinger2019optimal,moon2019visualizing}. Our goal is two-fold: 
 \begin{enumerate}[itemsep=.0cm,topsep=0cm]
 \item To solve the \textbf{generative modeling} problem, i.e., to generate $\distinit$ or $\distend$ from a standard Gaussian noise, and
 \item to \textbf{evolve} $\Pinit\to\Pend$ or $\Pend\to\Pinit$, i.e., to recover a stochastic process $\Pmargin$ satisfying $\Pinit = \distinit, \Pend = \distend$.
 \end{enumerate}
 
-
 Although there are numerous algorithms for generative modeling, to our knowledge, the only framework that can simultaneously solve both tasks is the \acrshort{SB}-based scheme recently proposed in \citep{chen2021likelihood}. In order to apply this framework, one has to choose a prior process $\refsde$, which is taken by the authors to be the high-performing \acrshort{VESDE} and sub-\acrshort{VPSDE}. These \acrshort{SB}-based methods, as well as several standard generative modeling algorithms \citep{ho2020denoising, sohl2015deep, song2020score, huang2021variational, song2019generative, song2020score} for the first task, constitute strong baselines for our experiments.
 
 \paragraph{Our choice of $\refsde$; the \textsc{GSBflow}.}
-
 
 Instead of directly diving into the numerical solution of \acrshortpl{SB} as in \citet{chen2021likelihood}, we first empirically verify that the distributions $\distinit,\distend$ in single-cell genomics are typically close to \emph{non-standard} Gaussian distributions: See \cref{fig:gaussianMain} for the canonical dataset \citep{schiebinger2019optimal}. 
 
 Since the solutions of \acrshortpl{SB} are Lipschitz in terms of $\distinit,\distend$ \citep{carlier2022lipschitz}, a reasonable approximation to the original \acrshort{SB} objective is to replace $\distinit,\distend$ by Gaussians with matching moments. This results in a \acrshort{GSB} problem which can be solved in closed form by our \cref{thm:gaussian_sb}. Intuitively, if we denote an existing prior process by $\refsde$ and the solution of its corresponding \acrshort{GSB} by $\Xsol$, then $\Xsol$ presents a more appealing prior process than $\refsde$ since it carries the moment information of $\distinit$ and $\distend$, whereas $\refsde$ is completely data-oblivious.
 
-
 Motivated by these observations, we propose a simple modification of the framework in \citet{chen2021likelihood}: Replace the prior process $\refsde$ by its \acrshort{GSB} approximation and keep everything else the same. The resulting scheme, which we term the \textsc{GSBflow}, learns a pair of forward {\color{pink} $\SBf$} and backward parametrized drifts {\color{blue} $\SBb$} that progressively transport samples from $\distinit \rightarrow \distend$ and $\distend \rightarrow \distinit$, respectively. The full algorithm is presented in \cref{alg:GSBflow} for completeness.
-
-
 
 \begin{figure*}
      \centering
      \includegraphics[width=\textwidth]{figures/fig_all_predictions.pdf}
-    \caption{\textbf{a.}-\textbf{b.} Visual evaluation of the ability of our method to model the \textbf{generation} of data from \textbf{a.} \citet{moon2019visualizing} and \textbf{b.} \citet{schiebinger2019optimal}. Density plots are visualized in 2D PCA space and show generated data points using either \textsc{GSBflow} (our method) or the procedure in~\citet{song2020score}. \textbf{c.} Evaluation of \textsc{GSBflow}'s ability to model the entire \textbf{evolution} of a developmental process of \citet{moon2019visualizing}, visualized by the data and \textsc{GSBflow} predictions colored by the lineage branch class.}
+    \caption{\textbf{a.}-\textbf{b.} Visual evaluation of the ability of our method to model the \textbf{generation} of data from \textbf{a.} \citet{moon2019visualizing} and \textbf{b.} \citet{schiebinger2019optimal}. Density plots are visualized in 2D PCA space and show generated data points using either \textsc{GSBflow} (our method) or the procedure in \citet{song2020score}. \textbf{c.} Evaluation of \textsc{GSBflow}'s ability to model the entire \textbf{evolution} of a developmental process of \citet{moon2019visualizing}, visualized by the data and \textsc{GSBflow} predictions colored by the lineage branch class.}
     \label{fig:all_results}
 \end{figure*}
 
-\looseness -1 We investigate the ability of \textsc{GSBflow} to generate cell populations $\distend$ from noise $\Ncal_0$ ($\Ncal_0 \rightarrow \distend$, \cref{fig:all_results}a, b) on the the canonical datasets \citep{moon2019visualizing, schiebinger2019optimal}; as well as to predict the dynamics of single-cell genomics ($\distinit \rightarrow \distend$, \cref{fig:all_results}c) \citep{moon2019visualizing}, i.e., the inference of cell populations $\distend$ resulting from the developmental process of an initial cell population $\distinit$, with the goal of learning individual dynamics, identify ancestor and descendant cells. 
-% In addition, in order to test our hypothesis that the moment information carried by \textsc{GSBflow} leads to a better overall performance, we scale the datasets \citep{moon2019visualizing, schiebinger2019optimal} by 20 and repeat each training procedure.
+\looseness -1 We investigate the ability of \textsc{GSBflow} to generate cell populations $\distend$ from noise $\Ncal_0$ ($\Ncal_0 \rightarrow \distend$, \cref{fig:all_results}a, b) on the canonical datasets \citep{moon2019visualizing, schiebinger2019optimal}; as well as to predict the dynamics of single-cell genomics ($\distinit \rightarrow \distend$, \cref{fig:all_results}c) \citep{moon2019visualizing}, i.e., the inference of cell populations $\distend$ resulting from the developmental process of an initial cell population $\distinit$, with the goal of learning individual dynamics, identify ancestor and descendant cells. 
+% In addition, in order to test our hypothesis that the moment information carried by \textsc{GSBflow} leads to better overall performance, we scale the datasets \citep{moon2019visualizing, schiebinger2019optimal} by 20 and repeat each training procedure.
 % We consider the development of human \acrshortpl{ESC} grown as embryoid bodies into diverse cell lineages monitored by single-cell RNA sequencing methods \citep{moon2019visualizing} as well as reprogramming \acrshortpl{MEF} into \acrshortpl{iPSC} \citep{schiebinger2019optimal}.
 The evaluation is conducted on the first 20 or 30 components of the PCA space of the >~1500 highly differentiable genes.
 
 \looseness -1 We evaluate the quality of the generated cellular states through the entropy-regularized Wasserstein distance $W_\varepsilon$
-% (\texttt{OTT}\footnote{\url{https://github.com/ott-jax/ott}})
 (see \cref{tab:exp_wasserstein_cells}) and by visualizing the first two principal components (PC), see \cref{fig:all_results}a,~b.
 \textsc{GSBflow} performs competitively on reconstructing embryoid body differentiation landscapes \citep{moon2019visualizing}, and outperforms score-based generative models baselines on the iPSC reprogramming task \citep{schiebinger2019optimal} as quantified by $W_\varepsilon$ between data and predictions.
 Further, we analyze \textsc{GSBflow}'s ability to predict the temporal evolution of embryoid body differentiation \citep{moon2019visualizing}, where cells measured at day 1 to 3 serve as samples of $\distinit$, while $\distend$ is constructed from samples between day 12 to 27. As no ground truth trajectories are available in the data, we compare the predicted evolution to the data and compare how well the heterogeneity of lineage (\cref{fig:all_results}c, upper panel) is captured.
 \cref{fig:all_results}c (lower panel) thereby closely resembles the data (see $W_\varepsilon$ in \cref{fig:all_results}c) and thus demonstrate \textsc{GSBflow}'s ability to learn cell differentiation into various lineages and to capture biological heterogeneity on a more macroscopic level.
 
-
 \subsection{Discussion}
 \looseness -1 We derive closed-form solutions of \acrshortpl{GSB}, an important class of dynamic \acrshort{OT} problems. Our technique originates from a deep connection between Gaussian \acrshort{OT} and the Bures-Wasserstein geometry, which we generalize to the case of general \acrshort{SB} problems. Numerically, we demonstrate that our new closed forms inspire a simple modification of existing \acrshort{SB}-based numerical schemes, which can however lead to significantly improved performance.
 
-\textbf{Limitation of our framework. }
+\paragraph{Limitations of our framework.}
 \looseness -1 In a broader context, we hope our results can serve as the inspiration for more learning algorithms, much like how existing closed-form solutions of Gaussian \acrshort{OT} problems have contributed to the machine learning community. We thus acknowledge a severe limitation of our closed-form solutions: These formulas require matrix inversions, which might face scalability issues for high-dimensional data. In addition, existing matrix inversion algorithms are typically extremely sensitive to the condition number, and thus our formulas are not as useful for ill-conditioned data. Lifting these constraints to facilitate further applications, such as to image datasets, is an important future work.

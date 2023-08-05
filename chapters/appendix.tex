@@ -8,14 +8,14 @@
      \includegraphics[height=.95\textheight ]{figures/fig_4i_analysis_extended.pdf}
 \end{figure}
 \captionof{figure}{
-\textbf{a.} High similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the single-cell level. Scatter plots compares the relationship between measured pERK values of cells (left) treated with Midostaurin (green dots), Palbociclib (blue dots), Panobinostat (red dots), and MLN2480 (purple dots) or (right) predicted for those drugs along the horizontal axis to their corresponding 3NN cells on the vertical axis. X mark, square, inverted triangle, and circle represent the mean of the respective measurements per drug. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{b.} The high similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the population level across all drug perturbations. Drug average of measured (blue dots) and predicted (green dots) pERK values compared to their respective 3NN measurement. Drug treatments highlighted in color correspond the those presented in panel \textbf{a.}. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{c.} Projection of measured perturbed and predicted perturbed cells in a shared UMAP space. Each cell is color-coded according to the perturbation from which it originates. \textbf{d.} Projection of mean-corrected measured perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation from which it originates. Mean correction was achieved by subtracting calculating the mean of every feature for all cells in the control condition and subtracting the calculated feature means from the feature values of individual cells. \textbf{e.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation model with which it was predicted. \textbf{f.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to its assignment to one of the 12 cell states. \textbf{g.} Feature value overview of the 12 identified cell states in DMSO-treated (control) cells. Each column represents a cell state, each row a feature. Circles are colored and scaled based on feature value, from small size in blue for low feature values, to large circles in yellow for high feature values. \textbf{h-j.} Drug effect overview of the 12 identified cell states in \textbf{h.} Staurosporine (apoptosis ind.m apoptosis inducer, \textbf{i.} Trametinib (MEKi, MEK inhibitor), MLN2480 (panRAFi, panRAF inhibitor), \textbf{j.} Trametinib + Midostaurin (Tram + Mido, MEK inhibitor + pan Receptor Tyrosine Kinase inhibitor (panRTK)), Midostaurin (panRTK). Each column represents a cell state, rows represent features. "cell-" stands for mean cell intensity. Circles are scaled based on drug effect, the larger the $\pm$ effect the larger the circles. Negative values are encoded in hues of blue, positive values in red hues of the respective circles. \textbf{k.} Effect of drug treatments on levels of cleaved Caspase 3 (cleaved Caspase 3) in the 12 identified cell states. Each column represents a cell state, each row a drug treatment.}
+\textbf{a.} High similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the single-cell level. Scatter plots compare the relationship between measured pERK values of cells (left) treated with Midostaurin (green dots), Palbociclib (blue dots), Panobinostat (red dots), and MLN2480 (purple dots) or (right) predicted for those drugs along the horizontal axis to their corresponding 3NN cells on the vertical axis. X mark, square, inverted triangle, and circle represent the mean of the respective measurements per drug. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{b.} The high similarity of measured and CellOT-predicted single-cell pERK (phosphor ERK1/2) values at the population level across all drug perturbations. Drug average of measured (blue dots) and predicted (green dots) pERK values compared to their respective 3NN measurement. Drug treatments highlighted in color correspond the those presented in panel \textbf{a.}. The dashed gray line indicates the diagonal along which the measurements would correlate perfectly. \textbf{c.} Projection of measured perturbed and predicted perturbed cells in a shared UMAP space. Each cell is color-coded according to the perturbation from which it originates. \textbf{d.} Projection of mean-corrected measured perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation from which it originates. A mean correction was achieved by subtracting calculating the mean of every feature for all cells in the control condition and subtracting the calculated feature means from the feature values of individual cells. \textbf{e.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to the perturbation model with which it was predicted. \textbf{f.} Projection of single-cell corrected, predicted perturbed cells in a UMAP space. Each cell is color-coded according to its assignment to one of the 12 cell states. \textbf{g.} Feature value overview of the 12 identified cell states in DMSO-treated (control) cells. Each column represents a cell state, and each row a feature. Circles are colored and scaled based on feature value, from small size in blue for low feature values, to large circles in yellow for high feature values. \textbf{h-j.} Drug effect overview of the 12 identified cell states in \textbf{h.} Staurosporine (apoptosis ind.m apoptosis inducer, \textbf{i.} Trametinib (MEKi, MEK inhibitor), MLN2480 (panRAFi, panRAF inhibitor), \textbf{j.} Trametinib + Midostaurin (Tram + Mido, MEK inhibitor + pan Receptor Tyrosine Kinase inhibitor (panRTK)), Midostaurin (panRTK). Each column represents a cell state, and rows represent features. "cell-" stands for mean cell intensity. Circles are scaled based on drug effect, the larger the $\pm$ effect the larger the circles. Negative values are encoded in hues of blue, and positive values in red hues of the respective circles. \textbf{k.} Effect of drug treatments on levels of cleaved Caspase 3 (cleaved Caspase 3) in the 12 identified cell states. Each column represents a cell state, and each row a drug treatment.}
 \label{fig:4i_analysis_extended}
 
 \newpage
 \begin{figure}[p]
      \centering
      \includegraphics[width=\textwidth]{figures/fig_crossspecies_ood_analysis.pdf}
-     \caption{\looseness -1 Analysis and further results of the cross species dataset. \textbf{a.} Pairwise average correlation of the PCA embeddings of the control states between species. \textbf{b.} Pairwise average correlation of the PCA embeddings of the treated states between patients, masked to only those patient pairs that showed a positive correlation in the control states. Only rat and mouse show consistent responses, i.e., a positive correlation of the control states and non-negative correlation of the respective target cells, and are thus chosen for the o.o.d. analysis. I.i.d. and o.o.d. results measured in the average gene expression for both \textbf{d.} \textsc{CellOT} and \textbf{c.} \textsc{scGen}.}
+     \caption{\looseness -1 Analysis and further results of the cross-species dataset. \textbf{a.} Pairwise average correlation of the PCA embeddings of the control states between species. \textbf{b.} Pairwise average correlation of the PCA embeddings of the treated states between patients, masked to only those patient pairs that showed a positive correlation in the control states. Only rat and mouse show consistent responses, i.e., a positive correlation of the control states and a non-negative correlation of the respective target cells, and are thus chosen for the o.o.d. analysis. I.i.d. and o.o.d. results measured in the average gene expression for both \textbf{d.} \textsc{CellOT} and \textbf{c.} \textsc{scGen}.}
      \label{fig:crossspecies_ood_analysis}
 \end{figure}
 
@@ -37,7 +37,6 @@
 
 
 \section{Datasets} \label{app:datasets}
-% TODO: Clean and finalize section.
 
 We evaluate methods introduced in this thesis on different tasks, each consisting of a pair of source $\mu$ and target measure $\nu$.
 In particular, we consider single-cell datasets in which populations of single cells have been monitored with modern high-throughput methods such as single-cell RNA sequencing or optical phenotyping technologies (see \cref{sec:tech_background}).
@@ -49,16 +48,16 @@ In the following, we introduce each dataset, describe preprocessing steps, featu
 \looseness -1 Cancer drugs reduce uncontrolled cell growth and proliferation by inhibiting DNA replication and RNA transcription as well as targeting proteins crucial for cancer progression. In doing so, they modulate downstream signaling cascades, affect cell growth and morphology, and alter gene expression profiles of single cells. 
 \citet{srivatsan2020massively} conduct a scRNA-seq-based phenotyping screen of transcriptional responses to thousands of independent perturbations at single-cell resolution.
 The measured cell population contains three well-characterized cancer cell lines, including A549, a human lung adenocarcinoma, K562, a chronic myelogenous leukemia, and MCF7, a mammary adenocarcinoma cell line.
-Due to different transcriptional profiles of each cancer cell line, drug compounds might cause divergent cellular responses in each subpopulation.
+Due to the different transcriptional profiles of each cancer cell line, drug compounds might cause divergent cellular responses in each subpopulation.
 The dataset contains $17,565$ control cells as well as a varying number of cells perturbed by different drugs with different dosages, i.e., $10\,$nM, $100\,$nM, $1,000\,$nM, $10,000\,$nM.
 
 \paragraph{Data preprocessing.}
 The data is available for download in the \acrfull{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4150378}{GSM4150378}.
-For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}. The count matrix obtained from GEO consists of $581,777$ cells. The data was subset to half its size, with $290,888$ cells remaining after quality control for all $188$ different compounds. We proceeded with log-transformation and the the selection of $1,000$ highly-variant genes using \texttt{scanpy} \citep{wolf2018scanpy}.
+For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}. The count matrix obtained from GEO consists of $581,777$ cells. The data were subset to half its size, with $290,888$ cells remaining after quality control for all $188$ different compounds. We proceeded with log-transformation and the selection of $1,000$ highly-variant genes using \texttt{scanpy} \citep{wolf2018scanpy}.
 
 \paragraph{Feature selection.}
 Single-cell RNA sequencing data is very high-dimensional, even after selecting $1,000$ highly-variant genes.
-For the downstream analysis of how well the overall perturbation effect has been captured, we thus select the top $50$ marker genes, i.e., those genes which show strong differences between perturbed and unperturbed states. This analysis is conducted based on the \texttt{scanpy}'s function \texttt{rank\_genes\_groups}, setting unperturbed cells as reference ~\citep{wolf2018scanpy}. The influence on the number of considered marker genes on different evaluation metrics is further analyzed in \citet{bunne2021learning}.
+For the downstream analysis of how well the overall perturbation effect has been captured, we thus select the top $50$ marker genes, i.e., those genes which show strong differences between perturbed and unperturbed states. This analysis is conducted based on the \texttt{scanpy}'s function \texttt{rank\_genes\_groups}, setting unperturbed cells as reference ~\citep{wolf2018scanpy}. The influence of the number of considered marker genes on different evaluation metrics is further analyzed in \citet{bunne2021learning}.
 
 \subsection{\citet{bunne2021learning}}
 \label{app:dataset_bunne}
@@ -66,14 +65,14 @@ For the downstream analysis of how well the overall perturbation effect has been
 Besides sc\acrshort{RNA-seq}, optical phenotypic screens, e.g., multiplexing tools such as 4i \citep{gut2018multiplexed}, are able to capture meaningful features related to both the treatment response heterogeneity (e.g., the phosphorylation or dephosphorylation of a kinase in a signaling pathway) and the pre-existing cell-to-cell variability (e.g., protein levels related to different cellular states or cell cycle phases) which my determine treatment response. 
 % Traditional high-content imaging datasets often need to compromise between features describing either the former or the latter and may thus struggle to provide sufficient information to pair treated and control cells accurately.
 In order to derive a proof-of-concept study and test if the proposed methods are able to capture heterogeneous single-cell responses, we consider two co-cultured primary melanoma cell lines (M130219 and M130429), which were derived from the same melanoma patient from different body sites \citet{bunne2021learning}.
-M130219 originates from a subcutaneous biopsy taken during treatment with Bimetinib (MEKi), whereas M130429 was derived from a bone autopsy one month after stopping said targeted therapy~\citep{raaijmakers2015new}. Both cell lines share the same driver mutation (NRAS Q61R) but are phenotypically diverse. The cell lines were screened with $34$ different drugs, partially applied as combination therapies.
+M130219 originates from a subcutaneous biopsy taken during treatment with Bimetinib (MEKi), whereas M130429 was derived from a bone autopsy one month after stopping said targeted therapy \citep{raaijmakers2015new}. Both cell lines share the same driver mutation (NRAS Q61R) but are phenotypically diverse. The cell lines were screened with $34$ different drugs, partially applied as combination therapies.
 
 \paragraph{Data preprocessing.}
 The cells were seeded in a 384-well plate, and allowed to settle and adhere overnight. Drugs and dimethyl sulfoxide as the vehicle control was added to the cells the next morning and incubated for 8 and 24 hours, respectively, after which the cells were fixed with paraformaldehyde. Subsequently, 6 cycles of 4i were performed, for which the images were acquired with an automated high-content microscope.
 We utilized a mixture of two melanoma tumor cell lines (ratio 1:1) in order to image a total of $97,748$.
 
 Consequently, the cell lines are also classed as two different melanoma subtypes due to, amongst others, differences in marker expression~\citep{raaijmakers2015new}: the former a mesenchymal subtype (SOX9$^+$, MelA$^-$), the latter a melanocytic subtype (Sox9$^-$, MelA$^+$).
-$10,995$ cells were imaged in the DMSO-treated control state and the rest are treated with one of $34$ cancer therapies. Between $2,000$ and $3,000$ cells are profiled per treatment.
+$10,995$ cells were imaged in the DMSO-treated control state and the rest are treated with one of the $34$ cancer therapies. Between $2,000$ and $3,000$ cells are profiled per treatment.
 
 All image analysis steps were performed by our in-house platform called \href{https://github.com/TissueMAPS}{\texttt{TissueMAPS}}. The steps included illumination correction \citep{snijder2012single}, alignment of images from different acquisition cycles using fast Fourier transform \citep{guizar2008efficient}, segmentation of nuclei and cell outlines \citep{stoeger2015computer},  as well cellular and nuclear measurements of intensity and morphology features using the \texttt{scikit-image} library \citep{van2014scikit}.
 
@@ -85,7 +84,7 @@ A total of 47 features are reported, 21 morphological features and 26 protein in
 \begin{figure}
     \centering
     \includegraphics[width=.9\textwidth]{figures/fig_datasets_splits_processing.pdf}
-    \caption{\textbf{a.} The indicator matrix of all individual perturbations as well as those perturbation pairs available in combination (black) in the dataset by \citet{norman2019exploring}. \textbf{b.} Size of the different train / test splits of the dataset by \citet{norman2019exploring}. The train set contains all single perturbations as well as a decreasing number of combinations with increasing difficulty of the data split. For more details, see \cref{app:datasplits}.}
+    \caption{\textbf{a.} The indicator matrix of all individual perturbations as well as those perturbation pairs available in combination (black) in the dataset by \citet{norman2019exploring}. \textbf{b.} Size of the different train/test splits of the dataset by \citet{norman2019exploring}. The train set contains all single perturbations as well as a decreasing number of combinations with increasing difficulty of the data split. For more details, see \cref{app:datasplits}.}
     \label{fig:datasets_processing}
 \end{figure}
 
@@ -101,20 +100,20 @@ The dataset consists of individual perturbations as well as joint overexpression
 \looseness -1 The data is available for download in the \acrshort{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE133344}{GSE133344}.
 For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}.
 We discarded those genetic perturbations with less than $250$ cells, resulting in a dataset with $92$ individual perturbations and $84$ perturbations in combination.
-This further included, the exclusion of particular subsets of control cells with in total $98,419$ remaining, data normalization, log-transformation, and selection of $1,500$ highly-variant genes using \texttt{scanpy} \citep{wolf2018scanpy}.
+This further included, the exclusion of particular subsets of control cells with in total of $98,419$ remaining, data normalization, log-transformation, and selection of $1,500$ highly-variant genes using \texttt{scanpy} \citep{wolf2018scanpy}.
 
 \paragraph{Feature selection.}
-Similar as in \cref{app:dataset_srivatsan}, for evaluation we select the top $50$ marker genes, i.e., those genes most strongly affected by the particular genetic perturbation.
+Similar to \cref{app:dataset_srivatsan}, for evaluation we select the top $50$ marker genes, i.e., those genes most strongly affected by the particular genetic perturbation.
 
 \paragraph{Data splits.} \label{app:datasplits}
-For the evaluation conducted in \cref{cha:condot}, we create different train / test dataset splits of increasing difficulty by following \citet{lotfollahi2021compositional}.
-The train splits hereby always contain all $92$ individual perturbations as well as varying numbers of combinations. The easiest train split contains 55 perturbations, while the test set only carries 28 combinations which are unknown in the evaluation. Consecutive splits get increasingly harder, comprising 42, 29, 16, and 4 combinations in the train set (besides all single perturbations) and 41, 54, 67, and 79 combinations in the test set, respectively (see \cref{fig:datasets_processing}b).
+For the evaluation conducted in \cref{cha:condot}, we create different train/test dataset splits of increasing difficulty by following \citet{lotfollahi2021compositional}.
+The train splits hereby always contain all $92$ individual perturbations as well as varying numbers of combinations. The easiest train split contains 55 perturbations, while the test set only carries 28 combinations that are unknown in the evaluation. Consecutive splits get increasingly harder, comprising 42, 29, 16, and 4 combinations in the train set (besides all single perturbations) and 41, 54, 67, and 79 combinations in the test set, respectively (see \cref{fig:datasets_processing}b).
 
 \subsection{\citet{moon2019visualizing}}
 \label{app:dataset_moon}
 
 Developmental processes in biology involve tissue and organ development, body axis formation, cell division, and cell differentiation, e.g., the development of stem cells into functional cell types.
-An example of such a process is the differentiation of \acrshort{ESC} into  hematopoietic, cardiac, neural, pancreatic, hepatocytic and germ lineages.
+An example of such a process is the differentiation of \acrshort{ESC} into  hematopoietic, cardiac, neural, pancreatic, hepatocytic, and germ lineages.
 This development can be approximated \textit{in vitro} using \acrfull{EB} \citep{martin1975differentiation}, three-dimensional aggregates of pluripotent stem cells, including ESCs \citep{shamblott2009derivation}.
 Recently, \citet{moon2019visualizing} conducted a scRNA-seq analysis to unveil the developmental trajectories, as well as cellular and molecular identities through which early lineage precursors emerge from human ESCs.
 The dataset is available via \href{https://data.mendeley.com/datasets/v6n743h5ng}{Mendeley Data (V6N743H5NG)}\footnote{Dataset available via \url{https://data.mendeley.com/datasets/v6n743h5ng}.}.
@@ -130,13 +129,13 @@ Given the resulting data matrix with $15,150$ cells and $4,000$ genes across 5 d
 This is in alignment with previous analysis of developmental trajectories, which use 5 \citep{tong2020trajectorynet} and 30 PCs \citep{schiebinger2019optimal}, respectively.
 
 \paragraph{Lineage branch analysis.}
-Besides evaluating how well methods presented in this thesis resemble the spatio-temporal dynamics, we analyze their ability to capture biological heterogeneity.
-Serving as an \emph{in vitro} model of early embryogenesis, embryoid bodies differentiation captures the development of \acrshortpl{ESC} into mesoderm, endoderm, neuroectoderm, neural crest and others.
-Using an initial $k$-means clustering ($k=30$) and following \citet[Fig. 6, Suppl. Note 4]{moon2019visualizing}, we compute lineage branch classes for all cells in a 10-dimensional embedding space using PHATE, a non-linear dimensionality reduction method capturing a denoised representation of both local and global structure of a dataset.
+Besides evaluating how well methods presented in this thesis resemble the spatiotemporal dynamics, we analyze their ability to capture biological heterogeneity.
+Serving as an \emph{in vitro} model of early embryogenesis, embryoid bodies differentiation captures the development of \acrshortpl{ESC} into the mesoderm, endoderm, neuroectoderm, neural crest, and others.
+Using an initial $k$-means clustering ($k=30$) and following \citet[Fig. 6, Suppl. Note 4]{moon2019visualizing}, we compute lineage branch classes for all cells in a 10-dimensional embedding space using PHATE, a non-linear dimensionality reduction method capturing a denoised representation of both the local and global structure of a dataset.
 Details of the annotation can be found in \citet{bunne2022proximal, bunne2022recovering}.
 
 We then train a $k$-NN classifier ($k=5$) to infer the lineage branch class based on a 30-dimensional PCA embedding of a cell (ESC: 0, neural crest: 1, neuroectoderm: 2, endoderm: 3, mesoderm: 4, other: 5).
-\cref{sec:jkonet_cell} and \ref{sec:gsbflow_cell} thereby contain an analysis on the captured lineage branch heterogeneity of the predictions by computing the lineage branch class of each cell using the $k$-NN classifier.
+\cref{sec:jkonet_cell} and \ref{sec:gsbflow_cell} thereby contains an analysis of the captured lineage branch heterogeneity of the predictions by computing the lineage branch class of each cell using the $k$-NN classifier.
 
 \subsection{\citet{weinreb2020lineage}}
 \label{app:dataset_weinreb}
@@ -145,12 +144,12 @@ We then train a $k$-NN classifier ($k=5$) to infer the lineage branch class base
 In order to dissect how molecular differences among progenitor cells determine their ability to generate mature cell types, it is crucial to understand the hierarchy of fate decisions connecting stem and progenitor cells through time.
 Directly linking whole-transcriptome descriptions of cells to their future fate is challenging, however, as single-cell \acrshort{RNA-seq} technologies are destructive (see \cref{sec:tech_background}). 
 \citet{weinreb2020lineage} therefore clonally tag cells with DNA barcodes that can be read using sc\acrshort{RNA-seq} and enable tracing cellular identities through time.
-The resulting dataset consists of three snapshots taken on day 2, 4, and 6, respectively. While at day 2 most cells are undifferentiated, at later time points cells have developed into neutrophils, monocytes, megakaryocytes (meg), mast cells, lymphoid precursors, erythrocytes, basophils, eosinophils, etc.
+The resulting dataset consists of three snapshots taken on days 2, 4, and 6, respectively. While at day 2 most cells are undifferentiated, at later time points cells have developed into neutrophils, monocytes, megakaryocytes (meg), mast cells, lymphoid precursors, erythrocytes, basophils, eosinophils, etc.
 
 \paragraph{Data preprocessing.}
 The data used in \cref{cha:cellot} and \cref{sec:sbalign} is available for download in the \acrshort{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE140802}{GSE140802}.
 For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}, resulting in a dataset containing $130,861$ cells.
-After processing, each observation records the level of expression of $1,622$ different highly-variable genes as well as the following meta information per cell:
+After processing, each observation records the level of expression of $1,622$ different highly-variable genes as well as the following metainformation per cell:
 \begin{itemize}
     \item a \texttt{timestamp}, expressed in days and taking values in \{2, 4, 6\},
     \item a \texttt{barcode}, which is a short DNA sequence that allows tracing the identity of cells and their lineage by means of single-cell sequencing readouts,
@@ -162,14 +161,14 @@ We construct matchings by pairing cells measured at two different times but whic
 Additionally, we filter cells to make sure that no one appears in more than one pair.
 
 \paragraph{Feature selection.}
-To reduce the dimensionality of these datapoints, we perform a PCA projection down to 50 components.
+To reduce the dimensionality of these data points, we perform a PCA projection down to 50 components.
 
 \subsection{Other Datasets}
 \label{app:dataset_other}
 
-Preprocessing for the lupus patients~\citep{kang2018multiplexed} and cross species dataset~\citep{hagai2018gene} were inherited from~\citet{rybakov2020learning} 
+Preprocessing for the lupus patients~\citep{kang2018multiplexed} and cross-species dataset~\citep{hagai2018gene} were inherited from~\citet{rybakov2020learning} 
 and \citet{lotfollahi2019scgen}, and we would like to thank the authors for hosting this dataset.
-Lastly, the preprocessing of the glioblastoma patient dataset~\citep{zhao2021deconvolution} was adapted from \citet{peidli2022scperturb}.
+Lastly, the preprocessing of the glioblastoma patient dataset \citep{zhao2021deconvolution} was adapted from \citet{peidli2022scperturb}.
 The preprocessed datasets are available for download\textsuperscript{\ref{fnt:dataset_download}}.
 
 \section{Evaluation Metrics} \label{app:evaluation_metrics}
@@ -1138,4 +1137,3 @@ Finally, by \citet[(4.2)]{leonard2013survey}, the optimal drift $\GSBf$ is a \em
 
 for some function $\psi: \R^+ \times \R^\vdim \to \R$, implying that $\St^\top\Sigmasolinv$ must be symmetric.
 \end{proof}
-
