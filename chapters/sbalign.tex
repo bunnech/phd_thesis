@@ -2,7 +2,7 @@
 \section{Diffusion Schr\"odinger Bridges from Sparse Trajectories}
 \label{sec:sbalign}
 
-\begin{figure}[t]
+\begin{figure}[H]
     \centering
     \includegraphics[width=.8\linewidth]{figures/fig_overview_sbalign.pdf}
     \caption{\textbf{Overview of \textsc{SBalign}.} In the setting of cell differentiation we aim at learning the evolutionary process that morphs a population from its stat at $t$ to $t+1$. Through genetic tagging (i.e., barcodes) we are able to trace progenitor cells at time point $t$ into their descendants $t+1$. This provides us with an alignment between populations at consecutive time steps. Our goal is then to recover a stochastic trajectory from $\x_0$ to $\x_1$. To achieve this, we connect the characterization of an SDE conditioned on $\x_0$ and $\x_1$ (utilizing the Doob's \emph{$h$-transform}) with that of a Brownian bridge between $\x_0$ and $\x_1$ (classical Schr{\"o}dinger bridge theory), leading to a simpler training procedure with lower variance and strong empirical results.}

@@ -82,9 +82,9 @@ The \acrlong{SB} \citep{leonard2013survey, chen2021stochastic}, alternatively kn
 
 Despite these impressive achievements, a common limitation of the existing works is that the \acrshortpl{SB} are typically solved in a purely {numerical} fashion. In sharp contrast, it is well-known that many important \acrshort{OT} problems for \emph{Gaussian} measures admit \emph{closed-form} solutions, and the advantages of such solutions are numerous: they have inspired new learning methods \citep{rabin2011wasserstein, vayer2019sliced, bonneel2015sliced}, they can serve as the ground truth for evaluating numerical schemes \citep{janati2020entropic}, and they have lead to the discovery of a new geometry that is both rich in theory and application \citep{takatsu2010wasserstein}. 
 
+% TODO: Remove hats from P. Put equation in foreground.
 \begin{figure}[t]
     \centering
-    %\vskip-0.1cm
     \includegraphics[width=0.7\textwidth]{figures/fig_overview_gsb.pdf}
     \caption{Solving the \acrshort{SB} problem between $\distinit$ and $\distend$ is notoriously difficult because it requires learning the time-dependent drifts of two SDEs that respect the desired marginals, and a random initialization for these drifts is usually extremely far from satisfying that constraint. We propose a data-dependent procedure that relies first on Gaussian approximations of the data measures, which provide a closed-form drift $f_{\mathcal{N}}$ in \eqref{eq:GSB-forward} (the \acrshort{GSB}). We show that this facilitates the training of forward/backward drifts $\hat{Z}^\theta_t, \hat{Z}^\phi_t$.}
     \label{fig:overview_gsbflow}
@@ -230,7 +230,7 @@ At first sight, this might suggest that one can extend existing tools in Gaussia
 
 \item \textbf{Ad hoc computations:} When $\sigma>0$ in \eqref{eq:BBGaussian}, the problem is no longer reducible to a convex program \citep{leonard2013survey, chen2021stochastic}. In this case, the only technique we are aware of is the ad hoc approach of \citep{mallasto2021entropy}, which manages to find a closed form for \eqref{eq:BBGaussian} (and thus $\sigma\Wiener$-\acrshortpl{GSB}) through a series of brute-force computations.
 
-\item \textbf{Control theory:} On a related note, in a series of papers, \citet{chen2015optimal,chen2016relation,chen2018optimal} exploit the deep connection between $\sigma\Wiener$-\acrshortpl{GSB} and control theory to study the \emph{existence} and \emph{uniqueness} of the solutions. Although a variety of new optimality conditions are derived in these works, they are all expressed in terms of differential equations with coupled initial conditions, and it is unclear whether solving these differential equations is an easier task than \eqref{eq:GSB} itself. In particular, no closed-form, even for $\sigma\Wiener$-\acrshortpl{GSB}, can be found therein.
+\item \textbf{Control theory:} On a related note, in a series of papers, \citet{chen2015optimal,chen2016relation,chen2018optimal} exploit the deep connection between $\sigma\Wiener$-\acrshortpl{GSB} and control theory to study the \emph{existence} and \emph{uniqueness} of the solutions. Although a variety of new optimality conditions are derived in these works, they are all expressed in terms of differential equations with coupled initial conditions, and it is unclear whether solving these differential equations is an easier task than \eqref{eq:GSB} itself. In particular, no closed-form, even for $\sigma\Wiener$-\acrshortpl{GSB}, can be found therein. \\
 \end{itemize}
 
 By \cref{thm:gsbtobb}, \acrshortpl{GSB} are more general than \eqref{eq:BBGaussian} and thus irreducible to convex programs, so there is no hope for the convex route. As for ad hoc computations, the time-dependent $\driftf$ and $\volat[\ctime]$ terms in \eqref{eq:dynamicGSB} present a serious obstruction for generalizing the approach of \citet{mallasto2021entropy} to $\refsde$-\acrshortpl{GSB} when $\driftf \neq 0$ or $\volat[\ctime]$ is not constant; this is exemplified by the convoluted expressions in our \cref{thm:gaussian_sb}, which hopefully will convince the reader that they are beyond any ad hoc guess. Finally, the control-theoretic view has so far fallen short of producing closed-form solutions even for $\sigma\Wiener$-\acrshortpl{GSB}, so it is essentially irrelevant for our purpose. 
@@ -389,7 +389,7 @@ Another crucial fact in our analysis is that $\refsde$ is a \emph{Gaussian proce
     \addtolength{\rightskip}{-2cm}
 \begin{adjustbox}{width=\textwidth}
 \begin{tabular}{ccccccccccr}
-\toprule[1.2pt]\midrule[0.2pt]
+\toprule
 \makecell{\acrshort{SDE} with\\$\shift\equiv 0$} & Setting  & $\kernel$ & $\sigma^2_\star$  & $\ratio$ & $\ratioc$ & $\efftr$ & $\tshift$ \\
 \midrule
 \acrshort{BM}    & \makecell{$\scriptstyle\drift  \equiv 0$\\ $\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\vconst^2\ctime$ & $\vconst^2$ & ${\ctime}$ & $1- {\ctime}$ & ${\ctime}$ & $0$  \\
@@ -397,12 +397,11 @@ Another crucial fact in our analysis is that $\refsde$ is a \emph{Gaussian proce
 \acrshort{VPSDE}    & \makecell{$\scriptstyle-2\drift = \volatsq[\ctime]$}  & $\scriptstyle\aggtime[\ctime']\parens*{\aggtimeinv[\ctime]-\aggtime} $ & $\scriptstyle\aggtimeinv[\horizon]-\aggtime[\horizon]$ & $\scriptstyle\frac{\aggtimeinv[\ctime]-\aggtime }{\aggtimeinv[\horizon]-\aggtime[\horizon]}$ & $\scriptstyle \aggtime[\horizon]\parens*{ \frac{\aggtime}{\aggtime[\horizon]} - \frac{\aggtimeinv[\ctime]-\aggtime }{\aggtimeinv[\horizon]-\aggtime[\horizon]} }$ & $\scriptstyle\frac{\aggtimeinv[\ctime]\parens*{\aggtimeinv[\ctime]-\aggtime }}{\aggtimeinv[\horizon]\parens*{\aggtimeinv[\horizon]-\aggtime[\horizon]}}$ & $0$  \\
 sub\textendash\acrshort{VPSDE}    & \makecell{$\scriptstyle\frac{\volatsq[\ctime]}{-2\drift} = { 1- \aggtimeqr} $}  & $\scriptstyle \aggtime\aggtime[\ctime']\parens*{ \aggtimeinv[\ctime]-\aggtime}^2  $ & $\scriptstyle\aggtime[\horizon]\parens*{ \aggtimeinv[\horizon]-\aggtime[\horizon]}^2$ & $\scriptstyle \frac{\aggtime}{\aggtime[\horizon]}\cdot\parens*{\frac{ \aggtimeinv[\ctime]-\aggtime}{ \aggtimeinv[\horizon]-\aggtime[\horizon]}}^2$ & $\scriptstyle\aggtime\parens*{1- \parens*{\frac{ \aggtimeinv[\ctime]-\aggtime}{ \aggtimeinv[\horizon]-\aggtime[\horizon]}}^2}$ & $\scriptstyle\parens*{\frac{\aggtimeinv[\ctime]-\aggtime}{\aggtimeinv[\horizon] - \aggtime[\horizon]}}^2$ & $0$  \\
 \midrule
-\midrule
 \makecell{\acrshort{SDE} with\\$\shift\not\equiv 0$} & Setting  & $\kernel$ & $\sigma^2_\star$  & $\ratio$ & $\ratioc$ & $\efftr$ & $\tshift$ \\
 \midrule
 \acrshort{OU}/Vasicek   & \makecell{$\scriptstyle\drift \equiv -\dconst\in\R$\\$\scriptstyle\shift \equiv \sconst\in\R^{\vdim}$\\$\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\scriptstyle\frac{\vconst^2e^{-\dconst \ctime'} \sinh \dconst\ctime}{\dconst} $ & $\scriptstyle\frac{\vconst^2\sinh\dconst}{\dconst}$ & $\scriptstyle\frac{\sinh\dconst\ctime}{\sinh\dconst}$ & \makecell{$\scriptstyle\sinh\dconst\ctime\coth\dconst\ctime$\\$-\scriptstyle\sinh\dconst\ctime\coth\dconst$} & \makecell{$\scriptstyle e^{-\dconst(\horizon-\ctime)}$\\$\scriptstyle\cdot\frac{\sinh\dconst\ctime}{\sinh\dconst}$} & $\scriptstyle\frac{\sconst}{\dconst}\parens*{1-e^{-\dconst\ctime}} $  \\
 $\shift$-\acrshort{BDT}   & \makecell{$\scriptstyle\drift \equiv 0$\\$\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\vconst^2\ctime$ & $\vconst^2\horizon$ & ${\ctime}$ & $1- {\ctime}$ & ${\ctime}$ & $\scriptstyle\int_0^\ctime \shift[\ctimealt]\dd \ctimealt$  \\
-\midrule[0.3pt]\bottomrule[1.2pt]
+\bottomrule
 \end{tabular}
 \end{adjustbox}
 \caption{Examples of reference \acrshortpl{SDE} and the corresponding solutions of \acrshortpl{GSB}. All relevant functions in the Table are either introduced in \cref{sec:linearsdes} or \eqref{eq:functions}.}
@@ -557,7 +556,7 @@ Following existing work on training \acrshort{SB}-based objectives \citep{chen20
 
 \textbf{Step 3: Alternating minimization.} After the pretraining phase, we switch to minimizing \eqref{eq:loss-backward}-\eqref{eq:loss-forward} with general drifts in \eqref{eq:GSB-sde-forward}-\eqref{eq:GSB-sde-backward}. We carry out this step in an alternating fashion: Since the bottleneck of our framework is to simulate the trajectories of \acrshortpl{SDE}, we perform several gradient updates for one parameter before drawing another batch of samples. See \cref{alg:GSBflow} for a summary, and \cref{fig:overview_gsbflow} for an illustration.
 
-\begin{algorithm}
+\begin{algorithm}[t]
    \caption{Forward and Backward Pretraining}
    \label{alg:pretraining}
 \begin{algorithmic}
@@ -580,7 +579,7 @@ Following existing work on training \acrshort{SB}-based objectives \citep{chen20
 \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[H]
+\begin{algorithm}[t]
    \caption{\textsc{GSBflow}}
    \label{alg:GSBflow}
 \begin{algorithmic}
@@ -615,6 +614,7 @@ Following existing work on training \acrshort{SB}-based objectives \citep{chen20
 
 The purpose of our experiments is to demonstrate that, by leveraging moment information, \textsc{GSBflow} is significantly more stable compared to other \acrshort{SB}-based objectives, especially when moving beyond the \emph{generative} setting where $\distend$ is a simple Gaussian. Indeed, while performing competitively in the {generative} setting ($\Ncal_0 \rightarrow \distend$), our method \textit{outperforms} when modeling the evolution of two complex distributions ($\distinit \rightarrow \distend$), the most general and ambitious setting to estimate a bridge. This is demonstrated on synthetic data as well as a task from molecular biology concerned with modeling the dynamics of cellular systems, i.e., single-cell genomics \citep{macosko2015highly, frangieh2021multimodal, kulkarni2019beyond}.
 
+% TODO: Remove hats from P.
 \begin{figure}[t]
      \centering
          \centering
