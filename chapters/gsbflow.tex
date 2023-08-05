@@ -33,26 +33,41 @@ Here we propose a novel algorithmic framework that, for the first time, learns \
 \section{Diffusion Schr{\"o}dinger Bridges}
 \label{sec:background_dsb}
 
-Recall the general \acrshort{SB} problem \eqref{eq:YtSB}. It turns out that the solution to \eqref{eq:YtSB} is itself given by two coupled \acrshortpl{SDE} of the form \citep{leonard2013survey}
-\begin{subequations}
+As described above, in order to learn the evolution of a population from $\mu_0$ to $\mu_1$, we will invoke the framework of \acrshortpl{SB}.
+Given two marginals $\distinit$ and $\distend$, we select a reference process $\refpro$ based on prior knowledge), for instance a simple Brownian motion. As discussed in \cref{sec:background_sb}, it turns out that  the solution to the general \acrshort{SB} problem \eqref{eq:schrodinger_bridge} is itself given by two coupled \acrshortpl{SDE} \eqref{eq:sb_forward}-\eqref{eq:sb_backward} \citep{leonard2013survey}, which we restate her for convenience
 \begin{eqnarray}
 \label{eq:SB-sde-forward}
-\dsde &= \parens*{\tdriftbase_t +  \volatbase_t \SBfbase_\ctime} \dt + \volatbase_t \dWiener[\ctime],\; \sde[0] \sim \distinit, \\%\; & \sde[0] \sim \Pinit, \\
+\dsde &= \parens*{\tdriftbase +  \volatbase \SBfbase_\ctime} \dt + \volatbase \dWiener[\ctime],\quad \sde[0] \sim \distinit, \\ % \; & \sde[0] \sim \Pinit, \\
 \label{eq:SB-sde-backward}
-\dsde &= \parens{\tdriftbase_t -  \volatbase_t \SBbbase_\ctime} \dt + \volatbase_t \dWiener[\ctime],\; \sde[\horizon] \sim \distend,%\; & \sde[\horizon] \sim \Pend.
+\dsde &= \parens{\tdriftbase -  \volatbase \SBbbase_\ctime} \dt + \volatbase \dWiener[\ctime],\quad \sde[\horizon] \sim \distend\,. % \; & \sde[\horizon] \sim \Pend.
 \end{eqnarray}
-\end{subequations}
-where $\SBfbase_\ctime, \SBbbase_\ctime \from \R^\vdim \to \R^\vdim$ are two time-indexed smooth \emph{vector fields} called the optimal forward and backward drift, respectively, and \eqref{eq:SB-sde-backward} runs backward in time (i.e., from $\horizon \to 0$). % and satisfies many interesting properties \citep{nelson1967dynamical, leonard2013survey, chen2021stochastic}.
-~If we parametrize the forward drift by $\SBf$ and the backward drift by $\SBb$ with some parameters $\paramf,\paramb$, then the negative likelihood function for $\paramf$ and $\paramb$ can be expressed as \citep{chen2021likelihood}
+where we replaced $\nabla \log \Phi\left(t, X_t\right)$ in \eqref{eq:sb_forward} and $\nabla \log \widehat{\Phi}\left(t, X_t\right)$ in \eqref{eq:sb_backward} with $\SBfbase_\ctime, \SBbbase_\ctime \from \R^\vdim \to \R^\vdim$, i.e., two time-indexed smooth \emph{vector fields} called the optimal forward and backward drift, respectively. Note that \eqref{eq:SB-sde-backward} runs backward in time, i.e., from $\horizon \to 0$) \citep{anderson1982reverse}. % and satisfies many interesting properties \citep{nelson1967dynamical, leonard2013survey, chen2021stochastic}.
+Choosing $f$ and $g$ based on the SDE class considered, the forward and backward policies $\SBfbase_\ctime, \SBbbase_\ctime$ are generally \emph{unknown}.
+Similar as in \acrfull{SGM} \citep{song2020score, hyvarinen2005estimation} order to \emph{estimate} the resulting \acrshort{SB} from data, we parameterize the forward drift by $\SBf$ and the backward drift by $\SBb$ through neural networks with some parameters $\paramf, \paramb$. \\
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/fig_principle_dsb.pdf}
+	\caption{\textbf{Parameterization of diffusion Schr{\"o}dinger bridges.} The forward SDE with forward policy {\color{pink} $\SBfbase_\ctime$} steers particles $X_0 \sim \mu_0$ from $t=0$ to $\mu_1$ at $t=1$. The reverse SDE runs backward in time. Here, backward policy {\color{blue} $\SBbbase_\ctime$} determines the evolution of particles $X_1 \sim \mu_1$ at $t=1$ to $\mu_0$ at $t=0$.} 
+	\label{fig:principle_dsb}
+\end{figure}
+
+Several estimators and training procedures for the so-called \acrfull{DSB}, i.e., for learning $\SBfbase_\ctime, \SBbbase_\ctime$, have been proposed based on either Gaussian processes \citep{vargas2021solving}, dual potentials \citep{finlay2020learning}, or neural networks \citep{de2021diffusion, chen2021likelihood}.
+In this thesis, we consider the likelihood training framework by \citet{chen2021likelihood} grounded on forward-backward \acrshort{SDE} theory \citep{}. Crucially, these SDEs can be used to construct the likelihood objectives for \acrshortpl{SB} that, surprisingly, generalize the ones for \acrshort{SGM} as special cases. The negative likelihood function for $\paramf$ and $\paramb$ thereby  are given by
 \begin{subequations}
 \begin{align}
 \lossb =  \int_0^\horizon \mathbb{E}_{\eqref{eq:SB-sde-forward}}\Big[ \frac{1}{2}\norm{\SBbbase^{\paramb}_\ctime}^2 &+\volatbase \Div \SBbbase^{\paramb}_\ctime+ \inner{\SBfbase^{\paramf}_\ctime}{\SBbbase^{\paramb}_\ctime} \dt \Big\vert \sde[0] = \point_0 \Big] ,  \\
 \lossf =  \int_0^\horizon \mathbb{E}_{\eqref{eq:SB-sde-backward}}\Big[ \frac{1}{2}\norm{\SBfbase^{\paramf}_\ctime}^2 &+\volatbase \Div \SBfbase^{\paramf}_\ctime + \inner{\SBbbase^{\paramb}_\ctime}{\SBfbase^{\paramf}_\ctime} \dt \Big\vert \sde[\horizon] = \point_{\horizon} \Big].
 \end{align}
 \end{subequations}
-%where $\Div$ denotes the divergence operator w.r.t. the $\point$ variable: For any $v\from \R^\vdim \to \R^\vdim$, $\Div v(\point) \defeq \sum_{\coord=1}^{\vdim} \ddc v_\coord(\point)$.
+and serve as loss functions for likelihood-based training of \acrshortpl{DSB}. Here, $\Div$ denotes the divergence operator w.r.t. the $\point$ variable: For any $v\from \R^\vdim \to \R^\vdim$, $\Div v(\point) \defeq \sum_{\coord=1}^{\vdim} \ddc v_\coord(\point)$.
 
+Unfortunately, such frameworks necessitates a forward-backward learning process known as the \acrfull{IPF} procedure \citep{fortet1940resolution, kullback1968probability}.
+As both policies $\SBfbase_\ctime, \SBbbase_\ctime$ are initially unknown and randomly parameterized, training \acrshortpl{DSB} often results in numerical and scalability issues.
 
+Further, none of these approaches are capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:schrodinger_bridge}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein.  
+
+In this chapter, we tackle both of these limitations: First, in \cref{sec:gsbflow} we derive a data-driven reference process that provides a more robust initialization of \acrshortpl{DSB}. Second, in \cref{sec:sbalign}, we devise the first algorithmic framework that solves \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward} in settings where sparse trajectories, or partially aligned data, are available \emph{without} resorting to \acrshort{IPF}.
 
 \section{Data-Driven Priors for Diffusion Schr\"odinger Bridges} \label{sec:gsbflow}
 
