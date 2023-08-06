@@ -120,7 +120,6 @@ However, they are equally daunting, demanding novel experimental and computation
 This section of the thesis will delve into the exploration of two examples of dynamic processes in biomedicine that are subject of this thesis. 
 In particular, we will focus on the analysis of cellular responses to perturbations such as drugs or other therapeutic agents (\cref{sec:cell_perturbation_responses}) as well as cell differentiation processes in developmental biology (\cref{sec:cell_differentiation}), and illuminate the critical role they play in biomedicine and the myriad of challenges and opportunities they present. 
 This will be followed by a discussion on current advances in high-throughput technologies for capturing such dynamical systems (\cref{sec:tech_background}) and existing computational approaches to tackle these (\cref{sec:related_work_bio}).
-.
 
 \section{Cellular Perturbation Responses to Drugs and Treatments}
 \label{sec:cell_perturbation_responses}
@@ -190,18 +189,17 @@ In order to understand the temporal evolution of the cell population over time, 
 \subsection{Sequencing-Based Screening}
 \label{sec:background_sequencing}
 
-Sequence-based profiling methods have emerged as a transformative tool for understanding the complexity of biological systems at the resolution of individual cells. These methods, such as single-cell \acrlong{RNA-seq} (scRNA-seq) or single-cell \acrlong{ATAC-seq} (scATAC-seq), enable us to characterize gene expression or chromatin accessibility, respectively, within a single cell, shedding light on cellular heterogeneity and uncovering previously hidden cellular states.
-By mapping the transcriptomic or epigenomic landscapes of individual cells, sequence-based profiling methods have allowed for unprecedented insights into developmental biology, tissue homeostasis, disease pathology, and therapeutic responses. These techniques have revolutionized single-cell biology, facilitating a deeper understanding of cellular diversity, dynamic cellular processes, and the intricate mechanisms that underlie health and disease.
+Sequence-based profiling methods have emerged as a transformative tool for understanding the complexity of biological systems at the resolution of individual cells. Methods such as single-cell \acrlong{RNA-seq} (scRNA-seq) or single-cell \acrlong{ATAC-seq} (scATAC-seq), enable us to characterize gene expression or chromatin accessibility within a single cell.
+By mapping the transcriptomic or epigenomic landscapes of individual cells, sequence-based profiling methods have allowed for unprecedented insights into developmental biology, tissue homeostasis, disease pathology, and therapeutic responses.
 
-RNA is thereby a direct quantifier for gene activity: Genes in DNA are transcribed into \acrfull{mRNA}, which is then translated into proteins that carry out various functions within the cell.
+RNA thereby serves a direct quantifier for gene activity: Genes in DNA are transcribed into \acrfull{mRNA}, which is then translated into proteins that carry out various functions within the cell.
 By measuring the amounts and types of mRNA present in a cell at a given time, i.e., the transcriptome, we can understand which genes are being actively expressed. This information is valuable as changes in gene expression can signal various biological processes, such as cell development, responses to environmental stimuli, disease states, and much more. 
 In order to record the gene expression in single cells, scRNA-seq requires isolating individual cells, often using techniques such as \acrfull{FACS} \citep{julius1972demonstration} or droplet-based technologies \citep{brouzes2009droplet, mazutis2013single, debs2012functional}. Each cell's mRNA is reverse transcribed into \acrfull{cDNA}, including a unique molecular identifier to correct for amplification bias.
 This cDNA is then amplified and prepared for high-throughput sequencing and the resultant data provide insights into gene expression of individual cells.
 
 Crucially, this process is destructive: Cells are destroyed, i.e., lysed, or broken open, in order to access the mRNA within and record their gene expression levels.
 Once a cell is lysed, its structural integrity and function are lost, making it impossible to further manipulate or use that particular cell for subsequent experiments.
-This is a fundamental limitation, as the process of obtaining the high-resolution molecular data comes at the expense of the cell's viability. ...
-% TODO: Mention that this will subject of this thesis.
+This is a fundamental limitation, as the process of obtaining the high-resolution molecular data comes at the expense of the cell's viability.
 
 \subsection{Optical Phenotypic Screening}
 \label{sec:background_imaging}
