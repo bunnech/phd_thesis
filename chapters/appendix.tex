@@ -50,10 +50,10 @@ The dataset contains $17,565$ control cells as well as a varying number of cells
 
 \paragraph{Data preprocessing.}
 The data is available for download in the \acrfull{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4150378}{GSM4150378}.
-For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}. The count matrix obtained from GEO consists of $581,777$ cells. The data were subset to half its size, with $290,888$ cells remaining after quality control for all $188$ different compounds. We proceeded with log-transformation and the selection of $1,000$ highly-variant genes using \texttt{scanpy} \citep{wolf2018scanpy}.
+For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}. The count matrix obtained from GEO consists of $581,777$ cells. The data were subset to half its size, with $290,888$ cells remaining after quality control for all $188$ different compounds. We proceeded with log-transformation and the selection of $1,000$ \acrfull{HVG} using \texttt{scanpy} \citep{wolf2018scanpy}.
 
 \paragraph{Feature selection.}
-Single-cell RNA sequencing data is very high-dimensional, even after selecting $1,000$ highly-variant genes.
+Single-cell RNA sequencing data is very high-dimensional, even after selecting $1,000$ highly-variable genes.
 For the downstream analysis of how well the overall perturbation effect has been captured, we thus select the top $50$ marker genes, i.e., those genes which show strong differences between perturbed and unperturbed states. This analysis is conducted based on the \texttt{scanpy}'s function \texttt{rank\_genes\_groups}, setting unperturbed cells as reference ~\citep{wolf2018scanpy}. The influence of the number of considered marker genes on different evaluation metrics is further analyzed in \citet{bunne2021learning}.
 
 \subsection{\citet{bunne2021learning}}
@@ -121,7 +121,7 @@ To preprocess the data, we follow the analysis of \citet{moon2019visualizing} as
 After quality control, the dataset consists of $15,150$ cells and $17,945$ genes.
 
 \paragraph{Feature selection.}
-We extract $4,000$ \acrfull{HVG} using the 10X genomics preprocessing software \texttt{Cell Ranger} \citep{zheng2017massively} to further reduce the dimensionality of the dataset and include only the most informative genes.
+We extract $4,000$ \acrshort{HVG} using the 10X genomics preprocessing software \texttt{Cell Ranger} \citep{zheng2017massively} to further reduce the dimensionality of the dataset and include only the most informative genes.
 Given the resulting data matrix with $15,150$ cells and $4,000$ genes across 5 different time points, we compute a corresponding low-dimensional embedding using PCA. We use the first 20 or 30 PCs for predicting population dynamics in \cref{cha:neural_pde} and \ref{cha:neural_sde}.
 This is in alignment with previous analysis of developmental trajectories, which use 5 \citep{tong2020trajectorynet} and 30 PCs \citep{schiebinger2019optimal}, respectively.
 
