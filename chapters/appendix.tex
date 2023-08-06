@@ -12,29 +12,26 @@
 \label{fig:4i_analysis_extended}
 
 \newpage
-\begin{figure}[p]
+\begin{figure}[H]
+     \centering
+     \includegraphics[width=0.8\textwidth]{figures/fig_gbm_patients_iid_ood.pdf}
+\end{figure}
+\captionof{figure}{Analysis and results of the glioblastoma dataset consisting of seven patients. \textbf{a.} Cells from seven glioblastoma patients are measured in an untreated and Panobinostat-treated state. For each sample, we train two models, an o.o.d.~model trained on cells from all other samples but the holdout patient we test on and an i.i.d.~model trained with additional access to half of the cells in the holdout sample.
+    \textbf{b.} Pairwise average correlation of the PCA embeddings of the control states between patients. \textbf{c.} Pairwise average correlation of the PCA embeddings of the treated states between patients, masked to only those patient pairs that showed a positive correlation in the control states. Only patient PW034 positively correlates with all other patients. Other patients, such as PW053, correlate and anti-correlate with other patients in the treated state. Performance comparison between \textsc{CellOT} and baselines for different metrics in the \textbf{d.} i.i.d. setting (mean standard deviation across 7 samples, 10 bootstraps of the test set per sample),
+    \textbf{e.} o.o.d. setting for all patients (box plots show median, minima, and maxima)
+    \textbf{f.} o.o.d. setting for a patient positively correlating with all patients that are also similar in the control state,
+    \textbf{g.} o.o.d. setting for a patient where similar patients in the control state show different responses (correlation and anti-correlation) in the treated states. Data in \textbf{f} and \textbf{g} are presented as the mean +/- standard deviation across n=10 bootstraps of the test set.}
+\label{fig:gbm_patients_iid_ood}
+
+\clearpage
+\newpage
+
+\begin{figure}[H]
      \centering
      \includegraphics[width=\textwidth]{figures/fig_crossspecies_ood_analysis.pdf}
      \caption{\looseness -1 Analysis and further results of the cross-species dataset. \textbf{a.} Pairwise average correlation of the PCA embeddings of the control states between species. \textbf{b.} Pairwise average correlation of the PCA embeddings of the treated states between patients, masked to only those patient pairs that showed a positive correlation in the control states. Only rat and mouse show consistent responses, i.e., a positive correlation of the control states and a non-negative correlation of the respective target cells, and are thus chosen for the o.o.d. analysis. I.i.d. and o.o.d. results measured in the average gene expression for both \textbf{d.} \textsc{CellOT} and \textbf{c.} \textsc{scGen}.}
      \label{fig:crossspecies_ood_analysis}
 \end{figure}
-
-\newpage
-\begin{figure}[p]
-     \centering
-     \includegraphics[width=1.05\textwidth]{figures/fig_gbm_patients_iid_ood.pdf}
-     \caption{Analysis and results of the glioblastoma dataset consisting of seven patients. \textbf{a.} Cells from seven glioblastoma patients are measured in an untreated and Panobinostat-treated state. For each sample, we train two models, an o.o.d.~model trained on cells from all other samples but the holdout patient we test on and an i.i.d.~model trained with additional access to half of the cells in the holdout sample.
-     \textbf{b.} Pairwise average correlation of the PCA embeddings of the control states between patients. \textbf{c.} Pairwise average correlation of the PCA embeddings of the treated states between patients, masked to only those patient pairs that showed a positive correlation in the control states. Only patient PW034 positively correlates with all other patients. Other patients, such as PW053, correlate and anti-correlate with other patients in the treated state.
-     Performance comparison between \textsc{CellOT} and baselines for different metrics in the \textbf{d.} i.i.d. setting (mean standard deviation across 7 samples, 10 bootstraps of the test set per sample),
-     \textbf{e.} o.o.d. setting for all patients (box plots show median, minima, and maxima)
-     \textbf{f.} o.o.d. setting for a patient positively correlating with all patients that are also similar in the control state,
-     \textbf{g.} o.o.d. setting for a patient where similar patients in the control state show different responses (correlation and anti-correlation) in the treated states. Data in \textbf{f} and \textbf{g} are presented as the mean +/- standard deviation across n=10 bootstraps of the test set.
-     }
-     \label{fig:gbm_patients_iid_ood}
-\end{figure}
-
-\clearpage
-
 
 \section{Datasets} \label{app:datasets}
 
@@ -144,7 +141,7 @@ We then train a $k$-NN classifier ($k=5$) to infer the lineage branch class base
 In order to dissect how molecular differences among progenitor cells determine their ability to generate mature cell types, it is crucial to understand the hierarchy of fate decisions connecting stem and progenitor cells through time.
 Directly linking whole-transcriptome descriptions of cells to their future fate is challenging, however, as single-cell \acrshort{RNA-seq} technologies are destructive (see \cref{sec:tech_background}). 
 \citet{weinreb2020lineage} therefore clonally tag cells with DNA barcodes that can be read using sc\acrshort{RNA-seq} and enable tracing cellular identities through time.
-The resulting dataset consists of three snapshots taken on days 2, 4, and 6, respectively. While at day 2 most cells are undifferentiated, at later time points cells have developed into neutrophils, monocytes, megakaryocytes (meg), mast cells, lymphoid precursors, erythrocytes, basophils, eosinophils, etc.
+The resulting dataset consists of three snapshots taken on days 2, 4, and 6, respectively. While at day 2 most cells are undifferentiated, at later time points cells have developed into neutrophils, monocytes, megakaryocytes, mast cells, lymphoid precursors, erythrocytes, basophils, eosinophils, etc.
 
 \paragraph{Data preprocessing.}
 The data used in \cref{cha:cellot} and \cref{sec:sbalign} is available for download in the \acrshort{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE140802}{GSE140802}.

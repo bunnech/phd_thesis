@@ -175,7 +175,7 @@ Although the computation of \eqref{eq:softdoob} can be done via a standard appli
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=\textwidth]{figures/fig_results_synthetic.jpg}
+    \includegraphics[width=\textwidth]{figures/fig_results_synthetic.pdf}
     \caption{Experimental results on the Moon dataset (\textbf{a-c}) and T-dataset (\textbf{d-f}). The top row shows the trajectory sampled using the learned drift, and the bottom row shows the matching based on the learned drift. Compared to other baselines, \textsc{SBalign} is able to learn an appropriate drift respecting the true alignment. (\textbf{f}) further showcases the utility of \textsc{SBalign}'s learned drift as a suitable reference process to improve other training methods.}
     \label{fig:results_spiral}
 \end{figure*}
@@ -226,7 +226,7 @@ In this section, we evaluate \textsc{SBalign} in different settings involving 2-
 
 \begin{figure*}
     \centering
-    \includegraphics[width=\textwidth]{figures/fig_cell_trajectories_matchings.jpg}
+    \includegraphics[width=\textwidth]{figures/fig_cell_trajectories_matchings.pdf}
     \caption{Cell differentiation trajectories based on (\textbf{a}) the ground truth and (\textbf{b-d}) learned drifts. \textsc{SBalign} is able to learn an appropriate drift underlying the true differentiation process while respecting the alignment. (\textbf{d}) Using the learned drift from \textsc{SBalign} as a reference process helps improve the drift learned by other training methods.}
     \label{fig:results_cell_traj}
 \end{figure*}
@@ -272,7 +272,7 @@ To showcase \textsc{SBalign}'s ability to make use of such (partial) alignments 
     \caption{\textbf{Cell differentiation prediction results.} Means and standard deviations (in parentheses) of distributional metrics (MMD, $\text{W}_{\epsilon}$), alignment-based metrics ($\ell_2$, RMSD), and cell type classification accuracy.  \vspace{-5pt}}
     \label{tab:results_cells}
      \centering
-    \adjustbox{max width=\linewidth}{%
+    \adjustbox{max width=0.85\linewidth}{%
     \begin{tabular}{lccccc}
     \toprule
      & \multicolumn{5}{c}{\textbf{Cell Differentiation}} \\

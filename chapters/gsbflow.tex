@@ -109,7 +109,6 @@ Throughout this chapter, let $\xi \sim \Ncal(\mu, \Sigma)$ and $\xi' \sim \Ncal(
 \subsubsection{Static Gaussian Optimal Transport}
 \label{sec:staticGOT}
 
-% TODO: Give reference to the Background chapter.
 The \emph{static} entropy-regularized \acrshort{OT} between Gaussians refers to the following minimization problem \citep{peyre2019computational}:
 % An important class of problems which generalizes \eqref{eq:W2Gaussian}, is the static entropy-regularized \acrshort{OT} between Gaussians:
 \begin{equation}
@@ -376,43 +375,6 @@ Another crucial fact in our analysis is that $\refsde$ is a \emph{Gaussian proce
 \subsubsection{Main Result}
 \label{sec:GaussianSB-main}
 
-% TODO: Increase the size of the table.
-{\setlength\doublerulesep{0.4pt}
-\begin{table*}[!ht]
-\vspace{-7mm}
-\vskip 0.15in
-%\begin{center}
-\begin{small}
-{\scshape
-    \centering
-    \addtolength{\leftskip} {-2cm}
-    \addtolength{\rightskip}{-2cm}
-\begin{adjustbox}{width=\textwidth}
-\begin{tabular}{ccccccccccr}
-\toprule
-\makecell{\acrshort{SDE} with\\$\shift\equiv 0$} & Setting  & $\kernel$ & $\sigma^2_\star$  & $\ratio$ & $\ratioc$ & $\efftr$ & $\tshift$ \\
-\midrule
-\acrshort{BM}    & \makecell{$\scriptstyle\drift  \equiv 0$\\ $\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\vconst^2\ctime$ & $\vconst^2$ & ${\ctime}$ & $1- {\ctime}$ & ${\ctime}$ & $0$  \\
-\acrshort{VESDE} & \makecell{$\scriptstyle\drift  \equiv 0$\\ $\scriptstyle\volat = \sqrt{\dqv}$}  & $\qv$ & $\qv[\horizon]$ & $\frac{\qv}{\qve}$ & $1- \frac{\qv}{\qve}$ & $\frac{\qv}{\qve}$ & $0$  \\
-\acrshort{VPSDE}    & \makecell{$\scriptstyle-2\drift = \volatsq[\ctime]$}  & $\scriptstyle\aggtime[\ctime']\parens*{\aggtimeinv[\ctime]-\aggtime} $ & $\scriptstyle\aggtimeinv[\horizon]-\aggtime[\horizon]$ & $\scriptstyle\frac{\aggtimeinv[\ctime]-\aggtime }{\aggtimeinv[\horizon]-\aggtime[\horizon]}$ & $\scriptstyle \aggtime[\horizon]\parens*{ \frac{\aggtime}{\aggtime[\horizon]} - \frac{\aggtimeinv[\ctime]-\aggtime }{\aggtimeinv[\horizon]-\aggtime[\horizon]} }$ & $\scriptstyle\frac{\aggtimeinv[\ctime]\parens*{\aggtimeinv[\ctime]-\aggtime }}{\aggtimeinv[\horizon]\parens*{\aggtimeinv[\horizon]-\aggtime[\horizon]}}$ & $0$  \\
-sub\textendash\acrshort{VPSDE}    & \makecell{$\scriptstyle\frac{\volatsq[\ctime]}{-2\drift} = { 1- \aggtimeqr} $}  & $\scriptstyle \aggtime\aggtime[\ctime']\parens*{ \aggtimeinv[\ctime]-\aggtime}^2  $ & $\scriptstyle\aggtime[\horizon]\parens*{ \aggtimeinv[\horizon]-\aggtime[\horizon]}^2$ & $\scriptstyle \frac{\aggtime}{\aggtime[\horizon]}\cdot\parens*{\frac{ \aggtimeinv[\ctime]-\aggtime}{ \aggtimeinv[\horizon]-\aggtime[\horizon]}}^2$ & $\scriptstyle\aggtime\parens*{1- \parens*{\frac{ \aggtimeinv[\ctime]-\aggtime}{ \aggtimeinv[\horizon]-\aggtime[\horizon]}}^2}$ & $\scriptstyle\parens*{\frac{\aggtimeinv[\ctime]-\aggtime}{\aggtimeinv[\horizon] - \aggtime[\horizon]}}^2$ & $0$  \\
-\midrule
-\makecell{\acrshort{SDE} with\\$\shift\not\equiv 0$} & Setting  & $\kernel$ & $\sigma^2_\star$  & $\ratio$ & $\ratioc$ & $\efftr$ & $\tshift$ \\
-\midrule
-\acrshort{OU}/Vasicek   & \makecell{$\scriptstyle\drift \equiv -\dconst\in\R$\\$\scriptstyle\shift \equiv \sconst\in\R^{\vdim}$\\$\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\scriptstyle\frac{\vconst^2e^{-\dconst \ctime'} \sinh \dconst\ctime}{\dconst} $ & $\scriptstyle\frac{\vconst^2\sinh\dconst}{\dconst}$ & $\scriptstyle\frac{\sinh\dconst\ctime}{\sinh\dconst}$ & \makecell{$\scriptstyle\sinh\dconst\ctime\coth\dconst\ctime$\\$-\scriptstyle\sinh\dconst\ctime\coth\dconst$} & \makecell{$\scriptstyle e^{-\dconst(\horizon-\ctime)}$\\$\scriptstyle\cdot\frac{\sinh\dconst\ctime}{\sinh\dconst}$} & $\scriptstyle\frac{\sconst}{\dconst}\parens*{1-e^{-\dconst\ctime}} $  \\
-$\shift$-\acrshort{BDT}   & \makecell{$\scriptstyle\drift \equiv 0$\\$\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\vconst^2\ctime$ & $\vconst^2\horizon$ & ${\ctime}$ & $1- {\ctime}$ & ${\ctime}$ & $\scriptstyle\int_0^\ctime \shift[\ctimealt]\dd \ctimealt$  \\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-\caption{Examples of reference \acrshortpl{SDE} and the corresponding solutions of \acrshortpl{GSB}. All relevant functions in the Table are either introduced in \cref{sec:linearsdes} or \eqref{eq:functions}.}
-\label[table]{tab:examples}
-}
-\end{small}
-%\end{center}
-\vskip -0.1in
-\end{table*}
-} 
-
 We now present the main result of this section. With the important application of diffusion-based models in mind, we will not only derive solution curves as in \eqref{eq:solMain} but also their \acrshort{SDE} representations.
 
 Let $\xi= \Ncal(\m,\covar)$ and $\xi' = \Ncal(\malt,\covaralt)$ be two arbitrary Gaussian distributions in \eqref{eq:GSB}, and let $\D, \Cstar$ be as defined in \eqref{eq:Cstar}.
@@ -472,7 +434,35 @@ Then the following holds:
 As in \cref{thm:mechanics}, the key step in the proof of \cref{thm:gaussian_sb} is to recognize the symmetry of the matrix $\St^\top \Sigmasolinv$ where $\St$, defined in \eqref{eq:functions}, simply becomes the $\Ht$ in \cref{lem:lyapMain} (up to an additive factor of $\frac{\sigma^2\bar{t}}{2}\eye$) for $\sigma\Wiener$-\acrshortpl{GSB}. Although this can be directly verified via generalizing \cref{lem:lyapMain}, the computation becomes quite tedious, so our proof of \cref{thm:gaussian_sb} will follow a slightly different route. In any case, given the symmetry of $\St^\top \Sigmasolinv$, the proof simply boils down to a series of straightforward calculations; see \cref{app:gaussian_sb}.
 
 \paragraph{Closed forms for conditional distributions.}
-In many practical applications such as generative modeling, a requirement to employ the \acrshort{SDE} representation of \acrshortpl{GSB} in \eqref{eq:GSB-forward-sol} is that its \emph{conditional distributions} given the initial points can be computed efficiently. As an immediate corollary of \cref{thm:gaussian_sb}, we obtain the following closed-form expressions for these conditional distributions. % Importantly, this will allow us to perform a \emph{pretraining} procedure, described in detail in \cref{sec:methods}, for \emph{both} the forward and the backward drifts in the likelihood objectives \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}.%, which will prove extremely valuable in practice.
+In many practical applications such as generative modeling, a requirement to employ the \acrshort{SDE} representation of \acrshortpl{GSB} in \eqref{eq:GSB-forward-sol} is that its \emph{conditional distributions} given the initial points can be computed efficiently. As an immediate corollary of \cref{thm:gaussian_sb}, we obtain the following closed-form expressions for these conditional distributions.
+% Importantly, this will allow us to perform a \emph{pretraining} procedure, described in detail in \cref{sec:methods}, for \emph{both} the forward and the backward drifts in the likelihood objectives \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}.%, which will prove extremely valuable in practice.
+
+\newpage
+\begin{landscape}
+\begin{table}[h]
+\begin{small}
+\begin{tabular}{ccccccccccr}
+\toprule
+\makecell{\acrshort{SDE} with\\$\shift\equiv 0$} & Setting  & $\kernel$ & $\sigma^2_\star$  & $\ratio$ & $\ratioc$ & $\efftr$ & $\tshift$ \\
+\midrule
+\acrshort{BM}    & \makecell{$\scriptstyle\drift  \equiv 0$\\ $\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\vconst^2\ctime$ & $\vconst^2$ & ${\ctime}$ & $1- {\ctime}$ & ${\ctime}$ & $0$  \\
+\acrshort{VESDE} & \makecell{$\scriptstyle\drift  \equiv 0$\\ $\scriptstyle\volat = \sqrt{\dqv}$}  & $\qv$ & $\qv[\horizon]$ & $\frac{\qv}{\qve}$ & $1- \frac{\qv}{\qve}$ & $\frac{\qv}{\qve}$ & $0$  \\
+\acrshort{VPSDE}    & \makecell{$\scriptstyle-2\drift = \volatsq[\ctime]$}  & $\scriptstyle\aggtime[\ctime']\parens*{\aggtimeinv[\ctime]-\aggtime} $ & $\scriptstyle\aggtimeinv[\horizon]-\aggtime[\horizon]$ & $\scriptstyle\frac{\aggtimeinv[\ctime]-\aggtime }{\aggtimeinv[\horizon]-\aggtime[\horizon]}$ & $\scriptstyle \aggtime[\horizon]\parens*{ \frac{\aggtime}{\aggtime[\horizon]} - \frac{\aggtimeinv[\ctime]-\aggtime }{\aggtimeinv[\horizon]-\aggtime[\horizon]} }$ & $\scriptstyle\frac{\aggtimeinv[\ctime]\parens*{\aggtimeinv[\ctime]-\aggtime }}{\aggtimeinv[\horizon]\parens*{\aggtimeinv[\horizon]-\aggtime[\horizon]}}$ & $0$  \\
+sub\textendash\acrshort{VPSDE}    & \makecell{$\scriptstyle\frac{\volatsq[\ctime]}{-2\drift} = { 1- \aggtimeqr} $}  & $\scriptstyle \aggtime\aggtime[\ctime']\parens*{ \aggtimeinv[\ctime]-\aggtime}^2  $ & $\scriptstyle\aggtime[\horizon]\parens*{ \aggtimeinv[\horizon]-\aggtime[\horizon]}^2$ & $\scriptstyle \frac{\aggtime}{\aggtime[\horizon]}\cdot\parens*{\frac{ \aggtimeinv[\ctime]-\aggtime}{ \aggtimeinv[\horizon]-\aggtime[\horizon]}}^2$ & $\scriptstyle\aggtime\parens*{1- \parens*{\frac{ \aggtimeinv[\ctime]-\aggtime}{ \aggtimeinv[\horizon]-\aggtime[\horizon]}}^2}$ & $\scriptstyle\parens*{\frac{\aggtimeinv[\ctime]-\aggtime}{\aggtimeinv[\horizon] - \aggtime[\horizon]}}^2$ & $0$  \\
+\midrule
+\makecell{\acrshort{SDE} with\\$\shift\not\equiv 0$} & Setting  & $\kernel$ & $\sigma^2_\star$  & $\ratio$ & $\ratioc$ & $\efftr$ & $\tshift$ \\
+\midrule
+\acrshort{OU}/Vasicek   & \makecell{$\scriptstyle\drift \equiv -\dconst\in\R$\\$\scriptstyle\shift \equiv \sconst\in\R^{\vdim}$\\$\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\scriptstyle\frac{\vconst^2e^{-\dconst \ctime'} \sinh \dconst\ctime}{\dconst} $ & $\scriptstyle\frac{\vconst^2\sinh\dconst}{\dconst}$ & $\scriptstyle\frac{\sinh\dconst\ctime}{\sinh\dconst}$ & \makecell{$\scriptstyle\sinh\dconst\ctime\coth\dconst\ctime$\\$-\scriptstyle\sinh\dconst\ctime\coth\dconst$} & \makecell{$\scriptstyle e^{-\dconst(\horizon-\ctime)}$\\$\scriptstyle\cdot\frac{\sinh\dconst\ctime}{\sinh\dconst}$} & $\scriptstyle\frac{\sconst}{\dconst}\parens*{1-e^{-\dconst\ctime}} $  \\
+$\shift$-\acrshort{BDT}   & \makecell{$\scriptstyle\drift \equiv 0$\\$\scriptstyle\volat \equiv \vconst \in \R^+$}  & $\vconst^2\ctime$ & $\vconst^2\horizon$ & ${\ctime}$ & $1- {\ctime}$ & ${\ctime}$ & $\scriptstyle\int_0^\ctime \shift[\ctimealt]\dd \ctimealt$  \\
+\bottomrule
+\end{tabular}
+\caption{Examples of reference \acrshortpl{SDE} and the corresponding solutions of \acrshortpl{GSB}. All relevant functions in the Table are either introduced in \cref{sec:linearsdes} or \eqref{eq:functions}.}
+\label[table]{tab:examples}
+\end{small}
+\end{table}
+\end{landscape}
+\newpage
+
 \begin{restatable}{corollary}{GSBMargins}
 \label{cor:GSB-Margins}
 Let $\Xsol \sim \Psol$ be the solution to \eqref{eq:GSB}. Then the conditional distribution of $\Xsol$ given endpoints has a simple solution: $\Xsol \vert \Xsol[0] = x_0 \sim \Ncal\parens*{  \cmeansol{\ctime}{0}, \cSigmasol{\ctime}{0} }$, where
@@ -627,7 +617,7 @@ The purpose of our experiments is to demonstrate that, by leveraging moment info
     \caption{Evaluation of predictive performance w.r.t. the entropy-regularized Wasserstein distance $W_\varepsilon$ \citep{cuturi2013sinkhorn} of \textsc{GSBflow} and baselines on generating different single-cell datasets (using 3 runs).}
     \label{tab:exp_wasserstein_cells}
     \centering
-\adjustbox{max width=.7\linewidth}{%
+\adjustbox{max width=.65\linewidth}{%
     \begin{tabular}{lcc}
     \toprule
          \textbf{Method} & \multicolumn{2}{c}{\textbf{Tasks}} \\
