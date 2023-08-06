@@ -3,9 +3,9 @@
 
 \dictum[Rachel Carson, \textit{Silent Spring} (1962)]{%
   The balance of nature is not a status quo; it is fluid, ever shifting, in a constant state of adjustment. \\ Man, too, is part of this balance.}%
-\vskip 1em
+\vskip 2em
 
-Dynamical systems are governing every aspect of life, encapsulating the unifying principles and complex interactions that shape our world. They are the cornerstone of understanding in diverse scientific fields such as physics, chemistry, and biology. In physics, they assist in understanding the movement and interaction of objects large and small, from planetary orbits to particle motion.
+Dynamical systems are governing every aspect of life, encapsulating the unifying principles and complex interactions that shape our world. They are the cornerstone of comprehension in diverse scientific fields such as physics, chemistry, and biology. In physics, they assist in understanding the movement and interaction of objects large and small, from planetary orbits to particle motion.
 In the world of chemistry, they guide the interaction and transformation of molecules, offering insights into reaction dynamics and molecular behavior.
 In biology it opens doors to insights ranging from the dynamic signaling activities in single cells to the ebb and flow of entire ecosystems.
 
@@ -14,7 +14,7 @@ Biology is determined by structure, patterns, and dynamics at various scales, ra
 % Recent technologies have provided access, with an unprecedented resolution, once deemed unthinkable, into the inner workings of cells and tissues that lie on the lower-end of that scale.
 At the lower end of that scale, advances in \acrlong{sc} genomics and transcriptomics provide now a direct window, with a resolution that was deemed unthinkable two decades ago, into the molecular makeup of individual cells, capturing vividly the inner workings of cells at any point in time.
 % paving the way for a better understanding of the diversity of cell types and their functional roles. 
-Similarly, advances in imaging technology provide tools to map the spatial organization of tissues and organs at the cellular and subcellular level, improving our understanding of key physiological processes. % that underlie health and disease.
+Similarly, advances in imaging technology provide tools to map the spatial organization of tissues and organs at the cellular and subcellular level, improving our understanding of key physiological processes that underlie health and disease. \\
 
 The ability of single-cell high-throughput methods to produce routinely millions of data points holds multiple promises. They do, however, come with several limitations: 
  Most prominently, they are typically destructive assays as cells are usually fixed and stained or chemically destroyed to obtain measurements. Thus, they produce data points that are not \textit{aligned}, meaning that the same cell cannot be observed twice nor can we record continuous time trajectories of it.
@@ -25,12 +25,14 @@ Significantly, the diversity within a cell population, or \textit{cellular heter
 Rather than resorting to population averages, we need to \textbf{model the problem at the single-cell level}, i.e., of the distribution as a whole, in order to capture and then further analyze the distinct cells' responses to a perturbation. 
 This requires scalable and principled algorithms that are well aligned with the constrained experimental settings of high-throughput methods and incorporate the inherent structure of biological processes.
 
-Beyond \textit{reconstructing} such dynamical processes, ...
-\acrfull{NN}
-Despite recent successes of deep learning in many areas such as computer vision \citep{lecun1998gradient, krizhevsky2012imagenet}, natural language processing \citep{bengio2000neural, vaswani2017attention}, and game playing \citep{mnih2015human , silver2016mastering}, deep neural networks still fall short of a general ability to model dynamic and complex evolutions of populations of particles.
+Beyond, in order to derive complex and nonlinear dynamic processes from data, the \textbf{development of \acrlong{NN}-based parameterizations} of such processes is critical.
+Traditional mathematical models might not be sufficient to capture all the intricacies of the system. This holds particularly true  in biology, where our understanding of the underlying mechanisms is incomplete and many factors contribute to the overall dynamics.
+Most importantly, \acrfullpl{NN} allow us to predict and control dynamical processes. This enables \emph{out-of-sample} predictions of the evolution of previously unseen particles, such as unobserved cells from incoming patient samples, or to extrapolate the inference to new cell types, or beyond the recorded time horizon.
+However, despite recent successes of deep learning in many areas such as computer vision \citep{lecun1998gradient, krizhevsky2012imagenet}, natural language processing \citep{bengio2000neural, vaswani2017attention}, and game playing \citep{mnih2015human, silver2016mastering}, deep neural networks still fall short of a general ability to model dynamic and complex evolutions of populations of particles. \\
 
+In this thesis, we argue for ...
 
-\section{Scope and Research Questions}
+\section{Scope and Contributions}
 % \section{Problem Formulation and Optimal Transport}
 
 Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells is crucial for deciphering molecular processes and obtaining a better understanding of function and disease.
@@ -47,7 +49,6 @@ In recent years, OT has enabled significant advances in single-cell biology prob
 They are thus unable to predict perturbation responses of cells from new incoming samples, such as those from unseen patients. 
 This thesis is thus concerned with the development of \textbf{neural optimal transport} methods for ...
 % TODO: Highlight out-of-sample setting.
-
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_overview_thesis.pdf}
@@ -108,7 +109,7 @@ This thesis would not have been possible without my advisors, Andreas Krause and
 
 \dictum[Rosalind Franklin, \textit{Report} (1952)]{%
   The results suggest a helical structure (which must be very closely packed) containing probably 2, 3, or 4 coaxial nucleic acid chains per helical unit and having the phosphate groups near the outside.}%
-\vskip 1em
+\vskip 2em
 
 Dynamical processes, with their inherently complex and constantly changing patterns of interactions and behaviors, are fundamental to every function of life, from the oscillatory rhythms of cellular processes to the broader orchestration of biological systems.
 These systems involve an array of intricate interactions between molecules, genes, cells, tissues, and their biophysical environment. They span a multitude of scales and dimensions --- spatial as well as temporal.
