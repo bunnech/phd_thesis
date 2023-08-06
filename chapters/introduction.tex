@@ -52,7 +52,7 @@ This thesis is thus concerned with the development of \textbf{neural optimal tra
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_overview_thesis.pdf}
-  \caption{Overview on ...}
+  \caption{Structure of the thesis with references to the chapters.}
   \label{fig:overview_thesis}
 \end{figure}
 
@@ -112,89 +112,83 @@ This thesis would not have been possible without my advisors, Andreas Krause and
 \vskip 2em
 
 Dynamical processes, with their inherently complex and constantly changing patterns of interactions and behaviors, are fundamental to every function of life, from the oscillatory rhythms of cellular processes to the broader orchestration of biological systems.
-These systems involve an array of intricate interactions between molecules, genes, cells, tissues, and their biophysical environment. They span a multitude of scales and dimensions --- spatial as well as temporal.
-Early events in cell signaling, for example, often start within seconds after the stimulus, followed by intracellular signaling and transcription changes over minutes to hours. In contrast, cell-fate decisions like division, differentiation, or apoptosis can take many hours or days to manifest \citep{spiller2010measurement}.
+This involves an array of intricate interactions between molecules, genes, cells, tissues, and their biophysical environment. They span a multitude of scales and dimensions --- spatial as well as temporal.
+Early events in cell signaling, for example, often start within seconds after the stimulus, followed by intracellular signaling and transcription changes over minutes to hours. In contrast, cell fate decisions like division, differentiation, or apoptosis can take many hours or days to manifest \citep{spiller2010measurement}.
 Measuring and modeling these inherently stochastic dynamics is critical to the effective understanding of biological systems and the subsequent development of diagnostic and therapeutic tools.
 However, they are equally daunting, demanding novel experimental and computational strategies.
 
 This section of the thesis will delve into the exploration of two examples of dynamic processes in biomedicine that are subject of this thesis. 
 In particular, we will focus on the analysis of cellular responses to perturbations such as drugs or other therapeutic agents (\cref{sec:cell_perturbation_responses}) as well as cell differentiation processes in developmental biology (\cref{sec:cell_differentiation}), and illuminate the critical role they play in biomedicine and the myriad of challenges and opportunities they present. 
-This will be followed by a discussion on current advances in high-throughput technologies for capturing such dynamical systems (\cref{sec:tech_background}).
-
+This will be followed by a discussion on current advances in high-throughput technologies for capturing such dynamical systems (\cref{sec:tech_background}) and existing computational approaches to tackle these (\cref{sec:related_work_bio}).
+.
 
 \section{Cellular Perturbation Responses to Drugs and Treatments}
 \label{sec:cell_perturbation_responses}
 
+% TODO: Add more citations.
 A fundamental task in personalized medicine involves predicting outcomes and responses of patients to potential treatments in order to subsequently select the most effective therapy based on the patient biopsies or tissue culture during screens.
 A key aspect of biomedical research thus concerns the study of cellular perturbation responses to therapeutic agents, including drugs and other treatments. 
-Perturbations such as small molecule drugs can thereby have profound effects on the biological \emph{phenotype} and cellular systems, marked by their intricate balance of molecular interactions, respond in complex and often unpredictable ways.
-Such responses might range from apoptosis to changes in cellular proliferation, migration, differentiation, and metabolism, each significantly affecting the overall state of the organism. 
+Perturbations such as small molecule drugs can thereby have profound effects on the biological \emph{phenotype} that responds in complex and often unpredictable ways.
+Such responses might range from the induction of apoptosis to changes in cellular proliferation, migration, differentiation, and metabolism, each significantly affecting the overall state of the organism. 
 Perturbations can also trigger cascade effects across interrelated signaling pathways, leading to a state of cellular disequilibrium.
 
-Beyond, populations of cells are almost always \emph{heterogeneous} in function and fate and subsequently, their response to a perturbation is often heterogeneous, where different cell states exhibit distinct sensitivities toward a external stimuli.
-... \citep{dagogo2018tumour}. Understanding diverging behavior of tumor cells toward a therapy is crucial in order to understand the underlying mechanisms of cellular sensitivities and \emph{resistance}.
-% Most of these effects depend on the context in which the perturbation occurs. Given the heterogeneity among single cells in cell populations and tissues, predicting cellular responses requires understanding the rules by which context shapes genome activity and its response to drugs. High-dimensional single-cell data measured via single-cell genomics or multiplexed imaging technologies can provide this contextual information but only return  unpaired or unaligned observations of cell populations.
+As populations of cells are almost always \emph{heterogeneous} in function and fate and subsequently, their response to a perturbation strongly vary, where different cell states exhibit distinct sensitivities toward a external stimuli \citep{spiller2010measurement}.
+Heterogeneity is particular inherent in cancer and fuel for resistance: Genomic instability, which can range in magnitude from single-base substitutions to whole-genome doublings, is critical to the development and progression of many cancers \citep{dagogo2018tumour}. Understanding diverging behavior of tumor cells toward a therapy is crucial in order to understand the underlying mechanisms of cellular sensitivities and \emph{resistance}.
 
-Thus, understanding these dynamics is crucial as they can illuminate mechanisms of drug efficacy and potential side effects, while revealing targets for improved therapeutic strategies. However, capturing this cellular responsiveness presents considerable challenges due to the heterogeneity of individual cells, the dynamism of biological systems, and the multi-dimensional interactions occurring within and across cells.
-...
+Thus, understanding responses of individual cells and distinct cell states to perturbations is crucial as they can illuminate mechanisms of drug efficacy and potential side effects.
+At the same time it reveals potential targets for improved therapeutic strategies. 
 
-Recent high-throughput methods provide great insights on how cell populations respond to various perturbations on the level of individual cells. The provided data, however, is non-time-resolved and unaligned. 
-Hence, snapshots taken of biological samples before and after perturbations do not provide information on single-cell trajectories.
-Perturbations might include the application of drugs affecting molecular functions in cells, or changes in the cellular environment causing shifts in biological signaling, thus impacting cells and their states in various ways.
+Most of these effects depend on the context in which the perturbation occurs. Given the heterogeneity among single cells in cell populations and tissues, predicting cellular responses requires understanding the rules by which context shapes genome activity and its response to drugs. High-dimensional single-cell data measured via single-cell genomics or multiplexed imaging technologies can provide this contextual information but only return unpaired or unaligned observations of cell populations.
+In order to understand how an unperturbed population $\mu$ responds and evolves into the perturbed population $\nu$, we need to recover a map $T$ that describes the perturbation effect. Parameterizing this through a neural network allows us to predict how a cell $x$ changes upon perturbation $y= T(x)$ (see \cref{fig:bio_problems}a).
+
+% However, capturing this cellular responsiveness presents considerable challenges due to the heterogeneity of individual cells, the dynamism of biological systems, and the multi-dimensional interactions occurring within and across cells.
+
+% Recent high-throughput methods provide great insights on how cell populations respond to various perturbations on the level of individual cells. The provided data, however, is non-time-resolved and unaligned. 
+% Hence, snapshots taken of biological samples before and after perturbations do not provide information on single-cell trajectories.
+% Perturbations might include the application of drugs affecting molecular functions in cells, or changes in the cellular environment causing shifts in biological signaling, thus impacting cells and their states in various ways.
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_bio_problems.pdf}
-  \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} ... \textbf{b.} ...}	
+  \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} In order to understand and predict the response of an unperturbed cell population $\mu$ to a stimulus such as a therapeutic agent, we need to identify a map $T$ that explains its evolution into the perturbed population $\nu$. Then, the perturbed state of a cell $x$ is given by $T(x)$.  \textbf{b.} Developmental processes describe the evolution of a often homogeneous population of undifferentiated cells into various cell lineages. Reconstructing such processes from measurement snapshots can be achieved through sequential alignments $P_{t-1,t}$ that describe the evolution from $\mu_0$ to $\mu_1$, or by identifying the overall global path $\mu_t$ capturing the cell differentiation process.}
   \label{fig:bio_problems}
 \end{figure}
-
 
 \section{Cell Differentiation and Lineage Tracing in Developmental Biology}
 \label{sec:cell_differentiation}
 
-Complex cellular dynamics are not only initiated through external stimuli, but also at the core of developmental processes and tissue regeneration and formation.
+Complex cellular dynamics are not only initiated through external stimuli, but also at the core of developmental processes, tissue regeneration and formation.
 The spectacular journey of a single zygote in the embryonic development, for example, metamorphosing into a complex, multicellular organism is largely governed by the mechanisms of cell differentiation, where pluripotent stem cells commit to specific lineages and mature into diverse cell types.
-Cellular differentiation, while dictated by the genetic blueprint, is subject to spatial-temporal regulations and environmental cues.
-...
 
 Understanding the molecular programs that guide such differentiation processes is a major challenge.
-Again heterogeneity ...
-
 % Lineage tracing serves as a powerful tool to retrospectively track the genealogical origin of cells, helping to construct an in-depth chronicle of cellular development and differentiation. It unravels the developmental trajectory of cells, thereby facilitating the understanding of normal development as well as pathological conditions.
-
 % However, capturing this process with accuracy poses profound challenges due to the stochastic nature of cell differentiation, technical complexities, and the vast temporal and spatial scales involved.
-Approaches relying on the bulk analysis of cellular populations fall short in tackling these issues, as they fail to offer comprehensive solutions to two key obstacles: identifying various cell types within a population and tracking the development of each of these types.
-By providing insights into the heterogeneity of cell populations, single-cell RNA sequencing methods partially address the aforementioned challenges, but their destructive nature impedes the recording of the expression of the same cell and its direct descendants across time.
+However, approaches relying on the bulk analysis of cell populations fall short in tackling these issues, as they fail to offer comprehensive solutions to two key obstacles: identifying various cell types within a population and tracking the development of each of these types.
+By providing insights into the heterogeneity of cell populations, single-cell methods partially address the aforementioned challenges, but their destructive nature impedes the recording of the expression of the same cell and its direct descendants across time.
 Hence, such differentiation processes can only be measured through distinct snapshots of single-cell populations that are \textit{not time-resolved} and \textit{unaligned}.
 
 To understand differentiation ---the continuous emergence of different cell types and branching events--- we need to reconstruct such developmental processes from single-cell measurements that provide us with snapshots of the cell population evolving over time:
 Given that a cell has a specific expression profile at a time point, where will its descendants likely be at a later time point and where are its likely ancestors at an earlier time point? 
-\citet{schiebinger2019optimal} thereby study reprogramming of fibroblasts to \acrfull{iPSC} \citep{takahashi2006induction}, by measuring $>315,000$ \acrfull{MEF}. Cells at time point $t$ are connected to their ancestors at time $t-1$, by finding the corresponding transport plan $P_{t-1,t}$ between each pair of consecutive time steps.
-...
+\citet{schiebinger2019optimal} for example study reprogramming of fibroblasts to \acrfull{iPSC} \citep{takahashi2006induction}, by measuring \acrfull{MEF}. Cells at time point $t$ are connected to their ancestors at time $t-1$, by finding the corresponding transport plan $P_{t-1,t}$ between each pair of consecutive time steps (see \cref{fig:bio_problems}b).
+To understand the overall dynamic process, however, this thesis aims at identifying the overall dynamic evolution of measure $\mu_t$ instead of resorting to the computation of distinct alignments between consecutive measurement snapshots \citep{lavenant2021towards}.
 
 
 \section{Single-Cell High-Throughput Technologies}
 \label{sec:tech_background}
 
-% Until recently, our understanding of cellular dynamics was limited to 'bulk' omics analyses, which yield average measurements for a cell population. The advent of single-cell omics technologies, accompanied by the rapid development of novel computational methods and tools1, has revolutionized the field by enabling the high-resolution characterization of individual cells. In this Focus issue and its accompanying online collection, we delve into the exciting developments in single-cell omics, highlighting its transformative potential.
+Until recently, our understanding of cellular dynamics was limited to 'bulk' omics analyses, which yield average measurements for a cell population.
+The advent of single-cell omics technologies has marked a significant shift from such average analyses, enabling a highly detailed examination of individual cells across various layers such as the genome, transcriptome, epigenome, and proteome.
+This shift has revealed previously hidden complexities, such as rare cell types, transitional states, and cell-to-cell variability. Transformative techniques like single-cell RNA sequencing (\cref{sec:background_sequencing}) have allowed researchers to profile gene expression in thousands of cells simultaneously, shedding light on new cellular subpopulations and responses \citep{jia2022high}.
+Additionally, modern imaging technologies have deepened our understanding of cell morphology and (the localization of) cellular signaling (\cref{sec:background_imaging}). 
+The integration of these diverse omics layers provides a holistic view of cellular diversity, opening new avenues in the study of health, disease, and personalized medicine \citep{baysoy2023technological}.
 
-% Single-cell omics approaches offer a unique perspective on the genome, transcriptome, epigenome, proteome and other omics modalities at the level of individual cells. By capturing the full spectrum of cellular states, these techniques have the power to identify and characterize rare cell types, transitional cell states and cell-to-cell variability previously hidden in bulk analyses.
-
-% Single-cell RNA sequencing (scRNA-seq) was a transformative breakthrough, enabling researchers to profile gene expression patterns in thousands of individual cells simultaneously. By illuminating transcriptomic landscapes, scRNA-seq has revealed new cellular subpopulations, cell states and dynamics, shedding light on lineage trajectories, cell fate decisions and cellular responses to external stimuli. The subsequent integration of scRNA-seq with sequencing- or imaging-based spatial omics techniques has rapidly advanced our ability to construct comprehensive cellular atlases and delineate tissue architectures.
-% Beyond gene expression, single-cell omics has expanded to encompass other layers of cellular information, such as chromatin accessibility, DNA methylation and histone modifications, offering insights into the regulatory landscape of individual cells. By deciphering the epigenetic regulation underlying cellular heterogeneity, these single-cell epigenomics approaches deepen our understanding of gene regulation and cellular plasticity. Additionally, single-cell proteomics techniques have revealed new insights into cellular signalling, protein function and protein-protein interactions at the single-cell level.
-% Integrating these diverse omics layers offers a holistic view of cellular diversity and will enhance our understanding of cellular function and dysfunction in health and disease. To this end, single-cell and spatial multi-omics techniques (also known as multimodal omics) will be essential, as they allow researchers to explore the complex interplay between genetic variation at the genome level, gene regulation at the epigenome level and gene expression at the transcriptome and/or proteome levels in the same cells throughout development, ageing and disease3.
-% Single-cell omics has immense potential to decipher the complexities of human diseases. For example, single-cell expression quantitative trait locus (eQTL) studies are enabling the investigation of genetic variants that influence gene expression at the level of individual cells4. Linking single-cell data and matched genotype data for hundreds or thousands of people will help to delineate how genetic variation affects cellular phenotypes, including causal pathways in disease. In cancer research, single-cell genomics has helped to profile intratumoral heterogeneity, identify and characterize rare cell types and study clonal evolution.
-% One of the most exciting prospects of single-cell omics lies in its clinical application. By capturing the molecular heterogeneity within a tissue or tumour, single-cell analyses can reveal the cellular states that drive disease progression, identify novel therapeutic targets and guide personalized medicine approaches. However, despite remarkable achievements, there remain challenges in translating single-cell omics from bench to bedside5. Technical considerations need to be addressed to ensure scientific accuracy and reproducibility. Furthermore, integrating different omics data modalities remains a complex task, demanding advanced computational methods and standardization.
-% Looking to the future, the refinement of techniques for other omics 'layers', such as single-cell metabolomics and spatial proteomics, promises the capture of additional cellular information. Moreover, the development of new statistical and computational methods to analyse omics data, for example, the inference of cell-cell interactions from gene expression data, will continue to lead to new biological insights that drive the field forward.
-% Single-cell omics has empowered researchers to explore the intricacies of cellular heterogeneity at unparalleled resolution. As these technologies advance, we embark on a journey that paves the way for a deeper understanding of biological systems.
-% Various single-omics methods have generated a plethora of single- modality data aiming to dissect the mechanistic basis of gene regulation or reveal aspects of human diseases. Cell diversity within the human body is complex as cells undergo proliferation, differentiation and death, and this diversity is amplified when considering the tissue in which these cells reside -- their local and distant environments. Thus, integrative capture and analyses of multiple cellular processes is desirable to resolve their biological complexity.
-% Methodological and technological advances now allow the simultaneous profiling of genome, epigenome, transcriptome, proteome and other (emerging) omics modalities in an effort to better understand biological mechanisms and genotype-to-phenotype relationships.
-
-The technological landscape and applications of single-cell multi-omics \citep{baysoy2023technological}
-
-High-throughput single-cell sequencing in cancer research \citep{jia2022high}
+Each point $x$ of such single-cell measurements then represents the recorded features of a single cell. Each feature (dimension) of that point tracks the expression level of each studied gene, or morphological and signaling feature strength in that cell, at measurement time. In this setting, a few thousand cells are sampled from a large population of cells, to obtain their features (high-throughput). This is done at distinct time points throughout cellular processes. Because of the destructive process of these measurements, each snapshot consists of several feature vectors, one for each different cell.
+Two consecutive snapshots can be seen as two point clouds % that capture the heterogeneity of cells at each point in time. 
+or, alternatively, as two tabular datasets $X = [x_1,\dots, x_n]$ and $Y=[y_1, \dots, y_m]$: Each of the $n$ or $m$ rows contains a cell and its $d$-dimensional feature representation, where each column denotes a particular feature, e.g., the activity of a gene.
+In order to understand the temporal evolution of the cell population over time, we aim to provide an informed guess on an alignment or a map that relates the two cell populations $X$ and $Y$.
+% In the following, we will discuss two different high-throughput technologies that allow us to record such features.
 
 \subsection{Sequencing-Based Screening}
+\label{sec:background_sequencing}
 
 Sequence-based profiling methods have emerged as a transformative tool for understanding the complexity of biological systems at the resolution of individual cells. These methods, such as single-cell \acrlong{RNA-seq} (scRNA-seq) or single-cell \acrlong{ATAC-seq} (scATAC-seq), enable us to characterize gene expression or chromatin accessibility, respectively, within a single cell, shedding light on cellular heterogeneity and uncovering previously hidden cellular states.
 By mapping the transcriptomic or epigenomic landscapes of individual cells, sequence-based profiling methods have allowed for unprecedented insights into developmental biology, tissue homeostasis, disease pathology, and therapeutic responses. These techniques have revolutionized single-cell biology, facilitating a deeper understanding of cellular diversity, dynamic cellular processes, and the intricate mechanisms that underlie health and disease.
@@ -210,6 +204,7 @@ This is a fundamental limitation, as the process of obtaining the high-resolutio
 % TODO: Mention that this will subject of this thesis.
 
 \subsection{Optical Phenotypic Screening}
+\label{sec:background_imaging}
 
 Optical phenotypic screening allows for the analysis of single cells based on their morphological and biochemical characteristics, with minimal perturbation to their natural state. 
 Techniques such as fluorescence microscopy, time-lapse imaging, or flow cytometry typically involve labeling cells with fluorescent dyes or proteins that bind to or are expressed by specific cellular components of interest.
@@ -226,6 +221,7 @@ Thus, 4i quickly generates large, spatially resolved phenotypic datasets rich in
 
 
 \section{Related Work on Studying Cell Dynamics}
+\label{sec:related_work_bio}
 
 ...
 \citep{fischer2019inferring, busch2015fundamental, hashimoto2016learning, raue2015data2dynamics}
