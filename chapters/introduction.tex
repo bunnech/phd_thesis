@@ -1,42 +1,114 @@
 \chapter{Introduction}
 \label{cha:introduction}
 
-% \dictum[Rachel Carson, \textit{Silent Spring} (1962)]{%
-%  The balance of nature is not a status quo; it is fluid, ever shifting, in a constant state of adjustment. \\ Man, too, is part of this balance.}%
-% \vskip 1em
+\dictum[Rachel Carson, \textit{Silent Spring} (1962)]{%
+  The balance of nature is not a status quo; it is fluid, ever shifting, in a constant state of adjustment. \\ Man, too, is part of this balance.}%
+\vskip 1em
+
+Dynamical systems are governing every aspect of life, encapsulating the unifying principles and complex interactions that shape our world. They are the cornerstone of understanding in diverse scientific fields such as physics, chemistry, and biology. In physics, they assist in understanding the movement and interaction of objects large and small, from planetary orbits to particle motion.
+In the world of chemistry, they guide the interaction and transformation of molecules, offering insights into reaction dynamics and molecular behavior.
+In biology it opens doors to insights ranging from the dynamic signaling activities in single cells to the ebb and flow of entire ecosystems.
+
+Given the complexity and constant evolution inherent in living organisms, the application of dynamical systems in biology offers a particularly rich and challenging field of study.
+Biology is determined by structure, patterns, and dynamics at various scales, ranging from molecular interactions to organismal behavior.
+% Recent technologies have provided access, with an unprecedented resolution, once deemed unthinkable, into the inner workings of cells and tissues that lie on the lower-end of that scale.
+At the lower end of that scale, advances in \acrlong{sc} genomics and transcriptomics provide now a direct window, with a resolution that was deemed unthinkable two decades ago, into the molecular makeup of individual cells, capturing vividly the inner workings of cells at any point in time.
+% paving the way for a better understanding of the diversity of cell types and their functional roles. 
+Similarly, advances in imaging technology provide tools to map the spatial organization of tissues and organs at the cellular and subcellular level, improving our understanding of key physiological processes. % that underlie health and disease.
+
+The ability of single-cell high-throughput methods to produce routinely millions of data points holds multiple promises. They do, however, come with several limitations: 
+ Most prominently, they are typically destructive assays as cells are usually fixed and stained or chemically destroyed to obtain measurements. Thus, they produce data points that are not \textit{aligned}, meaning that the same cell cannot be observed twice nor can we record continuous time trajectories of it.
+Since many of the most pressing questions in the field involve modeling and understanding the dynamic responses of heterogeneous cell populations to various stimuli, such as environmental signals, developmental processes, genetic perturbations, or drug treatments, there is a pressing need to provide algorithms that can circumvent that limitation and \textbf{reconstruct such dynamical processes}. 
+This constraint is particularly acute in the field of personalized medicine, where the goal is precisely to understand the dynamic response of a patient's cells to a stimulus, and would therefore rest, in theory, on the ability to observe the same cell before and after treatment.
+
+Significantly, the diversity within a cell population, or \textit{cellular heterogeneity}, plays a crucial role in determining how sensitive or resistant cells are to perturbations.
+Rather than resorting to population averages, we need to \textbf{model the problem at the single-cell level}, i.e., of the distribution as a whole, in order to capture and then further analyze the distinct cells' responses to a perturbation. 
+This requires scalable and principled algorithms that are well aligned with the constrained experimental settings of high-throughput methods and incorporate the inherent structure of biological processes.
+
+Beyond \textit{reconstructing} such dynamical processes, ...
+\acrfull{NN}
+Despite recent successes of deep learning in many areas such as computer vision \citep{lecun1998gradient, krizhevsky2012imagenet}, natural language processing \citep{bengio2000neural, vaswani2017attention}, and game playing \citep{mnih2015human , silver2016mastering}, deep neural networks still fall short of a general ability to model dynamic and complex evolutions of populations of particles.
+
+
+\section{Scope and Research Questions}
+% \section{Problem Formulation and Optimal Transport}
+
+Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells is crucial for deciphering molecular processes and obtaining a better understanding of function and disease.
+
+Static OT:
+While massively parallel high-throughput methods provide us with an unprecedented resolution of the underlying biological mechanisms of such perturbations, they are accompanied by a unique set of limitations.
+A fundamental difficulty is thus to reconstruct perturbation responses of individual cells from a set of unaligned unperturbed and perturbed cells. To forecast patient cell reactions to treatments or deduce cell differentiation paths, we need to reconcile these unpaired snapshots, thus predicting each cell's perturbed state.
+
+
+
+
+The mathematical foundation of this work builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of optimal transport (OT) and serves naturally as an inductive bias of the learning algorithm. By providing tools for aligning and mapping two distributions, here the unperturbed and perturbed cell population, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation. 
+In recent years, OT has enabled significant advances in single-cell biology problems. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
+They are thus unable to predict perturbation responses of cells from new incoming samples, such as those from unseen patients. 
+This thesis is thus concerned with the development of \textbf{neural optimal transport} methods for ...
+% TODO: Highlight out-of-sample setting.
+
+
+\begin{figure}[t]
+  \includegraphics[width=\textwidth]{figures/fig_overview_thesis.pdf}
+  \caption{Overview on ...}
+  \label{fig:overview_thesis}
+\end{figure}
+
+
+\section{Thesis Organization}
+
+This thesis introduces static and dynamic neural optimal transport methods to study dynamical systems in biomedicine, with a focus on single-cell technologies. An overview of the thesis is provided in \cref{fig:overview_thesis}.
+After reviewing core concepts of static and dynamic optimal transport in \cref{cha:theory_background}, the thesis contributions are organized in two parts. 
+
+\cref{part:static_not} is dedicated to introducing static neural optimal transport methods and comprises two chapters:
+\cref{cha:cellot} ... \citep{bunne2021learning}. To ..., \cref{cha:condot} ... \citep{bunne2022supervised}.
+
+\cref{part:dynamic_not} subsequently covers methods within the dynamic neural optimal transport framework. In particular, \cref{cha:neural_pde} ... \citep{bunne2022proximal}.
+\cref{cha:neural_sde} ...
+\cref{sec:gsbflow} ... \citep{bunne2022recovering}.
+\cref{sec:sbalign} ... \citep{somnath2023aligned}.
+
+
+\section{Publications}
+All results presented in this thesis have been published in the following conference proceedings and journals:
+
+\begin{itemize}
+	\item[] Charlotte Bunne, Laetitia Meng-Papaxanthos, Andreas Krause, and Marco Cuturi. Proximal Optimal Transport Modeling of Population Dynamics. In \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, volume 25, 2022.
+	\item[] Charlotte Bunne, Andreas Krause, and Marco Cuturi. Supervised Training of Conditional Monge Maps. In \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2022.
+	\item[] Charlotte Bunne, Ya-Ping Hsieh, Marco Cuturi, and Andreas Krause. The Schr{\"o}dinger Bridge between Gaussian Measures has a Closed Form. In \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2023.
+	\item[] Vignesh Ram Somnath, Matteo Pariset, Ya-Ping Hsieh, Maria Rodriguez Martinez, Andreas Krause, and Charlotte Bunne. Aligned Diffusion Schr{\"o}dinger Bridges. In \textit{Conference on Uncertainty in Artificial Intelligence (UAI)}, 2023.
+	\item[] Charlotte Bunne, Stefan G Stark, Gabriele Gut, Jacobo Sarabia del Castillo, Kjong-Van Lehmann, Lucas Pelkmans, Andreas Krause, and Gunnar R{\"a}tsch. Learning Single-Cell Perturbation Responses using Neural Optimal Transport. \textit{Nature Methods}, 2023.
+\end{itemize}
+
+\paragraph{Further publications.}
+The following publications of the author and collaborators are more broadly relevant to the topic of this thesis but have not been directly included:
+
+\begin{itemize}
+	\item[] Charlotte Bunne, David Alvarez-Melis, Andreas Krause, and Stefanie Jegelka. Learning Generative Models across Incomparable Spaces. In \textit{International Conference on Machine Learning (ICML)}, 2019.
+	\item[] Matteo Manica, Charlotte Bunne, Roland Mathis, Joris Cadow, Mehmet Eren Ahsen, Gustavo A Stolovitzky, and Maria Rodriguez Martinez. COSIFER: a Python package for the consensus inference of molecular interaction networks. \textit{Bioinformatics}, 37(14), 2020.
+	\item[] Vignesh Ram Somnath, Charlotte Bunne, Connor Coley, Andreas Krause, and Regina Barzilay. Learning Graph Models for Retrosynthesis Prediction. In Advances in Neural Information Processing Systems (NeurIPS), 2021.
+	\item[] Vignesh Ram Somnath, Charlotte Bunne, and Andreas Krause. Multi-Scale Representation Learning on Proteins. In \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2021.
+	\item[] Marco Cuturi, Laetitia Meng-Papaxanthos, Yingtao Tian, Charlotte Bunne, Geoff Davis, and Olivier Teboul. Optimal Transport Tools (OTT): A JAX Toolbox for all things Wasserstein. \textit{arXiv Preprint arXiv: 2201.12324}, 2022.
+	\item[] Octavian-Eugen Ganea, Xinyuan Huang, Charlotte Bunne, Yatao Bian, Regina Barzilay, Tommi S. Jaakkola, and Andreas Krause. Indepen- dent SE(3)-Equivariant Models for End-to-End Rigid Protein Docking. In \textit{International Conference on Learning Representations (ICLR)}, 2022.
+	\item[] Philippe Schwaller, Alain C Vaucher, Ruben Laplaza, Charlotte Bunne, Andreas Krause, Clemence Corminboeuf, and Teodoro Laino. Machine intelligence for chemical reaction space. \textit{Wiley Interdisciplinary Reviews: Computational Molecular Science}, 2022.
+	\item[] Frederike L\"ubeck, Charlotte Bunne, Gabriele Gut, Jacobo Sarabia del Castillo, Lucas Pelkmans, and David Alvarez-Melis. Neural Unbalanced Optimal Transport via Cycle-Consistent Semi-Couplings. \textit{arXiv Preprint arXiv: 2209.15621}, 2022.
+	\item[] Matteo Pariset, Ya-Ping Hsieh, Charlotte Bunne, Andreas Krause, and Valentin De Bortoli. Unbalanced Diffusion Schr{\"o}dinger Bridge. \textit{arXiv Preprint arXiv: 2306.09099}, 2023.
+\end{itemize}
+
+\section{Collaborators}
+
+This thesis would not have been possible without my advisors, Andreas Krause and Marco Cuturi, and many of the ideas presented here have been shaped in our meetings. I further enjoyed collaborating with my colleagues on numerous ideas, and the results presented and not otherwise cited are by the author and collaborators. In particular, \cref{cha:cellot} contains material of a publication with shared first authorship between the author, Stefan Stark, and Gabriele Gut. Besides Andreas Krause, the corresponding authors are Kjong-Van Lehmann, Lucas Pelkmans, and Gunnar R\"atsch.
+\cref{sec:gsbflow} is based on a joint first authorship project with Ya-Ping Hsieh who contributed the theoretical analysis of that work. Lastly, \cref{sec:sbalign} contains material from a publication where Vignesh Ram Somnath and Matteo Pariset share the first authorship while the author serves as corresponding author.
+
+
+
+\chapter{Dynamic Processes in Biomedicine}
+\label{sec:bio_background}
 
 \dictum[Rosalind Franklin, \textit{Report} (1952)]{%
   The results suggest a helical structure (which must be very closely packed) containing probably 2, 3, or 4 coaxial nucleic acid chains per helical unit and having the phosphate groups near the outside.}%
 \vskip 1em
-
-Biology is determined by structure, patterns, and dynamics at various scales, ranging from molecular interactions to organismal behavior.
-%
-% Recent technologies have provided access, with an unprecedented resolution, once deemed unthinkable, into the inner workings of cells and tissues that lie on the lower-end of that scale.
-%
-At the lower end of that scale, \acrlong{sc} genomics and transcriptomics provide now a direct window, with a resolution that was deemed unthinkable two decades ago, into the molecular makeup of individual cells, capturing vividly the inner workings of cells at any point in time.
-% paving the way for a better understanding of the diversity of cell types and their functional roles. 
-Similarly, advances in imaging technology provide tools to map the spatial organization of tissues and organs at the cellular and subcellular level, improving our understanding of key physiological processes. % that underlie health and disease.
-%
-The ability of single-cell high-throughput methods to produce routinely millions of data points holds multiple promises. They do, however,  come with an important limitation: they produce data that are not \textit{aligned}, namely, such methods are destructive assays, meaning that the same cell cannot be observed twice.
-% nor fully profiled over time.
-Since many of the most pressing questions in the field involve modeling and understanding the dynamic responses of heterogeneous cell populations to various stimuli, such as environmental signals, developmental processes, genetic perturbations, or drug treatments, there is a pressing need to provide experimental and/or computational methods that can circumvent that limitation. 
-This constraint is particularly acute in the field of personalized medicine, where the goal is precisely to understand the dynamic response of a patient's cells to a stimulus, and would therefore rest, in theory, on the ability to observe the same cell before and after treatment.
-
-%
-Similarly, most single-cell technologies require the physical dissection and dissociation of tissues and organs, resulting in a loss of spatial information.
-%
-These issues are well known challenges, and many technologies have tried to circumvent such destructive steps, notably through spatial-omics. The scalability of such methods does, however, lag behind that of single-cell sequencing, which calls for algorithmic solutions to this problem.
-
-
-Our goal in this review is to highlight that the common thread in all of these problems is the recurring need to realign datasets, and that such problems can be solved using \acrlong{OT} theory \citep{villani2021topics, santambrogio2015optimal}.
-OT theory, a major research area in pure mathematics in recent decades (with Fields Medals awarded to \citeauthor{villani2021topics} in 2010 and \citeauthor{figalli2017monge} in 2018), has emerged as a contender to fill in that gap \textit{in silico}. OT is best described as a toolbox that allows reconstructing how a \emph{source} population (represented as one probability distribution) can morph efficiently into another \emph{target} population, given only source and target samples. Taking for the source distribution a sample of cells pre-stimuli, and for the target, another sample of cells post-stimuli, OT can reconstruct the unobserved process and provide an informed guess to define a \emph{transport map} that relates these two cell populations. 
-
-
-
-\acrfull{NN}
-
-\section{Dynamic Processes in Biomedicine}
-\label{sec:bio_background}
 
 Dynamical processes, with their inherently complex and constantly changing patterns of interactions and behaviors, are fundamental to every function of life, from the oscillatory rhythms of cellular processes to the broader orchestration of biological systems.
 These systems involve an array of intricate interactions between molecules, genes, cells, tissues, and their biophysical environment. They span a multitude of scales and dimensions --- spatial as well as temporal.
@@ -49,7 +121,7 @@ In particular, we will focus on the analysis of cellular responses to perturbati
 This will be followed by a discussion on current advances in high-throughput technologies for capturing such dynamical systems (\cref{sec:tech_background}).
 
 
-\subsection{Cellular Perturbation Responses to Drugs and Treatments}
+\section{Cellular Perturbation Responses to Drugs and Treatments}
 \label{sec:cell_perturbation_responses}
 
 A fundamental task in personalized medicine involves predicting outcomes and responses of patients to potential treatments in order to subsequently select the most effective therapy based on the patient biopsies or tissue culture during screens.
@@ -76,7 +148,7 @@ Perturbations might include the application of drugs affecting molecular functio
 \end{figure}
 
 
-\subsection{Cell Differentiation and Lineage Tracing in Developmental Biology}
+\section{Cell Differentiation and Lineage Tracing in Developmental Biology}
 \label{sec:cell_differentiation}
 
 Complex cellular dynamics are not only initiated through external stimuli, but also at the core of developmental processes and tissue regeneration and formation.
@@ -150,95 +222,14 @@ High-content imaging, particularly when augmented by multiplexing abilities, is 
 In this thesis, we study heterogeneous cell line responses to various cancer drugs based on a measurement technology known as \acrfull{4i} \citep{gut2018multiplexed}.
 With 4i, fluorescently labeled antibodies are iteratively hybridized, imaged, and removed from a sample to measure the abundance and localization of proteins and their modifications. 
 Thus, 4i quickly generates large, spatially resolved phenotypic datasets rich in molecular information from thousands of treated and untreated cells. Additionally to the multiplexed information generated by 4i, cellular and nuclear morphology are routinely extracted from microscopy images (without the need for 4i) by image analysis algorithms \citep{carpenter2006cellprofiler}.
- 
-\section{Problem Formulation and Optimal Transport}
-
-Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells is crucial for deciphering molecular processes and obtaining a better understanding of function and disease.
-
-While massively parallel high-throughput methods provide us with an unprecedented resolution of the underlying biological mechanisms of such perturbations, they are accompanied by a unique set of limitations. Most prominently, they are typically destructive as cells are usually fixed and stained or chemically destroyed to obtain measurements, preventing us from observing the same cell before and after a perturbation. A fundamental difficulty is thus to reconstruct perturbation responses of individual cells from a set of unaligned unperturbed and perturbed cells. To forecast patient cell reactions to treatments or deduce cell differentiation paths, we need to reconcile these unpaired snapshots, thus predicting each cell's perturbed state.
-
-Significantly, the diversity within a cell population, or cellular heterogeneity plays a crucial role in determining how sensitive or resistant cells are to perturbations.
-Rather than resorting to population averages, we need to model the problem at the single-cell level in order to capture and then further analyze the distinct cells' responses to a perturbation. This requires scalable and principled algorithms that are well aligned with the constrained experimental settings of high-throughput methods and incorporate the inherent structure of biological processes.
-
-The mathematical foundation of this work builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of optimal transport (OT) and serves naturally as an inductive bias of the learning algorithm. By providing tools for aligning and mapping two distributions, here the unperturbed and perturbed cell population, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation. 
-In recent years, OT has enabled significant advances in single-cell biology problems. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
-They are thus unable to predict perturbation responses of cells from new incoming samples, such as those from unseen patients. 
-This thesis is thus concerned with the development of \textbf{neural optimal transport} methods for ...
-% TODO: Highlight out-of-sample setting.
-
-\subsection{Optimal Transport for Single-Cell Biology}
-\label{sec:ot_for_biology}
-
-Applied to the analysis and modeling of single-cell biology problems, OT has been used to infer the distributions of cells' ancestors and descendants along development \citep{schiebinger2019optimal}, perform trajectory inference \citep{bunne2022proximal, forrow2021lineageot, bunne2022recovering, lavenant2021towards, schiebinger2019optimal, tong2020trajectorynet, yang2020predicting, zhang2021optimal, chizat2022trajectory}, predict perturbation responses \citep{bunne2021learning, yang2018scalable, lubeck2022neural}, integrate multi-omics data of different modalities \citep{demetci2022scot}, infer cell-cell similarity \citep{huizing2022optimal}, and integrate across scales (e.g., morphology and molecular profiling) \citep{yang2021multi}. The increasing data complexity across multiple levels of biological organization, from molecular and cellular through spatial profiling \citep{moriel2021novosparc} of tissues, and imaging of organs, cement further the status of OT as an indispensable framework for high-throughput, multimodal, and multi-scale molecular, cell, tissue, and organ biology. The effectiveness of OT comes, however, with drawbacks: because the theory builds on extremely sophisticated mathematics that blends optimization \citep{cuturi2013sinkhorn, cuturi2022optimal}, stochasticity \citep{chizat2022trajectory, bunne2022recovering} and partial differential equations \citep{bunne2022proximal}, and, more recently, deep learning \citep{tong2020trajectorynet, bunne2021learning, bunne2022supervised, yang2018scalable, lubeck2022neural, yang2021multi}, its computations are challenging even by modern ML standards.
 
 
-\subsection{Related Work on Studying Cell Dynamics}
+\section{Related Work on Studying Cell Dynamics}
 
 ...
 \citep{fischer2019inferring, busch2015fundamental, hashimoto2016learning, raue2015data2dynamics}
 
-\section{Contributions}
+\section{Optimal Transport for Single-Cell Biology}
+\label{sec:ot_for_biology}
 
-\begin{figure}[t]
-  \includegraphics[width=\textwidth]{figures/fig_overview_thesis.pdf}
-  \caption{Overview on ...}
-  \label{fig:overview_thesis}
-\end{figure}
-
-...
-
-\paragraph{Theoretical Contributions}
-...
-
-\paragraph{Methodological Contributions}
-...
-
-% In this thesis, we introduce the mathematical and computational principles of OT, with the goal of facilitating its use by researchers that wish to apply to novel applications. We provide the reader with intuitive explanations of how seemingly unrelated mathematical approaches for analyzing single-cell data can be unified through OT theory, and how that theory has triggered recent advances in deep learning. We provide an overview of the broad range of biological applications, demonstrating the successes of OT in the field, especially within the field of single-cell biology. 
-
-
-
-\section{Thesis Organization}
-
-This thesis introduces static and dynamic neural optimal transport methods to study dynamical systems in biomedicine, with a focus on single-cell technologies. An overview of the thesis is provided in \cref{fig:overview_thesis}.
-After reviewing core concepts of static and dynamic optimal transport in \cref{cha:theory_background}, the thesis contributions are organized in two parts. 
-
-\cref{part:static_not} is dedicated to introducing static neural optimal transport methods and comprises two chapters:
-\cref{cha:cellot} ... \citep{bunne2021learning}. To ..., \cref{cha:condot} ... \citep{bunne2022supervised}.
-
-\cref{part:dynamic_not} subsequently covers methods within the dynamic neural optimal transport framework. In particular, \cref{cha:neural_pde} ... \citep{bunne2022proximal}.
-\cref{cha:neural_sde} ...
-\cref{sec:gsbflow} ... \citep{bunne2022recovering}.
-\cref{sec:sbalign} ... \citep{somnath2023aligned}.
-
-
-\section{Publications}
-All results presented in this thesis have been published in the following conference proceedings and journals:
-
-\begin{itemize}
-	\item[] Charlotte Bunne, Laetitia Meng-Papaxanthos, Andreas Krause, and Marco Cuturi. Proximal Optimal Transport Modeling of Population Dynamics. In \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, volume 25, 2022.
-	\item[] Charlotte Bunne, Andreas Krause, and Marco Cuturi. Supervised Training of Conditional Monge Maps. In \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2022.
-	\item[] Charlotte Bunne, Ya-Ping Hsieh, Marco Cuturi, and Andreas Krause. The Schr{\"o}dinger Bridge between Gaussian Measures has a Closed Form. In \textit{International Conference on Artificial Intelligence and Statistics (AISTATS)}, 2023.
-	\item[] Vignesh Ram Somnath, Matteo Pariset, Ya-Ping Hsieh, Maria Rodriguez Martinez, Andreas Krause, and Charlotte Bunne. Aligned Diffusion Schr{\"o}dinger Bridges. In \textit{Conference on Uncertainty in Artificial Intelligence (UAI)}, 2023.
-	\item[] Charlotte Bunne, Stefan G Stark, Gabriele Gut, Jacobo Sarabia del Castillo, Kjong-Van Lehmann, Lucas Pelkmans, Andreas Krause, and Gunnar R{\"a}tsch. Learning Single-Cell Perturbation Responses using Neural Optimal Transport. \textit{Nature Methods}, 2023.
-\end{itemize}
-
-\paragraph{Further publications.}
-The following publications of the author and collaborators are more broadly relevant to the topic of this thesis but have not been directly included:
-
-\begin{itemize}
-	\item[] Charlotte Bunne, David Alvarez-Melis, Andreas Krause, and Stefanie Jegelka. Learning Generative Models across Incomparable Spaces. In \textit{International Conference on Machine Learning (ICML)}, 2019.
-	\item[] Matteo Manica, Charlotte Bunne, Roland Mathis, Joris Cadow, Mehmet Eren Ahsen, Gustavo A Stolovitzky, and Maria Rodriguez Martinez. COSIFER: a Python package for the consensus inference of molecular interaction networks. \textit{Bioinformatics}, 37(14), 2020.
-	\item[] Vignesh Ram Somnath, Charlotte Bunne, Connor Coley, Andreas Krause, and Regina Barzilay. Learning Graph Models for Retrosynthesis Prediction. In Advances in Neural Information Processing Systems (NeurIPS), 2021.
-	\item[] Vignesh Ram Somnath, Charlotte Bunne, and Andreas Krause. Multi-Scale Representation Learning on Proteins. In \textit{Advances in Neural Information Processing Systems (NeurIPS)}, 2021.
-	\item[] Marco Cuturi, Laetitia Meng-Papaxanthos, Yingtao Tian, Charlotte Bunne, Geoff Davis, and Olivier Teboul. Optimal Transport Tools (OTT): A JAX Toolbox for all things Wasserstein. \textit{arXiv Preprint arXiv: 2201.12324}, 2022.
-	\item[] Octavian-Eugen Ganea, Xinyuan Huang, Charlotte Bunne, Yatao Bian, Regina Barzilay, Tommi S. Jaakkola, and Andreas Krause. Indepen- dent SE(3)-Equivariant Models for End-to-End Rigid Protein Docking. In \textit{International Conference on Learning Representations (ICLR)}, 2022.
-	\item[] Philippe Schwaller, Alain C Vaucher, Ruben Laplaza, Charlotte Bunne, Andreas Krause, Clemence Corminboeuf, and Teodoro Laino. Machine intelligence for chemical reaction space. \textit{Wiley Interdisciplinary Reviews: Computational Molecular Science}, 2022.
-	\item[] Frederike L\"ubeck, Charlotte Bunne, Gabriele Gut, Jacobo Sarabia del Castillo, Lucas Pelkmans, and David Alvarez-Melis. Neural Unbalanced Optimal Transport via Cycle-Consistent Semi-Couplings. \textit{arXiv Preprint arXiv: 2209.15621}, 2022.
-	\item[] Matteo Pariset, Ya-Ping Hsieh, Charlotte Bunne, Andreas Krause, and Valentin De Bortoli. Unbalanced Diffusion Schr{\"o}dinger Bridge. \textit{arXiv Preprint arXiv: 2306.09099}, 2023.
-\end{itemize}
-
-\section{Collaborators}
-
-This thesis would not have been possible without my advisors, Andreas Krause and Marco Cuturi, and many of the ideas presented here have been shaped in our meetings. I further enjoyed collaborating with my colleagues on numerous ideas, and the results presented and not otherwise cited are by the author and collaborators. In particular, \cref{cha:cellot} contains material of a publication with shared first authorship between the author, Stefan Stark, and Gabriele Gut. Besides Andreas Krause, the corresponding authors are Kjong-Van Lehmann, Lucas Pelkmans, and Gunnar R\"atsch.
-\cref{sec:gsbflow} is based on a joint first authorship project with Ya-Ping Hsieh who contributed the theoretical analysis of that work. Lastly, \cref{sec:sbalign} contains material from a publication where Vignesh Ram Somnath and Matteo Pariset share the first authorship while the author serves as corresponding author.
-
+Applied to the analysis and modeling of single-cell biology problems, OT has been used to infer the distributions of cells' ancestors and descendants along development \citep{schiebinger2019optimal}, perform trajectory inference \citep{bunne2022proximal, forrow2021lineageot, bunne2022recovering, lavenant2021towards, schiebinger2019optimal, tong2020trajectorynet, yang2020predicting, zhang2021optimal, chizat2022trajectory}, predict perturbation responses \citep{bunne2021learning, yang2018scalable, lubeck2022neural}, integrate multi-omics data of different modalities \citep{demetci2022scot}, infer cell-cell similarity \citep{huizing2022optimal}, and integrate across scales (e.g., morphology and molecular profiling) \citep{yang2021multi}. The increasing data complexity across multiple levels of biological organization, from molecular and cellular through spatial profiling \citep{moriel2021novosparc} of tissues, and imaging of organs, cement further the status of OT as an indispensable framework for high-throughput, multimodal, and multi-scale molecular, cell, tissue, and organ biology. The effectiveness of OT comes, however, with drawbacks: because the theory builds on extremely sophisticated mathematics that blends optimization \citep{cuturi2013sinkhorn, cuturi2022optimal}, stochasticity \citep{chizat2022trajectory, bunne2022recovering} and partial differential equations \citep{bunne2022proximal}, and, more recently, deep learning \citep{tong2020trajectorynet, bunne2021learning, bunne2022supervised, yang2018scalable, lubeck2022neural, yang2021multi}, its computations are challenging even by modern ML standards.
