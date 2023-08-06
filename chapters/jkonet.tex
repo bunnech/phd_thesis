@@ -64,19 +64,19 @@ We demonstrate \textsc{JKOnet}'s range of applications by applying it to synthet
     \centering
     %\vskip-0.1cm
     \includegraphics[width=0.6\textwidth]{figures/fig_overview_jkonet.pdf}
-    \caption{Given an observed trajectory $(\mathrm{data}_0,\dots,\mathrm{data}_T)$ of point clouds (gray), we seek parameters $\xi$ for the energy $J_\xi$ such that the predictions $\mu_1, \dots, \mu_T$ (blue) following a \acrshort{JKO} flow from $\mu_0=\mu_0$ are close the observed trajectory (gray), by minimizing (as a function of $\xi$) the sum of Wasserstein distances between $\mu_{t+1}$, the \acrshort{JKO} step from $\mu_{t-1}$ using $J_\xi$, and data $\mu_{t+1}$.}
+    \caption{Given an observed trajectory $(\mathrm{data}_0,\dots,\mathrm{data}_T)$ of point clouds (gray), we seek parameters $\phi$ for the energy $J_\phi$ such that the predictions $\mu_1, \dots, \mu_T$ (blue) following a \acrshort{JKO} flow from $\mu_0=\mu_0$ are close the observed trajectory (gray), by minimizing (as a function of $\phi$) the sum of Wasserstein distances between $\mu_{t+1}$, the \acrshort{JKO} step from $\mu_{t-1}$ using $J_\phi$, and data $\mu_{t+1}$.}
     \label{fig:overview_jkonet}
 \end{figure}
 
 
 \section{\textsc{JKOnet}: A Proximal Optimal Transport Model} 
 
-Given $T$ discrete measures $\mathrm{data}_0, \dots, \mathrm{data}_T$ describing the time evolution of a population, we posit that such an evolution follows a \acrshort{JKO} flow for the free energy functional $J$, and assume that energy does not change throughout the dynamic. We parameterize the energy $J$ as a neural network with parameters $\xi$ and fit $\xi$ so that the \acrshort{JKO} flow model matches the observed data. 
+Given $T$ discrete measures $\mathrm{data}_0, \dots, \mathrm{data}_T$ describing the time evolution of a population, we posit that such an evolution follows a \acrshort{JKO} flow for the free energy functional $J$, and assume that energy does not change throughout the dynamic. We parameterize the energy $J$ as a neural network with parameters $\phi$ and fit $\phi$ so that the \acrshort{JKO} flow model matches the observed data. 
 
-Fitting parameter $\xi$ with a reconstruction loss requires, using the chain rule, being able to differentiate the \acrshort{JKO} step's output w.r.t. $\xi$ (see \cref{fig:overview_jkonet}), and more precisely provide a way to apply that transpose Jacobian to an arbitrary vector when using reverse-mode differentiation. To achieve this, we introduce a novel approach to numerically solve \acrshort{JKO} flows using \acrshortpl{ICNN} (\cref{sec:jko_icnn}), resulting in a bilevel optimization problem targeting the energy $J_\xi$ (\cref{sec:learn_energy}).
+Fitting parameter $\phi$ with a reconstruction loss requires, using the chain rule, being able to differentiate the \acrshort{JKO} step's output w.r.t. $\phi$ (see \cref{fig:overview_jkonet}), and more precisely provide a way to apply that transpose Jacobian to an arbitrary vector when using reverse-mode differentiation. To achieve this, we introduce a novel approach to numerically solve \acrshort{JKO} flows using \acrshortpl{ICNN} (\cref{sec:jko_icnn}), resulting in a bilevel optimization problem targeting the energy $J_\phi$ (\cref{sec:learn_energy}).
 
 \subsection{Reformulation of JKO Flows via ICNNs} \label{sec:jko_icnn}
-Given a starting condition $\mu_t$ and energy functional $J_\xi$, the \acrshort{JKO} step consists in producing a new measure $\mu_{t+1}$ implicitly defined as the minimizer of~\eqref{eq:jko}. Solving directly~\eqref{eq:jko} on the space of measures involves substantial computational costs. Different numerical schemes have been developed, e.g., based notably on Eulerian discretization of measures \citep{carrillo2021primal, benamou2016discretization}, and/or entropy-regularized optimal transport \citep{peyre2015entropic}. However, these methods are limited to small dimensions since the cost of discretizing such spaces grows exponentially. Except for the Eulerian approach proposed in \citep{peyre2015entropic}, obtained as the fixed point of a Sinkhorn-type iteration, the differentiation would also prove extremely challenging as a function of the energy parameter $\xi$.
+Given a starting condition $\mu_t$ and energy functional $J_\phi$, the \acrshort{JKO} step consists in producing a new measure $\mu_{t+1}$ implicitly defined as the minimizer of~\eqref{eq:jko}. Solving directly~\eqref{eq:jko} on the space of measures involves substantial computational costs. Different numerical schemes have been developed, e.g., based notably on Eulerian discretization of measures \citep{carrillo2021primal, benamou2016discretization}, and/or entropy-regularized optimal transport \citep{peyre2015entropic}. However, these methods are limited to small dimensions since the cost of discretizing such spaces grows exponentially. Except for the Eulerian approach proposed in \citep{peyre2015entropic}, obtained as the fixed point of a Sinkhorn-type iteration, the differentiation would also prove extremely challenging as a function of the energy parameter $\phi$.
 
 \looseness=-1 To reach scalability and differentiability, we build upon the approach outlined in \citet{benamou2016discretization} to reformulate the \acrshort{JKO} scheme as a problem solved over convex functions, rather than on measures $\mu$. Effectively, this is equivalent to making a change of variables in~\eqref{eq:jko}: Introduce a (variable) convex function $\varphi$, and replace the variable $\mu$ by the variable $\nabla \varphi_{\sharp}\mu_t$. Writing
 \begin{equation}\label{eq:en}
@@ -95,11 +95,11 @@ simplifying the Wasserstein term in \eqref{eq:en}, using the assumption that $\v
 \label{algo:jkonet}
 \begin{algorithmic}
 
-   \STATE {\bfseries Input:} Dataset $\mathcal{D}=\{\{\mathrm{data}_t^0 \}_{t=0}^T, \ldots, \{\mathrm{data}_t^N \}_{t=0}^T\}$ of $N$ population trajectories, $\xi^0$ energy parameter initialization, $\theta^0$ ICNN parameter initialization, learning rates $\text{lr}_\theta$ and $\text{lr}_\xi$, step $\tau$, regularizer $\varepsilon$, tolerance $\alpha$, {\texttt{TeacherForcing}} flag
-   \STATE {\bfseries Output:} Free energy $J_{\xi}$ explaining underlying population dynamics of snapshot data
+   \STATE {\bfseries Input:} Dataset $\mathcal{D}=\{\{\mathrm{data}_t^0 \}_{t=0}^T, \ldots, \{\mathrm{data}_t^N \}_{t=0}^T\}$ of $N$ population trajectories, $\phi^0$ energy parameter initialization, $\theta^0$ ICNN parameter initialization, learning rates $\gamma_\theta$ and $\gamma_\phi$, step $\tau$, regularizer $\varepsilon$, tolerance $\alpha$, {\texttt{TeacherForcing}} flag
+   \STATE {\bfseries Output:} Free energy $J_{\phi}$ explaining underlying population dynamics of snapshot data
    \smallskip
    
-   \STATE $\xi\leftarrow \xi^0$
+   \STATE $\phi\leftarrow \phi^0$
    \FOR{$\{\mathrm{data}_t\}_{t=0}^T \in \mathcal{D}$} 
    \FOR{$t \gets 0$ \textbf{to} $T-1$}
 
@@ -108,28 +108,28 @@ simplifying the Wasserstein term in \eqref{eq:en}, using the assumption that $\v
    \IF{\texttt{TeacherForcing} \textbf{or} $t=0$}
     \STATE $\nu \leftarrow \mathrm{data}_t$
    \ELSE
-   \STATE $\nu \leftarrow \mu_t(\xi)$
+   \STATE $\nu \leftarrow \mu_t(\phi)$
    \ENDIF
-   \WHILE{$\frac{\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\xi}(\theta)}_2}{\sum_i \text{count}(\theta_i)} \ge \alpha$}
+   \WHILE{$\frac{\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\phi}(\theta)}_2}{\sum_i \text{count}(\theta_i)} \ge \alpha$}
     
-   \STATE $\theta \leftarrow \theta - \text{lr}_\theta \times \nabla_\theta \mathcal{F}_{J_\xi,\nu}(\theta)$
+   \STATE $\theta \leftarrow \theta - \gamma_\theta \times \nabla_\theta \mathcal{F}_{J_\phi,\nu}(\theta)$
    \ENDWHILE
-   \STATE $\mu_{t+1}(\xi) \leftarrow \nabla \varphi_{\theta \sharp} \nu$
+   \STATE $\mu_{t+1}(\phi) \leftarrow \nabla \varphi_{\theta \sharp} \nu$
 
-   \STATE $\xi \leftarrow \xi - \text{lr}_\xi \times \nabla_\xi W_\varepsilon(\mu_{t+1}(\xi), \mathrm{data}_{t+1})$
+   \STATE $\phi \leftarrow \phi - \gamma_\phi \times \nabla_\phi W_\varepsilon(\mu_{t+1}(\phi), \mathrm{data}_{t+1})$
    \ENDFOR
    \ENDFOR
 	
 \end{algorithmic}
 \end{algorithm}
 
-We pick an ICNN architecture to optimize over a restricted family of convex functions, $\{\varphi_{\theta}\}$, and define, starting from $\mu_0(\xi):=\mathrm{data}_0$, the recursive sequence for $t\geq 0$,
+We pick an ICNN architecture to optimize over a restricted family of convex functions, $\{\varphi_{\theta}\}$, and define, starting from $\mu_0(\phi):=\mathrm{data}_0$, the recursive sequence for $t\geq 0$,
 \begin{equation} \label{eq:next_pop}
-\mu_{t+1}(\xi) := \nabla \varphi_{\theta^\star\!(\xi, \mu_t(\xi))\, \sharp}\, \mu_{t}(\xi)\,,
+\mu_{t+1}(\phi) := \nabla \varphi_{\theta^\star\!(\phi, \mu_t(\phi))\, \sharp}\, \mu_{t}(\phi)\,,
 \end{equation}
-with $\theta^\star(\xi, \mu_t)$ defined implicitly using $\xi$ and any $\nu$ as 
+with $\theta^\star(\phi, \mu_t)$ defined implicitly using $\phi$ and any $\nu$ as 
 \begin{align} \label{eq:thetastar}
-    \theta^\star(\xi, \nu):=\arg \min_{\theta} \mathcal{F}_J(\varphi_{\theta},\nu)
+    \theta^\star(\phi, \nu):=\arg \min_{\theta} \mathcal{F}_J(\varphi_{\theta},\nu)
 \end{align}
 
 \paragraph{Strong convexity of $\varphi_\theta$.} The strong convexity and smoothness of a potential $\varphi$ impacts the regularity of the corresponding OT map $\nabla\varphi$ ~\citep{caffarelli2000monotonicity,figalli2010optimal}, since one can show that for a $\ell$-strongly convex, $L$-smooth $\varphi$ one has~\citep{paty2020regularity} that
@@ -139,30 +139,30 @@ $$
 While it is more difficult to enforce the $L$-smoothness of a neural network, and more generally its Lipschitz constants \citep{scaman2018lipschitz} it is easy to enforce its strong convexity, by simply adding a term $\ell \|x\|^2/2$ to the corresponding potential, or a residual rescaled term $\ell x$ to the output $\nabla\varphi(x)$. This approach can be used to enforce that the push-forward of the gradient of an ICNN does not collapse to a single point, maintaining spatial diversity.
 
 \subsection{Learning the Free Energy Functional}  \label{sec:learn_energy}
-The energy function $J_\xi : \mathcal{P}(\mathbb{R}^d) \rightarrow \mathbb{R}$ can be any parameterized function taking a measure as input. 
-Since our model assumes that the observed dynamic is parameterized entirely by that energy (and the initial observation $\mu_0$), the more complex this dynamic, the more complex one would expect the energy $J_\xi$ to be. We focus in this first attempt on linear functions in the space of measures, that is expectations over $\mu$ of a vector-input neural network $E_\xi$
+The energy function $J_\phi : \mathcal{P}(\mathbb{R}^d) \rightarrow \mathbb{R}$ can be any parameterized function taking a measure as input. 
+Since our model assumes that the observed dynamic is parameterized entirely by that energy (and the initial observation $\mu_0$), the more complex this dynamic, the more complex one would expect the energy $J_\phi$ to be. We focus in this first attempt on linear functions in the space of measures, that is expectations over $\mu$ of a vector-input neural network $E_\phi$
 \begin{equation} \label{eq:energy}
-    J_\xi(\mu) := \int E_\xi(x) d\mu(x),
+    J_\phi(\mu) := \int E_\phi(x) d\mu(x),
 \end{equation}
-where $E_\xi:\mathbb{R}^d \rightarrow \mathbb{R}$ is a multi-layer perceptron (MLP).
+where $E_\phi:\mathbb{R}^d \rightarrow \mathbb{R}$ is a \acrfull{MLP}.
 
 
 Inferring nonlinear energies accounting for population growth and decline, as well as interactions between points, using the formalism of \citep{de2019stochastic}, transformers~\citep{vaswani2017attention} or set pooling methods \citep{edwards2016towards, zaheer2017deep}, is an exciting direction for future work.
 
-To address slow convergence and instabilities for dynamics with many snapshots, we use teacher forcing \citep{williams1989learning} to learn $J_\xi$ through time. In those settings, during training, $J_\xi$ uses the ground truth as input instead of predictions from the previous time step. At test time, we do not use teacher forcing.
+To address slow convergence and instabilities for dynamics with many snapshots, we use teacher forcing \citep{williams1989learning} to learn $J_\phi$ through time. In those settings, during training, $J_\phi$ uses the ground truth as input instead of predictions from the previous time step. At test time, we do not use teacher forcing.
 
 \subsection{Bilevel Formulation of \textsc{JKOnet}}
-Learning the free energy functional $J_\xi$ while solving each \acrshort{JKO} step via an ICNN results in a challenging bilevel optimization problem.
+Learning the free energy functional $J_\phi$ while solving each \acrshort{JKO} step via an ICNN results in a challenging bilevel optimization problem.
 At each time step, the predicted dynamics are compared to the ground truth trajectory $(\mathrm{data}_0, \mathrm{data}_1, \dots, \mathrm{data}_T)$ with the entropy-regularized OT loss (see \ref{eq:ot-reg}),
 \begin{align} \label{eq:fittingloss}
 \begin{split}
-    \min_\xi & \sum_{t=0}^{T-1} W_\varepsilon(\mu_{t+1}(\xi), \mathrm{data}_{t+1}), \\
-    \text{s.t. } & \mu_{0}(\xi) := \mathrm{data}_0, \\
-      & \mu_{t+1}(\xi) := \nabla \varphi_{\theta^\star\, \sharp}\, \mu_{t}(\xi)\,, \\
-      & \theta^\star:=\arg \min_{\theta} \mathcal{F}_{J_{\xi}}(\varphi_{\theta},\mu_t(\xi))
+    \min_\phi & \sum_{t=0}^{T-1} W_\varepsilon(\mu_{t+1}(\phi), \mathrm{data}_{t+1}), \\
+    \text{s.t. } & \mu_{0}(\phi) := \mathrm{data}_0, \\
+      & \mu_{t+1}(\phi) := \nabla \varphi_{\theta^\star\, \sharp}\, \mu_{t}(\phi)\,, \\
+      & \theta^\star:=\arg \min_{\theta} \mathcal{F}_{J_{\phi}}(\varphi_{\theta},\mu_t(\phi))
 \end{split}
 \end{align}
-The dependence of the Sinkhorn divergence losses in \eqref{eq:fittingloss} on $\xi$ only appears in the fact that the predictions $\mu_{t+1}(\xi)$ are themselves implicitly defined as solving a \acrshort{JKO} step parameterized with the energy $J_\xi$. 
+The dependence of the Sinkhorn divergence losses in \eqref{eq:fittingloss} on $\phi$ only appears in the fact that the predictions $\mu_{t+1}(\phi)$ are themselves implicitly defined as solving a \acrshort{JKO} step parameterized with the energy $J_\phi$. 
 
 \begin{figure}[t]
     \centering
@@ -172,7 +172,7 @@ The dependence of the Sinkhorn divergence losses in \eqref{eq:fittingloss} on $\
     \label{fig:training_icnn}
 \end{figure}
 
-Learning  $J_\xi$ through the exclusive supervision of data observations requires therefore to differentiate the arg-minimum of a \acrshort{JKO} problem, down therefore through to the lower-level optimization of the ICNN. We achieve this by implementing a differentiable double loop in \texttt{JAX}, differentiating first the Sinkhorn divergence using the \texttt{OTT} package \citep{cuturi2022optimal}, and then backpropagating through the ICNN optimization by unrolling Adam steps \citep{kingma2014adam, metz2016unrolled, lorraine2020optimizing}.
+Learning  $J_\phi$ through the exclusive supervision of data observations requires therefore to differentiate the arg-minimum of a \acrshort{JKO} problem, down therefore through to the lower-level optimization of the ICNN. We achieve this by implementing a differentiable double loop in \texttt{JAX}, differentiating first the Sinkhorn divergence using the \texttt{OTT} package \citep{cuturi2022optimal}, and then backpropagating through the ICNN optimization by unrolling Adam steps \citep{kingma2014adam, metz2016unrolled, lorraine2020optimizing}.
 
 \begin{figure*}[t]
 \centering
@@ -181,101 +181,101 @@ Learning  $J_\xi$ through the exclusive supervision of data observations require
 \label{fig:task_overview}
 \end{figure*}
 
-\paragraph{Inner loop termination.} A question that arises when defining $\mu_{t+1}(\xi)$ lies in the budget of gradient steps needed or allowed to optimize the parameters $\theta$ of the ICNN, before taking a new gradient step on $\xi$ in the outer loss. A straightforward approach in \texttt{JAX} \citep{jax2018github} would be to use a preset number of iterations with a \texttt{for} loop (\texttt{jax.lax.scan}). 
+\paragraph{Inner loop termination.} A question that arises when defining $\mu_{t+1}(\phi)$ lies in the budget of gradient steps needed or allowed to optimize the parameters $\theta$ of the ICNN, before taking a new gradient step on $\phi$ in the outer loss. A straightforward approach in \texttt{JAX} \citep{jax2018github} would be to use a preset number of iterations with a \texttt{for} loop (\texttt{jax.lax.scan}). 
 We do observe, however, that the number of iterations needed to converge in relevant scenarios can vary significantly with the ICNN architecture and/or the hardness of the underlying task.
 We propose to use instead a differentiable fixed-point loop to solve each \acrshort{JKO} step up to a desired convergence threshold.
-We measure convergence of the optimization of the ICNN via the average norm of the gradient of the \acrshort{JKO} objective w.r.t. the ICNN parameters $\theta$, i.e., $\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\xi}(\theta_i, \xi)}_2/\sum_i \text{count}(\theta_i)$.
+We measure convergence of the optimization of the ICNN via the average norm of the gradient of the \acrshort{JKO} objective w.r.t. the ICNN parameters $\theta$, i.e., $\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\phi}(\theta_i, \phi)}_2/\sum_i \text{count}(\theta_i)$.
 We observe that this approach is robust across datasets and architectures of the ICNN. An exemplary training curve for the \acrshortpl{ICNN} updated successively along a time sequence is shown in Figure~\ref{fig:training_icnn}.
 
-\paragraph{Reverse-mode differentiation.} The Jacobian $\partial \mu_{t+1} / \partial\xi$ arising when computing the gradient $\nabla_\xi W_\varepsilon(\mu_{t+1}(\xi), \mathrm{data}_{t+1})$ is obtained by unrolling the while loop above. The gradient term of the Sinkhorn divergence w.r.t the first argument is given by the Danskin envelope theorem \citep{danskin2012theory}.
+\paragraph{Reverse-mode differentiation.} The Jacobian $\partial \mu_{t+1} / \partial\phi$ arising when computing the gradient $\nabla_\phi W_\varepsilon(\mu_{t+1}(\phi), \mathrm{data}_{t+1})$ is obtained by unrolling the while loop above. The gradient term of the Sinkhorn divergence w.r.t the first argument is given by the Danskin envelope theorem \citep{danskin2012theory}.
 
-% The Jacobian $\partial \mu^\xi_{t+1} / \partial\xi$ that appears when computing $\nabla_\xi W_\varepsilon(\text{data}_{t+1}, \mu_{t+1}(\xi))$ is computed by unrolling the iterations of the while loop above.
+% The Jacobian $\partial \mu^\phi_{t+1} / \partial\phi$ that appears when computing $\nabla_\phi W_\varepsilon(\text{data}_{t+1}, \mu_{t+1}(\phi))$ is computed by unrolling the iterations of the while loop above.
 
 \paragraph{Setting $\tau$ in \eqref{eq:jko_psi}.} 
-In usual \acrshort{JKO} applications, $\tau$ needs to be tuned manually. Here, the energy $J_\xi$ is not fixed, but trained to fit data. Since we put no constraints on the scaling of $J_\xi$, $\tau$ can be set to $1$ without loss of generality, as the parameter $\xi$ will automatically adjust so that the scale of $J_\xi$ induces steps of a relevant length to fit data. This only holds (as with a usual \acrshort{JKO} step) if the trajectories are sampled regularly. For irregularly spaced time series, $\tau$ can be adapted at train and test time to the spacing of timestamps (shorter steps requiring larger $\tau$).
+In usual \acrshort{JKO} applications, $\tau$ needs to be tuned manually. Here, the energy $J_\phi$ is not fixed, but trained to fit data. Since we put no constraints on the scaling of $J_\phi$, $\tau$ can be set to $1$ without loss of generality, as the parameter $\phi$ will automatically adjust so that the scale of $J_\phi$ induces steps of a relevant length to fit data. This only holds (as with a usual \acrshort{JKO} step) if the trajectories are sampled regularly. For irregularly spaced time series, $\tau$ can be adapted at train and test time to the spacing of timestamps (shorter steps requiring larger $\tau$).
 
 
 \begin{figure}[t]
      \centering
      \begin{subfigure}[t]{0.21\textwidth}
          \centering
+         \caption{Quadratic \protect\newline potential.}
          \includegraphics[width=\textwidth]{figures/fig_energy_implicit_quadratic.pdf}
-         \caption{Quadratic \protect\newline Potential.}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.21\textwidth}
          \centering
+         \caption{Styblinski \protect\newline potential.}
          \includegraphics[width=\textwidth]{figures/fig_energy_implicit_styblinski.pdf}
-         \caption{Styblinski \protect\newline Potential.}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.22\textwidth}
          \centering
+         \caption{Semicircle \protect\newline trajectory.}
          \includegraphics[width=\textwidth]{figures/fig_energy_implicit_semicircle_tf.pdf}
-         \caption{Semicircle \protect\newline Trajectory.}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.33\textwidth}
          \centering
+         \caption{Predicted evolution \protect\newline on semicircle trajectory.}
          \includegraphics[width=\textwidth]{figures/fig_prediction_implicit_semicircle_tf.pdf}
-         \caption{Predicted Evolution \protect\newline on Semicircle Trajectory.}
      \end{subfigure}
-	 \caption{\textbf{Results of \textsc{JKOnet} on potential- and trajectory-based dynamics.} (a)-(c) Contour plots of the energy functionals $J_\xi$ of \textsc{JKOnet} on potential- and trajectory-based population dynamics, color gradients depict the magnitude of $J_\xi$. (d) Predicted population snapshots ($\mu_1, \dots, \mu_4$) (blue) and data trajectory ($\mathrm{d}_0, \dots, \mathrm{d}_4)$ (gray).}
+	 \caption{\textbf{Results of \textsc{JKOnet} on potential- and trajectory-based dynamics.} (a)-(c) Contour plots of the energy functionals $J_\phi$ of \textsc{JKOnet} on potential- and trajectory-based population dynamics, color gradients depict the magnitude of $J_\phi$. (d) Predicted population snapshots ($\mu_1, \dots, \mu_4$) (blue) and data trajectory ($\mathrm{d}_0, \dots, \mathrm{d}_4)$ (gray).}
 	 \label{fig:exp_jkonet_pot_traj}
 \end{figure}
 \begin{figure}[t]
      \centering
      \begin{subfigure}[t]{0.24\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_energy_explicit_spiral_tf.pdf}
          \caption{Forward method, \protect\newline teacher forcing.}
+         \includegraphics[width=\textwidth]{figures/fig_energy_explicit_spiral_tf.pdf}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.24\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_energy_explicit_spiral.pdf}
          \caption{Forward method, \protect\newline \emph{no} teacher forcing.}
+         \includegraphics[width=\textwidth]{figures/fig_energy_explicit_spiral.pdf}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.24\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_spiral_tf.pdf}
          \caption{\textsc{JKOnet}, \protect\newline teacher forcing.}
+         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_spiral_tf.pdf}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.24\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_spiral.pdf}
          \caption{\textsc{JKOnet}, \protect\newline \emph{no} teacher forcing.}
+         \includegraphics[width=\textwidth]{figures/fig_energy_implicit_spiral.pdf}
      \end{subfigure}
-	 \caption{Comparison between energy functionals $J_\xi$ of the spiral trajectory task (see \ref{fig:task_overview}) between the forward method and \textsc{JKOnet}, trained with or without teacher forcing \cref{sec:learn_energy}). When using teacher forcing, the forward method overfits a gap in the lower-right corner of the spiral, outputting a highly irregular energy. When taking into account the entire trajectory recursively, the Forward method does better overall but is unable to recover an energy as precise as that returned by \textsc{JKOnet}.}
+	 \caption{Comparison between energy functionals $J_\phi$ of the spiral trajectory task (see \ref{fig:task_overview}) between the forward method and \textsc{JKOnet}, trained with or without teacher forcing \cref{sec:learn_energy}). When using teacher forcing, the forward method overfits a gap in the lower-right corner of the spiral, outputting a highly irregular energy. When taking into account the entire trajectory recursively, the Forward method does better overall but is unable to recover an energy as precise as that returned by \textsc{JKOnet}.}
 	 \label{fig:exp_comp_spiral}
 \end{figure}
 
 \begin{figure}[t]
      \centering
-     \begin{subfigure}[b]{0.49\textwidth}
+     \begin{subfigure}[t]{0.49\textwidth}
          \centering
+         \caption{\textsc{JKOnet} (30\% corrupted data). \hspace{3cm}}
          \includegraphics[width=\textwidth]{figures/fig_predictions_jko_noise.pdf}
-         \caption{\textsc{JKOnet} (30\% corrupted data).}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[b]{0.47\textwidth}
+     \begin{subfigure}[t]{0.47\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_predictions_forward_noise.pdf}
          \caption{Forward method (30\% corrupted data).}
+         \includegraphics[width=\textwidth]{figures/fig_predictions_forward_noise.pdf}
      \end{subfigure}
      
      \begin{subfigure}[t]{0.485\textwidth}
          \centering
+         \caption{$W_\varepsilon$ vs. noise level (20\% corrupted data).}
          \includegraphics[width=\textwidth]{figures/fig_fb_comp_noise_20.pdf}
-         \caption{$W_\epsilon$ vs. noise level (20\% corrupted data).}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.46\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_fb_comp_noise_30.pdf}
          \caption{$W_\varepsilon$ vs. noise level (30\% corrupted data).}
+         \includegraphics[width=\textwidth]{figures/fig_fb_comp_noise_30.pdf}
      \end{subfigure}
      \caption{Comparison between \textsc{JKOnet} and the forward method in settings of increasing noise on corrupted data on the semicircle trajectory task.}
      \label{fig:exp_comp_noise}
@@ -288,12 +288,12 @@ In the following, we evaluate our method empirically on a variety of tasks. This
 \label{sec:jkonet_synthetic}
 
 \paragraph{Energy-driven trajectories.} The first task involves the evolution of partial differential equations with known potential. We hereby consider both convex (e.g., the quadratic function $J(x) = \|x\|^2_2$) and nonconvex potentials (e.g., Styblinski function) (see \cref{fig:task_overview}). These two-dimensional synthetic flows are generated using the Euler-Maruyama method~\citep{kloeden1992stochastic}. 
-To recover the true potential via \textsc{JKOnet}, we parameterize both energy $J_\xi$ and ICNN $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$.
-Figure~\ref{fig:exp_jkonet_pot_traj}a-b demonstrate \textsc{JKOnet}'s ability to recover convex and nonconvex potentials via energy $J_\xi$.
+To recover the true potential via \textsc{JKOnet}, we parameterize both energy $J_\phi$ and ICNN $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$.
+Figure~\ref{fig:exp_jkonet_pot_traj}a-b demonstrate \textsc{JKOnet}'s ability to recover convex and nonconvex potentials via energy $J_\phi$.
 
 \paragraph{Arbitrary trajectories.}
-As a sanity check, we evaluate if \textsc{JKOnet} can recover an energy functional $J_\xi$ from trajectories that are not necessarily arising from the gradient of an energy. Here, a 2-dimensional Gaussian moves along a predefined trajectory with nonconstant speed. 
-We consider a line, a spiral, and movement along a semicircle (\cref{fig:task_overview}). As visible in Figure~\ref{fig:exp_jkonet_pot_traj}c (5 snapshots)], and Figure~\ref{fig:exp_comp_spiral}c-d (10 snapshots), \textsc{JKOnet} learns energy functionals $J_\xi$ that can then model the ground truth trajectories.
+As a sanity check, we evaluate if \textsc{JKOnet} can recover an energy functional $J_\phi$ from trajectories that are not necessarily arising from the gradient of an energy. Here, a 2-dimensional Gaussian moves along a predefined trajectory with nonconstant speed. 
+We consider a line, a spiral, and movement along a semicircle (\cref{fig:task_overview}). As visible in Figure~\ref{fig:exp_jkonet_pot_traj}c (5 snapshots)], and Figure~\ref{fig:exp_comp_spiral}c-d (10 snapshots), \textsc{JKOnet} learns energy functionals $J_\phi$ that can then model the ground truth trajectories.
 These trajectory-based dynamics are learned using the strong convexity regularizer ($\ell=0.8$, see \cref{sec:jko_icnn}).
 
 
@@ -320,17 +320,17 @@ These trajectory-based dynamics are learned using the strong convexity regulariz
 \end{table*}
 
 \paragraph{Comparison to forward methods.} \label{sec:eval_comp_fb}
-Instead of parameterizing the next iteration $\mu_{t+1}(\xi)$ as we do in the \textsc{JKOnet} formulation~\eqref{eq:jko}, the \emph{forward} scheme states that the prediction at time $t+1$, $\eta_{t+1}$, can be obtained as $(\nabla F_\xi)_{\sharp} \eta_t(\xi)$, where $F_\xi$ is any arbitrary neural network, as considered in \citet{hashimoto2016learning}, namely $\eta_0:=\mu_0$ and subsequently $\eta_{t+1}(\xi):=(\nabla F_\xi)_{\sharp} \eta_t(\xi)$. Although OT still plays an important role in that paper, since the potential $F$ is estimated by minimizing a Sinkhorn loss $W_\varepsilon(\eta_{t+1},\mathrm{data}_{t+1})$, as we do in \eqref{eq:fittingloss}, the forward displacement operator $(\nabla F_\xi)_{\sharp}$ has no spatial regularity. Because of that, we observe that the forward method can get more easily trapped in local minima, and, in particular, overfits the training data as shown by a substantial decrease in performance in the presence of noise.
+Instead of parameterizing the next iteration $\mu_{t+1}(\phi)$ as we do in the \textsc{JKOnet} formulation~\eqref{eq:jko}, the \emph{forward} scheme states that the prediction at time $t+1$, $\eta_{t+1}$, can be obtained as $(\nabla F_\phi)_{\sharp} \eta_t(\phi)$, where $F_\phi$ is any arbitrary neural network, as considered in \citet{hashimoto2016learning}, namely $\eta_0:=\mu_0$ and subsequently $\eta_{t+1}(\phi):=(\nabla F_\phi)_{\sharp} \eta_t(\phi)$. Although OT still plays an important role in that paper, since the potential $F$ is estimated by minimizing a Sinkhorn loss $W_\varepsilon(\eta_{t+1},\mathrm{data}_{t+1})$, as we do in \eqref{eq:fittingloss}, the forward displacement operator $(\nabla F_\phi)_{\sharp}$ has no spatial regularity. Because of that, we observe that the forward method can get more easily trapped in local minima, and, in particular, overfits the training data as shown by a substantial decrease in performance in the presence of noise.
 We demonstrate this by comparing the robustness of both \textsc{JKOnet} and the forward method to noise. For this, we corrupt $20\%$ or $30\%$ of the training data on the example of the semicircle trajectory with different levels of noise (see \cref{fig:task_overview}). We insist that noise is only added at training time, as random shifts on both feature dimensions, while we test on the original semicircle trajectory.
-In low noise regimes, where train and test data are similar, the forward method overfits and performs marginally better than \textsc{JKOnet} (see \cref{fig:exp_comp_noise}c,d). As noise increases, the performance of the forward method deteriorates (\cref{fig:exp_comp_noise}b), while \textsc{JKOnet}, constrained to move points with OT maps, is robust (\cref{fig:exp_comp_noise}a).% This shows that the forward method is able to learn a network such that, on average, the ensemble of particles $(\nabla F_\xi)_{\sharp} \mu_t$ fits $\mu_{t+1}$, without, however
+In low noise regimes, where train and test data are similar, the forward method overfits and performs marginally better than \textsc{JKOnet} (see \cref{fig:exp_comp_noise}c,d). As noise increases, the performance of the forward method deteriorates (\cref{fig:exp_comp_noise}b), while \textsc{JKOnet}, constrained to move points with OT maps, is robust (\cref{fig:exp_comp_noise}a).% This shows that the forward method is able to learn a network such that, on average, the ensemble of particles $(\nabla F_\phi)_{\sharp} \mu_t$ fits $\mu_{t+1}$, without, however
 
 %In a second experiment, we evaluate the capacity of \textsc{JKOnet} and the forward method to extrapolate and generalize the learned trajectories, e.g., when vertically translating a line during test time (\cref{fig:task_overfitting}).
 %Due to the less constrained energy, the \emph{forward} method perfectly resembles the seen trajectory during training but fails to extrapolate to shifted test data.
 
-Second, we compare the resulting energy functionals $F_\xi$ and $J_\xi$ of the forward method and \textsc{JKOnet}, respectively, on the spiral trajectory (see \cref{fig:exp_comp_spiral}).
+Second, we compare the resulting energy functionals $F_\phi$ and $J_\phi$ of the forward method and \textsc{JKOnet}, respectively, on the spiral trajectory (see \cref{fig:exp_comp_spiral}).
 When learning long and complex population dynamics, teacher forcing improves training (see \cref{fig:exp_jkonet_pot_traj}c-d).
-While facilitating the training of the forward method in some settings, it likewise results in wrong energy functionals $F_\xi$ (\cref{fig:exp_comp_spiral}a).
-\textsc{JKOnet}, on the other hand, is able to globally learn the energy functional $J_\xi$, despite being only exposed to a one-step history of snapshots during training with teacher forcing (see \cref{fig:exp_comp_spiral}c).
+While facilitating the training of the forward method in some settings, it likewise results in wrong energy functionals $F_\phi$ (\cref{fig:exp_comp_spiral}a).
+\textsc{JKOnet}, on the other hand, is able to globally learn the energy functional $J_\phi$, despite being only exposed to a one-step history of snapshots during training with teacher forcing (see \cref{fig:exp_comp_spiral}c).
 
 \subsection{Single-Cell Dynamics}
 \label{sec:jkonet_cell}
@@ -394,7 +394,7 @@ The goal of learning individual dynamics is to identify ancestor and descendant 
 
 We apply \textsc{JKOnet} to embryoid body single-cell RNA sequencing (scRNA-seq) data \citep{moon2019visualizing}, describing the differentiation of human embryonic stem cells grown as embryoid bodies into diverse cell lineages over a period of 27 days. During this time, cells are collected at 5 different snapshots (day 1 to 3, day 6 to 9, day 12 to 15, day 18 to 21, day 24 to 27) and measured via scRNA-seq (resulting in $15,150$ cells).
 We run \textsc{JKOnet} as well as the baseline on the first 20 components of a \acrfull{PCA} of the $4,000$ highly differentiable genes.
-We split the dataset into train and test data ($\sim 15 \%$) and parameterize both energy $J_\xi$ and ICNN $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$).
+We split the dataset into train and test data ($\sim 15 \%$) and parameterize both energy $J_\phi$ and ICNN $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$).
 
 \paragraph{Capturing spatio-temporal dynamics.}
 Given the samples from the cell population at day 1 to 3 (i.e., $\mathrm{data}_0$), \textsc{JKOnet} learns the underlying spatiotemporal dynamics giving rise to the developmental evolution of embryonic stem cells. 

@@ -52,11 +52,13 @@
 \setlength{\extrarowheight}{3pt}
 \newcommand{\tableheadline}[1]{\multicolumn{1}{c}{\spacedlowsmallcaps{#1}}}
 \newcommand{\myfloatalign}{\centering}
-\usepackage{floatrow}
-\usepackage{caption}
+\usepackage[tableposition=top]{caption}
 \captionsetup[figure]{format=plain, font=footnotesize, labelfont=bf}
+\captionsetup[table]{format=plain, font=footnotesize, labelfont=bf}
 \usepackage{subcaption}
-\captionsetup[subfigure]{font=footnotesize, labelfont=bf, labelsep=period, labelformat=simple,}
+\captionsetup[subfigure]{format=hang, font=footnotesize, labelfont=bf, labelsep=period, labelformat=simple,
+	justification=justified,singlelinecheck=false}
+
 \usepackage[table, dvipsnames]{xcolor}
 \usepackage{adjustbox}
 \usepackage{float}
@@ -64,7 +66,7 @@
 \usepackage{booktabs}
 \usepackage{wrapfig}
 \usepackage{lscape}
-
+\setlength{\abovetopsep}{1ex}
 
 % Algorithms
 \usepackage{algorithm}

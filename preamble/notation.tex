@@ -10,16 +10,36 @@
  	\makecell{$(\mu=\sum_i u_i \delta_{x_i},$ \\ $\,\nu=\sum_j v_j \delta_{y_j})$} & discrete measures defined on spaces $(x_1, \dots, x_n \in \gX, y_1, \dots, y_m \in \gY)$. \\
  	$\mathbf{1}$ & matrix of $\mathbb{R}^{n \times m}$ with all entries identically set to 1. \\
  	$\mathds{1}$ & indicator function. \\
+ 	$\operatorname{Id}$ & identity map. \\
  	$c(x, y)$ & ground cost, with associated pairwise cost matrix $(c(x_i,y_j))_{ij}$ evaluated on the support of $\mu, \nu$. \\
+ 	$\|\cdot\|^2_2$ & squared Euclidean norm. \\
  	$\sharp$ & pushforward operator. \\
  	$T: \gX \times \gY$ & Monge map, typically such that $T_\sharp \mu = \nu$. \\
  	$\pi$ & coupling measure between $\mu$ and $\nu$, for discrete measures $\pi = \sum_{ij} \mathbf{P}_{ij} \delta_{(x_i, y_j)}$. \\
  	$\Pi(\mu, \nu)$ & set of couplings, for discrete measures $U(u, v)$. \\
  	$\supp(\pi)$ & support of $\pi$. \\
- 	$(\mu_t)_{t=0}^T$ & dynamic measures with $\mu_{t=0} = \mu_0$ and $\mu_{t=T} = \mu_T$. \\
+ 	$W(\mu, \nu)$ & Wasserstein distance between measures $\mu$ and $\nu$. \\
+ 	$\varepsilon$ & regularization strength of the entropy regularization. \\
  	$(f, g)$ & dual potentials. \\
+ 	$f^*$ & Legendre transform of function $f$. \\
+ 	$f^\star$ & optimum of function $f$. \\ 
+ 	$\varphi$ & convex potential. \\
+ 	$(\mu_t)_{t=0}^T$ & dynamic measures with $\mu_{t=0} = \mu_0$ and $\mu_{t=T} = \mu_T$. \\
  	$v$ & speed in the dynamic Benamou-Brenier or control in the stochastic optimal control formulation. \\
  	$\Delta$ & Laplace operator. \\
+ 	$\tau$ & step size. \\
+ 	$\langle\cdot, \cdot\rangle$ & Euclidean dot-product between vectors. \\
+ 	$\sigma$ & noise level. \\
+ 	$\mathbb{P}_t$ & stochastic process with $t \in [0,1]$. \\
+ 	$\mathbb{W}_t$ & standard Wiener process. \\
+ 	$\mathbb{Q}_t$ & reference process, e.g., Brownian motion. \\
+ 	$Z_t, \hat{Z}_t$ & time-indexed smooth vector fields indicating the forward and backward policy. \\
+ 	$\gN(\mu, \Sigma)$ & multivariate Gaussian distribution with mean vector $\mu$ and covariance matrix $\Sigma$. \\
+ 	$\dot{x}$ & first derivative of $x$ taken with respect to time. \\
+ 	$\ddot{x}$ & second derivative of $x$ taken with respect to time. \\
+ 	$\theta$ and $\phi$ & parameters of two neural networks. \\
+ 	$\gamma$ & learning rate. \\
+ 	
  	
 \end{tabularx}
 
@@ -51,6 +71,7 @@
 \newacronym{ICNN}{ICNN}{input convex neural network}
 \newacronym{PICNN}{PICNN}{partially input convex neural network}
 \newacronym{NF}{NF}{normalizing flows}
+\newacronym{MLP}{MLP}{multi-layer perceptron}
 
 \newacronym{MMD}{MMD}{maximum-mean-discrepancy}
 \newacronym{PS}{PS}{perturbation signatures}

@@ -313,23 +313,23 @@ This implicit time stepping is a useful tool to construct continuous flows: In t
 Interest in Wasserstein gradient flows was sparked by the seminal work of Jordan, Kinderlehrer, and Otto (\citeyear{jordan1998variational}) who studied diffusion processes under the lens of the OT metric \citep[see also][]{ambrosio2006gradient}. 
 For a broad class of potentials, $J$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{JKO step} \eqref{eq:jko} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of a corresponding PDE, and the resulting evolutions are often referred to as \emph{JKO flows}.
 
-\begin{table}[t]
-\caption{Equivalence between gradient flows and PDEs where the gradient flow of flow functional $J(\mu_t)$ in Wasserstein space satisfies the corresponding PDE \citep{alvarez2021optimizing, villani2021topics}. The function $f: \mathbb{R} \rightarrow \mathbb{R}$ is convex and superlinear and $V, W: \gX \rightarrow \mathbb{R}$ are convex and sufficiently smooth.}
-\label{tab:examples_gradient_flows}
-\centering
-\adjustbox{max width=\linewidth}{%
-\begin{tabular}{lll}
-\toprule
-\textbf{Class} & \textbf{PDE} $\frac{\partial \mu_t}{\partial t} =$ & \textbf{Flow Functional} $J(\mu_t)=$ \\
-\midrule Heat Equation & $\Delta \mu_t$ & $\int \mu_t(x) \log \mu_t(x) \mathrm{d} x$ \\
-Advection & $\nabla \cdot(\mu_t \nabla V)$ & $\int V(x) \mu_t(x) \mathrm{d} x$ \\
-Fokker-Planck & $\Delta \mu_t+\nabla \cdot(\mu_t \nabla V)$ & $\int \mu_t(x) \log \mu_t(x) \mathrm{d} x+\int V(x) \mu_t(x) \mathrm{d}x $ \\
-Porous Media & $\Delta\left(\mu_t^m\right)+\nabla \cdot(\mu_t \nabla V)$ & $\frac{1}{m-1} \int \mu_t(x)^m \mathrm{~d} x+\int V(x) \mu_t(x) \mathrm{d} x$ \\
-\makecell[l]{Advection, Diffusion, \\ and Interaction} & $\nabla \cdot\left[\mu_t\left(\nabla f^{\prime}(\mu_t)+\nabla V+(\nabla W) * \mu_t\right)\right]$ & \makecell[l]{$\int V(x) \mu_t(x) \mathrm{d} x+\int f(\mu_t(x)) \mathrm{d} x$ \\ $+\frac{1}{2} \iint W\left(x-x^{\prime}\right) \mu_t(x) \mu_t\left(x^{\prime}\right)\mathrm{d} x \mathrm{d} x^\prime$} \\
-\bottomrule
-\end{tabular}
-}
-\end{table}
+\begin{table*}[t]
+	\caption{Equivalence between gradient flows and PDEs where the gradient flow of flow functional $J(\mu_t)$ in Wasserstein space satisfies the corresponding PDE \citep{alvarez2021optimizing, villani2021topics}. The function $f: \mathbb{R} \rightarrow \mathbb{R}$ is convex and superlinear and $V, W: \gX \rightarrow \mathbb{R}$ are convex and sufficiently smooth.}
+	\label{tab:examples_gradient_flows}
+	\centering
+	\adjustbox{max width=\linewidth}{%
+	\begin{tabular}{lll}
+	\toprule
+	\textbf{Class} & \textbf{PDE} $\frac{\partial \mu_t}{\partial t} =$ & \textbf{Flow Functional} $J(\mu_t)=$ \\
+	\midrule Heat Equation & $\Delta \mu_t$ & $\int \mu_t(x) \log \mu_t(x) \mathrm{d} x$ \\
+	Advection & $\nabla \cdot(\mu_t \nabla V)$ & $\int V(x) \mu_t(x) \mathrm{d} x$ \\
+	Fokker-Planck & $\Delta \mu_t+\nabla \cdot(\mu_t \nabla V)$ & $\int \mu_t(x) \log \mu_t(x) \mathrm{d} x+\int V(x) \mu_t(x) \mathrm{d}x $ \\
+	Porous Media & $\Delta\left(\mu_t^m\right)+\nabla \cdot(\mu_t \nabla V)$ & $\frac{1}{m-1} \int \mu_t(x)^m \mathrm{~d} x+\int V(x) \mu_t(x) \mathrm{d} x$ \\
+	\makecell[l]{Advection, Diffusion, \\ and Interaction} & $\nabla \cdot\left[\mu_t\left(\nabla f^{\prime}(\mu_t)+\nabla V+(\nabla W) * \mu_t\right)\right]$ & \makecell[l]{$\int V(x) \mu_t(x) \mathrm{d} x+\int f(\mu_t(x)) \mathrm{d} x$ \\ $+\frac{1}{2} \iint W\left(x-x^{\prime}\right) \mu_t(x) \mu_t\left(x^{\prime}\right)\mathrm{d} x \mathrm{d} x^\prime$} \\
+	\bottomrule
+	\end{tabular}
+	}
+\end{table*}
 
 In fact, following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of \acrlong{PDE} may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
 For instance, the standard heat equation of physics, i.e.,
@@ -392,7 +392,6 @@ Similarly, the regularized OT problem \eqref{eq:ot-entropy} can be cast as a sto
 & \inf _{v \in \mathcal{V}} \mathbb{E}\left\{\int_0^1 \frac{1}{2}\norm{v(t, X_t)}^2 \mathrm{d} t\right\}\\
 \label{eq:sb_control_constraint}
 & \mathrm{d} X_t = v(t, X_t) \mathrm{d} t + \sigma \mathrm{d} \mathbb{W}_t \\
-% TODO: Is it \mu or do I need to denote atypical boundary conditions with \nu?
 \nonumber & X_0 \sim \mu_0, \quad X_1 \sim \mu_1,
 \end{align}
 where $\mathbb{W}_t $ denotes a Wiener process, i.e., standard white noise. 
@@ -442,7 +441,6 @@ The resulting optimality conditions are
 \begin{align}
 \label{eq:sb_hb} & \frac{\partial \psi}{\partial t} = -\frac{1}{2}\|\nabla \psi\|^2 -\frac{1}{2}\sigma^2 \Delta \psi \\
 % TODO: Is this a + or - \nabla?
-% TODO: Is the notation \mu_t okay?
 \label{eq:sb_optimality}
 & \frac{\partial \mu_t}{\partial t} = - \nabla \cdot(\mu_t \nabla \psi) +\frac{1}{2}\sigma^2 \Delta \mu_t
 \end{align}

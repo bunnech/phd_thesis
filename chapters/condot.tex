@@ -19,7 +19,7 @@ In this chapter, we introduce a framework that can leverage \textit{labeled} pai
 % For each observation one has that $\mu_i,\nu_i\in\mathcal{P}(\mathbb{R}^d)$ is a pair of probability measures, while 
 Hereby, the context $\cont_i$ belongs to an arbitrary set $\mathcal{C}$. We construct $\mathcal{T}_{\theta}$ so that it should be able, given a possibly unseen context label $\cont\in\gC$, to output a map $\mathcal{T}_{\theta}(c):\mathbb{R}^d\rightarrow\mathbb{R}^d$, that is itself the gradient of a convex function. To that end, we propose to learn these parameterized Monge maps $\mathcal{T}_{\theta}$ as the gradients of \acrshortpl{PICNN}, which we borrow from the foundational work of \citet{amos2017input}. 
 
-\cref{cha:cellot} exploited an explicit connection between OT and neural networks derived from the celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition}.
+\looseness -1 \cref{cha:cellot} exploited an explicit connection between OT and neural networks derived from the celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition}.
 In this chapter, we build on this line of work, but substantially generalize it, to learn a {\em parametric} family of context-aware transport maps, using a collection of labeled pairs of measures.
 Our framework can be also interpreted as a hypernetwork \citep{ha2016hypernetworks}: The \acrshort{PICNN} architecture can be seen as an \acrshort{ICNN} whose weights and biases are \textit{modulated} by the context vector $\cont$, which parameterizes a \textit{family} of convex potentials in $\mathbb{R}^d$.
 %
@@ -73,7 +73,7 @@ Such networks were proposed by \citet[Eq. 3]{amos2017input} to address a problem
 \subsection{Conditional Monge Map Architecture}\label{subsec:combin}
 Using PICNNs as a base module, the \textsc{CondOT} architecture integrates operations on the contexts $\gC$. As seen in Figure~\ref{fig:overview_condot}, context values $\cont$ may take various forms:
 \begin{enumerate}[noitemsep,leftmargin=.35cm,topsep=0pt,parsep=0pt,partopsep=0pt]
-\item A scalar $t$ denotes a strength or a temporal effect. For instance, \citeauthor{mccann1997convexity}'s interpolation \eqref{eq:mccann_interpolation} and its time parameterization, $\alpha_{t}=((1-t) \text{Id}+t T)_{\sharp} \alpha_{0}$ \citep{mccann1997convexity} can be interpreted as a trivial conditional OT model that creates, from an OT map $\varphi_\theta$, a set of maps parameterized by $t$, $\mathcal{T}_\theta(t):=x\mapsto\nabla_x \left((1-t)\|x\|^2/2 +t \varphi_\theta(x)\right)$.
+\item A scalar $t$ denotes a strength or a temporal effect. For instance, \citeauthor{mccann1997convexity}'s interpolation \eqref{eq:mccann_interpolation} and its time parameterization, $\alpha_{t}=((1-t) \operatorname{Id}+t T)_{\sharp} \alpha_{0}$ \citep{mccann1997convexity} can be interpreted as a trivial conditional OT model that creates, from an OT map $\varphi_\theta$, a set of maps parameterized by $t$, $\mathcal{T}_\theta(t):=x\mapsto\nabla_x \left((1-t)\|x\|^2/2 +t \varphi_\theta(x)\right)$.
 % \textsc{CondOT} can describe consecutive optimal displacements $\alpha_t$ from $t=0$ to any time $t$, but which are not  Wasserstein geodesic.
 \item A covariate vector influencing the nature of the effect that led $\mu_i$ to $\nu_i$, (capturing, e.g., patient feature vectors).
 \item One or multiple actions, possibly discrete, representing decisions or perturbations applied onto $\mu_i$. \\
@@ -97,7 +97,7 @@ However, often this domain knowledge is not available.
 \begin{wrapfigure}{r}{0.4\textwidth}
     \centering
     %\vskip-0.1cm
-    \includegraphics[width=\textwidth]{figures/fig_architecture.pdf}
+    \includegraphics[width=0.4\textwidth]{figures/fig_architecture.pdf}
     \caption{\textbf{\textsc{CondOT} Architecture and Modules}. The embedding module $\mathcal{E}_\phi$ embeds arbitrary conditions $c$, which are then combined via module $\mathcal{C}_\Phi$. Using the processed contexts $c$, the map $\mathcal{T}_\theta(c)$ acts on $\mu$ to predict the target measure $\nu$. \vspace{-10pt}}
     \label{fig:architecture}
 \end{wrapfigure}
