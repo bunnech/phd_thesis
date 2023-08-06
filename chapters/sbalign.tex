@@ -164,12 +164,13 @@ Inspecting $\doob$ in \eqref{eq:SB-SD-conditioned}, we see that, given $(\x_0,\x
 \doob(\x) = \prob(X_1 = \x_1\vert X_t = \x) = \exof*{
 \one_{\{\x_1\}}\vert X_t = \x}
 \end{equation}where the expectation is over \eqref{eq:SB-SDE}. Functions of the form \eqref{eq:h-semigroup} lend themselves well to computation since it solves simulating the \emph{unconditioned} paths.
-% since the Feymann-Kac formula, which offers a representation via simulating the \emph{unconditional} paths and has been well-studied in fields such as physics \cite{}, financial engineering \citep{}, and machine learning \citep{}. 
+% since the Feymann-Kac formula, which offers a representation via simulating the \emph{unconditional} paths. 
 Furthermore, in order to avoid overfitting on the given samples, it is customary to replace the "hard" constraint $\one_{\{\x_1\}}$ by its \emph{smoothed} version \citep{zhang2021path, holdijk2022path}: 
 \begin{equation}
 \label{eq:softdoob}
 \doobs(\x) \defeq \exof*{  \exp\parens*{-\frac{1}{2\reg}\norm{X_\horizon-\x_1}^2 }  \vert X_t = \x}.
-\end{equation}Here, $\reg$ is a regularization parameter that controls how much we ``soften'' the constraint, and we have $\lim_{\reg\to 0} \doobs = \doob$.
+\end{equation}
+Here, $\reg$ is a regularization parameter that controls how much we ``soften'' the constraint, and we have $\lim_{\reg\to 0} \doobs = \doob$.
 
 Although the computation of \eqref{eq:softdoob} can be done via a standard application of the Feynman-Kac formula \citep{rogers2000diffusions}, an altogether easier approach is to parametrize $\doobs$ by a second neural network $m^{\phi}$ and perform alternating minimization steps on $\fdrift^\theta$ and $m^{\phi}$. This way, we can also avoid simulating even the unconditional paths of \eqref{eq:SB-SDE}, thereby further reducing the variance in training.
 
@@ -288,7 +289,7 @@ To showcase \textsc{SBalign}'s ability to make use of such (partial) alignments 
 \end{table}
 
 We benchmark \textsc{SBalign} against previous \acrshortpl{DSB} such as \citep[\textsc{fbSB}]{chen2021likelihood}. Beyond, we compare \textsc{SBalign} in the setting of learning a prior reference process. Naturally, cell division processes and subsequently the propagation of the barcodes are very noisy. While this genetic annotation provides some form of assignment, it does not capture the full developmental process. We thus test \textsc{SBalign} in a setting where it learns a prior from such partial alignments and, plugged into \textsc{fbSB}, is fine-tuned on the full dataset.
-To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\varepsilon}$~\citep{cuturi2013sinkhorn}, as well as average (perturbation scores), i.e., $\ell_2(\text{PS})$, and RMSD. Details on the evaluation metrics can be found in \cref{app:evaluation_metrics}.
+To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\varepsilon}$~\citep{cuturi2013sinkhorn}, as well as average \acrfull{PS}, i.e., $\ell_2(\text{PS})$, and \acrfull{RMSD}. Details on the evaluation metrics can be found in \cref{app:evaluation_metrics}.
 Moreover, we also train a simple neural network-based classifier to annotate the cell type on day 4 and we report the accuracy of the predicted vs. actual cell type for all the models.
 
 

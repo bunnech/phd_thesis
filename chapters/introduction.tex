@@ -31,6 +31,10 @@ These issues are well known challenges, and many technologies have tried to circ
 Our goal in this review is to highlight that the common thread in all of these problems is the recurring need to realign datasets, and that such problems can be solved using \acrlong{OT} theory \citep{villani2021topics, santambrogio2015optimal}.
 OT theory, a major research area in pure mathematics in recent decades (with Fields Medals awarded to \citeauthor{villani2021topics} in 2010 and \citeauthor{figalli2017monge} in 2018), has emerged as a contender to fill in that gap \textit{in silico}. OT is best described as a toolbox that allows reconstructing how a \emph{source} population (represented as one probability distribution) can morph efficiently into another \emph{target} population, given only source and target samples. Taking for the source distribution a sample of cells pre-stimuli, and for the target, another sample of cells post-stimuli, OT can reconstruct the unobserved process and provide an informed guess to define a \emph{transport map} that relates these two cell populations. 
 
+
+
+\acrfull{NN}
+
 \section{Dynamic Processes in Biomedicine}
 \label{sec:bio_background}
 
@@ -92,7 +96,7 @@ Hence, such differentiation processes can only be measured through distinct snap
 
 To understand differentiation ---the continuous emergence of different cell types and branching events--- we need to reconstruct such developmental processes from single-cell measurements that provide us with snapshots of the cell population evolving over time:
 Given that a cell has a specific expression profile at a time point, where will its descendants likely be at a later time point and where are its likely ancestors at an earlier time point? 
-\citet{schiebinger2019optimal} thereby study reprogramming of fibroblasts to induced pluripotent stem cells (iPSCs) \citep{}, by measuring $>315,000$ mouse embryonic fibroblasts (MEFs). Cells at time point $t$ are connected to their ancestors at time $t-1$, by finding the corresponding transport plan $P_{t-1,t}$ between each pair of consecutive time steps.
+\citet{schiebinger2019optimal} thereby study reprogramming of fibroblasts to \acrfull{iPSC} \citep{takahashi2006induction}, by measuring $>315,000$ \acrfull{MEF}. Cells at time point $t$ are connected to their ancestors at time $t-1$, by finding the corresponding transport plan $P_{t-1,t}$ between each pair of consecutive time steps.
 ...
 
 
@@ -124,7 +128,7 @@ By mapping the transcriptomic or epigenomic landscapes of individual cells, sequ
 
 RNA is thereby a direct quantifier for gene activity: Genes in DNA are transcribed into \acrfull{mRNA}, which is then translated into proteins that carry out various functions within the cell.
 By measuring the amounts and types of mRNA present in a cell at a given time, i.e., the transcriptome, we can understand which genes are being actively expressed. This information is valuable as changes in gene expression can signal various biological processes, such as cell development, responses to environmental stimuli, disease states, and much more. 
-In order to record the gene expression in single cells, scRNA-seq requires isolating individual cells, often using techniques such as \acrfull{FACS} \citep{} or droplet-based technologies \citep{}. Each cell's mRNA is reverse transcribed into \acrfull{cDNA}, including a unique molecular identifier to correct for amplification bias.
+In order to record the gene expression in single cells, scRNA-seq requires isolating individual cells, often using techniques such as \acrfull{FACS} \citep{julius1972demonstration} or droplet-based technologies \citep{brouzes2009droplet, mazutis2013single, debs2012functional}. Each cell's mRNA is reverse transcribed into \acrfull{cDNA}, including a unique molecular identifier to correct for amplification bias.
 This cDNA is then amplified and prepared for high-throughput sequencing and the resultant data provide insights into gene expression of individual cells.
 
 Crucially, this process is destructive: Cells are destroyed, i.e., lysed, or broken open, in order to access the mRNA within and record their gene expression levels.
@@ -140,7 +144,7 @@ Such targets tagged with markers can be potential important components of signal
 The cells are then imaged or passed through a laser, and the fluorescence emitted is captured and measured, providing information about the presence and quantity of the target molecules within each cell. 
 The resulting images allow the extraction of morphological properties and the fluorescence intensity of each tag in different parts of each cell \citep{carpenter2006cellprofiler}.
 
-However, it's important to note that while these methods are non-destructive in nature, some processes such as labeling or the use of certain dyes could potentially have some impact on cell viability or behavior. So while these techniques in general allow for dynamic tracking of cellular processes \citep{}, cells are usually fixed prior to staining to preserve cellular structures and allow for longer-term storage. Such procedures are lethal for cells, making longitudinal studies on the same cells impossible.
+However, it's important to note that while these methods are non-destructive in nature, some processes such as labeling or the use of certain dyes could potentially have some impact on cell viability or behavior. So while these techniques in general allow for dynamic tracking of cellular processes \citep{fischer2019inferring, hashimoto2016learning, tvarusko1999time, busch2015fundamental}, cells are usually fixed prior to staining to preserve cellular structures and allow for longer-term storage. Such procedures are lethal for cells, making longitudinal studies on the same cells impossible.
 
 High-content imaging, particularly when augmented by multiplexing abilities, is ideally suited to study heterogeneous cell responses.
 In this thesis, we study heterogeneous cell line responses to various cancer drugs based on a measurement technology known as \acrfull{4i} \citep{gut2018multiplexed}.
@@ -171,6 +175,7 @@ Applied to the analysis and modeling of single-cell biology problems, OT has bee
 \subsection{Related Work on Studying Cell Dynamics}
 
 ...
+\citep{fischer2019inferring, busch2015fundamental, hashimoto2016learning, raue2015data2dynamics}
 
 \section{Contributions}
 

@@ -254,13 +254,13 @@ In usual \acrshort{JKO} applications, $\tau$ needs to be tuned manually. Here, t
 
 \begin{figure}[t]
      \centering
-     \begin{subfigure}[t]{0.49\textwidth}
+     \begin{subfigure}[t]{0.485\textwidth}
          \centering
-         \caption{\textsc{JKOnet} (30\% corrupted data). \hspace{3cm}}
+         \caption{\textsc{JKOnet} (30\% corrupted data).}
          \includegraphics[width=\textwidth]{figures/fig_predictions_jko_noise.pdf}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[t]{0.47\textwidth}
+     \begin{subfigure}[t]{0.46\textwidth}
          \centering
          \caption{Forward method (30\% corrupted data).}
          \includegraphics[width=\textwidth]{figures/fig_predictions_forward_noise.pdf}
@@ -339,26 +339,26 @@ While facilitating the training of the forward method in some settings, it likew
      \centering
      \begin{subfigure}[t]{0.45\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_data_moon_days_full.pdf}
          \caption{\acrshort{PCA} embedding of the embryoid body scRNA-seq data colored by the snapshot time.}
+         \includegraphics[width=\textwidth]{figures/fig_data_moon_days_full.pdf}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.45\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_data_moon_Branches_full.pdf}
          \caption{\acrshort{PCA} embedding of the embryoid body scRNA-seq data colored by the lineage branch class.}
+         \includegraphics[width=\textwidth]{figures/fig_data_moon_Branches_full.pdf}
      \end{subfigure}
 
      \begin{subfigure}[t]{0.45\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_implicit_moon_pred_days.pdf}
          \caption{\acrshort{PCA} embedding of \textsc{JKOnet} predictions colored by the snapshot time.}
+         \includegraphics[width=\textwidth]{figures/fig_implicit_moon_pred_days.pdf}
      \end{subfigure}
      \hfill
      \begin{subfigure}[t]{0.45\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/fig_implicit_moon_pred_Branches.pdf}
          \caption{\acrshort{PCA} embedding of \textsc{JKOnet} predictions colored by the lineage branch class.}
+         \includegraphics[width=\textwidth]{figures/fig_implicit_moon_pred_Branches.pdf}
      \end{subfigure}
 	 \caption{Analysis of population dynamics predictions of \textsc{JKOnet} on the embryoid body scRNA-seq data.}
 	 \label{fig:exp_jkonet_cell}
@@ -372,7 +372,7 @@ While facilitating the training of the forward method in some settings, it likew
     \begin{tabular}[b]{lcc}
     \toprule
          \textbf{Method} & \multicolumn{2}{c}{\textbf{Cell Lineage Classification}} \\
-         & $\ell_1$ & $H^2$ \\
+         & $\ell_1$ & $D_{\mathrm{H}}$ \\
     \midrule
     \textbf{One-Step Ahead} \\
         \tabindent Forward Method & $132.27 \pm 5.00$ & $0.026 \pm 0.002$ \\
@@ -383,7 +383,7 @@ While facilitating the training of the forward method in some settings, it likew
     \bottomrule
     \end{tabular}
     }
-\caption{Evaluation of cell lineage branch classification performance of \textsc{JKOnet} and the forward method on the embryoid body scRNA-seq data based on the $\ell_1$-distance of the histograms and the Hellinger distance $H^2$ \eqref{eq:hellinger} of the predicted branch class distributions (using 3 runs). \vspace{10pt}}
+\caption{Evaluation of cell lineage branch classification performance of \textsc{JKOnet} and the forward method on the embryoid body scRNA-seq data based on the $\ell_1$-distance of the histograms and the Hellinger distance $D_{\mathrm{H}}$ \eqref{eq:hellinger} of the predicted branch class distributions (using 3 runs). \vspace{10pt}}
 \label{tab:exp_jkonet_cell_class}
 \end{figure}
 
@@ -408,13 +408,13 @@ Besides measuring the ability of \textsc{JKOnet} to model and predict the spatio
 Embryoid body differentiation covers key aspects of early embryogenesis and thus captures the development of \acrlongpl{ESC} into the mesoderm, endoderm, neuroectoderm, neural crest, and others.
 
 Following \citet[Fig. 6, Suppl. Note 4]{moon2019visualizing}, we compute lineage branch classes (\cref{fig:exp_jkonet_cell}b) for all cells based on an initial $k$-means clustering ($k=30$) in a 10-dimensional embedding space using PHATE, a non-linear dimensionality reduction method capturing a denoised representation of both local and global structure of a dataset.
-We then train a $k$-nearest neighbor ($k$-NN) classifier ($k=5$) to infer the lineage branch class based on a 20-dimensional \acrshort{PCA} embedding of a cell (classes: ESC: 0, neural crest: 1, neuroectoderm: 2, endoderm: 3, mesoderm: 4, other: 5).
+We then train a \acrfull{kNN} classifier ($k=5$) to infer the lineage branch class based on a 20-dimensional \acrshort{PCA} embedding of a cell (classes: ESC: 0, neural crest: 1, neuroectoderm: 2, endoderm: 3, mesoderm: 4, other: 5).
 
 We analyze the captured lineage branch heterogeneity of the population predicted by \textsc{JKOnet} and the forward method by estimating the lineage branch class of each cell using the trained $k$-NN classifier. The predicted populations colored by the estimated lineage branch as well as the data with the true lineage branch labels are visualized in Figure~\ref{fig:exp_jkonet_cell}e and Figure~\ref{fig:exp_jkonet_cell}b, respectively.
 The corresponding predicted and true distributions of lineage branch classes are shown in Figure~\ref{fig:exp_jkonet_cell}c.
 To quantify how well \textsc{JKOnet} and the forward method capture  different cell lineage branches, we compute the $\ell_1$ distance between the  predicted and true histograms as well as the Hellinger distance 
 \begin{equation} \label{eq:hellinger}
-    H^2(a, b)=\frac{1}{2} \sum_{i=1}^{k}\left(\sqrt{a_{i}/\|a\|_1}-\sqrt{b_{i}/\|b\|_1}\right)^{2}
+    D_{\mathrm{H}}(a, b) \defeq \frac{1}{2} \sum_{i=1}^{k}\left(\sqrt{a_{i}/\|a\|_1}-\sqrt{b_{i}/\|b\|_1}\right)^{2}
 \end{equation}
 between both true and predicted class discrete distributions $a$ and $b$.
 Figure~\ref{fig:exp_jkonet_cell}c and Table~\ref{tab:exp_jkonet_cell_class} demonstrate that both, \textsc{JKOnet} and the forward method, capture most lineage branches during the differentiation of embryonic stem cells. Both methods, however, have difficulties recovering cells of the neural crest (class 1) and the endoderm (class 3), lineage branches that are scarcely represented in the original data. 

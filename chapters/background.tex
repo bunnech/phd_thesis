@@ -42,6 +42,7 @@ i.e., the family of continuous functions that have both a continuous first and a
 
 It was not until the 20th century, however, that the concept found a more tractable development. In \citeyear{kantorovich1942transfer}, Leonid \citeauthor{kantorovich1942transfer} provided a relaxation to this non-convex and difficult-to-solve problem.
 Instead of the deterministic matching proposed by \citeauthor{monge1781histoire}, Kantorovich considered probabilistic correspondences that allow for the transportation of mass from a single source point to various target points (mass splitting), resulting in the problem formulation
+% TODO: Introduce P_{\gX \sharp}.
 \begin{equation} \label{eq:kantorovich}
     W(\mu, \nu) \defeq \inf_{\pi\in \Pi(\mu,\nu)}\iint c(x, y) \pi(x, y)\mathrm{d}x\mathrm{d}y,
 \end{equation}
@@ -60,7 +61,7 @@ When instantiated on finite discrete measures, such as $\mu=\sum_{i=1}^n u_i\del
 \begin{equation}\label{eq:ot-reg}
 \We(\mu,\nu) \defeq \min_{\bP\in U(\mu,\nu)} \dotp{\bP}{[\|x_i - y_j\|^2]_{ij}}  \,-\varepsilon H(\bP),
 \end{equation}
-where $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(\mu,\nu)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m = \mu, \bP^\top\mathbf{1}_n=\nu\}$.
+where $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(\mu,\nu)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m = \mu, \bP^T \mathbf{1}_n=\nu\}$.
 Regularization with an entropy term thereby results in a significantly more efficient optimization \citep{cuturi2013sinkhorn} and differentiability w.r.t. the inputs.
 As a consequence, \ref{eq:ot-reg} is commonly used as a loss function or evaluation metric in machine learning applications, e.g., for structured prediction \citep{frogner2015learning,janati2020multi} or generative model fitting \citep{arjovsky2017wasserstein, salimans2018improving, genevay2018learning}.
 While setting $\varepsilon>0$ yields a faster and differentiable proxy to approximate $W_{0}$, it introduces a bias, since $\We(\mu,\mu)\ne 0$ in general.
@@ -336,7 +337,7 @@ For instance, the standard heat equation of physics, i.e.,
 \begin{equation*}
 	\frac{\partial \mu_t}{\partial t} = \Delta \mu_t,
 \end{equation*}
-with $\Delta$ being the spatial Laplacian, can be expressed as a gradient flow of the energy $J(\mu) = \int \mu_t(x) \log \mu_t(x) \mathrm{d} x$, i.e., Gibbs-Boltzmann's famous $H$ functional with the physical interpretation of the negative of an entropy.
+with $\Delta$ being the spatial Laplacian, can be expressed as a gradient flow of the energy $J(\mu) = \int \mu_t(x) \log \mu_t(x) \mathrm{d} x$, i.e., Gibbs-Boltzmann's famous functional with the physical interpretation of the negative of an entropy.
 Among further examples displayed in \cref{tab:examples_gradient_flows} \citep{alvarez2021optimizing, villani2021topics}, a classic subject of the theory of PDEs also comprises the linear Fokker-Planck equation
 \begin{equation}
 	\label{eq:linear_fokker_planck}
@@ -416,7 +417,7 @@ In his work "{\"U}ber die Umkehrung der Naturgesetze" published in \citeyear{sch
 His Gedankenexperiment is best illustrated through a population of independent and identically distributed particles in $\mathbb{R}^d$ observed at $t=0$ as the empirical distribution $\mu_0$, and again at $t=1$ as $\mu_1$.
 To describe the mostly likely dynamics of these particles over time, we aim at finding the stochastic process $\Pmargin$ on $[0,\horizon]$ such that $\Pinit = \mu_0, \Pend = \mu_1$.
 
-Provided with some prior knowledge of a reference process $\mathbb{Q}_t$, e.g., that the underlying dynamics follow a Brownian motion, we aim to identify the stochastic process $\mathbb{P}_t$ that best describes the particles evolution, i.e., minimizes the overall relative entropy
+Provided with some prior knowledge of a reference process $\mathbb{Q}_t$, e.g., that the underlying dynamics follow a \acrfull{BM}, we aim to identify the stochastic process $\mathbb{P}_t$ that best describes the particles evolution, i.e., minimizes the overall relative entropy
 \begin{equation}
 	\label{eq:schrodinger_bridge}
 	\min_{ \substack{ \Pinit = \mu_0, \; \Pend = \mu_1} } \KL(\Pmargin \| \refpro) = \int_{\gC[0,1]} \log \left( \frac{d\Pmargin}{d \refpro} \right) d\Pmargin,
@@ -477,7 +478,7 @@ The effect of adding an external force $f$, here exemplified through a horizonta
 \paragraph{Optimality criteria.}
 Again, we recover the optimality criteria via a \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform  of \eqref{eq:sb_control_gen} resulting in
 \begin{align} \label{eq:sb_optimality_gen}
-& \frac{\partial \Phi}{\partial t}=-\nabla \Phi^{\top} f- \frac{1}{2}\sigma^2 g^2 \Delta \Phi \quad \quad \text { s.t. } &\Phi(0, \cdot) \widehat{\Phi}(0,  \cdot)=\mu_0, \\
+& \frac{\partial \Phi}{\partial t}=-\nabla \Phi^{T } f- \frac{1}{2}\sigma^2 g^2 \Delta \Phi \quad \quad \text { s.t. } &\Phi(0, \cdot) \widehat{\Phi}(0,  \cdot)=\mu_0, \\
 \nonumber & \frac{\partial \widehat{\Phi}}{\partial t}=-\nabla \cdot(\widehat{\Phi} f)+\frac{1}{2}\sigma^2 g^2 \Delta \widehat{\Phi} \quad &  \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1
 \end{align}
 with the optimal control $v(t, X_t)= \sigma^2 g(t) \nabla \log \Phi\left(t, X_t\right)$.

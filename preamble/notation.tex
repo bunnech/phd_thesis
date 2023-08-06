@@ -19,6 +19,7 @@
  	$\Pi(\mu, \nu)$ & set of couplings, for discrete measures $U(u, v)$. \\
  	$\supp(\pi)$ & support of $\pi$. \\
  	$W(\mu, \nu)$ & Wasserstein distance between measures $\mu$ and $\nu$. \\
+ 	$H(\pi)$ & entropy of coupling $\pi$. \\
  	$\varepsilon$ & regularization strength of the entropy regularization. \\
  	$(f, g)$ & dual potentials. \\
  	$f^*$ & Legendre transform of function $f$. \\
@@ -29,6 +30,11 @@
  	$\Delta$ & Laplace operator. \\
  	$\tau$ & step size. \\
  	$\langle\cdot, \cdot\rangle$ & Euclidean dot-product between vectors. \\
+ 	$D_{\mathrm{H}}$ & Hellinger distance. \\
+ 	$\KL$ & Kullback-Leibler divergence. \\
+ 	$\ell_1$ & Manhattan distance. \\
+ 	$\ell_2$ & Euclidean distance. \\
+ 	$\circ$ & Hadamard element-wise product. \\
  	$\sigma$ & noise level. \\
  	$\mathbb{P}_t$ & stochastic process with $t \in [0,1]$. \\
  	$\mathbb{W}_t$ & standard Wiener process. \\
@@ -37,9 +43,10 @@
  	$\gN(\mu, \Sigma)$ & multivariate Gaussian distribution with mean vector $\mu$ and covariance matrix $\Sigma$. \\
  	$\dot{x}$ & first derivative of $x$ taken with respect to time. \\
  	$\ddot{x}$ & second derivative of $x$ taken with respect to time. \\
- 	$\theta$ and $\phi$ & parameters of two neural networks. \\
+ 	$\theta$ and $\phi$ & parameters of neural networks. \\
  	$\gamma$ & learning rate. \\
- 	
+ 	$\ell$ & loss function. \\
+ 	$\omega$ & kernel function. \\
  	
 \end{tabularx}
 
@@ -47,35 +54,28 @@
 \newacronym{OT}{OT}{optimal transport}
 \newacronym{SB}{SB}{Schr\"odinger bridge}
 \newacronym{DSB}{DSB}{diffusion Schr\"odinger bridge}
-\newacronym{USB}{USB}{unbalanced Schr\"odinger bridge}
 \newacronym{GSB}{GSB}{Gaussian Schr\"odinger bridge}
-
 \newacronym{IPF}{IPF}{iterative proportional fitting}
 \newacronym{ODE}{ODE}{ordinary differential equation}
 \newacronym{SDE}{SDE}{stochastic differential equation}
 \newacronym{PDE}{PDE}{partial differential equation}
-\newacronym{KDE}{KDE}{kernel density estimation}
 \newacronym{JKO}{JKO}{Jordan-Kinderlehrer-Otto}
-
-\newacronym{LHS}{LHS}{left-hand side}
-\newacronym{RHS}{RHS}{right-hand side}
+\newacronym{KKT}{KKT}{Karush-Kuhn-Tucker}
 \newacronym{PCA}{PCA}{principal component analysis}
-
 \newacronym{iid}{i.i.d.}{independent and identically distributed}
 \newacronym{oos}{o.o.s.}{out-of-sample}
 \newacronym{ood}{o.o.d.}{out-of-distribution}
 \newacronym{lsc}{l.s.c.}{lower semi-continuous}
-
 \newacronym{GAN}{GAN}{generative adversarial network}
 \newacronym{NN}{NN}{neural network}
+\newacronym{kNN}{$k$-NN}{$k$-nearest neighbor}
 \newacronym{ICNN}{ICNN}{input convex neural network}
 \newacronym{PICNN}{PICNN}{partially input convex neural network}
 \newacronym{NF}{NF}{normalizing flows}
 \newacronym{MLP}{MLP}{multi-layer perceptron}
-
 \newacronym{MMD}{MMD}{maximum-mean-discrepancy}
+\newacronym{RMSD}{RMSD}{root-mean-square deviation}
 \newacronym{PS}{PS}{perturbation signatures}
-
 \newacronym{SGM}{SGM}{score-based generative model}
 \newacronym{SMLD}{SMLD}{score matching with Langevin dynamics}
 \newacronym{DDPM}{DDPM}{denoising diffusion probabilistic model}
@@ -84,11 +84,11 @@
 \newacronym{BM}{BM}{Brownian motion}
 \newacronym{VESDE}{VESDE}{variance exploding \acrshort{SDE}}
 \newacronym{VPSDE}{VPSDE}{variance preserving \acrshort{SDE}}
-
 \newacronym{sc}{sc}{single-cell}
-\newacronym{ESC}{ESC}{embryonic stem cell}
-\newacronym{MEF}{MEF}{mouse embryonic fibroblast}
-\newacronym{iPSC}{iPSC}{induced pluripotent stem cell}
+\newacronym{ESC}{ESC}{embryonic stem cells}
+\newacronym{MEF}{MEF}{mouse embryonic fibroblasts}
+\newacronym{iPSC}{iPSC}{induced pluripotent stem cells}
+\newacronym{HSPC}{HSPC}{hematopoietic stem and progenitor cells}
 \newacronym{EB}{EB}{embryoid bodies}
 \newacronym{PBMC}{PBMC}{peripheral blood mononuclear cells}
 \newacronym{HVG}{HVG}{highly variable genes}
@@ -101,5 +101,11 @@
 \newacronym{RNA-seq}{RNA-seq}{\acrshort{RNA}-sequencing}
 \newacronym{4i}{4i}{iterative indirect immunofluorescence imaging}
 \newacronym{GEO}{GEO}{gene expression omnibus}
+\newacronym{LPS}{LPS}{lipopolysaccharides}
+\newacronym{MOA}{MOA}{mode of action}
+\newacronym{OHE}{OHE}{one-hot encoding}
+\newacronym{MDS}{MDS}{multidimensional scaling}
+\newacronym{UMAP}{UMAP}{uniform manifold approximation and projection}
+\newacronym{CRISPR}{CRISPR}{clustered regularly interspaced short palindromic repeats}
 
 \printglossary[type=\acronymtype]

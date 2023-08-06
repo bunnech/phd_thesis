@@ -17,7 +17,7 @@ These constraints are important inductive biases that facilitate learning and re
 \looseness -1 \textsc{CellOT} infers the highly complex and nonlinear evolution of cell populations in response to perturbations without making strong simplifying assumptions on the nature of these dynamics.
 Unlike current approaches comprising autoencoder-based baselines \citep{lopez2018scvi, lotfollahi2019scgen, yang2020predicting}, \textsc{CellOT} does not necessarily rely on learning meaningful low-dimensional embeddings in which perturbations are modeled as linear shifts. % , thus faithfully capturing the heterogeneity of single-cell perturbation responses and accounting for high cell-to-cell variability.
 We confirm this advantage through experiments on single-cell responses to different drugs in cancer cell lines obtained with RNA-seq and spatially resolved 4i measurements, where \textsc{CellOT} consistently outperforms (\cref{fig:benchmark_cellot}). Our evaluations went beyond the often-used average treatment effect and correlation analysis across all cells; we analyzed marginals
-% UMAPs
+% \acrshortpl{UMAP}
 and computed MMD scores, a strong measure of how well predicted and observed distributions match.
 
 \smallskip

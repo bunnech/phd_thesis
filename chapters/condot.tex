@@ -55,17 +55,17 @@ We detail in \cref{sec:neural_solvers} how the Legendre transforms that appear i
 
 \subsection{Integrating Context in Convex Architectures}
 We propose to incorporate context variables, in order to modulate a family of convex functions $f_{\theta}(x, c)$
-using \acrlongpl{PICNN}. \acrshortpl{PICNN} are neural networks that can be evaluated over a pair of inputs $(x,\cont)$, but which are only required to be convex w.r.t.~$x$. Given an input vector $x$ and context vector $\cont$, a $K$-layer PICNN is defined as $\varphi_\theta(x, c) = z_{K},$ where, recursively for $0\leq k \leq K-1$ one has
+using \acrlongpl{PICNN}. \acrshortpl{PICNN} are neural networks that can be evaluated over a pair of inputs $(x,\cont)$, but which are only required to be convex w.r.t.~$x$. Given an input vector $x$ and context vector $\cont$, a ${L}$-layer PICNN is defined as $\varphi_\theta(x, c) = z_{L},$ where, recursively for $0 \leq {l} \leq {L}-1$ one has
 \begin{equation} \label{eq:picnn}
 \begin{aligned} 
-u_{k+1} =&\, \tau_{k}\left(V_{k} u_{k}+v_{k}\right), \\
-z_{k+1} =&\, \sigma_{k}\left(W_{k}^{z}\left(z_{k} \circ\left[W_{k}^{z u} u_{k}+b_{k}^{z}\right]_+\right)+\right.
-\left.W_{k}^{x}\left(x \circ(W_{k}^{x u} u_{k}+b_{k}^{x})\right)+W_{k}^{u} u_{k}+b_{k}^u\right), \\
+u_{{l}+1} =&\, a^\prime_{l}\left(V_{l} u_{l}+v_{l}\right), \\
+z_{{l}+1} =&\, a_{l}\left(W_{l}^{z}\left(z_{l} \circ\left[W_{l}^{z u} u_{l}+b_{l}^{z}\right]_+\right)+\right.
+\left.W_{l}^{x}\left(x \circ(W_{l}^{x u} u_{l}+b_{l}^{x})\right)+W_{l}^{u} u_{l}+b_{l}^u\right), \\
 \end{aligned}
 \end{equation}
-where the PICNN is initialized as $u_{0}=\cont, z_0 = \mathbf{0}$, $\circ$ denotes the Hadamard element-wise product, and $\tau_k$ is any activation function. The parameters of the PICNN are then given by
-$$\theta = \{ V_{k}, W_{k}^{z}, W_{k}^{z u}, W_{k}^{x}, W_{k}^{x u} , W_{k}^{u}, v_{k}, b_{k}^{z}, b_{k}^{x}, b_{k}^u \}.$$ 
-Similar to ICNNs, the convexity w.r.t. input variable $x$ is guaranteed as long as activation functions $\sigma_i$ are convex and non-decreasing, and the weight matrices $W_{k}^{z}$ have non-negative entries. We parameterize this by storing them as element-wise applications of softplus operations on precursor matrices of the same size, or, alternatively, by regularizing their negative part. Finally, much like ICNNs, all matrices at the $K-1$ layer are line vectors, and their biases scalars.
+where the PICNN is initialized as $u_{0}=\cont, z_0 = \mathbf{0}$, $\circ$ denotes the Hadamard element-wise product, and $a^\prime_{l}$ is any activation function. The parameters of the PICNN are then given by
+$$\theta = \{ V_{l}, W_{l}^{z}, W_{l}^{z u}, W_{l}^{x}, W_{l}^{x u} , W_{l}^{u}, v_{l}, b_{l}^{z}, b_{l}^{x}, b_{l}^u \}.$$ 
+Similar to ICNNs, the convexity w.r.t. input variable $x$ is guaranteed as long as activation functions $a_i$ are convex and non-decreasing, and the weight matrices $W_{l}^{z}$ have non-negative entries. We parameterize this by storing them as element-wise applications of softplus operations on precursor matrices of the same size, or, alternatively, by regularizing their negative part. Finally, much like ICNNs, all matrices at the ${L}-1$ layer are line vectors, and their biases scalars.
 
 Such networks were proposed by \citet[Eq. 3]{amos2017input} to address a problem that is somewhat symmetric to ours: Their inputs were labeled as $(y, x)$, where $y$ is a label vector, typically much smaller than that of vector $x$. Their PICNN is convex w.r.t.~$y$, in order to easily recover, given a datapoint $x$ (e.g., an image) the best label $y$ that corresponds to $x$ using gradient descent as a subroutine, i.e. $y^\star(x) = \arg\min_y \text{PICNN}_\theta(x,y)$. PICNNs were therefore originally proposed to learn a parameterized, implicit classification layer, amortized over samples, whose motivation rests on the property that it is convex w.r.t. label variable $y$. By contrast, we use PICNNs that are convex w.r.t. data points $x$. In addition to that swap, we do not use the convexity of the PICNN to define an implicit layer (or to carry out gradient descent). Indeed, it does not make sense in our setting to minimize $\varphi_\theta(x,\cont)$ as a function of $x$, since $x$ is an observation. Instead, our proposal rests on the property that $\nabla_1 \varphi_\theta(x,\cont)$ describes a parameterized family of OT maps. We note that PICNNs were considered within the context of OT in \cite[Appendix B]{fan2021scalable}. In that work, PICNNs provide an elegant reformulation for neural Wasserstein barycenters. \citet{fan2021scalable} considered a context vector $c$ that was restricted to be a small vector of probabilities.
 
@@ -84,8 +84,8 @@ To provide a flexible architecture capable of modeling different types of condit
 \subsubsection{Embedding Module $\mathcal{E}$}
 \looseness -1 To give greater flexibility when setting the context variable $c$, \textsc{CondOT} contains an embedding module $\mathcal{E}$ that translates arbitrary contexts into real-valued vectors. Besides simple scalars $t$ (\cref{fig:overview_condot}a) for which no embedding is required, discrete contexts can be handled with an embedding module $\mathcal{E}_\phi$.
 
-\paragraph{One-Hot Embedding $\mathcal{E}_\text{ohe}$}
-When the set $\gC$ is small, this can be done effectively using one-hot embeddings $\mathcal{E}_\text{ohe}$.
+\paragraph{One-hot encoding $\mathcal{E}_\text{ohe}$.}
+When the set $\gC$ is small, this can be done effectively using a \acrfull{OHE} $\mathcal{E}_\text{ohe}$.
 Thus, covariates, such as subpopulations or patient identifiers, can be simply embedded via one-hot encodings. These embeddings, however, are not able to capture unknown covariates after training.
 
 For more complicated actions $a$ such as treatments, there is no simple way to vectorize a context $c$. Similarly to action embeddings in reinforcement learning \citep{chandak2019learning, tennenholtz2019natural}, we can learn embeddings for discrete actions into a learned continuous representation.
@@ -101,8 +101,9 @@ However, often this domain knowledge is not available.
     \caption{\textbf{\textsc{CondOT} Architecture and Modules}. The embedding module $\mathcal{E}_\phi$ embeds arbitrary conditions $c$, which are then combined via module $\mathcal{C}_\Phi$. Using the processed contexts $c$, the map $\mathcal{T}_\theta(c)$ acts on $\mu$ to predict the target measure $\nu$. \vspace{-10pt}}
     \label{fig:architecture}
 \end{wrapfigure}
-\paragraph{Mode-of-Action Embedding $\mathcal{E}_\text{moa}$}
-In \textsc{CondOT}, we thus construct so-called \emph{mode-of-action} embeddings, by computing an embedding $\mathcal{E}_\text{moa}$ that encourages actions $a$ with a similar effect on target population $\nu$ to have a similar representation.
+
+\paragraph{Mode of action embedding $\mathcal{E}_\text{moa}$.}
+In \textsc{CondOT}, we thus construct so-called \acrfull{MOA} embeddings, by computing an embedding $\mathcal{E}_\text{moa}$ that encourages actions $a$ with a similar effect on target population $\nu$ to have a similar representation.
 Such mode-of-action embeddings map actions into a latent space based on their mechanism of action and effect on the target population.
 In the fashion of word embeddings \citep{mikolov2013efficient, mikolov2013distributed, mikolov2013linguistic}, we require actions with similar effects to be closely embedded in the learned representation.
 This means, however, that we require some sample access of target population particles, i.e., perturbed cells by individual compounds (not in combination).
@@ -225,7 +226,7 @@ This becomes even more evident when moving to the setting where the population h
 
 \looseness -1 Molecular processes are often highly dependent on additional covariates that steer experimental conditions, and which are not present in the features measures in population $\mu$ or $\nu$.
 This can be, for instance, factors such as different cell types clustered within the populations.
-When the model can only be conditioned w.r.t. a small and \textit{fixed} set of metadata information, such as cell types, it is sufficient to encode these contexts using a one-hot embedding module $\mathcal{E}_\text{ohe}$.
+When the model can only be conditioned w.r.t. a small and \textit{fixed} set of metadata information, such as cell types, it is sufficient to encode these contexts using a one-hot encoding module $\mathcal{E}_\text{ohe}$.
 To illustrate this problem, we consider cell populations comprising three different cell lines (A549, MCF7, and K562). As visible in Table~\ref{tab:exp_scalar_covariate_sciplex}, \textsc{CondOT} outperforms current baselines which equally condition on covariate information such as \textsc{CPA}~\citep{lotfollahi2021compositional}, assessed through various evaluation metrics.
 Figure~\ref{fig:exp_scalar_sciplex}b displays a gene showing highly various responses towards the drug Givinostat dependent on the cell line. \textsc{CondOT} captures the distribution shift from control to target populations consistently across different cell lines.
 
@@ -238,8 +239,8 @@ Thanks to its modularity, \textsc{CondOT} can not only learn a map $T_\theta$ fo
 \subsubsection{\textit{Known} Actions}
 \label{sec:eval_action_known}
 
-\looseness -1 In the following, we analyze \textsc{CondOT}'s ability to accurately predict phenotypes of genetic perturbations based on single-cell RNA-sequencing pooled CRISPR screens \citep{norman2019exploring, dixit2016perturb}, comprising $98,419$ single-cell gene expression profiles with $92$ different genetic perturbations, each cell measured via a $1,500$ highly-variable gene expression vector.
-As, in the first step, we do not aim at generalizing beyond perturbations encountered during training, we utilize again a one-hot embedding $\mathcal{E}_\text{ohe}$ to condition $\mathcal{T}_\theta$ on each perturbation $a$.
+\looseness -1 In the following, we analyze \textsc{CondOT}'s ability to accurately predict phenotypes of genetic perturbations based on single-cell RNA-sequencing pooled \acrfull{CRISPR} screens \citep{norman2019exploring, dixit2016perturb}, comprising $98,419$ single-cell gene expression profiles with $92$ different genetic perturbations, each cell measured via a $1,500$ highly-variable gene expression vector.
+As, in the first step, we do not aim at generalizing beyond perturbations encountered during training, we utilize again a one-hot encoding $\mathcal{E}_\text{ohe}$ to condition $\mathcal{T}_\theta$ on each perturbation $a$.
 We compare our method to other baselines capable of modeling effects of a large set of perturbations such as \textsc{CPA} \citep{lotfollahi2021compositional}.
 Often, the effect of genetic perturbations is subtle in the high-dimensional gene expression profile of single cells. Using ICNN-parameterized OT maps without context information, we can thus assess the gain in accuracy of predicting the perturbed target population by incorporating context awareness over simply predicting an average perturbation effect. 
 Figure~\ref{fig:exp_action_norman_scatter}a and b demonstrate that compared to OT ablation studies, \cref{fig:exp_action_norman_scatter}c and \cref{fig:exp_action_norman_line}a for the current state-of-the-art method \textsc{CPA}~\citep{lotfollahi2021compositional}. Compared to both, \textsc{CondOT} captures the perturbation responses more accurately w.r.t. the Wasserstein distance.
@@ -255,15 +256,15 @@ Figure~\ref{fig:exp_action_norman_scatter}a and b demonstrate that compared to O
 \label{sec:eval_action_unknown}
 
 \looseness -1 With the emergence of new perturbations or drugs, we aim at inferring cellular responses to settings not explored during training.
-One-hot embeddings, however, do not allow us to model \emph{unknown} perturbations. 
+One-hot encodings, however, do not allow us to model \emph{unknown} perturbations. 
 This requires us to use an embedding $\mathcal{E}$, which can provide us with a representation of an unknown action $a^\prime$.
-As genetic perturbations further have no meaningful embeddings as, for example, molecular fingerprints for drugs, we resort to mode-of-action embeddings introduced in \cref{subsec:combin}. Assuming marginal sample access to all individual perturbations, we compute a multidimensional scaling (MDS)-based embedding from pairwise Wasserstein distances between individual target populations, such that perturbations with similar effects are closely represented. 
+As genetic perturbations further have no meaningful embeddings as, for example, molecular fingerprints for drugs, we resort to mode-of-action embeddings introduced in \cref{subsec:combin}. Assuming marginal sample access to all individual perturbations, we compute a \acrfull{MDS}-based embedding from pairwise Wasserstein distances between individual target populations, such that perturbations with similar effects are closely represented. 
 As current state-of-the-art methods are restricted to modeling perturbations via one-hot encodings, we compare our method to \textsc{ICNN OT} only. As displayed in \cref{fig:exp_action_norman_scatter}a, \textsc{CondOT} accurately captures the response of \emph{unknown} actions (BAK1, FOXF1, MAP2K6, MAP4K3), which were not seen during training, at a similar Wasserstein loss as perturbation effects seen during training.
  
  \begin{figure*}
     \centering
     \includegraphics[width=0.9\textwidth]{figures/fig_action_comb_comparison_umap.pdf}
-    \caption{\looseness -1 UMAP embeddings of cells perturbed by the combination KLF1+MAP2K6 (gray) and predictions of \textsc{CondOT} (ours), \textsc{ICNN OT}~\citep{makkuva2020optimal}, and \textsc{CPA} (blue). While \textsc{CondOT} aligns well with observed perturbed cells, the baselines fail to capture subpopulations.}
+    \caption{\looseness -1 \acrshort{UMAP} embeddings of cells perturbed by the combination KLF1+MAP2K6 (gray) and predictions of \textsc{CondOT} (ours), \textsc{ICNN OT}~\citep{makkuva2020optimal}, and \textsc{CPA} (blue). While \textsc{CondOT} aligns well with observed perturbed cells, the baselines fail to capture subpopulations.}
     \label{fig:action_comb_comparison_umap}
 \end{figure*}
  
@@ -276,7 +277,7 @@ In the following, we test different combinator architectures to predict genetic 
 Similarly to \citet{lotfollahi2021compositional}, we can embed combinations by adding individual one-hot encodings of single perturbations (i.e., $\mathcal{C}^\text{ohe}_+$). In addition, we parameterize a combinator via a permutation-invariant deep set, as introduced in \cref{subsec:combin}, based on mode-of-action embeddings of individual perturbations (i.e., $\mathcal{C}^\text{moa}_\Phi$). 
 We split the dataset into train/test splits of increasing difficulty: Initially containing all individual perturbations as well as some combinations, the number of perturbations seen in combination during training decreases over each split.
 We compare different combinators to \textsc{ICNN OT} (\cref{fig:exp_action_norman_scatter}b) and \textsc{CPA}~\citep{lotfollahi2021compositional} (\cref{fig:exp_action_norman_scatter}c, \cref{fig:exp_action_norman_line}b, c). While the performance drops compared to inference on \emph{known} perturbations (\cref{fig:exp_action_norman_line}a) and decreases with increasing difficulty of the train/test split, \textsc{CondOT} outperforms all baselines.
-When embedding these high-dimensional populations in a low-dimensional UMAP space~\citep{umap}, one can see that \textsc{CondOT} captures the entire perturbed population, while \textsc{ICNN OT} and \textsc{CPA} fail in capturing certain subpopulations in the perturbed state (see \cref{fig:action_comb_comparison_umap}).
+When embedding these high-dimensional populations in a low-dimensional \acrshort{UMAP} space~\citep{umap}, one can see that \textsc{CondOT} captures the entire perturbed population, while \textsc{ICNN OT} and \textsc{CPA} fail in capturing certain subpopulations in the perturbed state (see \cref{fig:action_comb_comparison_umap}).
 
 
 \section{Discussion}
