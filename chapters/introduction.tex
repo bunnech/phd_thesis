@@ -5,7 +5,7 @@
   The balance of nature is not a status quo; it is fluid, ever shifting, in a constant state of adjustment. \\ Man, too, is part of this balance.}%
 \vskip 2em
 
-Dynamical systems are governing every aspect of life, encapsulating the unifying principles and complex interactions that shape our world. They are the cornerstone of comprehension in diverse scientific fields such as physics, chemistry, and biology. In physics, they assist in understanding the movement and interaction of objects large and small, from planetary orbits to particle motion.
+Dynamical systems are governing every aspect of life, encapsulating the unifying principles and complex interactions that shape our world. They are the cornerstone of diverse scientific fields such as physics, chemistry, and biology. In physics, they assist in understanding the movement and interaction of objects large and small, from planetary orbits to particle motion.
 In the world of chemistry, they guide the interaction and transformation of molecules, offering insights into reaction dynamics and molecular behavior.
 In biology it opens doors to insights ranging from the dynamic signaling activities in single cells to the ebb and flow of entire ecosystems.
 
@@ -27,28 +27,22 @@ This requires scalable and principled algorithms that are well aligned with the 
 
 Beyond, in order to derive complex and nonlinear dynamic processes from data, the \textbf{development of \acrlong{NN}-based parameterizations} of such processes is critical.
 Traditional mathematical models might not be sufficient to capture all the intricacies of the system. This holds particularly true  in biology, where our understanding of the underlying mechanisms is incomplete and many factors contribute to the overall dynamics.
-Most importantly, \acrfullpl{NN} allow us to predict and control dynamical processes. This enables \emph{out-of-sample} predictions of the evolution of previously unseen particles, such as unobserved cells from incoming patient samples, or to extrapolate the inference to new cell types, or beyond the recorded time horizon.
+Most importantly, \acrfullpl{NN} allow us to predict and control dynamical processes. This enables \emph{out-of-sample} predictions of the evolution of previously unseen particles, such as unobserved cells from incoming patient samples and to extrapolate the inference to new cell types or beyond the recorded time horizon.
 However, despite recent successes of deep learning in many areas such as computer vision \citep{lecun1998gradient, krizhevsky2012imagenet}, natural language processing \citep{bengio2000neural, vaswani2017attention}, and game playing \citep{mnih2015human, silver2016mastering}, deep neural networks still fall short of a general ability to model dynamic and complex evolutions of populations of particles. \\
-
-In this thesis, we argue for ...
 
 \section{Scope and Contributions}
 % \section{Problem Formulation and Optimal Transport}
 
-Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells is crucial for deciphering molecular processes and obtaining a better understanding of function and disease.
+In this thesis, we introduce and design novel deep learning architectures capable of modeling heterogeneous population dynamics from unaligned snapshot data.
 
-Static OT:
-While massively parallel high-throughput methods provide us with an unprecedented resolution of the underlying biological mechanisms of such perturbations, they are accompanied by a unique set of limitations.
-A fundamental difficulty is thus to reconstruct perturbation responses of individual cells from a set of unaligned unperturbed and perturbed cells. To forecast patient cell reactions to treatments or deduce cell differentiation paths, we need to reconcile these unpaired snapshots, thus predicting each cell's perturbed state.
+% In this thesis, we argue for  of further structural and compositional2 inductive biases in deep learning models, to reflect the rich structure in the data and environments that these models often face. One way to achieve this is by structuring the representations and computations in a deep neural network in the form of a graph, leading to a class of models named graph neural networks (Gori et al., 2005; Scarselli et al., 2009; Li et al., 2016; Kipf and Welling, 2017; Gilmer et al., 2017; Battaglia et al., 2018), which will be of central importance in this thesis.
 
+A core problem in machine learning is that of inductive bias \citep{mitchell1980need}: How can we build models that learn the right representations, abstractions, and skills that allow them to generalize to novel and unforeseeable circumstances?
 
-
-
-The mathematical foundation of this work builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of optimal transport (OT) and serves naturally as an inductive bias of the learning algorithm. By providing tools for aligning and mapping two distributions, here the unperturbed and perturbed cell population, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation. 
+The mathematical foundation of this work builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of optimal transport (OT) and serves naturally as an inductive bias of the learning algorithm. By providing tools for modeling the evolution of distributions over time, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation such as therapeutic agents or developmental signals. 
 In recent years, OT has enabled significant advances in single-cell biology problems. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
-They are thus unable to predict perturbation responses of cells from new incoming samples, such as those from unseen patients. 
+They are thus unable to predict perturbation responses out-of-sample, e.g., of cells from new incoming samples, such as those from unseen patients. 
 This thesis is thus concerned with the development of \textbf{neural optimal transport} methods for ...
-% TODO: Highlight out-of-sample setting.
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_overview_thesis.pdf}
@@ -56,19 +50,31 @@ This thesis is thus concerned with the development of \textbf{neural optimal tra
   \label{fig:overview_thesis}
 \end{figure}
 
+The structure of the thesis is outlined in \cref{fig:overview_thesis}.
+After reviewing dynamic systems in biomedicine in \cref{cha:bio_background} and the mathematical foundation of static and dynamic optimal transport in \cref{cha:theory_background}, the thesis contributions are organized in two parts:
 
-\section{Thesis Organization}
+\paragraph{\cref{part:static_not}: Static neural optimal transport.}
 
-This thesis introduces static and dynamic neural optimal transport methods to study dynamical systems in biomedicine, with a focus on single-cell technologies. An overview of the thesis is provided in \cref{fig:overview_thesis}.
-After reviewing core concepts of static and dynamic optimal transport in \cref{cha:theory_background}, the thesis contributions are organized in two parts. 
 
-\cref{part:static_not} is dedicated to introducing static neural optimal transport methods and comprises two chapters:
+More concretely, \cref{part:static_not} comprises two chapters:
 \cref{cha:cellot} ... \citep{bunne2021learning}. To ..., \cref{cha:condot} ... \citep{bunne2022supervised}.
 
-\cref{part:dynamic_not} subsequently covers methods within the dynamic neural optimal transport framework. In particular, \cref{cha:neural_pde} ... \citep{bunne2022proximal}.
+... \\
+	
+\textbf{Applications:} Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells
+% A fundamental difficulty is thus to reconstruct perturbation responses of individual cells from a set of unaligned unperturbed and perturbed cells. To forecast patient cell reactions to treatments or deduce cell differentiation paths, we need to reconcile these unpaired snapshots, thus predicting each cell's perturbed state.
+
+
+\paragraph{\cref{part:dynamic_not}: Dynamic neural optimal transport.}
+This part subsequently covers methods within the dynamic neural optimal transport framework. In particular, \cref{cha:neural_pde} ... \citep{bunne2022proximal}.
 \cref{cha:neural_sde} ...
 \cref{sec:gsbflow} ... \citep{bunne2022recovering}.
 \cref{sec:sbalign} ... \citep{somnath2023aligned}.
+... \\
+
+\textbf{Applications:} ...
+
+
 
 
 \section{Publications}
@@ -105,7 +111,7 @@ This thesis would not have been possible without my advisors, Andreas Krause and
 
 
 \chapter{Dynamic Processes in Biomedicine}
-\label{sec:bio_background}
+\label{cha:bio_background}
 
 \dictum[Rosalind Franklin, \textit{Report} (1952)]{%
   The results suggest a helical structure (which must be very closely packed) containing probably 2, 3, or 4 coaxial nucleic acid chains per helical unit and having the phosphate groups near the outside.}%
@@ -210,7 +216,7 @@ Such targets tagged with markers can be potential important components of signal
 The cells are then imaged or passed through a laser, and the fluorescence emitted is captured and measured, providing information about the presence and quantity of the target molecules within each cell. 
 The resulting images allow the extraction of morphological properties and the fluorescence intensity of each tag in different parts of each cell \citep{carpenter2006cellprofiler}.
 
-However, it's important to note that while these methods are non-destructive in nature, some processes such as labeling or the use of certain dyes could potentially have some impact on cell viability or behavior. So while these techniques in general allow for dynamic tracking of cellular processes \citep{fischer2019inferring, hashimoto2016learning, tvarusko1999time, busch2015fundamental}, cells are usually fixed prior to staining to preserve cellular structures and allow for longer-term storage. Such procedures are lethal for cells, making longitudinal studies on the same cells impossible.
+However, it's important to note that while these methods are in general non-destructive in nature, some processes such as labeling or the use of certain dyes could potentially have some impact on cell viability or behavior. So while these techniques in general allow for dynamic tracking of cellular processes \citep{fischer2019inferring, hashimoto2016learning, tvarusko1999time, busch2015fundamental}, cells are usually fixed prior to staining to preserve cellular structures and allow for longer-term storage. Such procedures are lethal for cells, making longitudinal studies on the same cells impossible.
 
 High-content imaging, particularly when augmented by multiplexing abilities, is ideally suited to study heterogeneous cell responses.
 In this thesis, we study heterogeneous cell line responses to various cancer drugs based on a measurement technology known as \acrfull{4i} \citep{gut2018multiplexed}.
