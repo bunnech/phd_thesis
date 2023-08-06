@@ -149,7 +149,7 @@ Finding this map then not only allows us to model single-cell trajectories upon 
 \looseness -1 The optimal map $T_k$ aligning the control and perturbed population, which we seek to find, should best describe the incremental changes in the multivariate profile of each cell after applying a perturbation $k$. Using optimal transportation theory \citep{villani2021topics, santambrogio2015optimal} to recover these maps and unveil single-cell reprogramming trajectories has been proposed as a strong modeling hypothesis in the domain of single-cell biology \citep{schiebinger2019optimal, cang2020inferring, demetci2022scot, huizing2022optimal, lavenant2021towards, zhang2021optimal}.
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{figures/fig_benchmark_cellot.pdf}
+    \includegraphics[width=\textwidth]{figures/fig_benchmark_cellot.png}
     \caption{\looseness -1 \textbf{\textsc{CellOT} outperforms current state-of-the-art methods on different data modalities.}  Marginal distribution of marker gene expression (x-axis) of cells profiled by \textbf{a.} 4i and \textbf{d.} scRNA. Observed control and treated states are shown in light and dark blue. \textsc{CellOT} predictions are shown in red and baseline predictions (scGen, cAE, PopAlign) are shown in gray. We compare models based on the distributional distance \acrshort{MMD} as well as average correlation coefficient $r^2$ between observed perturbed and predicted perturbed cells, for \textbf{b.} 4i and \textbf{e.} scRNA data. Error bars refer to the standard deviation over 10 bootstraps of the test set and the dashed lines correspond to the median of the identity and observed performances. Joint \acrshortpl{UMAP} of observed treated cells and cells predicted by each model for \textbf{c.} 4i and \textbf{f.} scRNA data. Projections are computed on a joint set of cells, down-sampled such that the number of observed perturbed (gray) and predicted perturbed cells (blue) are equal. An identity coupling compares treated cells to untreated cells. The analysis is conducted for the drugs Trametinib, Imatinib, and Gavinostat. 4i data was generated using cell lines M130219 and M130429.}
     \label{fig:benchmark_cellot}
 \end{figure}
@@ -230,7 +230,7 @@ a stereotypical spatial organization of cellular states is retained for the majo
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{figures/fig_biological_analysis.pdf}
+    \includegraphics[width=\textwidth]{figures/fig_biological_analysis.png}
 \end{figure}
 \captionof{figure}{
 \looseness -1 \textbf{CellOT facilitates the multiplexed single-cell characterization of cancer drugs.} 
@@ -280,7 +280,7 @@ For a complete analysis, see \cref{fig:gbm_patients_iid_ood}.
 
 \begin{figure}
     \centering
-    \includegraphics[width=1.05\textwidth]{figures/fig_generalization_cellot.pdf}
+    \includegraphics[width=1.05\textwidth]{figures/fig_generalization_cellot.png}
  \end{figure}
  \captionof{figure}{
     \textbf{\textsc{CellOT} generalizes to unseen patients and cell subpopulations.} Out-of-sample (o.o.s., \textbf{a-c}), and \acrlong{ood} (\acrshort{ood}, \textbf{d-k}) setting. \textbf{a.} Cells from eight lupus patients are measured in an untreated and IFN-$\beta$ treated state. 
