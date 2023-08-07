@@ -62,7 +62,7 @@ When instantiated on finite discrete measures, such as $\mu=\sum_{i=1}^n u_i\del
 \We(\mu,\nu) \defeq \min_{\bP\in U(\mu,\nu)} \dotp{\bP}{[\|x_i - y_j\|^2]_{ij}}  \,-\varepsilon H(\bP),
 \end{equation}
 where $H(\bP) \defeq -\sum_{ij} \bP_{ij} (\log \bP_{ij} - 1)$ and the polytope $U(\mu,\nu)$ is the set of $n\times m$ matrices $\{\bP\in\mathbb{R}^{n \times m}_+, \bP\mathbf{1}_m = \mu, \bP^T \mathbf{1}_n=\nu\}$.
-Regularization with an entropy term thereby results in a significantly more efficient optimization \citep{cuturi2013sinkhorn} and differentiability w.r.t. the inputs.
+Regularization with an entropy term results in a significantly more efficient optimization \citep{cuturi2013sinkhorn} and differentiability w.r.t. the inputs.
 As a consequence, \ref{eq:ot-reg} is commonly used as a loss function or evaluation metric in machine learning applications, e.g., for structured prediction \citep{frogner2015learning,janati2020multi} or generative model fitting \citep{arjovsky2017wasserstein, salimans2018improving, genevay2018learning}.
 While setting $\varepsilon>0$ yields a faster and differentiable proxy to approximate $W_{0}$, it introduces a bias, since $\We(\mu,\mu)\ne 0$ in general.
 
@@ -75,7 +75,7 @@ The Kantorovich formulation \eqref{eq:kantorovich} is a \emph{convex} problem on
 \looseness -1 where the set of admissible dual potentials is given by $\Phi_c \defeq \{(f, g) \in L^{1}(\mu) \times L^{1}(\nu): f(x)+g(y) \leq c(x,y)$, $\forall(x, y)\, d\mu \otimes d\nu \text{ a.e.}\}$.
 $(f, g)$ is thus a pair of continuous functions, often referred to as \emph{Kantorovich potentials}.
 An informal interpretation of \eqref{eq:kantorovich-dual} was provided by \citet{caffarelli2003monge}, revisiting the connection of \acrshort{OT} to economics: 
-A logistics company is concerned with transporting products from each resource unit $x$ to a factory $y$. The transportation company thereby charges $f(x)$ for loading resources at point $x$ and $g(y)$ for unloading it at destination $y$ but is constrained to charge $f(x)+g(y) \le c(x,y)$. In order to arrange prizes $f$ and $g$ that increase profit, they thus maximize objective \eqref{eq:kantorovich-dual}.
+A logistics company is concerned with transporting products from each resource unit $x$ to a factory $y$. The transportation company charges $f(x)$ for loading resources at point $x$ and $g(y)$ for unloading it at destination $y$ but is constrained to charge $f(x)+g(y) \le c(x,y)$. In order to arrange prizes $f$ and $g$ that increase profit, they thus maximize objective \eqref{eq:kantorovich-dual}.
 
 The Kantorovich duality \eqref{eq:kantorovich-dual} is a core pillar of \acrlong{OT}, powerful due to its generality and computationally attractive as it is easier to store two functions $(f, g)$ than an entire coupling $\pi$.
 In the following, we will introduce the concept of $c$-transforms, a useful machinery to reduce \eqref{eq:kantorovich-dual} even further into an optimization problem over only one instead of two dual potentials.
@@ -219,7 +219,7 @@ Further, it presents an elegant way to solve the Monge problem in a geometric se
 
 We have hitherto engaged with the \emph{static} \acrlong{OT} problem, establishing a solid foundation upon which to build more desirable dynamic formulations. In fact, the roots of these dynamic formulations are embedded within the static \acrshort{OT} framework: As posited by \citet{benamou2000computational}, the dynamic formulation "was already implicitly contained in the original problem addressed by \citeauthor{monge1781histoire}", where "eliminating the time variable was just a clever way of reducing the dimension of the problem." When reintroducing time in the dynamic version, the optimal transport map becomes a time-dependent flow capable of describing the evolution of a measure over time.
 
-In this section, we will cover several perspectives and frameworks of the \textbf{dynamic} \acrshort{OT} problem: As mentioned earlier, the \citeauthor{brenier1987decomposition} theorem thereby forms a critical bridge that connects the static and dynamic formulation, perpetuated in the Monge-Amp{\`e}re equation.
+In this section, we will cover several perspectives and frameworks of the \textbf{dynamic} \acrshort{OT} problem: As mentioned earlier, the \citeauthor{brenier1987decomposition} theorem  forms a critical bridge that connects the static and dynamic formulation, perpetuated in the Monge-Amp{\`e}re equation.
 Further, \citet*{benamou2000computational} introduce how the dynamic point of view offers an alternate and intuitive interpretation of optimal transport with links to fluid dynamics. The resulting framework surprisingly leads to a convex optimization problem that can be parameterized through continuous normalizing flows \citep{tong2020trajectorynet, chen2018neural} or flow matching frameworks \citep{lipman2023flow, liu2022flow, pooladian2023multisample, albergo2023stochastic}.
 We further highlight the connections of \acrshort{OT} to \acrshortpl{PDE} such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme.
 Lastly, moving beyond PDEs and taking a stochastic control perspective, we will introduce the notion of the Schr\"odinger bridge problem.
@@ -250,7 +250,7 @@ Such path $\mu_t$ can be described through a time-varying vector field $v(t, \cd
 \end{equation}
 where the vector field $v(t, \cdot)$ denotes the speed and $\mu_t v(t, \cdot) = J_t$ corresponds to the momentum.
 Reformulating the optimal transportation problem in a differential way, an "Eulerian" formulation inspired by fluid mechanics, will be crucial for the subsequent study of dynamical problems.
-Every curve $\mu_t$ describing the evolution of the measure over time can thereby be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v(t, \cdot)$ that (i.) satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimized the path length.
+Every curve $\mu_t$ describing the evolution of the measure over time can be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v(t, \cdot)$ that (i.) satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimized the path length.
 The infinitesimal length of such a vector field can be computed via 
 \begin{equation} \label{eq:vector_field_length}
 	\left\|v\right\|_{\ell^2\left(\mu_t\right)}=\left(\int_{\mathbb{R}^d}\left\|v(t, x)\right\|^2 \mathrm{~d} \mu_t(x)\right)^{1 / 2}.
@@ -295,12 +295,12 @@ For non-smooth functions, on can resort to a proximal scheme, i.e.,
 \begin{equation*}
 	x_{t+1} \defeq \operatorname{Prox}_{\tau J}^{\|\cdot\|}\left(x_{t}\right) \defeq \arg\!\min_x \frac{1}{2\tau}\left\| x-x_t\right\|^2+ J(x).
 \end{equation*}
-The proximal scheme can thereby be seen as a \emph{backward} Euler discretization of the gradient flow.
+The proximal scheme can thus be seen as a \emph{backward} Euler discretization of the gradient flow.
 
 \paragraph{Wasserstein case.}
 When studying the evolution of a population or measure $\mu_t$ over time, however, we need to resort to optimal transport metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
 Considering functionals $J$ that take a measure or population as input, a gradient flow of $\mu$ w.r.t. to $J$ can be similarly expressed through forward and backward schemes. Assuming $J(\mu) 
-\defeq \int E(x) d \mu(x)$, i.e., ignoring particle interaction, the forward scheme thereby reads
+\defeq \int E(x) d \mu(x)$, i.e., ignoring particle interaction, the forward scheme reads
 \begin{equation*}
 	\mu_{t+1}\defeq\left(I-\tau \nabla E\right)_{\sharp} \mu_t
 \end{equation*}
@@ -380,7 +380,7 @@ resulting in the stochastic control formulation of the OT problem
 \label{eq:control_constraint} & \mathrm{d}X_t=v\left(t, X_t\right)\mathrm{d}t  \\
 \nonumber & X_0 \sim \mu_0, \quad X_1 \sim \mu_1.
 \end{align}
-$\mathcal{V}$ thereby represents the family of admissible state feedback control strategies.
+$\mathcal{V}$ here represents the family of admissible state feedback control strategies.
 Typically, in a density control problem, the objective is to guide a dynamical system from an initial state $X_0$ characterized by $\mu_0$ to a desired state $\mu_1$ with minimum cost and control that is a member of the set of admissible actions, i.e., $v \in \mathcal{V}$. 
 The above strategy, however, differs from standard optimal control in the added constraint on the terminal state distribution and the absence of a terminal penalty.
 
