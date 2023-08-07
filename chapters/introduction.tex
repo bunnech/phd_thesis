@@ -35,11 +35,6 @@ At the heart of this challenge lies the problem of inductive bias \citep{mitchel
 The examples above highlight the effectiveness of crafting specific architectural inductive biases that are tailored to the object of study: \acrfullpl{CNN} in computer vision contain filters that process local features in an image, \acrfullpl{RNN} with attention layers in natural language processing facilitate the comprehension of long-range connections in sentences, or \acrfullpl{GNN} account for neighborhood structures to simulate chemical interactions within proteins and molecules \citep{ganea2021geomol, somnath2021multi}.
 Introducing and developing (\colcircle{darkblue}) \textbf{inductive biases in deep learning architectures for population dynamics}  is quintessential toward the success and ability of such methods to capture complex dynamics from \emph{unaligned} snapshot data.
 
-\begin{figure}[t]
-  \includegraphics[width=\textwidth]{figures/fig_overview_thesis.pdf}
-  \caption{Structure of the thesis with references to the chapters.}
-  \label{fig:overview_thesis}
-\end{figure}
 
 \section{Scope and Contributions}
 
@@ -52,46 +47,47 @@ In recent years, OT has enabled significant advances in single-cell biology prob
 They are thus unable to predict perturbation responses out-of-sample, e.g., of cells from new incoming samples, such as those from unseen patients. 
 This thesis is thus concerned with the development of so-called  (\colcircle{blue}) \textbf{neural optimal transport} that allow for out-of-sample \emph{predictions} on unseen cells and \emph{forecasting} of cellular dynamics \citep{makkuva2020optimal, tong2020trajectorynet,  korotin2021wasserstein, bunne2022proximal, bunne2022supervised, bunne2021learning}. \\
 
+\begin{figure}[t]
+  \includegraphics[width=\textwidth]{figures/fig_overview_thesis.pdf}
+  \caption{Structure of the thesis with references to the chapters.}
+  \label{fig:overview_thesis}
+\end{figure}
+
 Optimal transport comes in many different flavors and has strong mathematical roots in dynamic systems theory.
 The goal of the \emph{static} formulation of OT is thereby to identify a map that \emph{optimally} morphs or transports a distribution onto another, and thus "best" explains the one-step evolution of a measure.
-The static framework, however, has an immediate dynamic formulation. By introducing a time-variable into this \emph{transport}, OT allows us to study the continuous evolution of a measure over time. % , critical when aiming at interpolating between different measurements.
-Importantly, generalizations of this \emph{dynamic} formulations can be formalized through ordinary, partial, or stochastic differential equations. Building on recent innovations in neural \acrfullpl{ODE} \citep{chen2018neural} and more recently flow matching models \citep{lipman2023flow, pooladian2023multisample, liu2022flow}, as well as \acrfullpl{SDE}-based neural networks 
-This thesis will explore the full palette of ...
+The static framework, however, has an immediate dynamic interpretation. By introducing a time-variable into the \emph{transport}, OT allows us to study the continuous evolution of a measure over time. % , critical when aiming at interpolating between different measurements.
+Importantly, generalizations of this \emph{dynamic} formulation can be formalized through ordinary, partial, or stochastic differential equations: Building on innovations in neural \acrfullpl{ODE} \citep{chen2018neural} and flow matching models \citep{lipman2023flow, pooladian2023multisample, liu2022flow}, physics-informed neural \acrfullpl{PDE} \citep{brandstetter2022message, raissi2019physics}, as well as \acrfullpl{SDE}-based neural network frameworks of \acrfullpl{SGM}, neural optimal transport methods can be equipped with various powerful backbone architectures.
 
 The thesis is structured as follows (see outline in \cref{fig:overview_thesis}).
 After reviewing dynamical systems in biomedicine in \cref{cha:bio_background} and providing a mathematical foundation of static and dynamic optimal transport in \cref{cha:theory_background}, the \textbf{thesis contributions} are then organized in two parts:
 
 \paragraph{\cref{part:static_not}: Static neural optimal transport.}
 
-At its core it defines a so-called \citeauthor{monge1781histoire} \textit{map}, which provides an actionable way to flow from one probability distribution onto another.
+At its core, static OT defines a so-called \citeauthor{monge1781histoire} \textit{map}, which provides an actionable way to flow from one probability distribution onto another.
 The design of neural network-parameterizations of such maps and their application to predict perturbation responses of single-cells will form the first contribution of this thesis.
 This comprises approaches that are a direct consequence of the famous \citeauthor{brenier1987decomposition} theorem, and allow us to model Monge maps as gradients of convex functions \citep{bunne2021learning, bunne2022supervised}.
 
 More concretely, \cref{part:static_not} comprises two chapters:
-\cref{cha:cellot} ... \citep{bunne2021learning}. To ..., \cref{cha:condot} ... \citep{bunne2022supervised}.
-... \\
+\cref{cha:cellot} ... \citep{bunne2021learning}. To ..., \cref{cha:condot} ... \citep{bunne2022supervised}. \\
 	
 \textbf{Applications:} Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells
 % A fundamental difficulty is thus to reconstruct perturbation responses of individual cells from a set of unaligned unperturbed and perturbed cells. To forecast patient cell reactions to treatments or deduce cell differentiation paths, we need to reconcile these unpaired snapshots, thus predicting each cell's perturbed state.
 
 
 \paragraph{\cref{part:dynamic_not}: Dynamic neural optimal transport.}
-This part subsequently covers methods within the dynamic neural optimal transport framework. 
 
 Beyond mappings, OT provides a mathematical link to geometric variational frameworks that allow studying flows of distributions on metric spaces.
 In particular, \citeauthor{brenier1987decomposition}'s dynamical formulation of OT has given rise to a flurry of applications studying \acrfullpl{PDE} as gradient flows or steepest descent in spaces of probability measures.
 \citet*{benamou2000computational} showed how the dynamic point of view offers an alternate and intuitive interpretation of optimal transport with links to fluid dynamics that surprisingly leads to a convex optimization problem that can be parameterized through normalizing flows \citep{tong2020trajectorynet}.
-We will further highlight connections of OT to PDEs such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme: In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} 
+This thesis will further highlight connections of OT to PDEs such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme: In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} 
 it has found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
 
-In particular, \cref{cha:neural_pde} ... \citep{bunne2022proximal}.
+\cref{cha:neural_pde} thereby proposes ... \citep{bunne2022proximal}.
 
 Lastly, beyond PDEs, this thesis explores the relation between the optimal transport problem and the \acrfull{SB} problem from stochastic control. It represents a key connection that has recently fueled the development of \acrfull{DSB} \citep{de2021diffusion, chen2021stochastic, liu2022deep, bunne2022recovering}. \\
-
-\cref{cha:neural_sde} ...
-\cref{sec:gsbflow} ... \citep{bunne2022recovering}.
-\cref{sec:sbalign} ... \citep{somnath2023aligned}.
-... \\
+\cref{cha:neural_sde} thereby presents two contributions:
+First, \cref{sec:gsbflow} ... \citep{bunne2022recovering}.
+Second, \cref{sec:sbalign} ... \citep{somnath2023aligned}. \\
 
 \textbf{Applications:} ...
 
