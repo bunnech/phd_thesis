@@ -44,28 +44,27 @@ Introducing and developing (\colcircle{darkblue}) \textbf{inductive biases in de
 \section{Scope and Contributions}
 
 In this thesis, we introduce and design novel deep learning architectures capable of modeling heterogeneous population dynamics from unaligned snapshot data.
-A framework that facilitates the design of such deep learning architectures that \colcircle{pink} operate on distributions, i.e., allows modeling heterogeneous populations of particles, \colcircle{lightblue} trained based on samples of \emph{unaligned} distributions is the \textbf{theory of optimal transport}.
+A framework that facilitates the design of such deep learning architectures that (\colcircle{pink}) operate on distributions, i.e., allows modeling heterogeneous populations of particles, (\colcircle{lightblue}) trained based on samples of \emph{unaligned} distributions is the \textbf{theory of optimal transport}.
 
-The mathematical foundation of this work thereby builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} and \colcircle{darkblue} serves naturally as an inductive bias of the deep learning architectures introduced in this thesis.
+The mathematical foundation of this work thereby builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} and (\colcircle{darkblue}) serves naturally as an inductive bias of the deep learning architectures introduced in this thesis.
 By providing tools for modeling the evolution of distributions over time, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation such as therapeutic agents or developmental signals. 
 In recent years, OT has enabled significant advances in single-cell biology problems \citep{schiebinger2019optimal, lavenant2021towards, demetci2022scot}. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
 They are thus unable to predict perturbation responses out-of-sample, e.g., of cells from new incoming samples, such as those from unseen patients. 
-This thesis is thus concerned with the development of so-called  \colcircle{blue} \textbf{neural optimal transport} that will allow for out-of-sample \emph{predictions} on unseen cell samples and \emph{forecasting} of cellular dynamics \citep{makkuva2020optimal, tong2020trajectorynet,  korotin2021wasserstein, bunne2022proximal, bunne2022supervised, bunne2021learning}. \\
+This thesis is thus concerned with the development of so-called  (\colcircle{blue}) \textbf{neural optimal transport} that will allow for out-of-sample \emph{predictions} on unseen cell samples and \emph{forecasting} of cellular dynamics \citep{makkuva2020optimal, tong2020trajectorynet,  korotin2021wasserstein, bunne2022proximal, bunne2022supervised, bunne2021learning}. \\
 
-Optimal transport thereby comes in many different flavors.
-... \\
+Optimal transport comes in many different flavors. ...
 
 The thesis is structured as follows (see outline in \cref{fig:overview_thesis}).
-After reviewing dynamical systems in biomedicine in \cref{cha:bio_background} and providing a mathematical foundation of static and dynamic optimal transport in \cref{cha:theory_background}, the thesis contributions are organized in two parts:
+After reviewing dynamical systems in biomedicine in \cref{cha:bio_background} and providing a mathematical foundation of static and dynamic optimal transport in \cref{cha:theory_background}, the \textbf{thesis contributions} are then organized in two parts:
 
 \paragraph{\cref{part:static_not}: Static neural optimal transport.}
 
+At its core it defines a so-called \citeauthor{monge1781histoire} \textit{map}, which provides an actionable way to flow from one probability distribution onto another.
+The design of neural network-parameterizations of such maps and their application to predict perturbation responses of single-cells will form the first contribution of this thesis.
+This comprises approaches that are a direct consequence of the famous \citeauthor{brenier1987decomposition} theorem, and allow us to model Monge maps as gradients of convex functions \citep{bunne2021learning, bunne2022supervised}.
 
 More concretely, \cref{part:static_not} comprises two chapters:
 \cref{cha:cellot} ... \citep{bunne2021learning}. To ..., \cref{cha:condot} ... \citep{bunne2022supervised}.
-
-\emph{maps} ...
-
 ... \\
 	
 \textbf{Applications:} Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells
@@ -75,9 +74,16 @@ More concretely, \cref{part:static_not} comprises two chapters:
 \paragraph{\cref{part:dynamic_not}: Dynamic neural optimal transport.}
 This part subsequently covers methods within the dynamic neural optimal transport framework. 
 
-\emph{ordinary, stochastic, and partial differential equations} ...
+Beyond mappings, OT provides a mathematical link to geometric variational frameworks that allow studying flows of distributions on metric spaces.
+In particular, \citeauthor{brenier1987decomposition}'s dynamical formulation of OT has given rise to a flurry of applications studying \acrfullpl{PDE} as gradient flows or steepest descent in spaces of probability measures.
+\citet*{benamou2000computational} showed how the dynamic point of view offers an alternate and intuitive interpretation of optimal transport with links to fluid dynamics that surprisingly leads to a convex optimization problem that can be parameterized through normalizing flows \citep{tong2020trajectorynet}.
+We will further highlight connections of OT to PDEs such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme: In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} 
+it has found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
 
 In particular, \cref{cha:neural_pde} ... \citep{bunne2022proximal}.
+
+Lastly, beyond PDEs, this thesis explores the relation between the optimal transport problem and the \acrfull{SB} problem from stochastic control. It represents a key connection that has recently fueled the development of \acrfull{DSB} \citep{de2021diffusion, chen2021stochastic, liu2022deep, bunne2022recovering}. \\
+
 \cref{cha:neural_sde} ...
 \cref{sec:gsbflow} ... \citep{bunne2022recovering}.
 \cref{sec:sbalign} ... \citep{somnath2023aligned}.
