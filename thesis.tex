@@ -89,8 +89,11 @@
 \input{chapters/conclusion}
 
 \newpage
+{
+\renewcommand*{\bibfont}{\normalfont\footnotesize}
 \bibliographystyle{plainnat}
 \bibliography{references.bib}
+}
 
 \bookmarksetup{startatroot}
 \cleardoublepage\input{frontbackmatter/cv}

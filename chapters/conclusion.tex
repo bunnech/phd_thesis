@@ -6,95 +6,91 @@
 % \dictum[Siri Hustvedt, \textit{The Shaking Woman, \\ or A History of My Nerves} (2010)]{True stories can't be told forward, only backward. We invent them from the vantage point of an ever-changing present and tell ourselves how they unfolded.}
 \vskip 2em
 
-Optimal transport, both through its theory and computation, has enabled breakthroughs using a multi-pronged approach, blending elements from convex optimization, e.g., linear and quadratic assignment problems, the Sinkhorn algorithm; analysis, e.g., partial differential equations \citep{jordan1998variational, bunne2022proximal} with links to Monge-Amp{\`e}re equation \citep{caffarelli2003monge}; stochastic calculus, e.g., diffusion models \citep{song2020score}, Schr{\"o}dinger bridge \citep{de2021diffusion, chen2021likelihood, bunne2022recovering}; statistics, e.g., analysis of sampling algorithms \citep{weed2019sharp}, generalized quantiles \citep{carlier2016vector, cuturi2019differentiable}, generative model fitting \citep{salimans2018improving, genevay2018learning, bunne2019learning, bunne2021learning}; and deep architectures \citep{de2019stochastic}.
+Optimal transport, both through its theory and computation, has enabled breakthroughs using a multi-pronged approach, blending elements from convex optimization, e.g., linear and quadratic assignment problems, the Sinkhorn algorithm; analysis, e.g., partial differential equations \citep{jordan1998variational, bunne2022proximal} with links to Monge-Amp{\`e}re equation \citep{caffarelli2003monge}; stochastic calculus, e.g., diffusion models \citep{song2020score} and Schr{\"o}dinger bridges \citep{de2021diffusion, chen2021likelihood, bunne2022recovering}; statistics, e.g., analysis of sampling algorithms \citep{weed2019sharp}, generalized quantiles \citep{carlier2016vector, cuturi2019differentiable}, and generative model fitting \citep{salimans2018improving, genevay2018learning, bunne2019learning, bunne2021learning}; as well as deep architectures \citep{de2019stochastic}.
 As such, it provides a unifying framework for modeling population dynamics through maps (\cref{sec:background_monge}), as well as ordinary (\cref{sec:background_benamou_brenier}), partial (\cref{sec:background_jko}), or stochastic differential equations (\cref{sec:background_sb}). 
-This thesis thereby introduced (\colcircle{blue}) neural network-based parameterization of these different flavors of OT and demonstrated their far-reaching applications in the field of biomedicine.
-% TODO: Rework.
-The proposed algorithms thereby build on the recent successes of optimal transport applications in single-cell biology \citep{schiebinger2019optimal, lavenant2021towards}. 
-Through its ability to realign (\colcircle{pink})  distributions and model their evolution over time, OT is able to (\colcircle{lightblue}) reconstruct single-cell dynamics from distinct and unpaired measurements.
-Thus, by adequately modeling the nature of single-cell dynamics (\colcircle{darkblue}) through appropriate inductive biases, % through the lens of optimal transport, 
-these methods allow us to  determine how perturbations affect cellular properties, reconstruct the most likely trajectory single cells take upon perturbation, and subsequently assist in a better understanding of driving factors of cell fate decision and cellular evasion mechanisms.
-These methods are now an integral part of open-source libraries \citep{cuturi2022optimal, klein2023mapping} and show strong quantitative improvements and an increase in robustness to noise, making them applicable to high-dimensional single-cell data.
 
-In the following, we summarize the contributions of this thesis, discuss current limitations and open questions, and provide an outlook on an exciting avenue of future work.
+This thesis thereby introduced (\colcircle{blue}) neural network-based parameterization of these different flavors of OT and demonstrated their far-reaching applications in the field of biomedicine.
+Leveraging prior successes of OT in single-cell biology \citep{schiebinger2019optimal, lavenant2021towards}, the neural OT algorithms presented herein (\colcircle{darkblue}) incorporate OT as an inductive bias within deep learning frameworks. This approach is motivated by OT's unique capability to realign (\colcircle{pink}) distributions and model their evolution over time. Consequently, it enables us to (\colcircle{lightblue}) reconstruct single-cell dynamics from disparate and unpaired measurements.
+
+These methods are now an integral part of open-source libraries \citep{cuturi2022optimal, klein2023mapping} and show strong quantitative improvements and an increase in robustness to noise, making them a go-to method to determine how perturbations affect cellular properties, to reconstruct the most likely trajectory single cells take upon perturbation, and subsequently to assist in a better understanding of driving factors of cell fate decision and cellular evasion mechanisms.
 
 \section*{Contributions and Summary}
 
-Let us revisit the following core questions this thesis has aimed to address:
+In the following, we summarize the contributions of this thesis, discuss current limitations and open questions, and provide an outlook on an exciting avenue of future work.
+For this, let us revisit the following core questions we addressed:
 
-\subsubsection*{\textbf{How to learn dynamic treatment responses at the single cell level and make predictions to unseen patients?}}
+\subsection*{\textbf{How to learn dynamic treatment responses at the single cell level and make predictions to unseen patients?}}
 
-\looseness -1 Learning perturbation responses of an existing patient cohort enables inference of treatment responses for new, previously unseen patients, assuming that we capture the heterogeneous drug reactions of patients during training.
+\looseness -1 Learning perturbation responses of an existing patient cohort enables inference of treatment responses for new, previously unseen patients, assuming that we capture heterogeneous drug reactions of patients during training.
 We thus seek to learn a perturbation model that robustly describes the cellular dynamics upon intervention while still accounting for underlying variability across samples.
-My approach to this problem learns a neural map that aligns the control and perturbed cell population by leveraging the theory of optimal transport and the recent advent of convex neural architectures \citep{bunne2021learning}.
+In \cref{cha:cellot} we proposed to learn a neural Monge map \eqref{eq:monge} that aligns the control and perturbed cell population by parameterizing the OT semi-dual \eqref{eq:semi-dual} using input convex neural networks \citep{bunne2021learning, makkuva2020optimal, amos2017input}.
 % This map then best describes the incremental changes in the multivariate profile of each cell after applying a perturbation through parameterizing the pair of OT dual potentials using convex neural networks.
-By inducing an important theory-motivated inductive bias essential to model stability, these approaches outperforms prior methods in predicting heterogeneous tumor cell responses to a diverse set of cancer drugs and is currently employed to predict treatment outcomes of a large clinical study \citep{irmisch2021tumor}.
+By inducing an important theory-motivated inductive bias essential to model stability, these approaches outperforms prior methods in predicting heterogeneous tumor cell responses to a diverse set of cancer drugs and are currently employed to predict treatment outcomes of a large clinical study \citep{irmisch2021tumor}.
 
-Beyond mappings, OT provides a mathematical link to geometric variational frameworks that allow studying flows of distributions on metric spaces.
-% Recent work of mine models cellular dynamics as control problems described through systems of stochastic \citep{bunne2022recovering} or partial differential equations \citep{bunne2022proximal}.
-In particular, I proposed a causal model for population dynamics relying on the Jordan-Kinderlehrer-Otto (JKO) flow, widely regarded as one of the most influential mathematical breakthroughs in recent history. By modeling dynamics as a gradient flow, cells decrease collectively an energy which one seeks to learn (i.e., the Waddington potential) \citep[\textrm{i.}]{bunne2022proximal}. 
-
-Cell fate decisions are of stochastic nature and cellular dynamics intrinsically noisy \citep{wilkinson2009stochastic}.
-Approaches treating cell fate decisions as probabilistic events have previously allowed estimation of the full dynamical model to a greater extent than their deterministic counterparts \citep{bergen2020generalizing}.
-By connecting OT and stochastic difference equations, recent work \citep{bunne2022recovering, somnath2023aligned} can build up on \textsc{CellOT} to account for biological heteroscedasticity.
-Alternatively, we can thus recover a system of differential equations that best describes the stochastic transitions between cell fates in developmental processes \citep{bunne2022recovering, somnath2023aligned}.
-Beyond broadening the spectrum of existing methods for cell dynamics, my work incorporates theoretically well-motivated priors that make these approaches more robust to noise and increases performance compared to existing approaches.
-
-\subsubsection*{\textbf{How to predict the outcome of combination therapies and adapt our tools to scalable high-resolution methods?}}
+\subsection*{\textbf{How to predict the outcome of combination therapies and adapt our tools to scalable high-resolution methods?}}
 
 \looseness -1 While these models can predict cell perturbation responses to single drugs, a key challenge in the treatment of many diseases is to predict the effect of combination therapies. Besides the algorithmic challenge, the space of possible combinations is much vaster than the number of cells one can measure, resulting in highly under-sampled experiments. To scale up the experimental capacity, recent studies have resorted to random and composite experiments \citep{norman2019exploring, cleary2020necessity}.
-This thesis has thus focused on proposing a general framework that allows us not only to predict the outcomes of combination treatments but also train models on random, composite experiments \citep{bunne2022supervised}.
-We achieve this by learning a parametric family of context-aware transport maps instead of individual maps for each condition.
-The approach trains a single data-efficient model for all perturbations and respective combinations, where the considered setting is passed as a context variable to the model. This allows us to predict the outcomes of combination therapies and is in line with the setup of random, composite large-scale experiments.
-Further, the learned map can generalize to unseen combination therapies once trained on similar contexts.
-
+\cref{cha:condot} has thus focused on proposing a general framework that allows to not only predict the outcomes of combination treatments but also to train models on random, composite experiments.
+We achieve this by learning a parametric family of context-aware transport maps instead of individual maps for each condition \citep{bunne2022supervised}.
+The approach trains a single data-efficient model for all perturbations and respective combinations, where the considered setting is passed as a context variable to the model. 
+This also enables us to predict the outcomes of combination therapies ---in line with the setup of random, composite large-scale experiments.
+Beyond, the learned map can generalize to unseen combination therapies once trained on similar contexts.
 
 % These concepts enable us to predict a patient's response to chemical or genetic perturbations and model responses to therapies applied in combination. This paves the way for \textit{in silico} screening of potential drug candidates or inferring outcomes of treatment strategies for unseen patients.
 % Before this is possible, an analysis of a drug candidate on a more macromolecular level is necessary: Once potential drug candidates are identified, we need to understand their interaction to target proteins \citep{ganea2021independent} and derive synthesis plans from initial reactants \citep{schwaller2022machine, somnath2021learning}. 
 
+\subsection*{\textbf{How can we model heterogeneous continuous-time dynamics and trajectories from discrete-time measurements?}}
+
+Beyond mappings, OT provides a mathematical link to geometric variational frameworks that allow studying flows of distributions on metric spaces (see \cref{sec:background_ot_dynamic}).
+This enables us to model cellular dynamics as control problems described through systems of stochastic \citep[\cref{cha:neural_sde}]{bunne2022recovering, somnath2023aligned} or partial differential equations \citep[\cref{cha:neural_pde}]{bunne2022proximal}.
+In particular, \cref{cha:neural_pde} proposed a causal model for population dynamics relying on the \acrfull{JKO} flow, widely regarded as one of the most influential mathematical breakthroughs in recent history. By modeling dynamics as a gradient flow, cells decrease collectively an energy which one seeks to learn, e.g., the \citeauthor{waddington1957strategy} potential \citep{bunne2022proximal}. 
+
+Further, cell fate decisions are of stochastic nature and cellular dynamics intrinsically noisy \citep{wilkinson2009stochastic}.
+Approaches treating cellular behavior as probabilistic events have previously allowed estimation of the full dynamical model to a greater extent than their deterministic counterparts \citep{bergen2020generalizing}.
+By connecting OT and stochastic difference equations through \acrlongpl{DSB}, \cref{cha:neural_sde} introduces several approaches that account for such biological heteroscedasticity \citep{bunne2022recovering, somnath2023aligned}.
+% Alternatively, we can thus recover a system of differential equations that best describes the stochastic transitions between cell fates in developmental processes \citep{bunne2022recovering, somnath2023aligned}.
 
 \section*{Limitations}
 
-Single-cell expression profiling provides a detailed look into the molecular states of individual cells, but it is destructive and does thus not allow continuous measurements of molecular properties over time. There have been numerous proposals for methods to uncover the dynamics of individual cells from population data, but all of them face the same challenge: Sequentially observed distribution of cell states can be produced by multiple dynamics and mechanisms of gene regulation. The ill-defined nature of the problem makes it necessary to pose certain assumptions on the underlying cellular dynamics.
+Single-cell expression profiling technoologies provide a detailed look into the molecular states of individual cells. Due to their destructive nature, however, they do thus not allow continuous measurements of molecular properties over time. While numerous method aim to uncover trajectories of single cells from population data, they all face the same challenge: Sequentially observed distribution of cell states can be potentially produced by multiple dynamics and mechanisms of gene regulation. The \emph{ill-defined nature of the problem} thus makes it necessary to pose certain assumptions on the underlying cellular dynamics \citep{weinreb2018fundamental}:
 
-The mathematical foundation of this work builds on the biological intuition that perturbations incrementally alter the molecular profiles of cells. 
-If this principle is violated, however, and perturbations strongly disrupt the population to an unidentifiable level, the performance of optimal transport-based algorithms ... as well as other methods drops.
-In these instances, more complicated mathematical machinery would be needed.
-Such tools, however, are currently unable to scale to settings with more than a few genes \citep{heydari2022iqcell}.
-Thus, we rely on a fine granularity of the time course to recover large cell state changes between consecutive time points \citep{tritschler2019concepts}.
+The mathematical foundation of this work thereby builds on the biological intuition that perturbations incrementally alter the molecular profiles of cells. 
+If this principle is violated, however, and perturbations strongly disrupt the population to an unidentifiable level, the performance of optimal transport-based algorithms decreases. As baseline methods are similarly effected, these instances call for more complicated mathematical machinery.
+Such tools, however, are so far unable to scale to settings with more than a few genes \citep{heydari2022iqcell} and ultimately, a fine granularity of measurements throughout the time course is required to successfully recover large cell state changes between consecutive time points \citep{tritschler2019concepts}.
 
-We also observe that the predictive performance of neural optimal transport methods drops when perturbations are too strong, i.e., the cell distributions before and after perturbations are very different (see \cref{fig:generalization_cellot}j); a similar drop is observed for the other methods.
-The principle underlying the optimal transport theory is ideally suited for acute cellular perturbations during which single cells do not redistribute entirely and randomly in multidimensional measurement space, but typically only in a few dimensions, such that the overall correlation structure is preserved. While this modeling hypothesis is satisfied when perturbation responses are observed via regularly and frequently sampled snapshots, molecular transitions cannot be reconstructed when perturbation responses have progressed too far. For particularly strong or complicated perturbations, cellular multiplex profiles might change too drastically, violating OT assumptions and making it challenging to reconstruct the alignments between unperturbed and perturbed populations based on the \emph{minimal effort} principle.
-In such settings, additional information is likely needed, for instance, a model of the underlying biology or models that integrate observations of multiple smaller time steps. 
+We also observe that the predictive performance of neural optimal transport methods drops when perturbation effects are too strong, e.g., a drug strongly disturbs the cell states; a similar decrease in performance is observed for the considered baselines.
+The principle underlying the optimal transport theory is ideally suited for acute cellular perturbations during which single cells do not redistribute entirely and undergo arbitrary changes in multidimensional measurement space, but typically only in a few dimensions, such that the overall correlation structure of both distributions is preserved. While this modeling hypothesis is satisfied when perturbation responses are observed via regularly and frequently sampled snapshots, molecular transitions cannot be reconstructed when perturbation responses have progressed too far. For particularly strong or complicated perturbations, cellular multiplex profiles might change too drastically, violating OT assumptions and making it challenging to reconstruct the alignments between unperturbed and perturbed populations based on the \emph{minimal effort} principle.
+In such settings, additional information is likely needed, for instance, \emph{mechanistic} models of the underlying biology or models that integrate observations of multiple smaller time steps \citep{raue2015data2dynamics, busch2015fundamental}. 
 
-Furthermore, if a system exhibits rotations and oscillations within two consecutive snapshots not captured by measurements, models based on optimal transport and previous tools \citep{weinreb2018fundamental} will not be able to recover such complex dynamics. This is in part also due to the current choice of the cost function, which, due to theoretical constraints and practical performance, is set to the Euclidean distance. We leave it to future work, to investigate choices of alternative cost functions. 
+Furthermore, if a system exhibits rotations and oscillations within two consecutive snapshots that are not captured by measurements, data-driven models without additional knowledge (including OT-based methods) will not be able to recover such complex dynamics \citep{weinreb2018fundamental}. This is in part also due to the current choice of the cost function, which, due to theoretical constraints and practical performance, is set to the Euclidean distance. We leave it to future work, to investigate choices of alternative cost functions. 
 
-Beyond, the current system is not able to recover effects (other than cell flux) that change the distribution of cells between time points, for example, proliferation and death \citep{tritschler2019concepts}. Recent works propose extensions to the classical neural optimal transport scheme that account for cell death and birth \citep{lubeck2022neural, pariset2023unbalanced, chen2022most, baradat2021regularized}.
+Beyond, the current system is not able to recover perturbations (other than cell flux) that have effects on the cell counts, for example, through proliferation and death events \citep{tritschler2019concepts}. Recent works propose extensions to the classical neural optimal transport scheme that account for cell death and birth \citep{lubeck2022neural, pariset2023unbalanced, chen2022most, baradat2021regularized}.
 
-Despite having provided a proof-of-concept of the capacity of \textsc{CellOT} to model various chemical perturbations for different data modalities through an in-depth analysis of the nature of the learned mapping as well as a demonstration of its versatility in a broad class of applications, the generalization capacity of the proposed methods has been evaluated on relatively small datasets. Crucially, large cohorts comprised of patients with different molecular profiles, such as cancer patients with various underlying genetics, could result in strongly heterogeneous treatment responses.
+Lastly, despite having provided a proof-of-concept of the capacity of neural OT methods to model various chemical perturbations for different data modalities through an in-depth analysis of the nature of the learned mapping as well as a demonstration of its versatility in a broad class of applications, the generalization capacity of the proposed methods has been evaluated on relatively small datasets.
+Crucially, large cohorts comprised of patients with different molecular profiles, such as cancer patients with various underlying genetics, could result in strongly heterogeneous treatment responses.
 It is evident that approaches addressing these challenges could readily exploit the upcoming availability of large-scale patient cohort studies.
 
-\section*{Future Directions and Conclusion}
+\section*{Vision for the Future}
 
 The challenges posed by the inherently complex and constantly changing patterns of interactions in biological systems call for innovative computational solutions. Through the development of static and dynamic neural optimal transport schemes, this thesis has laid a solid foundation for addressing these challenges.
-...
+As we look ahead, several key questions emerge that shape the future of this research:
 % The use of neural optimal transport to learn single-cell drug responses makes thus for an exciting avenue for future work, including its use to improve our understanding of cell therapies, study drug responses from patient samples, and better account for cell-to-cell variability in large-scale drug design efforts.
 
-\subsubsection*{\textbf{Does knowledge of chemical and genetic perturbation responses help us to identify new drug targets?}}
+\subsection*{\textbf{Does knowledge of chemical and genetic perturbation responses help us to identify new drug targets?}}
 
 Which genetic perturbation is connected to a drug's mode of action? Given a genetic cause of disease, which drug should be selected for the successful treatment of a patient?
 \cref{cha:cellot} and \cref{cha:condot} contributed to our understanding of heterogeneous single-cell responses to chemical and genetic perturbations \citep[]{bunne2019learning, bunne2022supervised}.
 Understanding similarities and detecting correspondences between the genetic roots of the disease and the mode of action of chemical drugs are key to the discovery of targets for which new drugs need to be designed.
-While optimal transport can be used to describe the evolution of probability measures, one can rely on its ability to return a matching based on the structural similarity of objects \citep{bunne2019learning}, making it a centerpiece for solving this task.
+While optimal transport can be used to describe the evolution of measures over time, one can also rely on its ability to return a matching based on the structural similarity of objects \citep{memoli2011gromov, bunne2019learning}, making it a centerpiece for solving this task.
 Building on intuitions acquired when solving matching problems of unaligned cell populations, future research will develop OT-based machine learning algorithms to identify novel targets for drug development.
 
 
-\subsubsection*{\textbf{How to develop methods embracing the nature of massively parallelized high-throughput methods?}}
+\subsection*{\textbf{How to develop methods embracing the nature of massively parallelized high-throughput methods?}}
 
 For decades, experimental biology required us to specifically select the targets we want to observe. Modern massively parallelized high-throughput methods have made it possible to measure thousands of such targets (possibly in combination) in one experiment and collect rich information about the gene expression profiles of each cell.
 Current computational methodology, however, is often overwhelmed with this depth of data resolution.
-In \cref{cha:condot}, we have provided methods that can deal with the randomized and composite nature of approaches, such as compressed Perturb-Seq \cite{dixit2016perturb, cleary2017efficient, cleary2020necessity, roohani2022gears}.
-But our work does not end there: With the rise of new methodologies such as Live-seq \citep{chen2022live} or added levels of dimensions through spatial transcriptomics \citep{marx2021method}, we need to drive the design of machine learning algorithms even further (\cref{sec:sbalign}). Disease can not be solely modeled from the single-cell perspective, but emerges in tissues. Modeling tissue structures and interactions by utilizing principles of geometric deep learning holds the promise to further unveil mechanisms of human disease and thus makes for an exciting avenue of future work.
+In \cref{cha:condot}, we have provided methods that can deal with the randomized and composite nature of approaches, such as compressed Perturb-Seq \citep{dixit2016perturb, cleary2017efficient, cleary2020necessity, roohani2022gears}.
+But our work does not end there: With the rise of new methodologies such as Live-seq \citep[\cref{sec:sbalign}]{chen2022live} or added levels of dimensions through spatial transcriptomics \citep{marx2021method}, we need to drive the design of machine learning algorithms even further. Disease can not be solely modeled from the single-cell perspective, but emerges in tissues. Modeling tissue structures and interactions by utilizing principles of geometric deep learning \citep{fischer2023modeling} holds the promise to further unveil mechanisms of human disease and thus makes for an exciting avenue of future work.
 
 
 \subsection*{\textbf{What are objective milestones toward end-to-end machine learning-guided treatment discovery and planning?}}
@@ -104,7 +100,7 @@ This thesis has evolved around achieving the trifecta of (i.) theory-inspired an
 This provides fertile grounds to start asking bigger questions: How can we incorporate insights made from predicting a patient's drug response into target discovery \citep{huang2022artificial}? Or, inversely, how to use knowledge of drugs and their connected targets when designing personalized treatment plans \citep{nilforoshan2023zero}? Building on recent developments in reinforcement learning and control theory, how do we innovate the design of personalized, sequential combination therapies for patients?
 These questions reveal that we cannot address the different challenges that arise throughout the drug design process in isolation.
 Taking this thesis as a starting point, future work will focus on developing mathematical and computational principles for end-to-end machine learning-guided treatment discovery and planning:
-By designing feedback loops that allow information sharing across different modules of drug design. \\
+By designing feedback loops that allow information sharing across different stages of drug design.
 
 
 % The unified framework introduced here promises exciting opportunities for novel biological discoveries, personalized therapies, and regenerative medicine. 
