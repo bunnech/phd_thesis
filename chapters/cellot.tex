@@ -119,7 +119,7 @@ More concretely, \citet{uscidda2023monge} introduce the Monge gap regularizer de
 \begin{equation*}
 	\int c(x, T_\theta(x)) \textrm{d} \mu(x) - W_c(\mu, T_\theta \sharp \mu)
 \end{equation*}
-that if 0 guarantees that $T_\theta$ is a $c$-OT map. For $c(x,y) = \|x-y\|^2_2$ and $\gX = \gY = \mathbb{R}^d$, for example, $T_\theta$ corresponds to a gradient of a convex function (\cref{thm:brenier}).
+that, if $0$, guarantees that $T_\theta$ is a $c$-OT map. For $c(x,y) = \|x-y\|^2_2$ and $\gX = \gY = \mathbb{R}^d$, for example, $T_\theta$ corresponds to a gradient of a convex function (\cref{thm:brenier}).
 
 
 \section{Related Work}
@@ -338,17 +338,30 @@ As expected, the performance of \textsc{CellOT} drops in terms of the \acrshort{
 
 \section{Discussion}
 
-Single-cell expression profiling provides a detailed look into the molecular states of individual cells, but it is destructive and does thus not allow continuous measurements of molecular properties over time. There have been numerous proposals for methods to uncover the dynamics of individual cells from population data, but all of them face the same challenge: sequentially observed distribution of cell states can be produced by multiple dynamics and mechanisms of gene regulation. The ill-defined nature of the problem makes it necessary to pose certain assumptions on the underlying cellular dynamics.
+In this chapter, we proposed \textsc{CellOT}, a framework to model single-cell perturbation responses from unpaired treated and untreated cell states using neural optimal transport by learning a fully parameterized transport map.
+Previous methods \citep{rout2021generative, yang2018scalable, prasad2020optimal} rely on an unconstrained parameterization of the optimal transport map. However, the unconstrained nature of these models makes robust optimization challenging and results in reduced performance \citep[Table 1]{makkuva2020optimal}.
+Instead, we learn the transformation of unperturbed to perturbed cell states through the \emph{dual} optimal transport problem, parameterized via a pair of neural networks constrained to be convex \citep{makkuva2020optimal}.
+These constraints are important inductive biases that facilitate learning and result in a reliable and easy-to-train framework, as evidenced by the consistently strong performance of \textsc{CellOT} on several problems without the need for extensive hyperparameter tuning \citep[Online Methods]{bunne2021learning}.
 
-The mathematical foundation of this work builds on the biological intuition that perturbations incrementally alter the molecular profiles of cells. This principle aligns with the theory of optimal transport and, following previous work \citep{schiebinger2019optimal}, serves naturally as the model foundation of \textsc{CellOT}.
-If this principle is violated, however, and perturbations strongly disrupt the population to an unidentifiable level, the performance of \textsc{CellOT} as well as other methods drops (see Discussion).
-In these instances, more complicated mathematical machinery would be needed.
-Such tools, however, are currently unable to scale to settings with more than a few genes \citep{heydari2022iqcell}.
-Thus, we rely on a fine granularity of the time course to recover large cell state changes between consecutive time points \citep{tritschler2019concepts}.
+\smallskip
 
-Furthermore, if a system exhibits rotations and oscillations within two consecutive snapshots not captured by measurements, models based on optimal transport and previous tools \citep{weinreb2018fundamental} will not be able to recover such complex dynamics. This is in part also due to the current choice of the cost function, which, due to theoretical constraints and practical performance, is set to the Euclidean distance. We leave it to future work, to investigate choices of alternative cost functions. 
+Using \textsc{CellOT} to perform cell-state-aware drug profiling enables us to quantify perturbation effects as a function of the underlying heterogeneity of the studied system, in our cases a co-culture of two melanoma cell lines with different sensitivities to drug treatments. In doing so, we \textit{sharpen} the response profiles of the measured drugs and reveal cell-state-specific responses of multiple signaling pathway in relation to treatment history of the cell line donor. We find the signaling activity associated to the MEK and PI3k pathways to decouple in cells pre-exposed to MEK inhibitors, a known adaptation mechanism for therapy evasion in melanoma cells \citep{kun2021mek}. This \textit{pathway rewiring} is associated to alteration in the molecular feedback structure of cells from effectors to receptors \citep{kun2021mek, turke2012mek}. Thus, combining \textsc{CellOT} with a larger set of combination treatments, multiplexed imaging, and cellular systems reflective of disease adaptations may help us to elucidate the molecular mechanisms of signaling pathway evolution in the context of cancer therapy. 
 
-Beyond, the current system is not able to recover effects (other than cell flux) that change the distribution of cells between time points, for example, proliferation and death \citep{tritschler2019concepts}. Recent works propose extensions to the classical neural optimal transport scheme that account for cell death and birth \citep{lubeck2022neural}.
+\smallskip
+% The results in \cref{fig:benchmark_cellot}-\ref{fig:biological_analysis} are based on predictions on cells from the same sample but that were not used for training (i.i.d.~setting). The treatment effects can then be analyzed by scrutinizing the learned maps (cf.~\cref{fig:biological_analysis}). However, for predicting the treatment effect in practice, it is much more relevant 
+To evaluate \textsc{CellOT} by analyzing it's performance out-of-sample, i.e., on unseen cells originating from the same distribution, as well as on different sample compositions (o.o.d.~setting). 
+This involves a task on predicting treatment responses in unseen lupus patients, infer developmental trajectories on stem cells of lower potency, and translate innate immune responses across patients (see \cref{fig:generalization_cellot}). 
+In all cases, \textsc{CellOT}'s accuracy and precision are superior to current state-of-the-art methods (\cref{fig:generalization_cellot}). Moreover, the predicted cell states after perturbation are still very close to the actually observed cell states. We consider these results as particularly promising, as it illustrates that accurate o.o.s.~and o.o.d.~predictions are indeed possible.
 
-Lastly, current developments in bioengineering aim at overcoming the technological limitation of destructive cell assays. \citet{chen2022live} propose a transcriptome profiling approach that preserves cell viability. \citet{weinreb2020lineage} capture cell differentiation processes while clonally connecting cells and their progenitors through barcodes. These methods thus offer (lower-throughput) insights that provide individual trajectories of cells over time, i.e., an alignment between distinct measurement snapshots.
-\citet{somnath2023aligned} propose a novel algorithmic framework connected to optimal transport that is able to make use of such (partially) aligned datasets \citep{shi2023diffusion, tong2023conditional}. 
+\smallskip
+
+The ability to make predictions out-of-distribution, such as on unseen patients, is, however, only feasible if (i.) similar samples have been observed in the unperturbed setting, and (ii.) the training set contains cases that are similar not only in their unperturbed state but also their perturbation response.
+An analysis of glioblastoma patients treated with Panobinostat \citep{zhao2021deconvolution} (see \cref{fig:gbm_patients_iid_ood}a-c) indeed confirms this restriction:
+\textsc{CellOT} and the baselines are able to predict treatment outcomes for those patients that are similar to other patients in both unperturbed state as well as perturbation effect (see \cref{fig:gbm_patients_iid_ood}f), but fail to capture perturbation effects for patients that exhibit unique responses (see \cref{fig:gbm_patients_iid_ood}g).
+This limitation is important to consider when applying \textsc{CellOT} in o.o.d. settings. To overcome such problems, 
+larger cohorts, additional meta-information, and methodological extensions are required. In \cref{cha:condot}, we partially address this issue by deriving a neural optimal transport scheme that can be conditioned on a context, e.g., patient meta-data, when predicting perturbation responses.
+
+\smallskip
+
+Lastly, concurrent developments in bioengineering aim at overcoming the technological limitation of destructive cell assays. \citet{chen2022live}, for example, propose a transcriptome profiling approach that preserves cell viability. \citet{weinreb2020lineage} capture cell differentiation processes while clonally connecting cells and their progenitors through barcodes. These methods thus offer (lower-throughput) insights that provide individual trajectories of cells over time, i.e., an alignment between distinct measurement snapshots.
+While \textsc{CellOT} is unable to incorporate such information into the learning process, in \cref{sec:sbalign} we propose a novel algorithmic framework connected to optimal transport that is able to make use of such (partially) aligned datasets \citep{shi2023diffusion, tong2023conditional, somnath2023aligned}. 

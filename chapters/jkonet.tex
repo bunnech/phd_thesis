@@ -301,7 +301,7 @@ These trajectory-based dynamics are learned using the strong convexity regulariz
     \caption{Evaluation of predictive performance w.r.t. the entropy-regularized Wasserstein distance $W_\varepsilon$ \eqref{eq:ot-reg} of \textsc{JKOnet} and the forward method on the embryoid body scRNA-seq data per time step (using 3 runs).}
     \label{tab:exp_jkonet_cell_pred}
     \centering
-\adjustbox{max width=.85\linewidth}{%
+\adjustbox{max width=.95\linewidth}{%
     \begin{tabular}{lcccc}
     \toprule
          \textbf{Method} & \multicolumn{4}{c}{\textbf{Prediction Loss ($W_\varepsilon$})} \\
@@ -337,25 +337,25 @@ While facilitating the training of the forward method in some settings, it likew
 
 \begin{figure}[t]
      \centering
-     \begin{subfigure}[t]{0.45\textwidth}
+     \begin{subfigure}[t]{0.48\textwidth}
          \centering
          \caption{\acrshort{PCA} embedding of the embryoid body scRNA-seq data colored by the snapshot time.}
          \includegraphics[width=\textwidth]{figures/fig_data_moon_days_full.pdf}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[t]{0.45\textwidth}
+     \begin{subfigure}[t]{0.48\textwidth}
          \centering
          \caption{\acrshort{PCA} embedding of the embryoid body scRNA-seq data colored by the lineage branch class.}
          \includegraphics[width=\textwidth]{figures/fig_data_moon_Branches_full.pdf}
      \end{subfigure}
 
-     \begin{subfigure}[t]{0.45\textwidth}
+     \begin{subfigure}[t]{0.48\textwidth}
          \centering
          \caption{\acrshort{PCA} embedding of \textsc{JKOnet} predictions colored by the snapshot time.}
          \includegraphics[width=\textwidth]{figures/fig_implicit_moon_pred_days.pdf}
      \end{subfigure}
      \hfill
-     \begin{subfigure}[t]{0.45\textwidth}
+     \begin{subfigure}[t]{0.48\textwidth}
          \centering
          \caption{\acrshort{PCA} embedding of \textsc{JKOnet} predictions colored by the lineage branch class.}
          \includegraphics[width=\textwidth]{figures/fig_implicit_moon_pred_Branches.pdf}
@@ -365,10 +365,10 @@ While facilitating the training of the forward method in some settings, it likew
 \end{figure}
 
 \begin{figure}[t]
-    \includegraphics[width=.47\linewidth]{figures/fig_distribution_cell_types_Branches.pdf}
+    \includegraphics[width=.5\linewidth]{figures/fig_distribution_cell_types_Branches.pdf}
 %    \captionof{figure}{Distribution of cell lineage branch classes in the data or  predicted by \textsc{JKOnet} or the forward method.}
 	\qquad
-	\resizebox{.45\linewidth}{!}{%
+	\resizebox{.48\linewidth}{!}{%
     \begin{tabular}[b]{lcc}
     \toprule
          \textbf{Method} & \multicolumn{2}{c}{\textbf{Cell Lineage Classification}} \\

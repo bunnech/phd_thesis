@@ -81,8 +81,9 @@
 \definecolor{linkcolor}{HTML}{2B50AA}
 \definecolor{lightlinkcolor}{HTML}{9A8F97}
 \definecolor{darklinkcolor}{HTML}{1A254B}
-\definecolor{pink}{HTML}{F2545B}
-\definecolor{red}{HTML}{A4243B}
+\definecolor{pink}{HTML}{E05F60}
+\definecolor{lightblue}{HTML}{A7BED3}
+\definecolor{red}{HTML}{F2545B}
 \definecolor{blue}{HTML}{2b50aa}
 
 % Graphics
@@ -115,6 +116,9 @@ paragraph/.style = {inner sep=0pt,
 \draw[very thick] (p2) -- (p3.west) (p3.east) -- (p2 |- p1.north);
 \end{tikzpicture}
 \vspace{5pt}}
+
+% Marble
+\newcommand{\colcircle}[1]{\tikz\node[circle=3pt, draw=#1, fill=#1, inner sep=1.75pt] (d) at (0,0) {};}
 
 
 % Autoreferences
