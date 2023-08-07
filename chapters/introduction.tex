@@ -46,13 +46,17 @@ Introducing and developing (\colcircle{darkblue}) \textbf{inductive biases in de
 In this thesis, we introduce and design novel deep learning architectures capable of modeling heterogeneous population dynamics from unaligned snapshot data.
 A framework that facilitates the design of such deep learning architectures that (\colcircle{pink}) operate on distributions, i.e., allows modeling heterogeneous populations of particles, (\colcircle{lightblue}) trained based on samples of \emph{unaligned} distributions is the \textbf{theory of optimal transport}.
 
-The mathematical foundation of this work thereby builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} and (\colcircle{darkblue}) serves naturally as an inductive bias of the deep learning architectures introduced in this thesis.
+The mathematical foundation of this work further builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} that studies the evolution of measures under the \emph{minimum effort} principle. Thus, (\colcircle{darkblue}) OT serves naturally as an inductive bias of the deep learning architectures introduced in this thesis.
 By providing tools for modeling the evolution of distributions over time, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation such as therapeutic agents or developmental signals. 
 In recent years, OT has enabled significant advances in single-cell biology problems \citep{schiebinger2019optimal, lavenant2021towards, demetci2022scot}. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
 They are thus unable to predict perturbation responses out-of-sample, e.g., of cells from new incoming samples, such as those from unseen patients. 
-This thesis is thus concerned with the development of so-called  (\colcircle{blue}) \textbf{neural optimal transport} that will allow for out-of-sample \emph{predictions} on unseen cell samples and \emph{forecasting} of cellular dynamics \citep{makkuva2020optimal, tong2020trajectorynet,  korotin2021wasserstein, bunne2022proximal, bunne2022supervised, bunne2021learning}. \\
+This thesis is thus concerned with the development of so-called  (\colcircle{blue}) \textbf{neural optimal transport} that allow for out-of-sample \emph{predictions} on unseen cells and \emph{forecasting} of cellular dynamics \citep{makkuva2020optimal, tong2020trajectorynet,  korotin2021wasserstein, bunne2022proximal, bunne2022supervised, bunne2021learning}. \\
 
-Optimal transport comes in many different flavors. ...
+Optimal transport comes in many different flavors and has strong mathematical roots in dynamic systems theory.
+The goal of the \emph{static} formulation of OT is thereby to identify a map that \emph{optimally} morphs or transports a distribution onto another, and thus "best" explains the one-step evolution of a measure.
+The static framework, however, has an immediate dynamic formulation. By introducing a time-variable into this \emph{transport}, OT allows us to study the continuous evolution of a measure over time. % , critical when aiming at interpolating between different measurements.
+Importantly, generalizations of this \emph{dynamic} formulations can be formalized through ordinary, partial, or stochastic differential equations. Building on recent innovations in neural \acrfullpl{ODE} \citep{chen2018neural} and more recently flow matching models \citep{lipman2023flow, pooladian2023multisample, liu2022flow}, as well as \acrfullpl{SDE}-based neural networks 
+This thesis will explore the full palette of ...
 
 The thesis is structured as follows (see outline in \cref{fig:overview_thesis}).
 After reviewing dynamical systems in biomedicine in \cref{cha:bio_background} and providing a mathematical foundation of static and dynamic optimal transport in \cref{cha:theory_background}, the \textbf{thesis contributions} are then organized in two parts:
