@@ -22,17 +22,17 @@ Since many of the most pressing questions in the field involve modeling and unde
 This constraint is particularly acute in the field of personalized medicine, where the goal is precisely to understand the dynamic response of a patient's cells to a stimulus, and would therefore rest, in theory, on the ability to observe the same cell before and after treatment. \\
 
 Significantly, the diversity within a cell population, or \textit{cellular heterogeneity}, plays a crucial role in determining how sensitive or resistant cells are to perturbations.
-Rather than resorting to population averages, we need to (\colcircle{pink}) \textbf{model the problem at the single-cell level}, i.e., of the distribution as a whole, in order to capture and then further analyze the distinct cells' responses to a perturbation. 
+Rather than resorting to population averages, we need to (\colcircle{pink}) \textbf{model the problem at the particle level}, e.g., based on distributions of single cells, in order to capture and then further analyze the distinct cells' responses to a perturbation. 
 This requires scalable and principled algorithms that are well aligned with the constrained experimental settings of high-throughput methods and incorporate the inherent structure of biological processes. \\
 
 Beyond, in order to derive complex and nonlinear dynamic processes from data, the (\colcircle{blue}) \textbf{development of neural network-based parameterizations} of such processes is critical.
-Traditional mathematical models might not be sufficient to capture all the intricacies of the system. This holds particularly true  in biology, where our understanding of the underlying mechanisms is incomplete and many factors contribute to the overall dynamics.
-Most importantly, \acrfullpl{NN} allow us to predict and control dynamical processes. This enables \emph{out-of-sample} predictions of the evolution of previously unseen particles, such as unobserved cells from incoming patient samples and to extrapolate the inference to new cell types or beyond the recorded time horizon. \\
+Traditional mathematical models might not be sufficient to capture all the intricacies of a system. This holds particularly true  in biology, where our understanding of the underlying mechanisms is incomplete and many factors contribute to the overall dynamics.
+Most importantly, \acrfullpl{NN} allow us to infer and forecast dynamical processes. This enables \emph{out-of-sample} predictions of the evolution of previously unseen particles, such as unobserved cells from incoming patient samples and to extrapolate the inference to new cell types or beyond the recorded time horizon. \\
 
-However, despite recent successes of deep learning in many areas such as computer vision \citep{lecun1998gradient, krizhevsky2012imagenet}, natural language processing \citep{bengio2000neural, vaswani2017attention}, game playing \citep{mnih2015human, silver2016mastering, kipf2018neural}, and biochemistry \citep{jumper2021highly, kipf2016semi} deep neural networks still fall short of a general ability to model dynamic and complex evolutions of populations of particles.
-A core problem in machine learning is that of inductive bias \citep{mitchell1980need}: How can we build models that learn the right representations, abstractions, and skills that allow them to generalize to novel and unforeseeable circumstances?
+However, despite recent successes of deep learning in many areas such as computer vision \citep{lecun1998gradient, krizhevsky2012imagenet}, natural language processing \citep{bengio2000neural, vaswani2017attention}, game playing \citep{mnih2015human, silver2016mastering}, and biochemistry \citep{jumper2021highly, kipf2016semi}, deep neural networks still fall short of a general ability to model dynamic and complex evolutions of populations of particles.
+At the heart of this challenge lies the problem of inductive bias \citep{mitchell1980need}: How can models be constructed to learn the essential representations, abstractions, and skills that will enable them to generalize to unseen and unforeseeable situations?
 
-The above examples demonstrate the power of designing particular architectural inductive bias that are tailored to the object of study: \acrfullpl{CNN} in computer vision contain filters that process local features in an image, \acrfullpl{RNN} with attention layers in natural language process long-range connections in sentences, or \acrfullpl{GNN} account for the neighborhood structure to model chemical interactions within molecules and other biological structures \citep{ganea2021geomol, somnath2021multi}.
+The examples above highlight the effectiveness of crafting specific architectural inductive biases that are tailored to the object of study: \acrfullpl{CNN} in computer vision contain filters that process local features in an image, \acrfullpl{RNN} with attention layers in natural language processing facilitate the comprehension of long-range connections in sentences, or \acrfullpl{GNN} account for neighborhood structures to simulate chemical interactions within proteins and molecules \citep{ganea2021geomol, somnath2021multi}.
 Introducing and developing (\colcircle{darkblue}) \textbf{inductive biases in deep learning architectures for population dynamics}  is quintessential toward the success and ability of such methods to capture complex dynamics from \emph{unaligned} snapshot data.
 
 \section{Scope and Contributions}
@@ -40,10 +40,9 @@ Introducing and developing (\colcircle{darkblue}) \textbf{inductive biases in de
 
 In this thesis, we introduce and design novel deep learning architectures capable of modeling heterogeneous population dynamics from unaligned snapshot data.
 
-% In this thesis, we argue for  of further structural and compositional2 inductive biases in deep learning models, to reflect the rich structure in the data and environments that these models often face. One way to achieve this is by structuring the representations and computations in a deep neural network in the form of a graph, leading to a class of models named graph neural networks (Gori et al., 2005; Scarselli et al., 2009; Li et al., 2016; Kipf and Welling, 2017; Gilmer et al., 2017; Battaglia et al., 2018), which will be of central importance in this thesis.
-\emph{maps}
+\emph{maps} ...
 
-\emph{ordinary, stochastic, and partial differential equations}
+\emph{ordinary, stochastic, and partial differential equations} ...
 
 The mathematical foundation of this work builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} and serves naturally as an inductive bias of the deep learning architectures introduced in this thesis.
 By providing tools for modeling the evolution of distributions over time, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation such as therapeutic agents or developmental signals. 
