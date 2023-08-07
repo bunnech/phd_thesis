@@ -25,36 +25,35 @@ Significantly, the diversity within a cell population, or \textit{cellular heter
 Rather than resorting to population averages, we need to (\colcircle{pink}) \textbf{model the problem at the particle level}, e.g., based on distributions of single cells, in order to capture and then further analyze the distinct cells' responses to a perturbation. 
 This requires scalable and principled algorithms that are well aligned with the constrained experimental settings of high-throughput methods and incorporate the inherent structure of biological processes. \\
 
-Beyond, in order to derive complex and nonlinear dynamic processes from data, the (\colcircle{blue}) \textbf{development of neural network-based parameterizations} of such processes is critical.
-Traditional mathematical models might not be sufficient to capture all the intricacies of a system. This holds particularly true  in biology, where our understanding of the underlying mechanisms is incomplete and many factors contribute to the overall dynamics.
+Beyond, to effectively derive complex and nonlinear dynamic processes from data, it is essential to (\colcircle{blue}) \textbf{develop neural network-based parameterizations} of such processes.
+Traditional mathematical models might not be sufficient to capture all intricacies of a system. This holds particularly true in biology, where our understanding of the underlying mechanisms is incomplete and many factors contribute to the overall dynamics.
 Most importantly, \acrfullpl{NN} allow us to infer and forecast dynamical processes. This enables \emph{out-of-sample} predictions of the evolution of previously unseen particles, such as unobserved cells from incoming patient samples and to extrapolate the inference to new cell types or beyond the recorded time horizon. \\
 
-However, despite recent successes of deep learning in many areas such as computer vision \citep{lecun1998gradient, krizhevsky2012imagenet}, natural language processing \citep{bengio2000neural, vaswani2017attention}, game playing \citep{mnih2015human, silver2016mastering}, and biochemistry \citep{jumper2021highly, kipf2016semi}, deep neural networks still fall short of a general ability to model dynamic and complex evolutions of populations of particles.
+However, despite recent successes of deep learning in many areas such as computer vision \citep{lecun1998gradient, krizhevsky2012imagenet}, natural language processing \citep{bengio2000neural, vaswani2017attention}, game playing \citep{mnih2015human, silver2016mastering}, and biochemistry \citep{jumper2021highly, kipf2016semi, jin2021iterative}, deep neural networks still fall short of a general ability to model dynamic and complex evolutions of populations of particles.
 At the heart of this challenge lies the problem of inductive bias \citep{mitchell1980need}: How can models be constructed to learn the essential representations, abstractions, and skills that will enable them to generalize to unseen and unforeseeable situations?
 
 The examples above highlight the effectiveness of crafting specific architectural inductive biases that are tailored to the object of study: \acrfullpl{CNN} in computer vision contain filters that process local features in an image, \acrfullpl{RNN} with attention layers in natural language processing facilitate the comprehension of long-range connections in sentences, or \acrfullpl{GNN} account for neighborhood structures to simulate chemical interactions within proteins and molecules \citep{ganea2021geomol, somnath2021multi}.
 Introducing and developing (\colcircle{darkblue}) \textbf{inductive biases in deep learning architectures for population dynamics}  is quintessential toward the success and ability of such methods to capture complex dynamics from \emph{unaligned} snapshot data.
-
-\section{Scope and Contributions}
-% \section{Problem Formulation and Optimal Transport}
-
-In this thesis, we introduce and design novel deep learning architectures capable of modeling heterogeneous population dynamics from unaligned snapshot data.
-
-\emph{maps} ...
-
-\emph{ordinary, stochastic, and partial differential equations} ...
-
-The mathematical foundation of this work builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} and serves naturally as an inductive bias of the deep learning architectures introduced in this thesis.
-By providing tools for modeling the evolution of distributions over time, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation such as therapeutic agents or developmental signals. 
-In recent years, OT has enabled significant advances in single-cell biology problems \citep{schiebinger2019optimal, lavenant2021towards, demetci2022scot}. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
-They are thus unable to predict perturbation responses out-of-sample, e.g., of cells from new incoming samples, such as those from unseen patients. 
-This thesis is thus concerned with the development of \textbf{neural optimal transport} methods for ...
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_overview_thesis.pdf}
   \caption{Structure of the thesis with references to the chapters.}
   \label{fig:overview_thesis}
 \end{figure}
+
+\section{Scope and Contributions}
+
+In this thesis, we introduce and design novel deep learning architectures capable of modeling heterogeneous population dynamics from unaligned snapshot data.
+A framework that facilitates the design of such deep learning architectures that \colcircle{pink} operate on distributions, i.e., allows modeling heterogeneous populations of particles, \colcircle{lightblue} trained based on samples of \emph{unaligned} distributions is the \textbf{theory of optimal transport}.
+
+The mathematical foundation of this work thereby builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} and \colcircle{darkblue} serves naturally as an inductive bias of the deep learning architectures introduced in this thesis.
+By providing tools for modeling the evolution of distributions over time, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation such as therapeutic agents or developmental signals. 
+In recent years, OT has enabled significant advances in single-cell biology problems \citep{schiebinger2019optimal, lavenant2021towards, demetci2022scot}. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
+They are thus unable to predict perturbation responses out-of-sample, e.g., of cells from new incoming samples, such as those from unseen patients. 
+This thesis is thus concerned with the development of so-called  \colcircle{blue} \textbf{neural optimal transport} that will allow for out-of-sample \emph{predictions} on unseen cell samples and \emph{forecasting} of cellular dynamics \citep{makkuva2020optimal, tong2020trajectorynet,  korotin2021wasserstein, bunne2022proximal, bunne2022supervised, bunne2021learning}. \\
+
+Optimal transport thereby comes in many different flavors.
+... \\
 
 The thesis is structured as follows (see outline in \cref{fig:overview_thesis}).
 After reviewing dynamical systems in biomedicine in \cref{cha:bio_background} and providing a mathematical foundation of static and dynamic optimal transport in \cref{cha:theory_background}, the thesis contributions are organized in two parts:
@@ -65,6 +64,8 @@ After reviewing dynamical systems in biomedicine in \cref{cha:bio_background} an
 More concretely, \cref{part:static_not} comprises two chapters:
 \cref{cha:cellot} ... \citep{bunne2021learning}. To ..., \cref{cha:condot} ... \citep{bunne2022supervised}.
 
+\emph{maps} ...
+
 ... \\
 	
 \textbf{Applications:} Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells
@@ -72,7 +73,11 @@ More concretely, \cref{part:static_not} comprises two chapters:
 
 
 \paragraph{\cref{part:dynamic_not}: Dynamic neural optimal transport.}
-This part subsequently covers methods within the dynamic neural optimal transport framework. In particular, \cref{cha:neural_pde} ... \citep{bunne2022proximal}.
+This part subsequently covers methods within the dynamic neural optimal transport framework. 
+
+\emph{ordinary, stochastic, and partial differential equations} ...
+
+In particular, \cref{cha:neural_pde} ... \citep{bunne2022proximal}.
 \cref{cha:neural_sde} ...
 \cref{sec:gsbflow} ... \citep{bunne2022recovering}.
 \cref{sec:sbalign} ... \citep{somnath2023aligned}.
@@ -81,7 +86,6 @@ This part subsequently covers methods within the dynamic neural optimal transpor
 \textbf{Applications:} ...
 
 
-\newpage
 \section{Publications}
 All results presented in this thesis have been published in the following conference proceedings and journals:
 
