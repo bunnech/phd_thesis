@@ -68,9 +68,11 @@ The design of neural network-parameterizations of such maps and their applicatio
 This comprises approaches that are a direct consequence of the famous \citeauthor{brenier1987decomposition} theorem, and allow us to model Monge maps as gradients of convex functions \citep{bunne2021learning, bunne2022supervised}.
 
 More concretely, \cref{part:static_not} comprises two chapters:
-\cref{cha:cellot} ... \citep{bunne2021learning}. To ..., \cref{cha:condot} ... \citep{bunne2022supervised}. \\
+\cref{cha:cellot} proposes \textsc{CellOT}, a framework leveraging optimal transport theory and convex neural architectures, innovatively aligns unpaired distributions of unperturbed and perturbed cells to predict individual cellular responses to various perturbations, outperforming current methods in drug response predictions, and offering potential in understanding heterogeneous single-cell responses and patient-specific treatment planning \citep{bunne2021learning}. 
+
+Further, \cref{cha:condot} generalizes the above framework and introduces the \textsc{CondOT} model, a multi-task approach that parameterizes a \emph{family of OT maps} that can be conditioned on a context variable. Conditioning thereby allows, for example, to predict the response of single-cells to combination therapies, i.e., the inference of the effect of genetic or therapeutic perturbations applied in combination \citep{bunne2022supervised}. \\
 	
-\textbf{Applications:} Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells
+% \textbf{Applications:} Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells
 % A fundamental difficulty is thus to reconstruct perturbation responses of individual cells from a set of unaligned unperturbed and perturbed cells. To forecast patient cell reactions to treatments or deduce cell differentiation paths, we need to reconcile these unpaired snapshots, thus predicting each cell's perturbed state.
 
 
@@ -82,16 +84,20 @@ In particular, \citeauthor{brenier1987decomposition}'s dynamical formulation of 
 This thesis will further highlight connections of OT to PDEs such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme: In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} 
 it has found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
 
-\cref{cha:neural_pde} thereby proposes ... \citep{bunne2022proximal}.
+\cref{cha:neural_pde} thereby introduces a reformulation of the JKO objective that allows for gradient-based learning in an end-to-end fashion. Further, it proposes \textsc{JKOnet}, a neural network architecture that models the collective dynamics of particle populations by learning the causal JKO flow from periodic snapshots, trading off energy improvements with closeness to previous configurations, and demonstrating robust performance \citep{bunne2022proximal}.
 
-Lastly, beyond PDEs, this thesis explores the relation between the optimal transport problem and the \acrfull{SB} problem from stochastic control. It represents a key connection that has recently fueled the development of \acrfull{DSB} \citep{de2021diffusion, chen2021stochastic, liu2022deep, bunne2022recovering}. \\
-\cref{cha:neural_sde} thereby presents two contributions:
-First, \cref{sec:gsbflow} ... \citep{bunne2022recovering}.
-Second, \cref{sec:sbalign} ... \citep{somnath2023aligned}. \\
+Lastly, beyond PDEs, this thesis explores the relation between the optimal transport problem and the \acrfull{SB} problem from stochastic control. It represents a key connection that has recently fueled the development of \acrfull{DSB} \citep{de2021diffusion, chen2021stochastic, liu2022deep, bunne2022recovering}. Estimating such bridges, however, is notoriously difficult which motivating our proposal in \cref{cha:neural_sde} for novel adaptive schemes:
 
-\textbf{Applications:} ...
+First, in \cref{sec:gsbflow} our goal is to rely on Gaussian approximations of the data to provide the reference stochastic process needed to estimate \acrshortpl{SB}. To that end, we solve the \acrlong{SB} problem with Gaussian marginals, for which we derive, as a central contribution, a closed-form solution and SDE-representation. We use these formulas to define the reference process used to estimate more complex \acrshortpl{SB}, and show that this does indeed help with its numerical solution of learning \acrlongpl{DSB}. We obtain notable improvements when reconstructing single-cell genomics experiments of developmental embryoid body diffierentiation \citep{bunne2022recovering}.
+
+Second, parallel developments in bioengineering provide us with methodology that allows for partial tracking of individual cells over time.
+In \cref{sec:sbalign}, we thus introduce a novel algorithmic framework for solving \acrlongpl{DSB} that respects data alignment and incorporates \emph{sparse} trajectories by combining classical \acrlong{SB} theory with Doob's 
+$h$-transform \citep{somnath2023aligned}. The overall framework comprises a much simpler training procedure and substantial improvements in tasks such as cellular differentiation processes of \acrshort{iPSC} reprogramming \citep{schiebinger2019optimal}.
+
+% \textbf{Applications:} ...
 
 
+\newpage
 \section{Publications}
 All results presented in this thesis have been published in the following conference proceedings and journals:
 
