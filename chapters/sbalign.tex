@@ -264,10 +264,10 @@ Setting imprecise values for one of $t_h$ and $t_v$ when defining custom referen
 \subsubsection{Single-Cell Dynamics}
 \label{sec:sbalign_cell}
 
-\looseness -1 Biological processes are determined through heterogeneous responses of single cells to external stimuli, i.e., developmental factors or drugs. Understanding and predicting the dynamics of single cells subject to a stimulus is thus crucial to enhance our understanding of health and disease and the focus of this task.
+% \looseness -1 Biological processes are determined through heterogeneous responses of single cells to external stimuli, i.e., developmental factors or drugs. Understanding and predicting the dynamics of single cells subject to a stimulus is thus crucial to enhance our understanding of health and disease and the focus of this task.
 Most single-cell high-throughput technologies are destructive assays ---i.e., they destroy cells upon measurement--- allowing us to only measure \textit{unaligned} snapshots of the evolving cell population. Recent methods address this limitation by proposing (lower-throughput) technologies that keep cells alive after transcriptome profiling \citep{chen2022live} or that genetically tag cells to obtain a clonal trace upon cell division \citep{weinreb2020lineage}.
 
-To showcase \textsc{SBalign}'s ability to make use of such (partial) alignments when inferring cell differentiation processes, we take advantage of the genetic barcoding system developed by \citet{weinreb2020lineage}. With a focus on fate determination in hematopoiesis, \citet{weinreb2020lineage} use expressed DNA barcodes to clonally trace single-cell transcriptomes over time. The dataset consists of two snapshots: the first, recorded on day 2 when most cells are still undifferentiated (see \cref{fig:results_cell_class}a), and a second, on day 4, comprising many different mature cell types (see \cref{fig:results_cell_class}b). Using \textsc{SBalign} as well as the baseline \textsc{fsSB}, we attempt to reconstruct cell evolution between day 2 and day 4, all while capturing the heterogeneity of emerging cell types.
+To showcase \textsc{SBalign}'s ability to make use of such (partial) alignments when inferring cell differentiation processes, we take advantage of the genetic barcoding system developed by \citet{weinreb2020lineage}. With a focus on fate determination in hematopoiesis, \citet{weinreb2020lineage} use expressed DNA barcodes to clonally trace single-cell transcriptomes over time. The dataset consists of two snapshots: the first, recorded on day 2 when most cells are still undifferentiated (see \cref{fig:results_cell_class}a), and a second, on day 4, comprising many different mature cell types (see \cref{fig:results_cell_class}b). For details on the dataset, see \cref{app:dataset_weinreb}. Using \textsc{SBalign} as well as the baseline \textsc{fsSB}, we attempt to reconstruct cell evolution between day 2 and day 4, all while capturing the heterogeneity of emerging cell types.
 
 \begin{table}
     \caption{\textbf{Cell differentiation prediction results.} Means and standard deviations (in parentheses) of distributional metrics (MMD, $\text{W}_{\varepsilon}$), alignment-based metrics ($\ell_2$, RMSD), and cell type classification accuracy.}
@@ -283,13 +283,13 @@ To showcase \textsc{SBalign}'s ability to make use of such (partial) alignments 
      \textsc{fbSB}& \makecell{1.55e-2\\(0.03e-2)} & \makecell{12.50\\(0.04)} & \makecell{4.08\\(0.04)} & \makecell{9.64e-1\\(0.02e-1)} & \makecell{56.2\%\\(0.7\%)} \\
      \textsc{fbSB} with \textsc{SBalign} & \makecell{5.31e-3\\(0.25e-3)} & \makecell{10.54\\(0.08)} & \makecell{0.99\\(0.12)} & \makecell{9.85e-1\\(0.07e-1)} & \makecell{47.0\%\\(1.5\%)} \\
      \textsc{SBalign} & \makecell{1.07e-2\\(0.01e-2)} & \makecell{11.11\\(0.02)} & \makecell{1.24\\(0.02)} & \makecell{9.21e-1\\(0.01e-1)} & \makecell{56.3\%\\(0.7\%)} \\
-     \bottomrule \vspace{-15pt}
+     \bottomrule
     \end{tabular}
 }
 \end{table}
 
 We benchmark \textsc{SBalign} against previous \acrshortpl{DSB} such as \citep[\textsc{fbSB}]{chen2021likelihood}. Beyond, we compare \textsc{SBalign} in the setting of learning a prior reference process. Naturally, cell division processes and subsequently the propagation of the barcodes are very noisy. While this genetic annotation provides some form of assignment, it does not capture the full developmental process. We thus test \textsc{SBalign} in a setting where it learns a prior from such partial alignments and, plugged into \textsc{fbSB}, is fine-tuned on the full dataset.
-To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\varepsilon}$~\citep{cuturi2013sinkhorn}, as well as average \acrfull{PS}, i.e., $\ell_2(\text{PS})$, and \acrfull{RMSD}. Details on the evaluation metrics can be found in \cref{app:evaluation_metrics}.
+To assess the performance of \textsc{SBalign} and the baselines, we monitor several metrics, which include distributional distances, i.e., MMD~\citep{gretton2012kernel} and $\text{W}_{\varepsilon}$~\citep{cuturi2013sinkhorn}, as well as average \acrfull{PS}, i.e., $\ell_2(\text{PS})$, and \acrfull{RMSD}. Details on the considered evaluation metrics can be found in \cref{app:evaluation_metrics}.
 Moreover, we also train a simple neural network-based classifier to annotate the cell type on day 4 and we report the accuracy of the predicted vs. actual cell type for all the models.
 
 

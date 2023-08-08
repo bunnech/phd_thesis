@@ -20,8 +20,9 @@ Stochastic processes provide an apt mathematical framework to encapsulate these 
 They enable us to model not just a smoothed behavior, but also the variance and distribution of outcomes, and thus allow us to capture rare but biologically significant events.
 Therefore, modeling cellular dynamics as stochastic processes is essential to capture the full spectrum of biological behaviors and understand the underlying mechanisms driving these intricate processes. 
 
-Consequently, the following chapter deals with the question of learning and identifying a stochastic process $\mathbb{P}_t$ that describes the evolution of a population at time point $t=0$, $\mu_0$ into a population at time $t=T$, where we set $T=1$ such that $\mu_1$.
-To draw parallels to \cref{cha:bio_background}, $\mu_0$ and $\mu_1$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\distinit = \mu_0$ to $\distend = \mu_1$ might provide us with an understanding of how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
+Consequently, the following chapter deals with the question of learning and identifying a stochastic process $\mathbb{P}_t$ that describes the evolution of a population $\mu_0$ at time point $t=0$ into a population $\mu_T$ at time $t=T$.
+To draw parallels to \cref{cha:bio_background}, $\mu_0$ and $\mu_1$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\mathbb{P}_0 = \distinit$ to $\mathbb{P}_1 = \distend$ might provide us with an understanding of how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
+
 More concretely, the following chapter concerns \acrlongpl{SB}, a framework that combines the theory of optimal transport with stochastic optimal control formulations (see \cref{sec:background_sb}) and identifies a stochastic process $\mathbb{P}_t$ that represents the evolution of a thermodynamic system at almost equilibrium. 
 The chapter is divided into two parts: 
 \cref{sec:gsbflow} builds on the realization that estimating such bridges is notoriously difficult. Here, we hypothesize that Gaussian approximations of the data can be used to construct a data-driven reference stochastic process needed to estimate SB. To that end, we solve the \acrshort{SB} problem with Gaussian marginals, for which we provide, as a central contribution, a closed-form solution and SDE representation. We use these formulas to define the reference process used to estimate more complex SBs and show that this does indeed help with its numerical solution.
@@ -34,16 +35,16 @@ Here we propose a novel algorithmic framework that, for the first time, learns \
 \label{sec:background_dsb}
 
 As described above, in order to learn the evolution of a population from $\mu_0$ to $\mu_1$, we will invoke the framework of \acrshortpl{SB}.
-Given two marginals $\distinit$ and $\distend$, we select a reference process $\refpro$ based on prior knowledge), for instance, a simple Brownian motion. As discussed in \cref{sec:background_sb}, it turns out that  the solution to the general \acrshort{SB} problem \eqref{eq:schrodinger_bridge} is itself given by two coupled \acrshortpl{SDE} \eqref{eq:sb_forward}-\eqref{eq:sb_backward} \citep{leonard2013survey}, which we restate her for convenience
+Given two marginals $\distinit$ and $\distend$, we select a reference process $\refpro$ based on prior knowledge, for instance, simple \acrlong{BM}. As discussed in \cref{sec:background_sb}, it turns out that  the solution to the general \acrshort{SB} problem \eqref{eq:schrodinger_bridge} is itself given by two coupled \acrshortpl{SDE} \eqref{eq:sb_forward}-\eqref{eq:sb_backward} \citep{leonard2013survey}, which we restate here for convenience
 \begin{eqnarray}
 \label{eq:SB-sde-forward}
 \dsde &= \parens*{\tdriftbase +  \volatbase \SBfbase_\ctime} \dt + \volatbase \dWiener[\ctime],\quad \sde[0] \sim \distinit, \\ % \; & \sde[0] \sim \Pinit, \\
 \label{eq:SB-sde-backward}
-\dsde &= \parens{\tdriftbase -  \volatbase \SBbbase_\ctime} \dt + \volatbase \dWiener[\ctime],\quad \sde[\horizon] \sim \distend\,. % \; & \sde[\horizon] \sim \Pend.
+\dsde &= \parens{\tdriftbase -  \volatbase \SBbbase_\ctime} \dt + \volatbase \dWiener[\ctime],\quad \sde[\horizon] \sim \distend\,, % \; & \sde[\horizon] \sim \Pend.
 \end{eqnarray}
-where we replaced $\nabla \log \Phi\left(t, X_t\right)$ in \eqref{eq:sb_forward} and $\nabla \log \widehat{\Phi}\left(t, X_t\right)$ in \eqref{eq:sb_backward} with $\SBfbase_\ctime, \SBbbase_\ctime \from \R^\vdim \to \R^\vdim$, i.e., two time-indexed smooth \emph{vector fields} called the optimal forward and backward drift, respectively. Note that \eqref{eq:SB-sde-backward} runs backward in time, i.e., from $\horizon \to 0$) \citep{anderson1982reverse}. % and satisfies many interesting properties \citep{nelson1967dynamical, leonard2013survey, chen2021stochastic}.
-Choosing $f$ and $g$ based on the SDE class considered, the forward and backward policies $\SBfbase_\ctime, \SBbbase_\ctime$ are generally \emph{unknown}.
-Similar as in \acrfull{SGM} \citep{song2020score, hyvarinen2005estimation} which parameterize the score function, to \emph{estimate} the resulting \acrshort{SB} from data, we learn the forward and backward drift through neural networks with parameters $\paramf, \paramb$, i.e., $\SBf$ and $\SBb$. \\
+where we replaced $\nabla \log \Phi\left(t, X_t\right)$ in \eqref{eq:sb_forward} and $\nabla \log \widehat{\Phi}\left(t, X_t\right)$ in \eqref{eq:sb_backward} with $\SBfbase_\ctime, \SBbbase_\ctime \from \R^\vdim \to \R^\vdim$, i.e., two time-indexed smooth \emph{vector fields} called the optimal forward and backward drift, respectively. Note that \eqref{eq:SB-sde-backward} runs backward in time, i.e., from $\horizon \to 0$ \citep{anderson1982reverse}. % and satisfies many interesting properties \citep{nelson1967dynamical, leonard2013survey, chen2021stochastic}.
+Choosing $f$ and $g$ depending on the considered SDE class, the forward and backward policies $\SBfbase_\ctime, \SBbbase_\ctime$ are generally \emph{unknown}.
+Similar as in \acrfullpl{SGM} \citep{song2020score, hyvarinen2005estimation} which parameterize the score function, in order to \emph{estimate} the resulting \acrshort{SB} from data, we learn the forward and backward drift through neural networks with parameters $\paramf, \paramb$, i.e., $\SBf$ and $\SBb$. \\
 
 \begin{figure}[t]
 	\centering
@@ -52,8 +53,10 @@ Similar as in \acrfull{SGM} \citep{song2020score, hyvarinen2005estimation} which
 	\label{fig:principle_dsb}
 \end{figure}
 
-Several estimators and training procedures for the so-called \acrfull{DSB}, i.e., for learning $\SBfbase_\ctime, \SBbbase_\ctime$, have been proposed based on either Gaussian processes \citep{vargas2021solving}, dual potentials \citep{finlay2020learning}, or neural networks \citep{de2021diffusion, chen2021likelihood}.
-In this thesis, we consider the likelihood training framework by \citet{chen2021likelihood} grounded on forward-backward \acrshort{SDE} theory \citep{ma1999forward, exarchos2018stochastic}. Crucially, these SDEs can be used to construct the likelihood objectives for \acrshortpl{SB} that, surprisingly, generalize the ones for \acrshort{SGM} as special cases. The negative likelihood function for $\paramf$ and $\paramb$ are then given by
+Several estimators and training procedures for the so-called \acrfull{DSB}, i.e., for learning $\SBfbase_\ctime$ and $\SBbbase_\ctime$, have been proposed based on either Gaussian processes \citep{vargas2021solving}, dual potentials \citep{finlay2020learning}, or neural networks \citep{de2021diffusion, chen2021likelihood}.
+In this thesis, we consider the likelihood training framework by \citet{chen2021likelihood} grounded on \acrfull{FBSDE} theory \citep{ma1999forward, exarchos2018stochastic}. Crucially, these \acrshortpl{FBSDE} can be used to construct the likelihood objectives for \acrshortpl{SB} that, surprisingly, generalize the ones for \acrshortpl{SGM} as special cases. 
+
+The negative likelihood function for $\paramf$ and $\paramb$ are then given by
 \begin{subequations}
 \begin{align}
 \lossb =  \int_0^\horizon \mathbb{E}_{\eqref{eq:SB-sde-forward}}\Big[ \frac{1}{2}\norm{\SBbbase^{\paramb}_\ctime}^2 &+\volatbase \Div \SBbbase^{\paramb}_\ctime+ \inner{\SBfbase^{\paramf}_\ctime}{\SBbbase^{\paramb}_\ctime} \dt \Big\vert \sde[0] = \point_0 \Big] ,  \\
@@ -65,7 +68,7 @@ and serve as loss functions for likelihood-based training of \acrshortpl{DSB}. H
 Unfortunately, such frameworks necessitate a forward-backward learning process known as the \acrfull{IPF} procedure \citep{fortet1940resolution, kullback1968probability}.
 As both policies $\SBfbase_\ctime, \SBbbase_\ctime$ are initially unknown and randomly parameterized, training \acrshortpl{DSB} often results in numerical and scalability issues.
 
-Further, none of these approaches are capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:schrodinger_bridge}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein.  
+Further, none of these approaches is capable of incorporating \emph{alignment} of the data. This can be seen by inspecting the objective \eqref{eq:schrodinger_bridge}, in which the coupling information $(\x_0^i,\x_1^i)$ is completely lost as only its individual marginals $\distinit,\distend$ play a role therein.  
 
 In this chapter, we tackle both of these limitations: First, in \cref{sec:gsbflow} we derive a data-driven reference process that provides a more robust initialization of \acrshortpl{DSB}. Second, in \cref{sec:sbalign}, we devise the first algorithmic framework that solves \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward} in settings where sparse trajectories, or partially aligned data, are available \emph{without} resorting to \acrshort{IPF}.
 
@@ -89,7 +92,8 @@ Despite these impressive achievements, a common limitation of the existing works
     \label{fig:overview_gsbflow}
 \end{figure}
 
-The goal of this section is to continue this pursuit of closed-form solutions and extend these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see \cref{fig:overview_gsbflow}. To this end, we make the following contributions: \vspace{8pt}
+The goal of this section is to continue this pursuit of closed-form solutions and extend these advantages to \acrshort{SB}-based learning methods. For an overview of the method, see \cref{fig:overview_gsbflow}. To this end, we make the following contributions: \\
+
 %As a central contribution, we derive a set of new expressions for \acrfullp{GSB}, i.e.,\acrshortpl{SB} between Gaussian measures, that covers a wide range of applications. Furthermore, our analysis reveals a
 \begin{enumerate}[leftmargin=.4cm,itemsep=.0cm,topsep=.0cm]
 \item As our central result, we derive the closed-form expressions for \acrfullpl{GSB}, i.e., \acrshortpl{SB} between Gaussian measures. This is a challenging task for which all existing techniques fail, and thus we need to resort to a number of new ideas from entropic \acrshort{OT}, Riemannian geometry, and generator theory; see \cref{sec:overview_gsbflow}.
@@ -602,7 +606,16 @@ Following existing work on training \acrshort{SB}-based objectives \citep{chen20
 \subsection{Empirical Evaluation}
 \label{sec:experiments}
 
-The purpose of our experiments is to demonstrate that, by leveraging moment information, \textsc{GSBflow} is significantly more stable compared to other \acrshort{SB}-based objectives, especially when moving beyond the \emph{generative} setting where $\distend$ is a simple Gaussian. Indeed, while performing competitively in the {generative} setting ($\Ncal_0 \rightarrow \distend$), our method \textit{outperforms} when modeling the evolution of two complex distributions ($\distinit \rightarrow \distend$), the most general and ambitious setting to estimate a bridge. This is demonstrated on synthetic data as well as a task from molecular biology concerned with modeling the dynamics of cellular systems, i.e., single-cell genomics \citep{macosko2015highly, frangieh2021multimodal, kulkarni2019beyond}.
+The purpose of our experiments is to demonstrate that, by leveraging moment information, \textsc{GSBflow} is significantly more stable compared to other \acrshort{SB}-based objectives, especially when moving beyond the \emph{generative} setting where $\distinit$ is a simple Gaussian. Indeed, while performing competitively in the {generative} setting ($\Ncal_0 \rightarrow \distend$), our method \textit{outperforms} when modeling the evolution of two complex distributions ($\distinit \rightarrow \distend$), i.e., the most general and ambitious setting to estimate a bridge. 
+More concretely, our goal is two-fold: 
+\begin{enumerate}[itemsep=.0cm,topsep=0cm]
+\item To solve the \textbf{generative modeling} problem, i.e., to generate $\distinit$ or $\distend$ from a standard Gaussian noise, and
+\item to \textbf{evolve} $\Pinit\to\Pend$ or $\Pend\to\Pinit$, i.e., to recover a stochastic process $\Pmargin$ satisfying $\Pinit = \distinit, \Pend = \distend$ (interpolation).
+\end{enumerate}
+
+Although there are numerous algorithms for generative modeling, to our knowledge, the only framework that can simultaneously solve both tasks is the \acrshort{SB}-based scheme recently proposed in \citep{chen2021likelihood}. In order to apply this framework, one has to choose a prior process $\refsde$, which is taken by the authors to be the high-performing \acrshort{VESDE} and sub-\acrshort{VPSDE}. These \acrshort{SB}-based methods, as well as several standard generative modeling algorithms \citep{ho2020denoising, sohl2015deep, song2020score, huang2021variational, song2019generative, song2020score} for the first task, constitute strong baselines for our experiments.
+
+This is demonstrated on synthetic data as well as a task from molecular biology concerned with modeling the dynamics of cellular systems, i.e., single-cell genomics \citep{macosko2015highly, frangieh2021multimodal, kulkarni2019beyond}.
 
 \begin{figure}[t]
      \centering
@@ -655,21 +668,14 @@ As demonstrated in \cref{fig:res_synthetic}, \textsc{GSBflow} is able to success
 \subsubsection{Single-Cell Dynamics}
 \label{sec:gsbflow_cell}
 
-\looseness -1 Modern single-cell profiling technologies are able to provide rich feature representations (e.g., gene expression) of \textit{individual} cells at any development stage. A crucial issue that arises with such profiling methods is their destructive nature: Measuring a cell requires destroying it and thus a cell cannot be measured twice. As a result, independent samples are collected at each snapshot, with no access to ground-truth single-cell trajectories throughout time, resulting in challenging, \emph{unaligned}, datasets.
-Recovering cellular dynamics from such unaligned snapshots, i.e., $\distinit$ to $\distend$, has, however, extremely important scientific and biomedical relevance \citep{kulkarni2019beyond}. For example, it determines our understanding of how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or unveils mechanisms of cell differentiation and development \citep{schiebinger2019optimal}. Following related work, in particular previous methods based on optimal transport \citep{schiebinger2019optimal, bunne2021learning, bunne2022supervised, tong2020trajectorynet}, the task is thus to learn the stochastic process that described the evolution of single cells from $\distinit$ to $\distend$.
+% \looseness -1 Modern single-cell profiling technologies are able to provide rich feature representations (e.g., gene expression) of \textit{individual} cells at any development stage. A crucial issue that arises with such profiling methods is their destructive nature: Measuring a cell requires destroying it and thus a cell cannot be measured twice. As a result, independent samples are collected at each snapshot, with no access to ground-truth single-cell trajectories throughout time, resulting in challenging, \emph{unaligned}, datasets.
+% Recovering cellular dynamics from such unaligned snapshots, i.e., $\distinit$ to $\distend$, has, however, extremely important scientific and biomedical relevance \citep{kulkarni2019beyond}. For example, it determines our understanding of how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or unveils mechanisms of cell differentiation and development \citep{schiebinger2019optimal}. Following related work, in particular previous methods based on optimal transport \citep{schiebinger2019optimal, bunne2021learning, bunne2022supervised, tong2020trajectorynet}, the task is thus to learn the stochastic process that described the evolution of single cells from $\distinit$ to $\distend$.
 
-\paragraph{Single-cell genomics via SBs.}
-Let us consider the evolution of a gene, for which we can collect the empirical distributions $\distinit,\distend$ of its expression levels at the times $t=0,1$ \citep{schiebinger2019optimal,moon2019visualizing}. Our goal is two-fold: 
-\begin{enumerate}[itemsep=.0cm,topsep=0cm]
-\item To solve the \textbf{generative modeling} problem, i.e., to generate $\distinit$ or $\distend$ from a standard Gaussian noise, and
-\item to \textbf{evolve} $\Pinit\to\Pend$ or $\Pend\to\Pinit$, i.e., to recover a stochastic process $\Pmargin$ satisfying $\Pinit = \distinit, \Pend = \distend$.
-\end{enumerate}
+Let us consider the evolution of single-cell populations, for which we can collect the empirical distributions $\distinit,\distend$ of its expression levels at the times $t=0,1$ \citep{schiebinger2019optimal,moon2019visualizing}. 
 
-Although there are numerous algorithms for generative modeling, to our knowledge, the only framework that can simultaneously solve both tasks is the \acrshort{SB}-based scheme recently proposed in \citep{chen2021likelihood}. In order to apply this framework, one has to choose a prior process $\refsde$, which is taken by the authors to be the high-performing \acrshort{VESDE} and sub-\acrshort{VPSDE}. These \acrshort{SB}-based methods, as well as several standard generative modeling algorithms \citep{ho2020denoising, sohl2015deep, song2020score, huang2021variational, song2019generative, song2020score} for the first task, constitute strong baselines for our experiments.
+\subsubsection*{Our choice of $\refsde$; the \textsc{GSBflow}.}
 
-\paragraph{Our choice of $\refsde$; the \textsc{GSBflow}.}
-
-Instead of directly diving into the numerical solution of \acrshortpl{SB} as in \citet{chen2021likelihood}, we first empirically verify that the distributions $\distinit,\distend$ in single-cell genomics are typically close to \emph{non-standard} Gaussian distributions: See \cref{fig:gaussianMain} for the canonical dataset \citep{schiebinger2019optimal}. 
+Instead of directly diving into the numerical solution of \acrshortpl{SB} as in \citet{chen2021likelihood}, we first empirically verify that the distributions $\distinit,\distend$ in single-cell genomics are typically close to \emph{non-standard} Gaussian distributions (see \cref{fig:gaussianMain} for the canonical dataset by \citet{schiebinger2019optimal}). 
 
 \begin{figure*}
      \centering
@@ -682,6 +688,9 @@ Since the solutions of \acrshortpl{SB} are Lipschitz in terms of $\distinit,\dis
 
 Motivated by these observations, we propose a simple modification of the framework in \citet{chen2021likelihood}: Replace the prior process $\refsde$ by its \acrshort{GSB} approximation and keep everything else the same. The resulting scheme, which we term the \textsc{GSBflow}, learns a pair of forward {\color{pink} $\SBf$} and backward parametrized drifts {\color{blue} $\SBb$} that progressively transport samples from $\distinit \rightarrow \distend$ and $\distend \rightarrow \distinit$, respectively. The full algorithm is presented in \cref{alg:GSBflow} for completeness.
 
+\subsubsection*{Single-cell genomics via \acrshortpl{GSB}.}
+
+\paragraph{Generative modeling setting.}
 \looseness -1 We investigate the ability of \textsc{GSBflow} to generate cell populations $\distend$ from noise $\Ncal_0$ ($\Ncal_0 \rightarrow \distend$, \cref{fig:all_results}a, b) on the canonical datasets \citep{moon2019visualizing, schiebinger2019optimal}; as well as to predict the dynamics of single-cell genomics ($\distinit \rightarrow \distend$, \cref{fig:all_results}c) \citep{moon2019visualizing}, i.e., the inference of cell populations $\distend$ resulting from the developmental process of an initial cell population $\distinit$, with the goal of learning individual dynamics, identify ancestor and descendant cells. 
 % In addition, in order to test our hypothesis that the moment information carried by \textsc{GSBflow} leads to better overall performance, we scale the datasets \citep{moon2019visualizing, schiebinger2019optimal} by 20 and repeat each training procedure.
 % We consider the development of human \acrshortpl{ESC} grown as embryoid bodies into diverse cell lineages monitored by single-cell RNA sequencing methods \citep{moon2019visualizing} as well as reprogramming \acrshortpl{MEF} into \acrshortpl{iPSC} \citep{schiebinger2019optimal}.
@@ -690,6 +699,9 @@ The evaluation is conducted on the first 20 or 30 components of the PCA space of
 \looseness -1 We evaluate the quality of the generated cellular states through the entropy-regularized Wasserstein distance $W_\varepsilon$
 (see \cref{tab:exp_wasserstein_cells}) and by visualizing the first two principal components (PC), see \cref{fig:all_results}a,~b.
 \textsc{GSBflow} performs competitively on reconstructing embryoid body differentiation landscapes \citep{moon2019visualizing}, and outperforms score-based generative models baselines on the \acrfull{iPSC} reprogramming task \citep{schiebinger2019optimal} as quantified by $W_\varepsilon$ between data and predictions.
+For more details on datasets and evaluation metrics, see \cref{app:datasets} and \cref{app:evaluation_metrics}, respectively.
+
+\paragraph{Interpolation setting.}
 Further, we analyze \textsc{GSBflow}'s ability to predict the temporal evolution of embryoid body differentiation \citep{moon2019visualizing}, where cells measured at day 1 to 3 serve as samples of $\distinit$, while $\distend$ is constructed from samples between day 12 to 27. As no ground truth trajectories are available in the data, we compare the predicted evolution to the data and compare how well the heterogeneity of lineage (\cref{fig:all_results}c, upper panel) is captured.
 \cref{fig:all_results}c (lower panel) closely resembles the data (see $W_\varepsilon$ in \cref{fig:all_results}c) and thus demonstrate \textsc{GSBflow}'s ability to learn cell differentiation into various lineages and to capture biological heterogeneity on a more macroscopic level.
 

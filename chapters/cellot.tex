@@ -14,14 +14,6 @@ Most of the material in this chapter has been already published in the following
 \end{itemize}
 }
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{figures/fig_overview_cellot.pdf}
-    \caption{\textbf{Overview of the \textsc{CellOT} Model.} \textbf{a.}~Distributions of single cells were measured in either an untreated control state ($\mu$) or in one of several perturbed states ($\nu_k, \nu_l, \nu_m,  \ldots$). These distributions lie in a high-dimensional space of profiled features. \textbf{b.}~For a perturbation $k$, we aim to model it with a function $T_k$ that maps untreated cells in $\mu$ to their treated counterparts in $\nu_k$. \textbf{c.}~Lacking paired measurements, we assume that the perturbation transforms $\mu$ into $\nu_k$ under a principle of minimal effort. In particular, we learn $T_k$ using optimal transport theory to directly estimate this distributional mapping as the gradient of the optimal transport dual potential $\nabla g_\theta$.
-    \textbf{d.}~OT maps are learned for all perturbations independently. Because these maps are fully parameterized, \textsc{CellOT} can be trained, for example, on a set of initially provided samples to then make predictions on untreated cells originating from new, previously unseen samples.}
-    \label{fig:overview_cellot}
-\end{figure}
-
 
 Characterizing and modeling perturbation responses at the single-cell level from non-time-resolved data remains one of biology's grand challenges. It finds applications in predicting cellular reactions to environmental stress or a patient's response to drug treatments. Accurate inference of perturbation responses at the single cell level allows us, for instance, to understand how and why individual tumor cells evade cancer therapies \citep{frangieh2021multimodal}. More generally, it deepens the mechanistic understanding of the molecular machinery that determines the respective responses to perturbations. Single-cell responses to genetic or chemical perturbations are  highly heterogeneous~\citep{liberali2014hierarchical} due to multiple factors, including pre-existing variability in the abundance and subcellular organization of mRNA and proteins~\citep{battich2013image, battich2015control, gut2018multiplexed, shaffer2017rare}, cellular states~\citep{kramer2019cellular}, and the cellular microenvironment~\citep{snijder2009population}. To effectively predict the drug response of each cell in a  population, whether derived from tissue culture or as primary cells from a patient biopsy, it is thus crucial to incorporate this heterogeneous multivariate subpopulation structure into the analysis.
 
@@ -43,7 +35,7 @@ As described in \cref{sec:ot_for_biology}, it has found recent successes modelin
 % One way to address the pairing problem is to assume that perturbed cellular states are coupled to their initial states under a principle of minimum action. That is, given unpaired observations of cells before and after perturbation, we would aim to pair cells to their treated states in such a way that the average distance between the pairs, in feature space, is minimal. This setting is ideally suited for acute cellular perturbations during which single cells do not redistribute entirely and randomly in multidimensional measurement space, but typically only in a few dimensions, maintaining the overall correlation structure.
 
 \looseness -1 In the following, we propose a neural optimal transport-based approach for inferring single-cell perturbation responses. 
-Our method, \textsc{CellOT}, learns an optimal transport map for each perturbation in a fully parameterized and highly scalable manner. Instead of directly learning a transport map~\citep{korotin2021wasserstein, yang2018scalable, prasad2020optimal}, \textsc{CellOT} parameterizes a pair of dual potentials \eqref{eq:dual-cvx} with convex neural networks \citep{amos2017input}. This choice induces an important theory-motivated inductive bias essential to model stability~\citep{makkuva2020optimal}. 
+Our method, \textsc{CellOT}, learns an optimal transport map for each perturbation in a fully parameterized and highly scalable manner. Instead of directly learning a transport map~\citep{korotin2021wasserstein, yang2018scalable, prasad2020optimal}, \textsc{CellOT} parameterizes a pair of dual potentials \eqref{eq:dual-cvx} with input convex neural networks \citep{amos2017input}. This choice induces an important theory-motivated inductive bias essential to model stability~\citep{makkuva2020optimal}. 
 
 \looseness -1 We demonstrate \textsc{CellOT}'s effectiveness by (i.) learning single-cell marker responses to different cancer drugs in melanoma cell lines, (ii.) predicting single-cell transcriptome responses in biopsies of patients with systemic lupus erythematosus as well as Panobinostat treatment outcomes of glioblastoma patients, (iii.) inferring \acrfull{LPS} responses across different animal species, and (iv.) modeling the transcriptome evolution of cell fates in hematopoiesis. Moreover, we benchmark \textsc{CellOT} against current state-of-the-art methods on multiple tasks~\citep{lopez2018scvi, lotfollahi2019scgen, chen2020dissecting}.
 
@@ -52,7 +44,7 @@ Our method, \textsc{CellOT}, learns an optimal transport map for each perturbati
 To generalize optimal transport formulations to the out-of-sample setting, recent efforts have concentrated on developing parameterizations of neural optimal transport schemes.
 While initial efforts concentrated on solving large-scale \acrshort{OT} problems \citep{seguy2018large}, the focus quickly moved to \acrfull{GAN} \citep{arjovsky2017wasserstein, genevay2018learning}.
 The majority of existing methods employ \acrshort{OT} as a loss function to compute the discrepancy between the model and the data (target) distribution. 
-More recently, however, the focus has shifted to parameterizing the \acrshort{OT} map $T$ \eqref{eq:monge} \citep{yang2018scalable, rout2021generative, daniels2021score}. Such parameterized OT maps not only function as generative models but extend to tasks that involve interpolations between distributions. More concretely, neural network-based parameterizations of $T$ allow us to model the evolution from a measure $\mu$ into a measure $\nu$ \citep{tong2020trajectorynet}, i.e., the focus of this thesis.
+More recently, however, the focus has shifted to parameterizing the \acrshort{OT} map $T$ \eqref{eq:monge} \citep{yang2018scalable, rout2021generative, daniels2021score}. Such parameterized OT maps not only function as generative models but extend to tasks that involve interpolations between distributions. More concretely, neural network-based parameterizations of $T$ allow us to model the continuous evolution from a measure $\mu$ into a measure $\nu$ \citep{tong2020trajectorynet}, which we will discuss in \cref{part:dynamic_not} of this thesis.
 
 Multiple strategies exist on how to parameterize the optimal transport problem.
 In the following, we consider neural \acrshort{OT} solvers that make direct use of the \citeauthor{brenier1987decomposition} theorem (\cref{thm:brenier}) and are based on the semi-dual \eqref{eq:dual-cvx}. For a review of alternative approaches, see \cref{sec:other_neural_solvers}.
@@ -74,9 +66,9 @@ The resulting objective reads
 \end{equation}
 The intuition behind the approach stems from the fact that
 \begin{equation*}
-	\int \varphi^*\textrm{d}\nu = \sup _{g \text{ convex}} \int \langle y, \nabla g(y)\rangle - \varphi(\nabla g(y))\,\mathrm{d} \nu(y)\,.
+	\int \varphi^*\textrm{d}\nu = \sup _{g \text{ convex}} \int \langle y, \nabla g(y)\rangle - \varphi(\nabla g(y))\,\mathrm{d} \nu(y)\,,
 \end{equation*}
-We observe that in $\langle y, \nabla g(y)\rangle - \varphi(\nabla g(y)) \leq \varphi^*(y)$ for all functions $g$ the equality is achieved with $g = \varphi^*$ \citep[Theorem 3.3]{makkuva2020optimal}. 
+where we observe that in $\langle y, \nabla g(y)\rangle - \varphi(\nabla g(y)) \leq \varphi^*(y)$ for all functions $g$ the equality is achieved with $g = \varphi^*$ \citep[Theorem 3.3]{makkuva2020optimal}. 
 
 In order to solve the optimization problem stated in \eqref{eq:ot-minmax}, \citet{makkuva2020optimal} parameterize both potentials $\varphi$ and $g$ using \acrfull{ICNN} (\cref{sec:icnns}), i.e., neural networks that parameterize the class of convex functions \citep{amos2017input}, such that
 \begin{align} \label{eq:cellot-optim}
@@ -95,7 +87,7 @@ Thus, the potentials $\varphi$ and $g$ can be learned via an alternate min-max o
 For more details, see \citet{makkuva2020optimal, korotin2021neural}.
 
 
-\subsection{Convex Neural Architectures}
+\subsection{Input Convex Neural Networks}
 \label{sec:icnns}
 
 Input convex neural networks are neural networks $\varphi_\theta(x)$ with specific constraints on the architecture and parameters $\theta$, such that their output is a convex function of some (or all) elements of the input $x$~\citep{amos2017input}. We consider  \acrshortpl{ICNN}, such that the output is a convex function of the entire input $x$. A typical \acrshort{ICNN} is a $L$-layer, fully connected network such that, for $l = 0, \dots, L-1$:
@@ -112,14 +104,15 @@ Learning optimal transport problems based on neural networks is at the core of m
 % Here, the authors parameterize \textit{dual potentials} as Lipschitz neural networks, in the case $p=1$. In that case, the interplay between OT and estimation does not concern the map $T$ itself (which can be interpreted as a generator), but rather an auxiliary function (the discriminator). 
 The formulation introduced in \cref{sec:neural_solvers} proposes a neural optimal transport scheme via the semi-dual formulation. In fact, a stream of foundational papers has proposed methods to approximate the dual potential with a neural network.
 While a common strategies consists in parameterizing $\varphi$ through an \acrshort{ICNN} \citep{taghvaei20192, korotin2021wasserstein, makkuva2020optimal}, other works explore learning $\varphi$ using non-convex neural networks \citep{korotin2021neural, rout2021generative, nhan2019three}.
-As the convex conjugate $\varphi^*$ is hard to compute, several strategies have been developed to solve the conjugation operation in \eqref{eq:varphi_conjugate}: \citet{taghvaei20192}  propose to exactly computing the conjugate, which, however, is computationally challenging. Besides approximations of the conjugate as considered in this thesis \citep{korotin2021wasserstein, makkuva2020optimal}, more recent approaches suggest (near-)exact conjugate computations through  amortized optimization \citep{amos2023amortizing}.
+Besides, as the convex conjugate $\varphi^*$ is hard to compute, several strategies have been developed to solve the conjugation operation in \eqref{eq:varphi_conjugate}: \citet{taghvaei20192}  propose to exactly computing the conjugate, which, however, is computationally challenging. Besides approximations of the conjugate as considered in this thesis \citep{korotin2021wasserstein, makkuva2020optimal}, more recent approaches suggest (near-)exact conjugate computations through  amortized optimization \citep{amos2023amortizing}.
 
-Beyond approaches that parameterize the dual potentials of optimal transport, several approaches consider parameterizing map $T$ directly. This is done either without any regularization \citep{yang2018scalable}, or by introducing regularizers that quantify how far a map $T_\theta$ deviates from the ideal properties we expect from a $c$-OT map.
+Beyond such approaches that parameterize the dual potentials of optimal transport, several approaches consider parameterizing map $T$ directly. This is done either without any regularization \citep{yang2018scalable}, or by introducing regularizers that quantify how far a map $T_\theta$ deviates from the ideal properties we expect from a $c$-OT map.
 More concretely, \citet{uscidda2023monge} introduce the Monge gap regularizer defined as
 \begin{equation*}
 	\int c(x, T_\theta(x)) \textrm{d} \mu(x) - W_c(\mu, T_\theta \sharp \mu)
 \end{equation*}
 that, if $0$, guarantees that $T_\theta$ is a $c$-OT map. For $c(x,y) = \|x-y\|^2_2$ and $\gX = \gY = \mathbb{R}^d$, for example, $T_\theta$ corresponds to a gradient of a convex function (\cref{thm:brenier}).
+The advantage of such methods is that they generalize to all cost functions $c$ and are note restricted to the squared Euclidean distance.
 
 
 \section{Related Work}
@@ -129,7 +122,7 @@ Mechanistic models \citep{yuan2021cellbox, frohlich2018efficient} define mathema
 These methods, however, are restricted to simpler and well-understood systems as they do not capture highly nonlinear perturbation responses of a heterogeneous cell population. Further, these methods are limited in their applicability as they do not scale to genome-wide measurements \citep{snijder2012single, berchtold2018systems, green2016systems}.
 Linear models \citep{dixit2016perturb, kamimoto2020celloracle}, on the other hand,  predict changes in cellular gene expression levels using regularized regression methods, where the model predicts a gene's expression level as a linear combination of effects of different perturbations, fitting the regulatory effect of each perturbation on each gene.
 Due to assuming only linear relationships of individual genes in response to a perturbation, these methods are similarly  unable to capture complex and inhomogeneous population responses upon perturbation.
-\citet{heydari2022iqcell}, on the other hand, predict perturbation responses by inferring the underlying gene regulatory network. Prediction of the perturbed states is achieved through a dynamic simulation of those logical gene networks. Thus, the predicted perturbed states are restricted to only the selected set of genes used to build the corresponding regulatory network.
+\citet{heydari2022iqcell} predict perturbation responses by inferring the underlying gene regulatory network. Prediction of the perturbed states is achieved through a dynamic simulation of those logical gene networks. Thus, the predicted perturbed states are restricted to only the selected set of genes used to build the corresponding regulatory network.
 Lastly, current state-of-the-art methods \citep{lopez2018scvi, lotfollahi2019scgen, yang2020predicting} aim to learn low-dimensional representations of inputs using autoencoders such that perturbation effects can be applied with simple linear interpolations in representation space. Thus, they predict perturbation responses via linear shifts in a learned low-dimensional latent space. These models are attractive because they are fully parameterized, enabling us to make predictions on unseen cells. By tackling the task of perturbation response predictions via the even more challenging task of learning a meaningful low-dimensional embedding, these methods can be expected to, at best, only perform moderately well. Therefore, we sought to learn a fully parameterized perturbation model that robustly describes the cellular dynamics upon intervention while accounting for underlying variability across samples.
 
 \section{\textsc{CellOT}: Predicting Perturbation Responses via Neural Monge Maps}
@@ -143,26 +136,39 @@ To understand the mode of action and effect of perturbations, we seek to learn t
 Despite originating from  different observations, map $T_k$ determines for each cell $x_i$ the most likely corresponding cell $T_k(x_i)$ in the perturbed population (\cref{fig:overview_cellot}c).
 Finding this map then not only allows us to model single-cell trajectories upon perturbation but also to predict the perturbed state of previously unseen control cells. As a result, we can forecast the outcome of a perturbation $k$  by applying the learned map $T_k$ to a new unperturbed population $\mu^\prime$ (\cref{fig:overview_cellot}d).
 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig_overview_cellot.pdf}
+    \caption{\textbf{Overview of the \textsc{CellOT} Model.} \textbf{a.}~Distributions of single cells were measured in either an untreated control state ($\mu$) or in one of several perturbed states ($\nu_k, \nu_l, \nu_m,  \ldots$). These distributions lie in a high-dimensional space of profiled features. \textbf{b.}~For a perturbation $k$, we aim to model it with a function $T_k$ that maps untreated cells in $\mu$ to their treated counterparts in $\nu_k$. \textbf{c.}~Lacking paired measurements, we assume that the perturbation transforms $\mu$ into $\nu_k$ under a principle of minimal effort. In particular, we learn $T_k$ using optimal transport theory to directly estimate this distributional mapping as the gradient of the optimal transport dual potential $\nabla g_\theta$.
+    \textbf{d.}~OT maps are learned for all perturbations independently. Because these maps are fully parameterized, \textsc{CellOT} can be trained, for example, on a set of initially provided samples to then make predictions on untreated cells originating from new, previously unseen samples.}
+    \label{fig:overview_cellot}
+\end{figure}
+
 % Following \citet{makkuva2020optimal}, we learn the optimal map $T$ \eqref{eq:monge} between $\mu$ and $\nu_k$.
 % Thus, instead of computing a coupling $\gamma$ individually for each pair of cell samples using existing solvers \citep{cuturi2013sinkhorn}, we learn a parameterized optimal transport map using neural networks. The parameterized OT map then serves as a robust predictor for cellular distribution shifts upon perturbations on unseen samples $\{x_i \}_{i=1}^{n^\prime} \sim \mu$, i.e., of another patient.
 
 \looseness -1 The optimal map $T_k$ aligning the control and perturbed population, which we seek to find, should best describe the incremental changes in the multivariate profile of each cell after applying a perturbation $k$. Using optimal transportation theory \citep{villani2021topics, santambrogio2015optimal} to recover these maps and unveil single-cell reprogramming trajectories has been proposed as a strong modeling hypothesis in the domain of single-cell biology \citep{schiebinger2019optimal, cang2020inferring, demetci2022scot, huizing2022optimal, lavenant2021towards, zhang2021optimal}.
-\begin{figure}
+Optimal transport problems return the alignment between distributions $\mu$ and $\nu_k$ corresponding to the minimal overall cost between aligned molecular profiles, thus determining the most likely state of each cell upon perturbation (\cref{fig:overview_cellot}c).
+$T_k$ is learned such that its image corresponds to $\nu_k$ and mass is moved from $\mu$ into $\nu_k$ according to a principle of minimal effort.
+% Utilizing recent advancements in neural optimal transport theory, \textsc{CellOT} considers the dual form of the transport problem and parameterizes a pair of convex potentials with neural networks. $T_k$ is recovered as the gradient of one of these potentials.
+As directly parameterizing the optimal transport map $T_k$ \citep{korotin2021wasserstein, yang2018scalable, prasad2020optimal} is unstable \citep[Table 1]{makkuva2020optimal}, we parameterize the convex potentials of the approximate semi-dual optimal transport problem $\varphi$ and $g$ \eqref{eq:ot-minmax}.
+Given a set of perturbations $K$, and sample access to the control distribution $\mu$ as well as  distributions $\nu_k$ for each perturbation $k \in K$, \textsc{CellOT} learns the optimal pair of dual potentials $(\varphi_{\theta_k^\star}, g_{\phi_k^\star})$ by solving~\eqref{eq:cellot-optim}.
+For this, each input convex neural networks \citep{amos2017input} is trained with loss functions \eqref{eq:makkuva_f_loss}-\eqref{eq:makkuva_f_loss}. We recover the optimal map $T_k$ using the gradient of a convex function $\varphi_k$, i.e., $\nabla \varphi_k$.
+% Using the learned convex potentials for each $k$, \textsc{CellOT} then predicts the transformation of a control cell $x_i$ upon perturbation $k$ via $\hat{y}_i^k = \nabla f_{\theta_k^\star}(x_i)$, i.e., samples following the predicted perturbed distribution $\hat{\nu_k} =(\nabla f_{\theta_k^\star})_{\sharp} \mu$. 
+
+\section{Empirical Evaluation}
+
+In the following, we evaluate \textsc{CellOT} on various tasks. For details on the datasets and the chosen evaluation metrics, see \cref{app:datasets} and \cref{app:evaluation_metrics}, respectively.
+
+\subsection{Predicting Treatment Outcomes of Cancer Drugs}
+
+\begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/fig_benchmark_cellot.png}
     \caption{\looseness -1 \textbf{\textsc{CellOT} outperforms current state-of-the-art methods on different data modalities.}  Marginal distribution of marker gene expression (x-axis) of cells profiled by \textbf{a.} 4i and \textbf{d.} scRNA. Observed control and treated states are shown in light and dark blue. \textsc{CellOT} predictions are shown in red and baseline predictions (scGen, cAE, PopAlign) are shown in gray. We compare models based on the distributional distance \acrshort{MMD} as well as average correlation coefficient $r^2$ between observed perturbed and predicted perturbed cells, for \textbf{b.} 4i and \textbf{e.} scRNA data. Error bars refer to the standard deviation over 10 bootstraps of the test set and the dashed lines correspond to the median of the identity and observed performances. Joint \acrshortpl{UMAP} of observed treated cells and cells predicted by each model for \textbf{c.} 4i and \textbf{f.} scRNA data. Projections are computed on a joint set of cells, down-sampled such that the number of observed perturbed (gray) and predicted perturbed cells (blue) are equal. An identity coupling compares treated cells to untreated cells. The analysis is conducted for the drugs Trametinib, Imatinib, and Gavinostat. 4i data was generated using cell lines M130219 and M130429.}
     \label{fig:benchmark_cellot}
 \end{figure}
-Optimal transport problems return the alignment between distributions $\mu$ and $\nu_k$ corresponding to the minimal overall cost between aligned molecular profiles, thus determining the most likely state of each cell upon perturbation (\cref{fig:overview_cellot}c).
-$T_k$ is learned such that its image corresponds to $\nu_k$ and mass is moved from $\mu$ into $\nu_k$ according to a principle of minimal effort.
-% Utilizing recent advancements in neural optimal transport theory, \textsc{CellOT} considers the dual form of the transport problem and parameterizes a pair of convex potentials with neural networks. $T_k$ is recovered as the gradient of one of these potentials.
-As directly parameterizing the optimal transport map $T_k$ \citep{korotin2021wasserstein, yang2018scalable, prasad2020optimal} is unstable \citep[Table 1]{makkuva2020optimal}, we parameterize the convex potentials of the approximate semi-dual optimal transport problem $\varphi$ and $g$ \eqref{eq:ot-minmax}.
-Given a set of perturbations $K$, and sample access to the control distribution $\mu$ as well as  distributions $\nu_k$ for each perturbation $k \in K$, \textsc{CellOT} learns the optimal pair of dual potentials $(\varphi_{\theta_k^\star}, g_{\phi_k^\star})$ by solving~\eqref{eq:cellot-optim}, each input convex neural networks \citep{amos2017input} is trained with loss functions \eqref{eq:makkuva_f_loss}-\eqref{eq:makkuva_f_loss}. We recover the optimal map $T_k$ using the gradient of a convex function $\varphi_k$, i.e., $\nabla \varphi_k$ \citep{makkuva2020optimal}.
-% Using the learned convex potentials for each $k$, \textsc{CellOT} then predicts the transformation of a control cell $x_i$ upon perturbation $k$ via $\hat{y}_i^k = \nabla f_{\theta_k^\star}(x_i)$, i.e., samples following the predicted perturbed distribution $\hat{\nu_k} =(\nabla f_{\theta_k^\star})_{\sharp} \mu$. 
-
-\section{Empirical Evaluation}
-
-\subsection{Predicting Treatment Outcomes of Cancer Drugs}
 
 \looseness -1 We apply \textsc{CellOT} to predict the responses of cell populations to cancer treatments using a proteomic dataset consisting of two melanoma cell lines (M130219 and M130429) \citep{raaijmakers2015new}, profiled by 4i~\citep{gut2018multiplexed}, and a scRNA-seq dataset~\citep{srivatsan2020massively}, which contain 34 and 9 different treatments, respectively.
 % To put \textsc{CellOT}'s performance in perspective, we benchmark it against current state-of-the-art methods based on autoencoders \citep{lotfollahi2019scgen, lopez2018scvi}, which attempt to add perturbation effects through the manipulation of a learned latent representation.
@@ -176,7 +182,7 @@ While the autoencoder baselines tend to capture the mean of the treated cell pop
 Thus, these models tend to learn over-simplified perturbation effects and are insufficient when aiming to understand heterogeneous rather than average cellular behaviors.
 \textsc{CellOT}, on the other hand, is able to capture these higher moments, yielding accurate and nuanced predictions.
 
- \begin{figure}
+ \begin{figure}[t]
      \centering
      \includegraphics[width=\textwidth]{figures/fig_4i_vector_fields.pdf}
      \caption{Visualization of the learned vector field describing the perturbation response on the single-cell level for \textbf{a.} Dabrafenib, \textbf{b.} Everolimus, and \textbf{c.} Trametinib of the 4i dataset for \textsc{CellOT}, the average effect, and \textsc{scGen} on the first two principal components. Cellular responses are computed as the predicted treated state minus the observed control state for each individual cell. Arrow tails are placed in a grid within PC space and arrow heads correspond to the average response of cells within each neighborhood, projected into PC space.}
@@ -200,6 +206,15 @@ We observe that the perturbed cell states inferred by \textsc{CellOT} are well i
 and thus the perturbed state of different subpopulations is not captured consistently.
 $\textsc{CellOT}$ outperforms the baselines in both metrics across all treatments, typically by one order of magnitude.
 We attribute the strong performance of \textsc{CellOT} to its ability to learn a transport function that considers explicitly the data geometries of cell populations through the theory of optimal transport.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figures/fig_biological_analysis.png}
+\end{figure}
+\captionof{figure}{
+\looseness -1 \textbf{CellOT facilitates the multiplexed single-cell characterization of cancer drugs.} 
+    \textbf{a.} \textsc{CellOT} training and prediction setup. 34 \textsc{CellOT} models were trained, one for each drug perturbation. Subsequently, each model was used to predict perturbed cells from a common set of unseen control cells. \textbf{b.} \acrshort{UMAP} projection constructed with equal numbers of predicted and measured cells from 34 perturbations. Dots correspond to cells, color-coded for measured or predicted pERK intensity, \textbf{c.} \acrshort{UMAP} projection of single-cell perturbation effects using predicted cells. Dots correspond to cells, color-coded for drug treatment (see \cref{fig:4i_analysis_extended} for a full legend for single-cell perturbation effect calculation). \textbf{d.} Cell states identified in control cells. Each column represents a cell state. Horizontal axis, cell states are sorted based on their association with the cell lines M130219 and M130429.  Vertical axis, cellular features (see \cref{fig:4i_analysis_extended} for the full feature set). The size and hue of the circles are scaled on the feature values. \textbf{e.} Clustergram of transport cost (TC) of drug treatments for each cell state (main heatmap, blue-yellow color scheme), the sum of TCs (Sum) of all states per drug (first column left of the heatmap, purple), the coefficient of variation (CV) of TCs per drug (second column left of the heatmap, green) and the dendrogram based on the hierarchical clustering the drug's cell state TCs. Cell states are sorted as in \textbf{d}. \textbf{f.} Cell state-specific responses to drug treatments. Top panel (I) Dasatinib. Bottom panel (II) Trametinib + Dabrafenib. Panel organization: top-left, condition-focused enlargement of \acrshort{UMAP} projection from \textbf{c}. Top-right, same as top-left but color-coded for cell state assignment. Bottom, columns represent a cell state,  rows highlighted features. `cell-' stands for mean cell intensity. Circles are scaled based on drug effect size, the stronger the effect the larger the circles. Negative values are encoded in hues of blue, and positive values in red hues of the respective circles.}
+\label{fig:biological_analysis}
 
 \subsection{Capturing Cell-to-Cell Variability in Drug Responses}
 \looseness -1 Capturing distinct perturbation responses of different cell types within the same sample remains a challenging computational task. To reduce the task's complexity, prediction algorithms can be guided by predefined cell type labels both in the perturbed and unperturbed states \citep{chen2020dissecting} or set to approximate the mean drug response \citep{lotfollahi2019scgen}.  These simplifications come at a cost: the reliance on a priori knowledge about present and relevant cell types, the assumption that cell types are characterized by the same features before and after a perturbation, and that the drug response is uniform within a cell type.
@@ -228,14 +243,6 @@ Such distinct treatment embeddings are not present when accounting only for an a
 % The cluster structure derived from the control cells is further persistent in the perturbed states. 
 a stereotypical spatial organization of cellular states is retained for the majority of the drugs,  and cell states belonging to the same cell line cluster together (\cref{fig:4i_analysis_extended}f). 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{figures/fig_biological_analysis.png}
-\end{figure}
-\captionof{figure}{
-\looseness -1 \textbf{CellOT facilitates the multiplexed single-cell characterization of cancer drugs.} 
-    \textbf{a.} \textsc{CellOT} training and prediction setup. 34 \textsc{CellOT} models were trained, one for each drug perturbation. Subsequently, each model was used to predict perturbed cells from a common set of unseen control cells. \textbf{b.} \acrshort{UMAP} projection constructed with equal numbers of predicted and measured cells from 34 perturbations. Dots correspond to cells, color-coded for measured or predicted pERK intensity, \textbf{c.} \acrshort{UMAP} projection of single-cell perturbation effects using predicted cells. Dots correspond to cells, color-coded for drug treatment (see \cref{fig:4i_analysis_extended} for a full legend for single-cell perturbation effect calculation). \textbf{d.} Cell states identified in control cells. Each column represents a cell state. Horizontal axis, cell states are sorted based on their association with the cell lines M130219 and M130429.  Vertical axis, cellular features (see \cref{fig:4i_analysis_extended} for the full feature set). The size and hue of the circles are scaled on the feature values. \textbf{e.} Clustergram of transport cost (TC) of drug treatments for each cell state (main heatmap, blue-yellow color scheme), the sum of TCs (Sum) of all states per drug (first column left of the heatmap, purple), the coefficient of variation (CV) of TCs per drug (second column left of the heatmap, green) and the dendrogram based on the hierarchical clustering the drug's cell state TCs. Cell states are sorted as in \textbf{d}. \textbf{f.} Cell state-specific responses to drug treatments. Top panel (I) Dasatinib. Bottom panel (II) Trametinib + Dabrafenib. Panel organization: top-left, condition-focused enlargement of \acrshort{UMAP} projection from \textbf{c}. Top-right, same as top-left but color-coded for cell state assignment. Bottom, columns represent a cell state,  rows highlighted features. `cell-' stands for mean cell intensity. Circles are scaled based on drug effect size, the stronger the effect the larger the circles. Negative values are encoded in hues of blue, and positive values in red hues of the respective circles. \vspace{10pt}}
-\label{fig:biological_analysis}
 \looseness -1 Computing the difference between the control and treated state of each drug, i.e., the optimal
 % what corresponds to the 
 transport cost, allows us to further characterize a drug's severity. 
@@ -251,7 +258,19 @@ upon treatment with inhibitors of MEK (MEKi) and RAF (RAFi), while M130219 cells
 \looseness -1 In response to two drugs impinging on the MEK pathway, we observe pERK to be reduced in both cell lines but increased pAKT levels in the MEKi-resistant cell line M130219 (which resistance was acquired during pre-exposing a patient to MEKi) (\cref{fig:biological_analysis}f). This finding points towards a compensatory feedback mechanism acquired by M130219 during MEKi treatment by which inhibition of the MEK pathway (quantified as a reduction of pERK) would stimulate signaling through the PI3K pathway, possibly through activation of an upstream receptor kinase \citep{caunt2015mek1}. 
 Our results on two co-cultured primary melanoma cell lines treated with various anti-cancer drugs show that \textsc{CellOT} can accurately capture phenotypic heterogeneity in unperturbed cell populations and predict diverse drug responses by incorporating the underlying cell-to-cell variability without predefined cell line labels. 
 % Further, we find that \textsc{CellOT} reveals differential drug responses between the cellular states of the same cell lines, thus showcasing its ability to reveal unknown cell state-associated drug responses in an unsupervised fashion.
-    
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.05\textwidth]{figures/fig_generalization_cellot.png}
+ \end{figure}
+ \captionof{figure}{
+    \textbf{\textsc{CellOT} generalizes to unseen patients and cell subpopulations.} Out-of-sample (o.o.s., \textbf{a-c}), and \acrlong{ood} (\acrshort{ood}, \textbf{d-k}) setting. \textbf{a.} Cells from eight lupus patients are measured in an untreated and IFN-$\beta$ treated state. 
+%    For each sample, we train two models, an o.o.s.~model trained on cells from all other samples and an i.i.d.~model trained with additional access to half of the cells in the holdout sample (not shown). 
+    \textbf{b.} Marginals of predicted cells from the holdout sample in the i.i.d.~(top) and o.o.s.~(bottom) setting. Predictions for both models are made on the same test set (not used for training the two models). \textbf{c.} \acrshort{MMD} scores between the predicted distribution and the observed treated distribution across all holdout samples in the i.i.d.~and o.o.s.~settings. Box plots indicate the median and quartiles.
+    \textbf{d.} As an \acrshort{ood} task, we train \textsc{CellOT} and baselines to predict the response to LPS across different species, and test on rat (or mouse) as a holdout species. \textbf{e.} Mean gene expression for i.i.d. and \acrshort{ood} predictions for \textsc{CellOT} and \textsc{scGen} for selected marker genes.  \textbf{f.} Comparison of \acrshort{ood} performance for $r^2$ correlation feature means and \acrshort{MMD} of \textsc{CellOT} and baselines. Data are depicted as the mean +/- standard deviation across n=10 bootstraps of the test set. \textbf{g.} Marginals of the \acrshort{ood} predictions for marker genes showing bimodal expression profiles when using rat as a holdout.
+    \textbf{h.} We apply \textsc{CellOT} to predict how cells from day 2 develop into the combined set of day 4 and 6 when trained on only multipotent cells ($T_m$) or oligopotent cells ($T_o$). We then apply $T_m$ to predict the \acrshort{ood}~oligopotent cells and $T_o$ to predict the \acrshort{ood}~multipotent cells. \textbf{i.} \acrshort{MMD} scores between the predicted and (observed) developed distributions for all models in both \acrshort{ood}~ and i.i.d.~prediction tasks (jointly for day 4 and 6). Performance of \textsc{CellOT}, when predicting \textbf{j.} day 4 states and day 6 states \textbf{k.} for different cell types in each setting using $T_m$.}
+    \label{fig:generalization_cellot}
+
 % \subsection*{\textsc{CellOT} accurately predicts single-cell responses for unseen patients}
 \subsection{Inferring Cellular Responses in Unseen Patients}
 The maps between molecular states before and after treatments learned by \textsc{CellOT} contribute to a better understanding of the differences between cells that respond to certain drugs and cells that do not respond. This is crucial for inferring an incoming patient's response to drugs and settings with high cell-to-cell variability.
@@ -278,17 +297,6 @@ We repeat the same evaluation for a glioblastoma cohort consisting of seven pati
 % We have identified under which conditions generalization to unseen patients is feasible. 
 For a complete analysis, see \cref{fig:gbm_patients_iid_ood}.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=1.05\textwidth]{figures/fig_generalization_cellot.png}
- \end{figure}
- \captionof{figure}{
-    \textbf{\textsc{CellOT} generalizes to unseen patients and cell subpopulations.} Out-of-sample (o.o.s., \textbf{a-c}), and \acrlong{ood} (\acrshort{ood}, \textbf{d-k}) setting. \textbf{a.} Cells from eight lupus patients are measured in an untreated and IFN-$\beta$ treated state. 
-%    For each sample, we train two models, an o.o.s.~model trained on cells from all other samples and an i.i.d.~model trained with additional access to half of the cells in the holdout sample (not shown). 
-    \textbf{b.} Marginals of predicted cells from the holdout sample in the i.i.d.~(top) and o.o.s.~(bottom) setting. Predictions for both models are made on the same test set (not used for training the two models). \textbf{c.} \acrshort{MMD} scores between the predicted distribution and the observed treated distribution across all holdout samples in the i.i.d.~and o.o.s.~settings. Box plots indicate the median and quartiles.
-    \textbf{d.} As an \acrshort{ood} task, we train \textsc{CellOT} and baselines to predict the response to LPS across different species, and test on rat (or mouse) as a holdout species. \textbf{e.} Mean gene expression for i.i.d. and \acrshort{ood} predictions for \textsc{CellOT} and \textsc{scGen} for selected marker genes.  \textbf{f.} Comparison of \acrshort{ood} performance for $r^2$ correlation feature means and \acrshort{MMD} of \textsc{CellOT} and baselines. Data are depicted as the mean +/- standard deviation across n=10 bootstraps of the test set. \textbf{g.} Marginals of the \acrshort{ood} predictions for marker genes showing bimodal expression profiles when using rat as a holdout.
-    \textbf{h.} We apply \textsc{CellOT} to predict how cells from day 2 develop into the combined set of day 4 and 6 when trained on only multipotent cells ($T_m$) or oligopotent cells ($T_o$). We then apply $T_m$ to predict the \acrshort{ood}~oligopotent cells and $T_o$ to predict the \acrshort{ood}~multipotent cells. \textbf{i.} \acrshort{MMD} scores between the predicted and (observed) developed distributions for all models in both \acrshort{ood}~ and i.i.d.~prediction tasks (jointly for day 4 and 6). Performance of \textsc{CellOT}, when predicting \textbf{j.} day 4 states and day 6 states \textbf{k.} for different cell types in each setting using $T_m$. \vspace{10pt}}
-    \label{fig:generalization_cellot}
 
 \subsection{Reconstructing Innate Immune Responses across Different Species}
 %\subsection{\textsc{CellOT} reconstructs innate immune responses across species}
@@ -300,6 +308,7 @@ The holdout set consists of cells derived from either rat or mouse. See \cref{fi
 Indeed, \textsc{CellOT} accurately reconstructs the innate immune response in both mouse and rat in the i.i.d. and \acrshort{ood} setting. This not only becomes evident through capturing more precisely the mean expression level of marker genes that show high differential expression levels upon addition of \acrshort{LPS}, e.g., \textit{Nfkb1} (NF-$\kappa$B), \textit{Oasl1} (Oasl1), \textit{Mmp12}, and \textit{Cxcl5} (see Figs.~\ref{fig:generalization_cellot}e and \ref{fig:crossspecies_ood_analysis}c-d), but also through the average correlation coefficient $r^2$ computed between \acrshort{ood} predictions and holdout observations across all genes (see \cref{fig:generalization_cellot}f).
 In particular, \textsc{CellOT} outperforms the baselines when analyzing how well each method captures the heterogeneity of innate immune responses in different species, as demonstrated by low levels of \acrshort{MMD} (see \cref{fig:generalization_cellot}f).
 Most impressively, our method shows a strong alignment or gene expression marginals of aforementioned marker genes that show complicated bimodal expression profiles upon perturbation (see \cref{fig:generalization_cellot}g).
+
 
 % \subsection*{\textsc{CellOT} generalizes perturbation responses \acrlong{ood} from multipotent populations to cells of lower potency}
 \subsection{Generalizing Developmental Fate Decisions from Multipotent to Oligopotent Cell Populations}
@@ -341,27 +350,20 @@ As expected, the performance of \textsc{CellOT} drops in terms of the \acrshort{
 In this chapter, we proposed \textsc{CellOT}, a framework to model single-cell perturbation responses from unpaired treated and untreated cell states using neural optimal transport by learning a fully parameterized transport map.
 Previous methods \citep{rout2021generative, yang2018scalable, prasad2020optimal} rely on an unconstrained parameterization of the optimal transport map. However, the unconstrained nature of these models makes robust optimization challenging and results in reduced performance \citep[Table 1]{makkuva2020optimal}.
 Instead, we learn the transformation of unperturbed to perturbed cell states through the \emph{dual} optimal transport problem, parameterized via a pair of neural networks constrained to be convex \citep{makkuva2020optimal}.
-These constraints are important inductive biases that facilitate learning and result in a reliable and easy-to-train framework, as evidenced by the consistently strong performance of \textsc{CellOT} on several problems without the need for extensive hyperparameter tuning \citep[Online Methods]{bunne2021learning}.
+These constraints are important inductive biases that facilitate learning and result in a reliable and easy-to-train framework, as evidenced by the consistently strong performance of \textsc{CellOT} on several problems without the need for extensive hyperparameter tuning \citep[Online Methods]{bunne2021learning}. \\
 
-\smallskip
+Using \textsc{CellOT} to perform cell-state-aware drug profiling enables us to quantify perturbation effects as a function of the underlying heterogeneity of the studied system, in our cases a co-culture of two melanoma cell lines with different sensitivities to drug treatments. In doing so, we \textit{sharpen} the response profiles of the measured drugs and reveal cell-state-specific responses of multiple signaling pathway in relation to treatment history of the cell line donor. We find the signaling activity associated to the MEK and PI3k pathways to decouple in cells pre-exposed to MEK inhibitors, a known adaptation mechanism for therapy evasion in melanoma cells \citep{kun2021mek}. This \textit{pathway rewiring} is associated to alteration in the molecular feedback structure of cells from effectors to receptors \citep{kun2021mek, turke2012mek}. Thus, combining \textsc{CellOT} with a larger set of combination treatments, multiplexed imaging, and cellular systems reflective of disease adaptations may help us to elucidate the molecular mechanisms of signaling pathway evolution in the context of cancer therapy. \\
 
-Using \textsc{CellOT} to perform cell-state-aware drug profiling enables us to quantify perturbation effects as a function of the underlying heterogeneity of the studied system, in our cases a co-culture of two melanoma cell lines with different sensitivities to drug treatments. In doing so, we \textit{sharpen} the response profiles of the measured drugs and reveal cell-state-specific responses of multiple signaling pathway in relation to treatment history of the cell line donor. We find the signaling activity associated to the MEK and PI3k pathways to decouple in cells pre-exposed to MEK inhibitors, a known adaptation mechanism for therapy evasion in melanoma cells \citep{kun2021mek}. This \textit{pathway rewiring} is associated to alteration in the molecular feedback structure of cells from effectors to receptors \citep{kun2021mek, turke2012mek}. Thus, combining \textsc{CellOT} with a larger set of combination treatments, multiplexed imaging, and cellular systems reflective of disease adaptations may help us to elucidate the molecular mechanisms of signaling pathway evolution in the context of cancer therapy. 
-
-\smallskip
 % The results in \cref{fig:benchmark_cellot}-\ref{fig:biological_analysis} are based on predictions on cells from the same sample but that were not used for training (i.i.d.~setting). The treatment effects can then be analyzed by scrutinizing the learned maps (cf.~\cref{fig:biological_analysis}). However, for predicting the treatment effect in practice, it is much more relevant 
-To evaluate \textsc{CellOT} by analyzing it's performance out-of-sample, i.e., on unseen cells originating from the same distribution, as well as on different sample compositions (o.o.d.~setting). 
+We evaluate \textsc{CellOT} by analyzing its performance out-of-sample, i.e., on unseen cells originating from the same distribution, as well as on different sample compositions (o.o.d.~setting). 
 This involves a task on predicting treatment responses in unseen lupus patients, infer developmental trajectories on stem cells of lower potency, and translate innate immune responses across patients (see \cref{fig:generalization_cellot}). 
-In all cases, \textsc{CellOT}'s accuracy and precision are superior to current state-of-the-art methods (\cref{fig:generalization_cellot}). Moreover, the predicted cell states after perturbation are still very close to the actually observed cell states. We consider these results as particularly promising, as it illustrates that accurate o.o.s.~and o.o.d.~predictions are indeed possible.
-
-\smallskip
+In all cases, \textsc{CellOT}'s accuracy and precision are superior to current state-of-the-art methods (\cref{fig:generalization_cellot}). Moreover, the predicted cell states after perturbation are still very close to the actually observed cell states. We consider these results as particularly promising, as it illustrates that accurate o.o.s.~and o.o.d.~predictions are indeed possible. \\
 
 The ability to make predictions out-of-distribution, such as on unseen patients, is, however, only feasible if (i.) similar samples have been observed in the unperturbed setting, and (ii.) the training set contains cases that are similar not only in their unperturbed state but also their perturbation response.
 An analysis of glioblastoma patients treated with Panobinostat \citep{zhao2021deconvolution} (see \cref{fig:gbm_patients_iid_ood}a-c) indeed confirms this restriction:
 \textsc{CellOT} and the baselines are able to predict treatment outcomes for those patients that are similar to other patients in both unperturbed state as well as perturbation effect (see \cref{fig:gbm_patients_iid_ood}f), but fail to capture perturbation effects for patients that exhibit unique responses (see \cref{fig:gbm_patients_iid_ood}g).
 This limitation is important to consider when applying \textsc{CellOT} in o.o.d. settings. To overcome such problems, 
-larger cohorts, additional meta-information, and methodological extensions are required. In \cref{cha:condot}, we partially address this issue by deriving a neural optimal transport scheme that can be conditioned on a context, e.g., patient meta-data, when predicting perturbation responses.
-
-\smallskip
+larger cohorts, additional meta-information, and methodological extensions are required. In \cref{cha:condot}, we partially address this issue by deriving a neural optimal transport scheme that can be conditioned on a context, e.g., patient metadata, when predicting perturbation responses. \\
 
 Lastly, concurrent developments in bioengineering aim at overcoming the technological limitation of destructive cell assays. \citet{chen2022live}, for example, propose a transcriptome profiling approach that preserves cell viability. \citet{weinreb2020lineage} capture cell differentiation processes while clonally connecting cells and their progenitors through barcodes. These methods thus offer (lower-throughput) insights that provide individual trajectories of cells over time, i.e., an alignment between distinct measurement snapshots.
-While \textsc{CellOT} is unable to incorporate such information into the learning process, in \cref{sec:sbalign} we propose a novel algorithmic framework connected to optimal transport that is able to make use of such (partially) aligned datasets \citep{shi2023diffusion, tong2023conditional, somnath2023aligned}. 
+While \textsc{CellOT} is unable to incorporate such information into the learning process, in \cref{sec:sbalign} we propose a novel algorithmic framework that is able to make use of such (partially) aligned datasets \citep{shi2023diffusion, tong2023conditional, somnath2023aligned, liu2023image}. 

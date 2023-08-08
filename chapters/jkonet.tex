@@ -16,8 +16,8 @@ Most of the material in this chapter has been already published in the following
 In \cref{part:static_not} we introduced \emph{static} neural optimal transport schemes to model how a distribution $\mu$ morphs into distribution $\nu$.
 Motivated by the task of predicting cellular responses to perturbation such as cancer drugs, \cref{cha:cellot} and \cref{cha:condot} aimed at parameterizing the \acrshort{OT} map $T$ (conditioned on a context $c$) to enable inferring treatment outcomes to \emph{unseen} cells, e.g., such as from a new patient.
 Perturbation responses of cells, however, are \emph{dynamic}: After applying perturbation $k$, cell states evolve over time.
-Capturing and modeling such processes continuously in time is crucial, to understand fine-grained mechanisms of cells.
-And while \cref{part:static_not} assumed that we only have access to the distributions of cell states before $\mu$ and after injecting perturbation $k$ $\nu_k$, many experimental techniques allow us to capture multiple snapshots of an evolving cell population $\mu_t$ over time $t$.
+Capturing and modeling such processes continuously in time is crucial to understand fine-grained mechanisms of cells.
+And while \cref{part:static_not} assumed that we only have access to the distributions of cell states before $\mu$ and after injecting perturbation $k$, $\nu_k$, many experimental techniques allow us to capture multiple snapshots of an evolving cell population $\mu_t$ over time $t$.
 
 Despite the growing availability of live imaging, most measurement technologies such as \acrshort{sc}\acrshort{RNA-seq} are destructive in nature (see \cref{sec:tech_background}).
 So while provided with multiple measurements $\{ \mu_0, \mu_1, \dots, \mu_T \}$, we are still dealing with \emph{unaligned} snapshots.
@@ -32,19 +32,19 @@ Specifically, the evolution of populations can be modeled by a drift-diffusion P
 These PDEs encapsulate the rate of change in the population due to both local effects (diffusion) and global effects (drift), reflecting the driving forces in the biological landscape \citep{teschendorff2021statistical, weinreb2018fundamental}.
 In the single-cell context, this translates into modeling how cell states evolve due to internal genetic factors and external environmental influences. Thus, the connection to PDEs and their links to gradient flow models offer a robust mathematical description for understanding the dynamics of populations at different scales, which we will explore next.
 
-\looseness -1 As the exact form of a PDE to model cellular dynamics is usually unknown, we propose in this chapter to model dynamics without necessarily having in mind PDE solutions in mind.
-Following in the footsteps of more general applications of the \acrlong{JKO} scheme~\citep[\S4.8]{santambrogio2017euclidean} introduced in \cref{sec:background_jko}, we instead interpret instead the \acrshort{JKO} step as a more general parametric type of dynamic for probability measures, exclusively parameterized by the energy $J$ itself.
+\looseness -1 As the exact form of a PDE to model cellular dynamics is usually unknown, we propose in this chapter to model dynamics without necessarily having the PDE solutions in mind.
+Following in the footsteps of more general applications of the \acrlong{JKO} scheme~\citep[\S4.8]{santambrogio2017euclidean} introduced in \cref{sec:background_jko}, we instead interpret  the \acrshort{JKO} step as a more general parametric type of dynamic for probability measures, exclusively parameterized by the energy $J$ itself.
 In developmental biology, for example, $J$ might represent an epigenetic landscape: Drawing from the metaphor of \citeauthor{waddington1957strategy}'s landscape, developmental biology commonly visualize cellular developmental pathways as marbles rolling down a complex landscape $J$ \citep{waddington1957strategy}, e.g., transforming cells from pluripotent states (capable of becoming any cell type) to highly specialized ones \citep{schiebinger2021reconstructing}. 
 % Each valley within this landscape represents a specific fate a cell might take, with the depth of the valley signifying the stability of the differentiated state.
 % Paths on the developmental manifold then describe the evolution of a time-varying probability distribution on a high-dimensional expression space, representing the continuous changes in cellular differentiation profiles over time.
 
-In order to learn such energy $J$ using only snapshots, we propose \textsc{JKOnet}, a neural architecture that computes (in end-to-end differentiable fashion) the JKO flow given a parametric energy and initial configuration of points.
+In order to learn such energy $J$ using only snapshots, we propose \textsc{JKOnet}, a neural architecture that computes (in end-to-end differentiable fashion) the JKO flow given a parametric energy $J_\phi$ and initial configuration of points.
 
 
 \paragraph{Related work.}
 
-When the observer only seeks to reconstruct particles' paths given starting and ending point cloud configurations, the machinery of optimal transport (OT)~\citep{schiebinger2019optimal,yang2020predicting,yang2018scalable} or likelihood-based normalizing flows (NF)~\citep{rezende2015variational,grathwohl2018ffjord} can be used, either separately, or even combined: \citet{tong2020trajectorynet} use OT to motivate a regularizer (squared norm of displacements) in their NF estimation pipeline; ~\citet{huang2021convex} restrict their attention to flows expressed as gradients of convex functions. This choice is motivated by OT because it agrees with the \citet{brenier1987decomposition} principle that displacements arising from convex potentials give rise to optimal flows.
-When the observer seeks instead a \textit{causal model}, namely one that is able to explain/predict future configurations of the point cloud (and not only interpolate between configurations), the parameters of that model can also be fitted with OT, as proposed by \citet{hashimoto2016learning}. Their model assumes a Langevin dynamic for the particles, driven by the gradient flow of a (neural) energy function; They fit the parameters of that network by minimizing regularized OT distances~\citep{cuturi2013sinkhorn} between their model's predictions and the corresponding ground truth snapshots. \\
+When the observer only seeks to reconstruct particles' paths given starting and ending point cloud configurations, the machinery of \acrlong{OT}~\citep{schiebinger2019optimal,yang2020predicting,yang2018scalable} or likelihood-based \acrfullpl{NF}~\citep{rezende2015variational,grathwohl2018ffjord} can be used, either separately, or combined: \citet{tong2020trajectorynet} use OT to motivate a regularizer (squared norm of displacements) in their NF estimation pipeline; ~\citet{huang2021convex} restrict their attention to flows expressed as gradients of convex functions. This choice is motivated by OT because it agrees with the \citet{brenier1987decomposition} principle that displacements arising from convex potentials give rise to optimal flows.
+When the observer seeks instead a \textit{causal model}, namely one that is able to explain/predict future configurations of the point cloud (and not only interpolate between configurations), the parameters of that model can also be fitted with OT, as proposed by \citet{hashimoto2016learning}. Their model assumes a Langevin dynamic for the particles, driven by the gradient flow of a (neural) energy function; They fit the parameters of that network by minimizing regularized OT distances \eqref{eq:ot-reg}~\citep{cuturi2013sinkhorn} between their model's predictions and the corresponding ground truth snapshots. \\
 % Conceptually, the approach of \citet{hashimoto2016learning} can do more than just interpolation, to instead provide a model that can be used to extrapolate/predict future configurations from initial configurations.
 % Both methods restrict themselves to interpolations and require access to the start and end points of the underlying dynamics.
 
@@ -365,10 +365,10 @@ While facilitating the training of the forward method in some settings, it likew
 \end{figure}
 
 \begin{figure}[t]
-    \includegraphics[width=.5\linewidth]{figures/fig_distribution_cell_types_Branches.pdf}
+    \includegraphics[width=.49\linewidth]{figures/fig_distribution_cell_types_Branches.pdf}
 %    \captionof{figure}{Distribution of cell lineage branch classes in the data or  predicted by \textsc{JKOnet} or the forward method.}
-	\qquad
-	\resizebox{.48\linewidth}{!}{%
+	\quad
+	\resizebox{.47\linewidth}{!}{%
     \begin{tabular}[b]{lcc}
     \toprule
          \textbf{Method} & \multicolumn{2}{c}{\textbf{Cell Lineage Classification}} \\
@@ -383,23 +383,23 @@ While facilitating the training of the forward method in some settings, it likew
     \bottomrule
     \end{tabular}
     }
-\caption{Evaluation of cell lineage branch classification performance of \textsc{JKOnet} and the forward method on the embryoid body scRNA-seq data based on the $\ell_1$-distance of the histograms and the Hellinger distance $D_{\mathrm{H}}$ \eqref{eq:hellinger} of the predicted branch class distributions (using 3 runs). \vspace{10pt}}
+\caption{Evaluation of cell lineage branch classification performance of \textsc{JKOnet} and the forward method on the embryoid body scRNA-seq data based on the $\ell_1$-distance of the histograms and the Hellinger distance $D_{\mathrm{H}}$ \eqref{eq:hellinger} of the predicted branch class distributions (using 3 runs).}
 \label{tab:exp_jkonet_cell_class}
 \end{figure}
 
 We investigate the ability of \textsc{JKOnet} to predict the evolution of cellular and molecular processes through time.
-The advent of single-cell profiling technologies has enabled the generation of high-resolution single-cell data, making it possible to profile individual cells at different stages in their development. 
-A key difficulty in learning the evolution of cell populations is that a cell is (usually)  destroyed during a measurement. Thus, although one is able to collect features at the level of individual cells, the same cell cannot be measured twice. Instead, we collect independent samples at each snapshot, resulting in \emph{unaligned} distributions across snapshots, without access to ground-truth single-cell trajectories. 
-The goal of learning individual dynamics is to identify ancestor and descendant cells and get a better understanding of biological differentiation or reprogramming mechanisms. 
-
-We apply \textsc{JKOnet} to embryoid body single-cell RNA sequencing (scRNA-seq) data \citep{moon2019visualizing}, describing the differentiation of human embryonic stem cells grown as embryoid bodies into diverse cell lineages over a period of 27 days. During this time, cells are collected at 5 different snapshots (day 1 to 3, day 6 to 9, day 12 to 15, day 18 to 21, day 24 to 27) and measured via scRNA-seq (resulting in $15,150$ cells).
-We run \textsc{JKOnet} as well as the baseline on the first 20 components of a \acrfull{PCA} of the $4,000$ highly differentiable genes.
+% The advent of single-cell profiling technologies has enabled the generation of high-resolution single-cell data, making it possible to profile individual cells at different stages in their development. 
+% A key difficulty in learning the evolution of cell populations is that a cell is (usually)  destroyed during a measurement. Thus, although one is able to collect features at the level of individual cells, the same cell cannot be measured twice. 
+In the following, we are provided with a single-cell dataset of independent samples of distinct \emph{unaligned} distributions at each snapshot \textit{without} access to ground-truth single-cell trajectories. 
+% The goal of learning individual dynamics is to identify ancestor and descendant cells and get a better understanding of biological differentiation or reprogramming mechanisms. 
+More concretely, we apply \textsc{JKOnet} to embryoid body sc\acrshort{RNA-seq} data \citep{moon2019visualizing}, describing the differentiation of human embryonic stem cells grown as embryoid bodies into diverse cell lineages over a period of 27 days. During this time, cells are collected at 5 different snapshots (day 1 to 3, day 6 to 9, day 12 to 15, day 18 to 21, day 24 to 27) and measured via scRNA-seq (resulting in $15,150$ cells).
+We run \textsc{JKOnet} as well as the baseline on the first 20 components of a \acrfull{PCA} of the $4,000$ highly differentiable genes. More details on the dataset are provided in \cref{app:dataset_moon}.
 We split the dataset into train and test data ($\sim 15 \%$) and parameterize both energy $J_\phi$ and ICNN $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$).
 
 \paragraph{Capturing spatio-temporal dynamics.}
 Given the samples from the cell population at day 1 to 3 (i.e., $\mathrm{data}_0$), \textsc{JKOnet} learns the underlying spatiotemporal dynamics giving rise to the developmental evolution of embryonic stem cells. 
-As no ground truth trajectories are available in the data, we use distributional distances, i.e., the entropy-regularized Wasserstein distance $W_\varepsilon$ \eqref{eq:ot-reg} \citep{flamary2021pot}, to measure the correctness of the predictions at each time step.
-We hereby measure the $W_\varepsilon$ discrepancy between data and predictions for one step ahead as well as inference of the entire evolution (all steps ahead) for each time step $t_i$, see results in Table~\ref{tab:exp_jkonet_cell_pred}. \textsc{JKOnet} outperforms the forward method in terms of $W_\varepsilon$ \eqref{eq:ot-reg} distance for both one-step ahead and all-steps ahead predictions for all time steps. 
+As no ground truth trajectories are available in the data, we use distributional distances, i.e., the entropy-regularized Wasserstein distance $W_\varepsilon$ \eqref{eq:ot-reg}, to measure the correctness of the predictions at each time step. 
+We hereby measure the $W_\varepsilon$ discrepancy between data and predictions for one step ahead as well as inference of the entire evolution (all steps ahead) for each time step $t_i$, see results in Table~\ref{tab:exp_jkonet_cell_pred}. For details on the selected evaluation metrics, see \cref{app:evaluation_metrics}. \textsc{JKOnet} outperforms the forward method in terms of $W_\varepsilon$ \eqref{eq:ot-reg} distance for both one-step ahead and all-steps ahead predictions for all time steps. 
 The performance of both methods is relatively stable even until days 24 to 27, i.e., the $W_\varepsilon$ distance does not significantly grow for future snapshots.
 We further visualize the first two principal components of the entire dataset (\cref{fig:exp_jkonet_cell}a) and of \textsc{JKOnet}'s predictions on the test dataset ($\sim 500$ cells per snapshot, \cref{fig:exp_jkonet_cell}d). 
 

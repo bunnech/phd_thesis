@@ -49,7 +49,7 @@ Due to the different transcriptional profiles of each cancer cell line, drug com
 The dataset contains $17,565$ control cells as well as a varying number of cells perturbed by different drugs with different dosages, i.e., $10\,$nM, $100\,$nM, $1,000\,$nM, $10,000\,$nM.
 
 \paragraph{Data preprocessing.}
-The data is available for download in the \acrfull{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4150378}{GSM4150378}.
+The dataset is available for download in the \acrfull{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM4150378}{GSM4150378}.
 For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}. The count matrix obtained from GEO consists of $581,777$ cells. The data were subset to half its size, with $290,888$ cells remaining after quality control for all $188$ different compounds. We proceeded with log-transformation and the selection of $1,000$ \acrfull{HVG} using \texttt{scanpy} \citep{wolf2018scanpy}.
 
 \paragraph{Feature selection.}
@@ -94,7 +94,7 @@ Thus, \citet{norman2019exploring} conducted single-cell, pooled transcriptional 
 The dataset consists of individual perturbations as well as joint overexpression of different genes, allowing us to study the phenotypic consequences of perturbing a pair of genes alone or in combination. The indicator matrix of all individual perturbations as well as those pairs available in combination can be found in \cref{fig:datasets_processing}a.
 
 \paragraph{Data preprocessing.}
-\looseness -1 The data is available for download in the \acrshort{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE133344}{GSE133344}.
+\looseness -1 The dataset is available for download in the \acrshort{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE133344}{GSE133344}.
 For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}.
 We discarded those genetic perturbations with less than $250$ cells, resulting in a dataset with $92$ individual perturbations and $84$ perturbations in combination.
 This further included, the exclusion of particular subsets of control cells with in total of $98,419$ remaining, data normalization, log-transformation, and selection of $1,500$ highly-variant genes using \texttt{scanpy} \citep{wolf2018scanpy}.
@@ -144,7 +144,7 @@ Directly linking whole-transcriptome descriptions of cells to their future fate 
 The resulting dataset consists of three snapshots taken on days 2, 4, and 6, respectively. While at day 2 most cells are undifferentiated, at later time points cells have developed into neutrophils, monocytes, megakaryocytes, mast cells, lymphoid precursors, erythrocytes, basophils, eosinophils, etc.
 
 \paragraph{Data preprocessing.}
-The data used in \cref{cha:cellot} and \cref{sec:sbalign} is available for download in the \acrshort{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE140802}{GSE140802}.
+The dataset used in \cref{cha:cellot} and \cref{sec:sbalign} is available for download in the \acrshort{GEO} database under accession number \href{https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE140802}{GSE140802}.
 For data quality control and preprocessing, we follow the analysis of \citet{lotfollahi2021compositional}, resulting in a dataset containing $130,861$ cells.
 After processing, each observation records the level of expression of $1,622$ different highly-variable genes as well as the following metainformation per cell:
 \begin{itemize}

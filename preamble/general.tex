@@ -52,7 +52,7 @@
 \setlength{\extrarowheight}{3pt}
 \newcommand{\tableheadline}[1]{\multicolumn{1}{c}{\spacedlowsmallcaps{#1}}}
 \newcommand{\myfloatalign}{\centering}
-\usepackage[tableposition=top]{caption}
+\usepackage{caption}
 \captionsetup[figure]{format=plain, font=footnotesize, labelfont=bf}
 \captionsetup[table]{format=plain, font=footnotesize, labelfont=bf}
 \usepackage{subcaption}
@@ -122,7 +122,7 @@ paragraph/.style = {inner sep=0pt,
 
 
 % Autoreferences
-\usepackage[hidelinks]{hyperref}
+\usepackage[hidelinks, unicode]{hyperref}
 \renewcommand*{\figureautorefname}{Figure}
 \renewcommand*{\tableautorefname}{Table}
 \renewcommand*{\partautorefname}{Part}
