@@ -21,9 +21,10 @@ They enable us to model not just a smoothed behavior, but also the variance and 
 Therefore, modeling cellular dynamics as stochastic processes is essential to capture the full spectrum of biological behaviors and understand the underlying mechanisms driving these intricate processes. 
 
 Consequently, the following chapter deals with the question of learning and identifying a stochastic process $\mathbb{P}_t$ that describes the evolution of a population $\mu_0$ at time point $t=0$ into a population $\mu_T$ at time $t=T$.
-To draw parallels to \cref{cha:bio_background}, $\mu_0$ and $\mu_1$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\mathbb{P}_0 = \distinit$ to $\mathbb{P}_1 = \distend$ might provide us with an understanding of how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
+To draw parallels to \cref{cha:bio_background}, $\mu_0$ and $\mu_T$ potentially represent gene expression samples of cells at time $0$ and $T=\horizon$. In this context, recovering the dynamics from $\mathbb{P}_0 = \distinit$ to $\mathbb{P}_1 = \distend$ might provide us with an understanding of how and why tumor cells evade cancer therapies \citep{frangieh2021multimodal} or to reconstruct developmental trajectories \citep{schiebinger2019optimal}.
 
-More concretely, the following chapter concerns \acrlongpl{SB}, a framework that combines the theory of optimal transport with stochastic optimal control formulations (see \cref{sec:background_sb}) and identifies a stochastic process $\mathbb{P}_t$ that represents the evolution of a thermodynamic system at almost equilibrium. 
+More concretely, the following chapter concerns \acrlongpl{SB}, a framework that combines the theory of optimal transport with stochastic optimal control formulations (see \cref{sec:background_sb}) and identifies a stochastic process $\mathbb{P}_t$ that represents the evolution of a thermodynamic system at almost equilibrium.
+
 The chapter is divided into two parts: 
 \cref{sec:gsbflow} builds on the realization that estimating such bridges is notoriously difficult. Here, we hypothesize that Gaussian approximations of the data can be used to construct a data-driven reference stochastic process needed to estimate SB. To that end, we solve the \acrshort{SB} problem with Gaussian marginals, for which we provide, as a central contribution, a closed-form solution and SDE representation. We use these formulas to define the reference process used to estimate more complex SBs and show that this does indeed help with its numerical solution.
 
@@ -44,7 +45,7 @@ Given two marginals $\distinit$ and $\distend$, we select a reference process $\
 \end{eqnarray}
 where we replaced $\nabla \log \Phi\left(t, X_t\right)$ in \eqref{eq:sb_forward} and $\nabla \log \widehat{\Phi}\left(t, X_t\right)$ in \eqref{eq:sb_backward} with $\SBfbase_\ctime, \SBbbase_\ctime \from \R^\vdim \to \R^\vdim$, i.e., two time-indexed smooth \emph{vector fields} called the optimal forward and backward drift, respectively. Note that \eqref{eq:SB-sde-backward} runs backward in time, i.e., from $\horizon \to 0$ \citep{anderson1982reverse}. % and satisfies many interesting properties \citep{nelson1967dynamical, leonard2013survey, chen2021stochastic}.
 Choosing $f$ and $g$ depending on the considered SDE class, the forward and backward policies $\SBfbase_\ctime, \SBbbase_\ctime$ are generally \emph{unknown}.
-Similar as in \acrfullpl{SGM} \citep{song2020score, hyvarinen2005estimation} which parameterize the score function, in order to \emph{estimate} the resulting \acrshort{SB} from data, we learn the forward and backward drift through neural networks with parameters $\paramf, \paramb$, i.e., $\SBf$ and $\SBb$. \\
+Similar as in \acrfullpl{SGM} \citep{song2020score, hyvarinen2005estimation} which parameterize the score function, in order to \emph{estimate} the resulting \acrshort{SB} from data, we learn the forward and backward drift through neural networks with parameters $\paramf, \paramb$, i.e., $\SBf$ and $\SBb$. For a visualization of the resulting parameterization, see \cref{fig:principle_dsb}. \\
 
 \begin{figure}[t]
 	\centering
@@ -56,7 +57,7 @@ Similar as in \acrfullpl{SGM} \citep{song2020score, hyvarinen2005estimation} whi
 Several estimators and training procedures for the so-called \acrfull{DSB}, i.e., for learning $\SBfbase_\ctime$ and $\SBbbase_\ctime$, have been proposed based on either Gaussian processes \citep{vargas2021solving}, dual potentials \citep{finlay2020learning}, or neural networks \citep{de2021diffusion, chen2021likelihood}.
 In this thesis, we consider the likelihood training framework by \citet{chen2021likelihood} grounded on \acrfull{FBSDE} theory \citep{ma1999forward, exarchos2018stochastic}. Crucially, these \acrshortpl{FBSDE} can be used to construct the likelihood objectives for \acrshortpl{SB} that, surprisingly, generalize the ones for \acrshortpl{SGM} as special cases. 
 
-The negative likelihood function for $\paramf$ and $\paramb$ are then given by
+The negative likelihood functions for $\paramf$ and $\paramb$ are then given by
 \begin{subequations}
 \begin{align}
 \lossb =  \int_0^\horizon \mathbb{E}_{\eqref{eq:SB-sde-forward}}\Big[ \frac{1}{2}\norm{\SBbbase^{\paramb}_\ctime}^2 &+\volatbase \Div \SBbbase^{\paramb}_\ctime+ \inner{\SBfbase^{\paramf}_\ctime}{\SBbbase^{\paramb}_\ctime} \dt \Big\vert \sde[0] = \point_0 \Big] ,  \\
@@ -617,15 +618,14 @@ Although there are numerous algorithms for generative modeling, to our knowledge
 
 This is demonstrated on synthetic data as well as a task from molecular biology concerned with modeling the dynamics of cellular systems, i.e., single-cell genomics \citep{macosko2015highly, frangieh2021multimodal, kulkarni2019beyond}.
 
-\begin{figure}[t]
-     \centering
-         \centering
-         \includegraphics[width=0.8\linewidth]{figures/fig_pred_gsbve_toy_spiral_moon.pdf}
-         \caption{Illustration of the time-dependent drifts learned by \textsc{GSBflow} with VE SDE for two toy marginal distributions. \emph{Top.} Evolution of $\distend$ (moons) $\rightarrow \distinit$ (spiral) via backward policy {\color{blue} $\SBb$}. \emph{Bottom.} Evolution of $\distinit$ (spiral) $\rightarrow \distend$ (moons) via forward policy {\color{pink} $\SBf$}.}
-        \label{fig:res_synthetic}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/fig_pred_gsbve_toy_spiral_moon.pdf}
+	\caption{Illustration of the time-dependent drifts learned by \textsc{GSBflow} with VE SDE for two toy marginal distributions. \emph{Top.} Evolution of $\distend$ (moons) $\rightarrow \distinit$ (spiral) via backward policy {\color{blue} $\SBb$}. \emph{Bottom.} Evolution of $\distinit$ (spiral) $\rightarrow \distend$ (moons) via forward policy {\color{pink} $\SBf$}.}
+	\label{fig:res_synthetic}
 \end{figure}
 
-\begin{table}[t]
+\begin{table}[ht]
     \caption{Evaluation of predictive performance w.r.t. the entropy-regularized Wasserstein distance $W_\varepsilon$ \citep{cuturi2013sinkhorn} of \textsc{GSBflow} and baselines on generating different single-cell datasets (using 3 runs).}
     \label{tab:exp_wasserstein_cells}
     \centering
@@ -657,13 +657,12 @@ Our first task involves recovering the stochastic evolution of two-dimensional s
 While it is sufficient to parameterize only a single policy ({\color{blue} $\SBb$}) in generative modeling, the task of learning to evolve $\distinit$ into $\distend$ requires one to recover \emph{both} vector fields {\color{blue} $\SBb$} and {\color{pink} $\SBf$}.
 As demonstrated in \cref{fig:res_synthetic}, \textsc{GSBflow} is able to successfully learn both policies {\color{pink} $\SBf$} and {\color{blue} $\SBb$} and reliably recovers the corresponding targets of the forward and backward evolution. While initializing the reference process through the closed-form SB between the Gaussian approximations of both synthetic datasets provides good results, the power of \textsc{GSBflow} becomes evident in more complex applications which we tackle next.
 
-\begin{figure*}
+\begin{figure}[t]
      \centering
-         \centering
-         \includegraphics[width=\textwidth]{figures/fig_marginals_schiebinger_pcs_cropped.pdf}
-         \caption{The expression levels of the first 10 principal components from the dataset by \citet{schiebinger2019optimal}.}
-\label{fig:gaussianMain}
-\end{figure*}
+	\includegraphics[width=\textwidth]{figures/fig_marginals_schiebinger_pcs_cropped.pdf}
+ 	\caption{The expression levels of the first 10 principal components from the dataset by \citet{schiebinger2019optimal}.}
+	\label{fig:gaussianMain}
+\end{figure}
 
 \subsubsection{Single-Cell Dynamics}
 \label{sec:gsbflow_cell}
@@ -675,20 +674,20 @@ Let us consider the evolution of single-cell populations, for which we can colle
 
 \subsubsection*{Our choice of $\refsde$; the \textsc{GSBflow}.}
 
-Instead of directly diving into the numerical solution of \acrshortpl{SB} as in \citet{chen2021likelihood}, we first empirically verify that the distributions $\distinit,\distend$ in single-cell genomics are typically close to \emph{non-standard} Gaussian distributions (see \cref{fig:gaussianMain} for the canonical dataset by \citet{schiebinger2019optimal}). 
-
-\begin{figure*}
-     \centering
-     \includegraphics[width=\textwidth]{figures/fig_all_predictions.pdf}
-    \caption{\textbf{a.}-\textbf{b.} Visual evaluation of the ability of our method to model the \textbf{generation} of data from \textbf{a.} \citet{moon2019visualizing} and \textbf{b.} \citet{schiebinger2019optimal}. Density plots are visualized in 2D PCA space and show generated data points using either \textsc{GSBflow} (our method) or the procedure in \citet{song2020score}. \textbf{c.} Evaluation of \textsc{GSBflow}'s ability to model the entire \textbf{evolution} of a developmental process of \citet{moon2019visualizing}, visualized by the data and \textsc{GSBflow} predictions colored by the lineage branch class.}
-    \label{fig:all_results}
-\end{figure*}
+Instead of directly diving into the numerical solution of \acrshortpl{SB}, we first empirically verify that the distributions $\distinit,\distend$ in single-cell genomics are typically close to \emph{non-standard} Gaussian distributions (see \cref{fig:gaussianMain} for the canonical dataset by \citet{schiebinger2019optimal}). 
 
 Since the solutions of \acrshortpl{SB} are Lipschitz in terms of $\distinit,\distend$ \citep{carlier2022lipschitz}, a reasonable approximation to the original \acrshort{SB} objective is to replace $\distinit,\distend$ by Gaussians with matching moments. This results in a \acrshort{GSB} problem which can be solved in closed form by our \cref{thm:gaussian_sb}. Intuitively, if we denote an existing prior process by $\refsde$ and the solution of its corresponding \acrshort{GSB} by $\Xsol$, then $\Xsol$ presents a more appealing prior process than $\refsde$ since it carries the moment information of $\distinit$ and $\distend$, whereas $\refsde$ is completely data-oblivious.
 
 Motivated by these observations, we propose a simple modification of the framework in \citet{chen2021likelihood}: Replace the prior process $\refsde$ by its \acrshort{GSB} approximation and keep everything else the same. The resulting scheme, which we term the \textsc{GSBflow}, learns a pair of forward {\color{pink} $\SBf$} and backward parametrized drifts {\color{blue} $\SBb$} that progressively transport samples from $\distinit \rightarrow \distend$ and $\distend \rightarrow \distinit$, respectively. The full algorithm is presented in \cref{alg:GSBflow} for completeness.
 
 \subsubsection*{Single-cell genomics via \acrshortpl{GSB}.}
+
+\begin{figure}[ht]
+     \centering
+     \includegraphics[width=\textwidth]{figures/fig_all_predictions.pdf}
+    \caption{\textbf{a.}-\textbf{b.} Visual evaluation of the ability of our method to model the \textbf{generation} of data from \textbf{a.} \citet{moon2019visualizing} and \textbf{b.} \citet{schiebinger2019optimal}. Density plots are visualized in 2D PCA space and show generated data points using either \textsc{GSBflow} (our method) or the procedure in \citet{song2020score}. \textbf{c.} Evaluation of \textsc{GSBflow}'s ability to model the entire \textbf{evolution} of a developmental process of \citet{moon2019visualizing}, visualized by the data and \textsc{GSBflow} predictions colored by the lineage branch class.}
+    \label{fig:all_results}
+\end{figure}
 
 \paragraph{Generative modeling setting.}
 \looseness -1 We investigate the ability of \textsc{GSBflow} to generate cell populations $\distend$ from noise $\Ncal_0$ ($\Ncal_0 \rightarrow \distend$, \cref{fig:all_results}a, b) on the canonical datasets \citep{moon2019visualizing, schiebinger2019optimal}; as well as to predict the dynamics of single-cell genomics ($\distinit \rightarrow \distend$, \cref{fig:all_results}c) \citep{moon2019visualizing}, i.e., the inference of cell populations $\distend$ resulting from the developmental process of an initial cell population $\distinit$, with the goal of learning individual dynamics, identify ancestor and descendant cells. 

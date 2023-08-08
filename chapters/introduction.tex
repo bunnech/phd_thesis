@@ -86,7 +86,9 @@ In particular, \citeauthor{brenier1987decomposition}'s dynamical formulation of 
 This thesis highlights the connections of OT to PDEs such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme: In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} 
 it has found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
 
-\cref{cha:neural_pde} introduces a reformulation of the JKO objective that allows for gradient-based learning in an end-to-end fashion. Further, it proposes \textsc{JKOnet}, a neural network architecture that models the collective dynamics of particle populations based on a parameterized energy by learning the causal JKO flow from measurement snapshots, trading off energy improvements with closeness to previous configurations, and demonstrating robust performance \citep{bunne2022proximal}.
+\cref{cha:neural_pde} introduces a reformulation of the JKO objective that allows for gradient-based learning in an end-to-end fashion. Further, it proposes \textsc{JKOnet}, a neural network architecture that models the collective dynamics of particle populations unsing a parameterized energy by learning the causal JKO flow from measurement snapshots,
+% trading off energy improvements with closeness to previous configurations
+demonstrating robust performance across a variety of settings \citep{bunne2022proximal}.
 
 Lastly, beyond PDEs, this thesis explores the link between the optimal transport problem and the \acrfull{SB} problem from stochastic control. It represents a key connection that has recently fueled the development of \acrfull{DSB} \citep{de2021diffusion, chen2021stochastic, liu2022deep, bunne2022recovering}. Estimating such bridges, however, is notoriously difficult, motivating our contributions in \cref{cha:neural_sde} that propose novel adaptive schemes:
 
@@ -147,62 +149,9 @@ Early events in cell signaling, for example, often start within seconds after th
 Measuring and modeling these inherently stochastic dynamics is critical to the effective understanding of biological systems and the subsequent development of diagnostic and therapeutic tools.
 However, they are equally daunting, demanding novel experimental and computational strategies.
 
-This section of the thesis will discuss prime examples of dynamical processes in biomedicine that are subject of this thesis. 
+After discussing current advances in high-throughput technologies for capturing dynamical systems in biomedicine (\cref{sec:tech_background}), we will discuss prime examples of such processes that are subject of this thesis. 
 These are: the analysis of cellular responses to perturbations such as drugs or other therapeutic agents (\cref{sec:cell_perturbation_responses}) and secondly, the cell differentiation processes in developmental biology (\cref{sec:cell_differentiation}). We will illuminate the critical role they play in biomedicine and the myriad of challenges and opportunities they present. 
-This will be followed by a discussion on current advances in high-throughput technologies for capturing such dynamical systems (\cref{sec:tech_background}) and existing computational approaches that study these dynamical processes (\cref{sec:related_work_bio}).
-
-\section{Cellular Perturbation Responses to Drugs and Treatments}
-\label{sec:cell_perturbation_responses}
-
-% TODO: Add more citations.
-A fundamental task in personalized medicine involves predicting outcomes and responses of patients to potential treatments from the patient biopsies or tissue culture during screens. This would allow us to subsequently select the most effective therapy for each patient.
-A key aspect of biomedical research thus concerns the study of cellular perturbation responses to therapeutic agents, including drugs and other treatments.
-Perturbations such as small molecule drugs can have profound effects on the biological \emph{phenotype} that responds in complex and often unpredictable ways.
-Such responses might range from the induction of apoptosis to changes in cellular proliferation, migration, differentiation, and metabolism, each significantly affecting the overall state of the organism. 
-Perturbations can also trigger cascade effects across interrelated signaling pathways, leading to a state of cellular disequilibrium.
-
-Populations of cells are almost always \emph{heterogeneous} in function and fate and different cell states exhibit distinct sensitivities toward a external stimuli \citep{spiller2010measurement}.
-Subsequently, their responses to a perturbation strongly varies.
-Heterogeneity is particular inherent in cancer and fuel for drug \emph{resistance}: 
-Cancer frequently results from damage to multiple genes controlling cell division and tumor suppressors.
-A defect in the regulation of any of these mechanisms often results in genomic instability, which involves single-base substitutions to whole-genome doublings and
-is critical to the emergence and progression of many cancers \citep{dagogo2018tumour}. Understanding diverging behavior of tumor cells in response to a therapy is crucial in order to understand the underlying mechanisms of cellular sensitivities and resistance.
-% Thus, understanding responses of individual cells and distinct cell states to perturbations is crucial as they can illuminate mechanisms of drug efficacy and potential side effects.
-At the same time it reveals potential targets for improved therapeutic strategies.
-
-% TODO: Which context?
-Most of these effects depend on the context in which the perturbation occurs. Given the heterogeneity among single cells in cell populations and tissues, predicting cellular responses requires understanding the rules by which context shapes genome activity and its response to drugs. High-dimensional single-cell data measured via single-cell genomics or multiplexed imaging technologies can provide this contextual information but only return unpaired or unaligned observations of cell populations.
-In order to understand how an unperturbed population $\mu$ responds and evolves into the perturbed population $\nu$, we need to recover a map $T$ that describes the perturbation effect, i.e., how a distribution $\mu$ evolves into $\nu$ upon perturbation $T_\sharp \mu = \nu$. Parameterizing this through a neural network allows us to predict how a cell $x$ changes upon perturbation into the perturbed state $y= T(x)$ (see \cref{fig:bio_problems}a).
-
-% However, capturing this cellular responsiveness presents considerable challenges due to the heterogeneity of individual cells, the dynamism of biological systems, and the multi-dimensional interactions occurring within and across cells.
-
-% Recent high-throughput methods provide great insights on how cell populations respond to various perturbations on the level of individual cells. The provided data, however, is non-time-resolved and unaligned. 
-% Hence, snapshots taken of biological samples before and after perturbations do not provide information on single-cell trajectories.
-% Perturbations might include the application of drugs affecting molecular functions in cells, or changes in the cellular environment causing shifts in biological signaling, thus impacting cells and their states in various ways.
-
-\begin{figure}[t]
-  \includegraphics[width=\textwidth]{figures/fig_bio_problems.pdf}
-  \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} In order to understand and predict the response of an unperturbed cell population $\mu$ to a stimulus such as a therapeutic agent, we need to identify a map $T$ that explains its evolution into the perturbed population $\nu$. Then, the perturbed state of a cell $x$ is given by $T(x)$.  \textbf{b.} Developmental processes describe the evolution of a often homogeneous population of undifferentiated cells into various cell lineages. Reconstructing such processes from measurement snapshots can be achieved through sequential alignments $P_{t-1,t}$ that describe the evolution from $\mu_0$ to $\mu_1$, or by identifying the overall global path $\mu_t$ capturing the cell differentiation process.}
-  \label{fig:bio_problems}
-\end{figure}
-
-\section{Lineage Tracing in Developmental Biology}
-\label{sec:cell_differentiation}
-
-Complex cellular dynamics are not only initiated through external stimuli, but also during developmental processes, tissue regeneration, and formation.
-The spectacular journey of a single zygote in the embryonic development, for example, metamorphosing into a complex, multicellular organism, is largely governed by the mechanisms of cell differentiation, where pluripotent stem cells commit to specific lineages and mature into diverse cell types.
-
-Understanding the molecular programs that guide such differentiation processes is a major challenge.
-% Lineage tracing serves as a powerful tool to retrospectively track the genealogical origin of cells, helping to construct an in-depth chronicle of cellular development and differentiation. It unravels the developmental trajectory of cells, thus facilitating the understanding of normal development as well as pathological conditions.
-% However, capturing this process with accuracy poses profound challenges due to the stochastic nature of cell differentiation, technical complexities, and the vast temporal and spatial scales involved.
-However, approaches relying on the bulk analysis of cell populations fall short in tackling these issues, as they fail to offer comprehensive solutions to two key obstacles: identifying various cell types within a population and tracking the development of each of these types.
-By providing insights into the heterogeneity of cell populations, single-cell methods partially address the aforementioned challenges, but their destructive nature impedes the recording of the expression of the same cell and its direct descendants across time.
-Hence, such differentiation processes can only be measured through distinct snapshots of single-cell populations that are \textit{not time-resolved} and \textit{unaligned} (see \cref{fig:bio_problems}b).
-
-To understand differentiation ---the continuous emergence of different cell types and branching events--- we need to reconstruct such developmental processes from single-cell measurements that provide us with snapshots of the cell population evolving over time:
-Given that a cell has a specific expression profile at a time point, where will its descendants likely be at a later time point and where are its likely ancestors at an earlier time point? 
-\citet{schiebinger2019optimal} for example study reprogramming of fibroblasts to \acrfull{iPSC} \citep{takahashi2006induction}, by measuring \acrfull{MEF}. Cells at time point $t$ are connected to their ancestors at time $t-1$, by finding the corresponding transport plan $P_{t-1,t}$ between each pair of consecutive time steps (see \cref{fig:bio_problems}b).
-To understand the overall dynamic process, however, this thesis aims at identifying the evolution of a measure through recovering a \emph{continuous} path $\mu_t$ instead of resorting to the computation of distinct alignments between consecutive measurement snapshots \citep{lavenant2021towards} (see \cref{fig:bio_problems}b).
+This will be followed by a discussion on existing computational approaches that study these dynamical processes (\cref{sec:related_work_bio}).
 
 
 \section{Single-Cell High-Throughput Technologies}
@@ -250,6 +199,59 @@ High-content imaging, particularly when augmented by multiplexing abilities, is 
 In this thesis, we study heterogeneous cell line responses to various cancer drugs based on a measurement technology known as \acrfull{4i} \citep{gut2018multiplexed}.
 With 4i, cells are fixed and fluorescently labeled antibodies are iteratively hybridized, imaged, and removed from a sample to measure the abundance and localization of proteins and their modifications. 
 Thus, 4i quickly generates large, spatially resolved phenotypic datasets rich in molecular information from thousands of treated and untreated cells. Additionally to the multiplexed information generated by 4i, cellular and nuclear morphology are routinely extracted from microscopy images (without the need for 4i) by image analysis algorithms \citep{carpenter2006cellprofiler}.
+
+\section{Cellular Perturbation Responses to Drugs and Treatments}
+\label{sec:cell_perturbation_responses}
+
+% TODO: Add more citations.
+A fundamental task in personalized medicine involves predicting outcomes and responses of patients to potential treatments from the patient biopsies or tissue culture during screens. This would allow us to subsequently select the most effective therapy for each patient.
+A key aspect of biomedical research thus concerns the study of cellular perturbation responses to therapeutic agents, including drugs and other treatments.
+Perturbations such as small molecule drugs can have profound effects on the biological \emph{phenotype} that responds in complex and often unpredictable ways.
+Such responses might range from the induction of apoptosis to changes in cellular proliferation, migration, differentiation, and metabolism, each significantly affecting the overall state of the organism. 
+Perturbations can also trigger cascade effects across interrelated signaling pathways, leading to a state of cellular disequilibrium.
+
+Populations of cells are almost always \emph{heterogeneous} in function and fate and different cell states exhibit distinct sensitivities toward a external stimuli \citep{spiller2010measurement}.
+Subsequently, their responses to a perturbation strongly vary.
+Heterogeneity is particular inherent in cancer and fuel for drug \emph{resistance}: 
+Cancer frequently results from damage to multiple genes controlling cell division and tumor suppressors.
+A defect in the regulation of any of these mechanisms often results in genomic instability, which involves single-base substitutions to whole-genome doublings and
+is critical to the emergence and progression of many cancers \citep{dagogo2018tumour}. Understanding diverging behavior of tumor cells in response to a therapy is crucial in order to understand the underlying mechanisms of cellular sensitivities and resistance.
+% Thus, understanding responses of individual cells and distinct cell states to perturbations is crucial as they can illuminate mechanisms of drug efficacy and potential side effects.
+At the same time it reveals potential targets for improved therapeutic strategies.
+
+% TODO: Which context?
+Most of these effects depend on the context in which the perturbation occurs. Given the heterogeneity among single cells in cell populations and tissues, predicting cellular responses requires understanding the rules by which context shapes genome activity and its response to drugs. High-dimensional single-cell data measured via single-cell genomics or multiplexed imaging technologies can provide this contextual information but only return unpaired or unaligned observations of cell populations.
+In order to understand how an unperturbed population $\mu$ responds and evolves into the perturbed population $\nu$, we need to recover a map $T$ that describes the perturbation effect, i.e., $T_\sharp \mu = \nu$. Parameterizing this through a neural network then allows us to predict how a cell $x$ changes upon perturbation into the perturbed state $y= T(x)$ (see \cref{fig:bio_problems}a).
+
+% However, capturing this cellular responsiveness presents considerable challenges due to the heterogeneity of individual cells, the dynamism of biological systems, and the multi-dimensional interactions occurring within and across cells.
+
+% Recent high-throughput methods provide great insights on how cell populations respond to various perturbations on the level of individual cells. The provided data, however, is non-time-resolved and unaligned. 
+% Hence, snapshots taken of biological samples before and after perturbations do not provide information on single-cell trajectories.
+% Perturbations might include the application of drugs affecting molecular functions in cells, or changes in the cellular environment causing shifts in biological signaling, thus impacting cells and their states in various ways.
+
+\begin{figure}[t]
+  \includegraphics[width=\textwidth]{figures/fig_bio_problems.pdf}
+  \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} In order to understand and predict the response of an unperturbed cell population $\mu$ to a stimulus such as a therapeutic agent, we need to identify a map $T$ that explains its evolution into the perturbed population $\nu$. Then, the perturbed state of a cell $x$ is given by $T(x)$.  \textbf{b.} Developmental processes describe the evolution of a often homogeneous population of undifferentiated cells into various cell lineages. Reconstructing such processes from measurement snapshots can be achieved through sequential alignments $P_{t-1,t}$ that describe the evolution from $\mu_0$ to $\mu_1$, or by identifying the overall global path $\mu_t$ capturing the cell differentiation process.}
+  \label{fig:bio_problems}
+\end{figure}
+
+\section{Lineage Tracing in Developmental Biology}
+\label{sec:cell_differentiation}
+
+Complex cellular dynamics are not only initiated through external stimuli, but also during developmental processes, tissue regeneration, and formation.
+The spectacular journey of a single zygote in the embryonic development, for example, metamorphosing into a complex, multicellular organism, is largely governed by the mechanisms of cell differentiation, where pluripotent stem cells commit to specific lineages and mature into diverse cell types.
+
+Understanding the molecular programs that guide such differentiation processes is a major challenge.
+% Lineage tracing serves as a powerful tool to retrospectively track the genealogical origin of cells, helping to construct an in-depth chronicle of cellular development and differentiation. It unravels the developmental trajectory of cells, thus facilitating the understanding of normal development as well as pathological conditions.
+% However, capturing this process with accuracy poses profound challenges due to the stochastic nature of cell differentiation, technical complexities, and the vast temporal and spatial scales involved.
+However, approaches relying on the bulk analysis of cell populations fall short in tackling these issues, as they fail to offer comprehensive solutions to two key obstacles: identifying various cell types within a population and tracking the development of each of these types.
+By providing insights into the heterogeneity of cell populations, single-cell methods partially address the aforementioned challenges, but their destructive nature impedes the recording of the expression of the same cell and its direct descendants across time.
+Hence, such differentiation processes can only be measured through distinct snapshots of single-cell populations that are \textit{not time-resolved} and \textit{unaligned} (see \cref{fig:bio_problems}b).
+
+To understand differentiation ---the continuous emergence of different cell types and branching events--- we need to reconstruct such developmental processes from single-cell measurements that provide us with snapshots of the cell population evolving over time:
+Given that a cell has a specific expression profile at a time point, where will its descendants likely be at a later time point and where are its likely ancestors at an earlier time point? 
+\citet{schiebinger2019optimal} for example study reprogramming of fibroblasts to \acrfull{iPSC} \citep{takahashi2006induction}, by measuring \acrfull{MEF}. Cells at time point $t$ are connected to their ancestors at time $t-1$, by finding the corresponding transport plan $P_{t-1,t}$ between each pair of consecutive time steps (see \cref{fig:bio_problems}b).
+To understand the overall dynamic process, however, this thesis aims at identifying the evolution of a measure through recovering a \emph{continuous} path $\mu_t$ instead of resorting to the computation of distinct alignments between consecutive measurement snapshots \citep{lavenant2021towards} (see \cref{fig:bio_problems}b).
 
 % \section{Related Work on Studying Cell Dynamics}
 

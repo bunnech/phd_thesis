@@ -187,10 +187,11 @@ For more details, see \cref{sec:neural_solvers}.
 
 \section{Empirical Evaluation} \label{sec:evaluation_condot}
 
-\looseness -1 Biological cells undergo changes in their molecular profiles upon chemical, genetic, or mechanical perturbations. These changes can be measured using recent technological advancements in high-resolution multivariate single-cell biology. Measuring single cells in their unperturbed or perturbed state requires, however, destroying them, resulting in populations $\mu$ and $\nu$ that are unpaired. The relevance of OT to that comes from its ability to resolve such ambiguities through OT maps, 
+% \looseness -1 Biological cells undergo changes in their molecular profiles upon chemical, genetic, or mechanical perturbations. These changes can be measured using recent technological advancements in high-resolution multivariate single-cell biology. Measuring single cells in their unperturbed or perturbed state requires, however, destroying them, resulting in populations $\mu$ and $\nu$ that are unpaired. The relevance of OT to that comes from its ability to resolve such ambiguities through OT maps, 
 % which can provide more general functions that can predict molecular responses, 
-holding promises of a better understanding of health and disease. 
-We consider various high-dimensional problems arising from this scenario to evaluate the performance of \textsc{CondOT} versus other baselines.
+% holding promises of a better understanding of health and disease. 
+In the following, we consider various tasks that involve predicting high-dimensional single-cell responses toward a perturbation, here cancer drugs or genetic perturbations. 
+To evaluate the performance of \textsc{CondOT} versus other baselines, we will consider contexts of various nature ranging from the applied drug dosage (\cref{sec:eval_scalar}) and considered cell line (\cref{sec:eval_covariate}) to the selected genetic perturbation, possibly in combination (\cref{sec:eval_action}).
 % Here we assume that  capture that cells at any time are drawn from a probability distribution in gene-expression space.
 
 \subsection{Modeling Dosage-Sensitive Treatment Responses to Cancer Drugs} \label{sec:eval_scalar}
@@ -232,6 +233,7 @@ To illustrate this problem, we consider cell populations comprising three differ
 Figure~\ref{fig:exp_scalar_sciplex}b displays a gene showing highly various responses towards the drug Givinostat dependent on the cell line. \textsc{CondOT} captures the distribution shift from control to target populations consistently across different cell lines.
 
 \subsection{Inferring Genetic Perturbation Responses}
+\label{sec:eval_action}
 
 \looseness -1 To recommend personalized medical procedures for patients, or to improve our understanding of genetic circuits, it is key to be able to predict the outcomes of novel perturbations, arising from combinations of drugs or genetic perturbations. 
 Rather than learning individual maps $T_\theta^a$ predicting the effect of individual treatments, we aim at learning a global map  $\mathcal{T}_\theta$ which, given as input the unperturbed population $\mu$ as well as the action $a$ of interest, predicts the cell state perturbed by $a$.
