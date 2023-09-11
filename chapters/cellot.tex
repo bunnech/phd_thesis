@@ -47,7 +47,7 @@ The majority of existing methods employ \acrshort{OT} as a loss function to comp
 More recently, however, the focus has shifted to parameterizing the \acrshort{OT} map $T$ \eqref{eq:monge} \citep{yang2018scalable, rout2021generative, daniels2021score}. Such parameterized OT maps not only function as generative models but extend to tasks that involve interpolations between distributions. More concretely, neural network-based parameterizations of $T$ allow us to model the continuous evolution from a measure $\mu$ into a measure $\nu$ \citep{tong2020trajectorynet}, which we will discuss in \cref{part:dynamic_not} of this thesis.
 
 Multiple strategies exist on how to parameterize the optimal transport problem.
-In the following, we consider neural \acrshort{OT} solvers that make direct use of the \citeauthor{brenier1987decomposition} theorem (\cref{thm:brenier}) and are based on the semi-dual \eqref{eq:dual-cvx}. For a review of alternative approaches, see \cref{sec:other_neural_solvers}.
+In the following, we consider neural \acrshort{OT} solvers that make direct use of the \nameref{thm:brenier} and are based on the semi-dual \eqref{eq:dual-cvx}. For a review of alternative approaches, see \cref{sec:other_neural_solvers}.
 For convenience, let us restate the semi-dual formulation in \eqref{eq:dual-cvx}
 \begin{equation*}
 	\varphi^\star \leftarrow \arg\inf_{\varphi\, \text{convex}} \int \varphi \textrm{d}\mu + \int \varphi^*\textrm{d}\nu\,,
@@ -111,7 +111,7 @@ More concretely, \citet{uscidda2023monge} introduce the Monge gap regularizer de
 \begin{equation*}
 	\int c(x, T_\theta(x)) \textrm{d} \mu(x) - W_c(\mu, T_\theta \sharp \mu)
 \end{equation*}
-that, if $0$, guarantees that $T_\theta$ is a $c$-OT map. For $c(x,y) = \|x-y\|^2_2$ and $\gX = \gY = \mathbb{R}^d$, for example, $T_\theta$ corresponds to a gradient of a convex function (\cref{thm:brenier}).
+that, if $0$, guarantees that $T_\theta$ is a $c$-OT map. For $c(x,y) = \|x-y\|^2_2$ and $\gX = \gY = \mathbb{R}^d$, for example, $T_\theta$ corresponds to a gradient of a convex function (\nameref{thm:brenier}).
 The advantage of such methods is that they generalize to all cost functions $c$ and are note restricted to the squared Euclidean distance.
 
 

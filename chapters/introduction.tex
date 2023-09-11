@@ -18,11 +18,11 @@ Similarly, advances in imaging technology provide tools to map the spatial organ
 
 The ability of single-cell high-throughput methods to produce routinely millions of data points holds multiple promises. They do, however, come with several limitations: 
  Most prominently, they are typically destructive assays as cells are usually fixed and stained or chemically destroyed to obtain measurements. Thus, they produce data points that are not \textit{aligned}, meaning that the same cell cannot be observed twice nor can we record continuous time trajectories of it.
-Since many of the most pressing questions in the field involve modeling and understanding the dynamic responses of heterogeneous cell populations to various stimuli, such as environmental signals, developmental processes, genetic perturbations, or drug treatments, there is a pressing need to provide algorithms that can circumvent that limitation and (\colcircle{lightblue}) \textbf{reconstruct such dynamical processes}. 
+Since many of the most pressing questions in the field involve modeling and understanding the dynamic responses of heterogeneous cell populations to various stimuli, such as environmental signals, developmental processes, genetic perturbations, or drug treatments, there is a pressing need to provide algorithms that can circumvent that limitation and (\coldiamond{lightblue}) \textbf{reconstruct such dynamical processes}. 
 This constraint is particularly acute in the field of personalized medicine, where the goal is precisely to understand the dynamic response of a patient's cells to a stimulus, and would therefore rest, in theory, on the ability to observe the same cell before and after treatment. \\
 
 Significantly, the diversity within a cell population, or \textit{cellular heterogeneity}, plays a crucial role in determining how sensitive or resistant cells are to perturbations.
-Rather than resorting to population averages, we need to (\colcircle{pink}) \textbf{model the problem at the particle level}, e.g., based on distributions of single cells, in order to capture and then further analyze the distinct cells' responses to a perturbation. 
+Rather than resorting to population averages, we need to (\colstar{pink}) \textbf{model the problem at the particle level}, e.g., based on distributions of single cells, in order to capture and then further analyze the distinct cells' responses to a perturbation. 
 This requires scalable and principled algorithms that are well aligned with the constrained experimental settings of high-throughput methods and incorporate the inherent structure of biological processes. \\
 
 Beyond, to effectively derive complex and nonlinear dynamic processes \textit{from data}, it is essential to (\colcircle{blue}) \textbf{develop neural network-based parameterizations} of such processes.
@@ -33,15 +33,15 @@ However, despite recent successes of deep learning in many areas such as compute
 At the heart of this challenge lies the problem of inductive bias \citep{mitchell1980need}: How can models be constructed to learn the essential representations, abstractions, and skills that will enable them to generalize to unseen and unforeseeable situations?
 
 The examples above highlight the effectiveness of crafting specific architectural inductive biases that are tailored to the object of study: \acrfullpl{CNN} in computer vision contain filters that process local features in an image, \acrfullpl{RNN} with attention layers in natural language processing facilitate the comprehension of long-range connections in sentences, or \acrfullpl{GNN} account for neighborhood structures to simulate chemical interactions within proteins and molecules \citep{ganea2021geomol, somnath2021multi}.
-Introducing and developing (\colcircle{darkblue}) \textbf{inductive biases in deep learning architectures for population dynamics}  is quintessential toward the success and ability of such methods to capture complex dynamics from \emph{unaligned} snapshot data.
+Introducing and developing (\colcube{darkblue}) \textbf{inductive biases in deep learning architectures for population dynamics}  is quintessential toward the success and ability of such methods to capture complex dynamics from \emph{unaligned} snapshot data.
 
 
 \section{Scope and Contributions}
 
 In this thesis, we introduce and design novel deep learning architectures capable of modeling heterogeneous population dynamics from unaligned snapshot data.
-A framework that facilitates the design of such deep learning architectures that (\colcircle{pink}) operate on distributions, i.e., allows modeling heterogeneous populations of particles, (\colcircle{lightblue}) trained based on samples of \emph{unaligned} distributions, is the \textbf{theory of optimal transport}.
+A framework that facilitates the design of such deep learning architectures that (\colstar{pink}) operate on distributions, i.e., allows modeling heterogeneous populations of particles, (\coldiamond{lightblue}) trained based on samples of \emph{unaligned} distributions, is the \textbf{theory of optimal transport}.
 
-The mathematical foundation of this work further builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} that studies the evolution of measures under the \emph{minimum effort} principle. Thus, (\colcircle{darkblue}) OT serves naturally as an inductive bias for the deep learning architectures introduced in this thesis.
+The mathematical foundation of this work further builds on the intuition that perturbations incrementally alter the molecular profiles of cells. This underlying assumption aligns with the theory of \acrfull{OT} that studies the evolution of measures under the \emph{minimum effort} principle. Thus, (\colcube{darkblue}) OT serves naturally as an inductive bias for the deep learning architectures introduced in this thesis.
 By providing tools for modeling the evolution of distributions over time, OT allows us to reconstruct and predict the incremental changes in cell states upon perturbation such as therapeutic agents or developmental signals. 
 In recent years, OT has enabled significant advances in single-cell biology problems \citep{schiebinger2019optimal, lavenant2021towards, demetci2022scot}. However, traditional OT methods do not enable predictions for unperturbed cells that have not been previously observed.
 They are thus unable to predict perturbation responses out-of-sample, e.g., of cells from new incoming samples, such as those from unseen patients. 
@@ -210,6 +210,12 @@ Perturbations such as small molecule drugs can have profound effects on the biol
 Such responses might range from the induction of apoptosis to changes in cellular proliferation, migration, differentiation, and metabolism, each significantly affecting the overall state of the organism. 
 Perturbations can also trigger cascade effects across interrelated signaling pathways, leading to a state of cellular disequilibrium.
 
+\begin{figure}[t]
+  \includegraphics[width=\textwidth]{figures/fig_bio_problems.pdf}
+  \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} In order to understand and predict the response of an unperturbed cell population $\mu$ to a stimulus such as a therapeutic agent, we need to identify a map $T$ that explains its evolution into the perturbed population $\nu$. Then, the perturbed state of a cell $x$ is given by $T(x)$.  \textbf{b.} Developmental processes describe the evolution of a often homogeneous population of undifferentiated cells into various cell lineages. Reconstructing such processes from measurement snapshots can be achieved through sequential alignments $P_{t-1,t}$ that describe the evolution from $\mu_0$ to $\mu_1$, or by identifying the overall global path $\mu_t$ capturing the cell differentiation process.}
+  \label{fig:bio_problems}
+\end{figure}
+
 Populations of cells are almost always \emph{heterogeneous} in function and fate and different cell states exhibit distinct sensitivities toward a external stimuli \citep{spiller2010measurement}.
 Subsequently, their responses to a perturbation strongly vary.
 Heterogeneity is particular inherent in cancer and fuel for drug \emph{resistance}: 
@@ -229,12 +235,6 @@ In order to understand how an unperturbed population $\mu$ responds and evolves 
 % Hence, snapshots taken of biological samples before and after perturbations do not provide information on single-cell trajectories.
 % Perturbations might include the application of drugs affecting molecular functions in cells, or changes in the cellular environment causing shifts in biological signaling, thus impacting cells and their states in various ways.
 
-\begin{figure}[t]
-  \includegraphics[width=\textwidth]{figures/fig_bio_problems.pdf}
-  \caption{\textbf{Overview on different dynamical processes in biomedicine.} \textbf{a.} In order to understand and predict the response of an unperturbed cell population $\mu$ to a stimulus such as a therapeutic agent, we need to identify a map $T$ that explains its evolution into the perturbed population $\nu$. Then, the perturbed state of a cell $x$ is given by $T(x)$.  \textbf{b.} Developmental processes describe the evolution of a often homogeneous population of undifferentiated cells into various cell lineages. Reconstructing such processes from measurement snapshots can be achieved through sequential alignments $P_{t-1,t}$ that describe the evolution from $\mu_0$ to $\mu_1$, or by identifying the overall global path $\mu_t$ capturing the cell differentiation process.}
-  \label{fig:bio_problems}
-\end{figure}
-
 \section{Lineage Tracing in Developmental Biology}
 \label{sec:cell_differentiation}
 
@@ -253,13 +253,65 @@ Given that a cell has a specific expression profile at a time point, where will 
 \citet{schiebinger2019optimal} for example study reprogramming of fibroblasts to \acrfull{iPSC} \citep{takahashi2006induction}, by measuring \acrfull{MEF}. Cells at time point $t$ are connected to their ancestors at time $t-1$, by finding the corresponding transport plan $P_{t-1,t}$ between each pair of consecutive time steps (see \cref{fig:bio_problems}b).
 To understand the overall dynamic process, however, this thesis aims at identifying the evolution of a measure through recovering a \emph{continuous} path $\mu_t$ instead of resorting to the computation of distinct alignments between consecutive measurement snapshots \citep{lavenant2021towards} (see \cref{fig:bio_problems}b).
 
-% \section{Related Work on Studying Cell Dynamics}
+\section{Related Work on Studying Cell Dynamics}
+\label{sec:related_work_bio}
 
-% \citep{fischer2019inferring, busch2015fundamental, hashimoto2016learning, raue2015data2dynamics}
+% The modeling of single-cell dynamics has become an essential research area, with implications for understanding biological processes on a fundamental level. Different computational methods have been devised to model these dynamics, and this section reviews some of the prominent approaches.
+
+% Stochastic modeling has been employed to capture the intrinsic noise present in single-cell dynamics. Gillespie's algorithm (Gillespie, 1977) has been foundational in this regard, providing a way to simulate random reactions at the single-cell level. Many variants and improvements on this method have been developed to model complex biochemical networks within single cells (Gibson and Bruck, 2000; Cao et al., 2006).
+
+% ODE-based models have been widely used for single-cell analysis, especially for deterministic modeling where fluctuations can be ignored. Such models have provided insights into cell growth, gene regulation, and signaling pathways (Tyson et al., 2003; Alon, 2007). However, their inability to capture stochastic effects limits their applicability in some scenarios.
+
+% PDE-based models have been used to describe spatial-temporal patterns in single cells, capturing phenomena such as protein diffusion and cellular growth (Erban and Othmer, 2004; Turing, 1952). These models are particularly useful for understanding cell morphogenesis and other spatial processes.
+
+% Agent-based models (ABMs) provide a more flexible approach to modeling single-cell dynamics by allowing individual entities to interact in complex ways (Walker and Southgate, 2009). These models have proven useful for simulating cell differentiation, migration, and interactions with the environment.
+
+% Recent years have witnessed the application of machine learning techniques for single-cell analysis. Deep learning methods have been utilized to extract complex patterns and perform classification tasks related to single-cell RNA sequencing (scRNA-seq) data (Xu et al., 2020). Other machine learning models, such as random forests and support vector machines, have also been applied to predict single-cell behaviors (Angermueller et al., 2016).
+
+% Hybrid models that combine two or more of the above approaches have also been developed. These models aim to leverage the strengths of different methods to overcome individual limitations. For instance, a combination of stochastic simulations with deterministic ODEs has been proposed to provide a more comprehensive understanding of single-cell processes (Salis and Kaznessis, 2005).
+
+% The computational modeling of single-cell dynamics has evolved considerably, and a wide range of techniques has been proposed to study different aspects of single-cell biology. From deterministic methods to stochastic simulations, agent-based models to machine learning techniques, the field is characterized by a rich diversity of approaches. As technological advancements continue to offer more detailed single-cell data, it is expected that these computational models will further evolve, fostering our understanding of complex biological systems on a cellular level.
+
+% Gillespie, D.T., 1977. "Exact stochastic simulation of coupled chemical reactions." The Journal of Physical Chemistry, 81(25), pp.2340-2361.
+% Gibson, M.A. and Bruck, J., 2000. "Efficient Exact Stochastic Simulation of Chemical Systems with Many Species and Many Channels." The Journal of Physical Chemistry A, 104(9), pp.1876-1889.
+% Cao, Y., Gillespie, D.T., Petzold, L.R., 2006. "Efficient step size selection for the tau-leaping simulation method." The Journal of Chemical Physics, 124(4), 044109.
+% Tyson, J.J., Chen, K.C., Novak, B., 2003. "Sniffers, buzzers, toggles and blinkers: dynamics of regulatory and signaling pathways in the cell." Current Opinion in Cell Biology, 15(2), pp.221-231.
+% Alon, U., 2007. "An Introduction to Systems Biology: Design Principles of Biological Circuits." Chapman & Hall/CRC.
+% Erban, R. and Othmer, H.G., 2004. "From individual to collective behavior in bacterial chemotaxis." SIAM Journal on Applied Mathematics, 65(2), pp.361-391.
+% Turing, A.M., 1952. "The chemical basis of morphogenesis." Philosophical Transactions of the Royal Society of London. Series B, Biological Sciences, 237(641), pp.37-72.
+% Walker, D.C., Southgate, J., 2009. "The virtual cell - a candidate co-ordinator for middle-out modelling of biological systems." Briefings in Bioinformatics, 10(4), pp.450-461.
+% Xu, J., Natarajan, K.N., Guan, J., 2020. "Single-cell RNA sequencing: methodology, challenges, and opportunities." Wiley Interdisciplinary Reviews: RNA, 11(6), e1606.
+% Angermueller, C., Pärnamaa, T., Parts, L., Stegle, O., 2016. "Deep learning for computational biology." Molecular Systems Biology, 12(7), pp.878.
+% Salis, H., Kaznessis, Y., 2005. "Accurate hybrid stochastic simulation of a system of coupled chemical or biochemical reactions." The Journal of Chemical Physics, 122(5), 054103.
+
+
+\paragraph{Population dynamics from single-cell data.}
+
+Methods for profiling genes at the single-cell level have revolutionized our ability to study several biological processes and systems including development, differentiation, response programs and disease progression. In many of these studies, cells are profiled over time in order to infer dynamic changes in cell states and types, sets of expressed genes, active pathways and key regulators.
+
+% Population dynamics govern distributional shifts in cellular systems and are key to understanding how cell type frequencies change in response to developmental and environmental cues that underlie physiological mechanisms of health and disease.
+% Population dynamics have been previously modeled in the context of cell cycle transitions \citep{kafri2013dynamics, kuritz2017relationship} and in the context of scRNA-seq under steady state assumptions \citep{weinreb2018fundamental}.
+
+\citep{fischer2019inferring, busch2015fundamental, hashimoto2016learning, raue2015data2dynamics}
+
+\paragraph{Population dynamics from bulk data.}
+...
+
+\paragraph{Pseudo-time inference methods.}
+% Dimensionality reduction-based methods for trajectory inference.
+% TODO: Rewrite.
+Pseudotemporal ordering methods, which describe development as a transition in transcriptomic state (i.e. a 'trajectory') rather than a transition in real time \citep{haghverdi2016diffusion, trapnell2014dynamics}, have been devised to capture such trajectories. These trajectory-learning approaches are complemented by methods that learn the overall topology of the data set and thereby infer the connectivity between trajectories \citep{qiu2017reversed, wolf2019paga, saelens2019comparison}. One can merge overlapping snapshots from multiple time points across a developmental process to learn a trajectory that covers the full range of cell states accessible in this process; this is, however, still a static description. Accordingly, a trajectory does not uncover the dynamic behavior of individual cells in state space and time, i.e., this dynamic information is lost in population snapshot experiments. Hence pseudotime does not directly correspond to real time but is rather a cell state space metric \citep{}.
+
+\paragraph{RNA velocity for trajectory inference.}
+...
+
+Integrating time-series single-cell data with interaction data. 
 
 \section{Optimal Transport for Single-Cell Biology}
-% TODO: Change labels if above section is written.
-\label{sec:related_work_bio}
 \label{sec:ot_for_biology}
 
-Applied to the analysis and modeling of single-cell biology problems, OT has been used to infer the distributions of cells' ancestors and descendants along development \citep{schiebinger2019optimal}, perform trajectory inference \citep{bunne2022proximal, forrow2021lineageot, bunne2022recovering, lavenant2021towards, schiebinger2019optimal, tong2020trajectorynet, yang2020predicting, zhang2021optimal, chizat2022trajectory}, predict perturbation responses \citep{bunne2021learning, yang2018scalable, lubeck2022neural}, integrate multi-omics data of different modalities \citep{demetci2022scot}, infer cell-cell similarity \citep{huizing2022optimal}, and integrate across scales (e.g., morphology and molecular profiling) \citep{yang2021multi}. The increasing data complexity across multiple levels of biological organization, from molecular and cellular through spatial profiling \citep{moriel2021novosparc} of tissues, and imaging of organs, further cement the status of OT as an indispensable framework for high-throughput, multimodal, and multi-scale molecular, cell, tissue, and organ biology. The effectiveness of OT comes, however, with drawbacks: because the theory builds on extremely sophisticated mathematics that blends optimization \citep{cuturi2013sinkhorn, cuturi2022optimal}, stochasticity \citep{chizat2022trajectory, bunne2022recovering} and partial differential equations \citep{bunne2022proximal}, and, more recently, deep learning \citep{tong2020trajectorynet, bunne2021learning, bunne2022supervised, yang2018scalable, lubeck2022neural, yang2021multi}, its computations are challenging even by modern machine learning standards.
+Previous work has explored the application of \acrlong{OT} to the analysis and modeling of single-cell biology problems.
+In particular, \acrshort{OT} has been used to infer the distributions of cells' ancestors and descendants along development \citep{schiebinger2019optimal}, perform trajectory inference \citep{bunne2022proximal, forrow2021lineageot, bunne2022recovering, lavenant2021towards, schiebinger2019optimal, tong2020trajectorynet, yang2020predicting, zhang2021optimal, chizat2022trajectory}, predict perturbation responses \citep{bunne2021learning, yang2018scalable, lubeck2022neural}, integrate multi-omics data of different modalities \citep{demetci2022scot}, infer cell-cell similarity \citep{huizing2022optimal}, and integrate across scales (e.g., morphology and molecular profiling) \citep{yang2021multi}. 
+Contrary to contributions of this thesis, however, almost all previous approaches use \acrshort{OT} in the \emph{non-parametric} setting and thus do not allow predictions on unseen samples or extrapolations beyond the measured time horizon.
+
+Beyond, the increasing data complexity across multiple levels of biological organization, from molecular and cellular through spatial profiling of tissues, and imaging of organs, further cement the status of OT as an indispensable framework for high-throughput, multimodal, and multi-scale molecular, cell, tissue, and organ biology \citep{moriel2021novosparc}. The effectiveness of OT comes, however, with drawbacks: because the theory builds on extremely sophisticated mathematics that blends optimization \citep{cuturi2013sinkhorn, cuturi2022optimal}, stochasticity \citep{chizat2022trajectory, bunne2022recovering} and partial differential equations \citep{bunne2022proximal}, and, more recently, deep learning \citep{tong2020trajectorynet, bunne2021learning, bunne2022supervised, yang2018scalable, lubeck2022neural, yang2021multi}, its computations are challenging even by modern machine learning standards.

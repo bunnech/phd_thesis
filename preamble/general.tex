@@ -119,6 +119,9 @@ paragraph/.style = {inner sep=0pt,
 
 % Marble
 \newcommand{\colcircle}[1]{\tikz\node[circle=3pt, draw=#1, fill=#1, inner sep=1.75pt] (d) at (0,0) {};}
+\newcommand{\colstar}[1]{\tikz\node[star=3pt, draw=#1, fill=#1, inner sep=1.75pt] (d) at (0,0) {};}
+\newcommand{\colcube}[1]{\tikz\node[regular polygon=1pt, draw=#1, fill=#1, inner sep=1.5pt, regular polygon sides=3] (d) at (0,0) {};}
+\newcommand{\coldiamond}[1]{\tikz\node[diamond=3pt, draw=#1, fill=#1, inner sep=1.75pt] (d) at (0,0) {};}
 
 
 % Autoreferences
@@ -132,6 +135,7 @@ paragraph/.style = {inner sep=0pt,
 \renewcommand*{\subsubsectionautorefname}{Section}
 \providecommand{\subfigureautorefname}{\figureautorefname}%
 \usepackage[capitalise]{cleveref}
+\usepackage{nameref}
 \Crefname{subsubsubappendix}{Appendix}{Appendices}%
 
 % Load classicthesis style

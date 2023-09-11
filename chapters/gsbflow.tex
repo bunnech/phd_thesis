@@ -163,14 +163,12 @@ The purpose of this section is to introduce the core objectives of this part of 
 \subsubsection{Schr{\"o}dinger Bridges as Dynamic Entropy-Regularized Optimal Transport}
 
 
-Let $\nu, \nu'$ be two given measures, and let $\refpro$ be an arbitrary stochastic process. In its most generic form, the \acrlong{SB} refers to the following constrained KL-minimization problem overall stochastic processes $\Pmargin$ \citep{leonard2013survey, chen2021stochastic}: 
+Let $\nu, \nu'$ be two given measures, and let $\refpro$ be an arbitrary stochastic process. In its most generic form, the \acrlong{SB} refers to a constrained KL-minimization problem overall stochastic processes $\Pmargin$ \eqref{eq:schrodinger_bridge} \citep{leonard2013survey, chen2021stochastic}, which we extensively discussed in \cref{sec:background_sb} and restate here for convenience:
 \begin{equation}
 \label{eq:SB}
-%\tag{SB}
+\tag{SB}
 \min_{ \substack{ \Pinit = \nu, \; \Pend = \nu'} } \KL(\Pmargin \|\refpro).% \quad \sigma >0 \textup{ and \Wiener
 \end{equation}
-
-
 In practice, $\nu$ and $\nu'$ typically arise as the (empirical) \emph{marginal} distributions of complicated continuous-time dynamics observed at the starting and end times, and $\refpro$ is a ``prior process'' representing our belief of the dynamics before observing any data. The solution $\Pstar$ to \eqref{eq:SB} is thus interpreted as the best dynamics that conforms to the prior belief $\refpro$ while respecting the data marginals ($\Pstar[0] = \nu, \Pstar[\horizon] = \nu'$). 
 
 We will consider a general class of $\refpro$'s that includes most existing processes in the machine learning applications of \acrshortpl{SB}. Specifically, with some initial condition $\refsde[0]$, we will take $\refpro$ to be the measure of the linear \acrfull{SDE}:
@@ -515,11 +513,11 @@ Building on the closed-form solutions in \cref{sec:results_gsbflow}, we present 
 
 \textbf{Step 1: Moment estimates and \acrshort{GSB} initialization.} We first compute the means $\mu_0, \mu_\horizon$ and covariances $\Sigma_0, \Sigma_\horizon$ of the input distributions, and plug them into \eqref{eq:GSB-forward} and \eqref{eq:cmean-marginal-0}-\eqref{eq:csigma-marginal-T}. Note that these computations are done only \emph{once} for every dataset, and can be reused for all subsequent training. \\
 
-\textbf{Step 2: Forward and backward pretraining.} Denoting by $\refapprox$ the measure of $\GSBfbase \dt + \volatbase_t \dWiener[\ctime]$ in \eqref{eq:GSB-forward}, we propose to minimize the objective
+\textbf{Step 2: Forward and backward pretraining.} Denoting by $\mathbb{Q}_t^\star$ the measure of $\GSBfbase \dt + \volatbase_t \dWiener[\ctime]$ in \eqref{eq:GSB-forward}, we propose to minimize the objective
 \begin{equation}
 \label{eq:GSBflow}
 % \tag{\acroalg}
-\min_{ \Pinit = \distinit,\; \Pend = \distend } \KL(\Pmargin \| \refapprox).
+\min_{ \Pinit = \distinit,\; \Pend = \distend } \KL(\Pmargin \| \mathbb{Q}_t^\star).
 \end{equation}
 Following the framework of \citet{chen2021likelihood}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acrshortpl{SDE} of the form:
 % Following \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acp{SDE} of the form:

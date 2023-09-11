@@ -43,7 +43,7 @@ To the best of our knowledge, the concurrent work of \citet{tong2023conditional}
 
 Suppose that we are given access to i.i.d. \emph{aligned} data $(\x_0^i,\x_1^i)_{i=1}^N$, where the marginal distribution of $\x^i_0$'s is $\distinit$ and of $\x_1^i$'s is $\distend$. Typically, we view $\distinit$ as the empirical marginal distribution of a stochastic process observed at time $t= 0$, and likewise $\distend$ the empirical marginal observed at $t=\horizon$. The goal is to reconstruct the stochastic process $\Pmargin$ based on $(\x_0^i,\x_1^i)_{i=1}^N$, i.e., to \emph{interpolate} between $\distinit$ and $\distend$.
 
-Such a task is ubiquitous in biological applications. For instance, in molecular dynamics simulations, we have access to trajectories $\left(\x_t^i\right)_{t \in [0, 1]}$, where $\x_0^i$ and $\x_1^i$ represent the initial and final positions of the $i$-th molecule respectively. Any learning algorithm using these simulations should be able to respect the provided alignment. 
+Such a task is ubiquitous in biological applications. Besides cell trajectories of dynamical processes in tissues, a prominent application concerns molecular dynamics simulations. Here, we have access to trajectories $\left(\x_t^i\right)_{t \in [0, 1]}$, where $\x_0^i$ and $\x_1^i$ represent the initial and final positions of the $i$-th molecule respectively. Any learning algorithm using these simulations should be able to respect the provided alignment. 
 
 \subsection{\textsc{SBalign}: Aligned Diffusion Schr{\"o}dinger Bridges}
 
@@ -51,7 +51,7 @@ In this section, we derive a novel loss function for \acrshortpl{DSB} with align
 
 \paragraph{Static SB and aligned data.}
 
-Our starting point is the simple and classical observation that \eqref{eq:SB} is the continuous-time analogue of the \emph{entropic optimal transport}, also known as the \emph{static} \acrlong{SB} problem \citep{leonard2013survey,chen2021stochastic,peyre2019computational}:
+Our starting point is the simple and classical observation that the dynamic \acrlong{SB} problem \eqref{eq:schrodinger_bridge} is the continuous-time analogue of the \emph{entropic optimal transport}, also known as the \emph{static} \acrlong{SB} problem \citep{leonard2013survey,chen2021stochastic,peyre2019computational}
 \begin{equation}
 \label{eq:static-SB}
 \Pssol \defeq \argmin_{ \substack{ \Pinit = \distinit, \; \Pend = \distend} } \KL( \mathbb{P}_{0,1} \| \refprobase_{0,1}),
@@ -70,12 +70,12 @@ For illustration purposes, from now on, we will assume that the reference proces
 % \footnote{\looseness -1 Extension to more involved reference processes is conceptually straightforward but notationally clumsy. Furthermore, reference processes of the form \eqref{eq:gtWt} are dominant in practical applications \citep{song2020score, bunne2022recovering}, so we omit the general case. }
 \begin{equation}
 \label{eq:gtWt}
-\dd \refpro = \volat \dWiener.
+\dd \refpro = \volat \mathrm{d}\gW_t.
 \end{equation}
 In this case, it is well-known that $\refpro$ \emph{conditioned} to start at $\x_0$ and end at $\x_1$ can be written in another \acrshort{SDE} \citep{mansuy2008aspects, liu2023learning}:
 \begin{equation}
 \label{eq:BB}
-\dd X_t = \volatsq[\ctime] \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]} \dt + \volat\dWiener
+\dd X_t = \volatsq[\ctime] \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]} \dt + \volat\mathrm{d}\gW_t
 \end{equation}
 where $X_0 = \x_0$ and %, $\dWiener$ is itself a Brownian motion, and 
 \begin{equation}
@@ -89,14 +89,14 @@ The first characterization of $\Psol$ is then an immediate consequence of the fo
 Another characterization of $\Psol$ is that it is itself given by an \acrshort{SDE} of the form \citep{leonard2013survey, chen2021stochastic}
 \begin{equation}
 \label{eq:SB-SDE}
-\dd X_t = \volatsq[\ctime]\fdrift(X_t) \dt + \volat\dWiener.
+\dd X_t = \volatsq[\ctime]\fdrift(X_t) \dt + \volat\mathrm{d}\gW_t.
 \end{equation}
 Here, $\fdrift: \R^d \to \R^d$ is a time-dependent drift function that we wish to learn.
 
 Now, by Doob's h-transform, we know that the \acrshort{SDE} \eqref{eq:SB-SDE} \emph{conditioned} to start at $\x_0$ and end at $\x_1$ is given by another \acrshort{SDE}  \citep{doob1984classical,rogers2000diffusions}:
 \begin{equation}
 \label{eq:SB-SD-conditioned}
-\dd X_t = \volatsq[\ctime]\bracks*{\fdrift(X_t) + \nabla \log \doob(X_t) }\dt +\volat \dWiener
+\dd X_t = \volatsq[\ctime]\bracks*{\fdrift(X_t) + \nabla \log \doob(X_t) }\dt +\volat \mathrm{d}\gW_t
 \end{equation}
 where $\doob(\x) \defeq \prob(X_1 = \x_1\vert X_t = \x)$ is the \emph{Doob's $h$ function}. Notice that we have suppressed the dependence of $\doob$ on $\x_0$ and $\x_1$ for notational simplicity. % \footnote{The fact $\doob$ does not depend on the starting point $\x_0$ is easily understood: An \acrshort{SDE} remains the same no matter where it starts.}
 
@@ -216,7 +216,7 @@ If the number of pairings is limited,  it is unrealistic to hope for an accurate
 Intuitively, solving a standard SB problem with $\tilde{\mathbb{Q}}$ as reference is beneficial because the (imperfect) coupling of marginals learned by \textsc{SBalign} ($\tilde{\mathbb{Q}}_{01}$) is, in general, closer to the truth than $\mathbb{Q}_{01}$.
 
 Improving reference processes through pre-training or data-dependent initialization has been previously considered in the literature. For instance, both \citet{de2021diffusion} and \citet{chen2021likelihood} use a pre-trained reference process for challenging image interpolation tasks. This approach, however, relies on DSBs trained using the classical score-based generative modeling objective between a Gaussian and the data distribution. It, therefore, pre-trains the reference process on a related --but different-- process, i.e., the one mapping Gaussian noise to data rather than $\hat{\mathbb{P}}_0$ to $\hat{\mathbb{P}}_1$.
-An alternative, proposed by \citet{bunne2022recovering} draws on the closed-form solution of SBs between two Gaussian distributions, which are chosen to approximate $\hat{\mathbb{P}}_0$ and $\hat{\mathbb{P}}_1$, respectively.
+An alternative, proposed in \cref{sec:gsbflow} \citet{bunne2022recovering} draws on the closed-form solution of SBs between two Gaussian distributions, which are chosen to approximate $\hat{\mathbb{P}}_0$ and $\hat{\mathbb{P}}_1$, respectively.
 Unlike our method, these alternatives construct prior drifts by falling back to simpler and related tasks, or approximations of the original problem. We instead propose to shape a coarse-grained description of the drift based on alignments sampled directly from $\pi^\star_{01}$. 
 
 \subsection{Empirical Evaluation}

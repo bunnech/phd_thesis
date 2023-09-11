@@ -91,11 +91,11 @@ where $\bar{c}(y, x) = c(x, y)$.
 Further, $f$ is a \textit{$\bar{c}$-concave} function if there exists a $g$ such that $f = g^{\bar{c}}$, and analogously, a function $g$ is said to be \textit{$c$-concave} if there is a function $f$ such that $g = f^c$.
 When $\gX = \gY$ and $c$ is symmetric no distinction between $c$ and $\bar{c}$ is necessary.
 
-Using the concept of $c$-transforms, we can reduce \eqref{eq:kantorovich-dual} to a single potential: Assume we keep dual potential $f$ fixed and given the constraint of the dual formulation\eqref{eq:kantorovich-dual}
+Using the concept of $c$-transforms, we can reduce \eqref{eq:kantorovich-dual} to a single potential: Assume we keep dual potential $f$ fixed and given the constraint of the dual formulation \eqref{eq:kantorovich-dual}
 \begin{align*}
   f(x)+g(y) & \leq c(x, y) \\
   g(y) & \leq c(x, y)-f(x)\,, \\
-  \intertext{we can see that the "best" potential $g$ is given by the \cref{eq:c-transform} of $f$ }
+  \intertext{we can see that the "best" potential $g$ is given by the \nameref{eq:c-transform} of $f$ }
   \label{eq:best_g} g(y) & \leq \inf _x c(x, y)-f(x).
 \end{align*} 
 Then, doing an alternate optimization on either $f$ or $g$, we replace the dual potentials $(f, g)$ with $(f, f^c)$, and then $(f^{c\bar{c}}, f^c)$, whilst preserving the constraints and increasing the value of the integrals of \eqref{eq:kantorovich-dual}.  
@@ -179,7 +179,7 @@ Mirroring the same logic as for the $c$-transform, we derive the semi-dual in th
 \end{equation}
 Following the double convexification trick as outlined in \citet[Lemma 2.10]{villani2021topics}, we see that applying the \ref{eq:legendre} twice yields function pair $(\varphi^{**},\varphi^{*})$. As each of them is defined as the supremum of a family of linear functions, the result is an optimization problem over two convex \acrlong{lsc} functions.
 
-Similarly, for the special case of the squared Euclidean distance the \cref{thm:gangbo-mccann} \eqref{eq:gangbo_h} with $h=\frac{1}{2}\|\cdot\|_2^2 $ implies that $\nabla h=\nabla h^*=\mathrm{Id}$, and thus
+Similarly, for the special case of the squared Euclidean distance the \nameref{thm:gangbo-mccann} \eqref{eq:gangbo_h} with $h=\frac{1}{2}\|\cdot\|_2^2 $ implies that $\nabla h=\nabla h^*=\mathrm{Id}$, and thus
 \begin{equation*}
 	T(x)=x-\nabla f(x)=\nabla\left(\frac{1}{2}\|x\|^2_2-f(x)\right)(x)=\nabla \varphi(x),
 \end{equation*}
@@ -198,14 +198,14 @@ Let us state the celebrated \citeauthor{brenier1987decomposition} theorem \citey
 Moreover, this map $T$ is uniquely determined by the gradient of a convex function $\varphi$, denoted as $T(x)=\nabla \varphi(x)$. The function $\varphi$ is the unique convex function, up to an additional constant, for which $(\nabla \varphi)_{\sharp} \mu=\nu$.
 \end{theorem}
 \begin{corollary}
-	Under the assumption of \cref{thm:brenier}, $\nabla \varphi$ is the unique solution to the Monge transportation problem \eqref{eq:monge}, i.e.,
+	Under the assumption of the \nameref{thm:brenier}, $\nabla \varphi$ is the unique solution to the Monge transportation problem \eqref{eq:monge}, i.e.,
 	\begin{equation}
 		\int_{\mathbb{R}^d} \norm{x-\nabla \varphi(x)}^2 \mathrm{d}\mu(x) = \inf_{T_\sharp \mu = \nu} \int_{\mathbb{R}^d}\norm{x - T(x)}^2 \mathrm{d}\mu(x).
 	\end{equation}
 \end{corollary}
 %To avoid confusion, we again note that the relationship between this convex function $\varphi$ and the dual potential $f$ that solves \eqref{eq:kantorovich-dual} is given $\varphi(x)$ as $\frac{\|x\|^2}{2}-f(x)$.
 
-\cref{thm:brenier} by \citet{brenier1987decomposition, brenier1991polar} has been exploited to propose neural OT solvers ~\citep{taghvaei20192, makkuva2020optimal, korotin2021wasserstein, bunne2022proximal, alvarez2021optimizing, mokrov2021large, amos2023amortizing} and recurrently permeates this thesis (see  \cref{cha:cellot} and \ref{cha:condot}), proving its essential nature in multiple instances and modern developments of optimal transport.
+The \nameref{thm:brenier} by \citet{brenier1987decomposition, brenier1991polar} has been exploited to propose neural OT solvers ~\citep{taghvaei20192, makkuva2020optimal, korotin2021wasserstein, bunne2022proximal, alvarez2021optimizing, mokrov2021large, amos2023amortizing} and recurrently permeates this thesis (see  \cref{cha:cellot} and \ref{cha:condot}), proving its essential nature in multiple instances and modern developments of optimal transport.
 Further, it presents an elegant way to solve the Monge problem in a geometric sense and has profound implications for the dynamic version of the problem, which we will study next.
 
 
@@ -230,7 +230,7 @@ Lastly, moving beyond PDEs and taking a stochastic control perspective, we will 
 % Caffarelli's regularity theorems from the 1990s represented a major breakthrough in our understanding of the Monge-Amp{\`e}re equation, a highly nonlinear, quintessential partial differential equation, that for instance is used to construct surfaces of prescribed Gaussian curvature. Important existence results were established by Alexandrov, and earlier central properties had been shown by Caffarelli in collaboration with Nirenberg and Spruck, with further key contributions by Evans and Krylov. Caffarelli however closed the gap in our understanding of singularities by proving that the explicitly known examples of singular solutions are the only ones.
 
 % Caffarelli has, together with collaborators, applied these results to the Monge-Kantorovich optimal mass transportation problem, based on previous work by Brenier. Caffarelli and Vasseur gave deep regularity results for the quasi-geostrophic equation in part by applying the exceptionally influential paper by Caffarelli and Silvestre on the fractional Laplacian.
-As a direct consequence of \cref{thm:brenier}, if $T(x) = \nabla \varphi(x)$, $\varphi$ being smooth and strictly convex, and $\mu$ and $\nu$ absolutely continuous with densities $p_\mu$ and $p_\nu$, we can express $T_\sharp \mu = \nu$ in a nonlinear \acrfull{PDE} form. More concretely, as a consequence of a simple change-of-variable computation, $\varphi$ is a solution of the Monge-Amp{\`e}re equation that reads
+As a direct consequence of the \nameref{thm:brenier}, if $T(x) = \nabla \varphi(x)$, $\varphi$ being smooth and strictly convex, and $\mu$ and $\nu$ absolutely continuous with densities $p_\mu$ and $p_\nu$, we can express $T_\sharp \mu = \nu$ in a nonlinear \acrfull{PDE} form. More concretely, as a consequence of a simple change-of-variable computation, $\varphi$ is a solution of the Monge-Amp{\`e}re equation that reads
 \begin{equation} \label{eq:monge_ampere}
 	\operatorname{det}\left(\partial^2 \varphi(x)\right) p_\nu(\nabla \varphi(x))=p_\mu(x),
 \end{equation}
@@ -250,7 +250,7 @@ Such path $\mu_t$ can be described through a time-varying vector field $v(t, \cd
 \end{equation}
 where the vector field $v(t, \cdot)$ denotes the speed and $\mu_t v(t, \cdot) = J_t$ corresponds to the momentum.
 Reformulating the optimal transportation problem in a differential way, an "Eulerian" formulation inspired by fluid mechanics, will be crucial for the subsequent study of dynamical problems.
-Every curve $\mu_t$ describing the evolution of the measure over time can be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v(t, \cdot)$ that (i.) satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimized the path length.
+Every curve $\mu_t$ describing the evolution of the measure over time can be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v(t, \cdot)$ that (i.) satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimizes the path length.
 The infinitesimal length of such a vector field can be computed via 
 \begin{equation} \label{eq:vector_field_length}
 	\left\|v\right\|_{\ell^2\left(\mu_t\right)}=\left(\int_{\mathbb{R}^d}\left\|v(t, x)\right\|^2 \mathrm{~d} \mu_t(x)\right)^{1 / 2}.
@@ -266,8 +266,8 @@ Taking the perspective of fluid dynamics, \eqref{eq:vector_field_length} can als
 The Benamou-Brenier formulation \eqref{eq:benamou_brenier} then selects the vector field $v$ that minimizes the total efforts or the total kinetic energy one has to spend in order to move particles around according to the vector field $v$. \\
 
 
-A particularly important case occurs when there exists an optimal Monge map $T: \mathbb{R}^d \rightarrow \mathbb{R}^d$ with $T_\sharp \mu_0 = \mu_1$ (see \cref{thm:brenier}): The solution of the time-dependent OT problem \eqref{eq:benamou_brenier} then coincides with \citeauthor{mccann1997convexity}'s displacement interpolation between two measures.
-Reciting \cref{thm:brenier}, with $T = \nabla \varphi$, $\mu_t$ is equal to \citeauthor{mccann1997convexity}'s interpolation between $\mu_0$ and $\mu_1$ given by
+A particularly important case occurs when there exists an optimal Monge map $T: \mathbb{R}^d \rightarrow \mathbb{R}^d$ with $T_\sharp \mu_0 = \mu_1$ (see \nameref{thm:brenier}): The solution of the time-dependent OT problem \eqref{eq:benamou_brenier} then coincides with \citeauthor{mccann1997convexity}'s displacement interpolation between two measures.
+Reciting the \nameref{thm:brenier}, with $T = \nabla \varphi$, $\mu_t$ is equal to \citeauthor{mccann1997convexity}'s interpolation between $\mu_0$ and $\mu_1$ given by
 \begin{equation} \label{eq:mccann_interpolation}
 	\mu_t = [(1-t) I+t \nabla \varphi]_\sharp \mu_0 = [(1-t) I+t T]_\sharp \mu_0\,.
 \end{equation}
@@ -428,7 +428,7 @@ This \emph{KL-minimization} problem is thus called the (generalized) \citeauthor
 This idea generalizes verbatim to any reference process $\mathbb{Q}_t$. Unfortunately, in most applications, notably biology, we often have little to no prior information about the underlying process $\Pmargin$ \citep{liberali2014hierarchical}, a problem tackled in \cref{cha:neural_sde}.
 
 % By the Gaussian increments of $\mathbb{W}_t$, for any marginal $\hat{\mathbb{P}}_0$ at time $0, \mathbb{W}_t$ would predict the distribution at time $T$ to be $\hat{\mathbb{P}}_0 * \mathcal{N}(0, T \cdot I)$ where $*$ denotes the convolution operator. If this distribution differs from the actual data $\hat{\mathbb{P}}_T$, then $\mathbb{P}_t$ must also differ from $\mathbb{W}_t$. 
-Recovering the stochastic calculus of variations formulation of the \acrlong{SB} \eqref{eq:sb_control} can be achieved via the Girsanov theorem which tells us how stochastic processes behave under changes in measure. The equivalence between both formulations can be then established via
+Recovering the stochastic calculus of variations formulation of the Schr{\"o}dinger bridge \eqref{eq:sb_control} can be achieved via the Girsanov theorem which tells us how stochastic processes behave under changes in measure. The equivalence between both formulations can be then established via
 \begin{align*}
 	\frac{\mathrm{d}\mathbb{P}_{t}}{\mathrm{d} \mathbb{P}^{v=0}_t} = \exp \left\{ \int_0^1 \frac{1}{\sigma} v(t, X_t^v) \cdot \mathrm{d} \mathbb{W}_t +  \int_0^1 \frac{1}{2\sigma^2} \norm{v(t, X_t^v)}^2 dt \right\}& \\
 	\text{and thus} \enspace \KL(\mathbb{P}_{t} \| \mathbb{P}^{v=0}_t) = \mathbb{E} \left\{ \int_0^1 \frac{1}{2\sigma^2}\norm{v(t, X_t)}^2 dt \right\}& ,
