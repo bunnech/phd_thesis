@@ -1,7 +1,7 @@
 \chapter[Learning Dynamical Systems via OT and Gradient Flows]{Learning Dynamical Systems via Optimal Transport and Gradient Flows}
 \label{cha:neural_pde}
 
-\dictum[Andrey Kolmogorov, \textit{\"Uber die analytischen Methoden in der Wahrscheinlichkeitsrechnung} (1931)]{%
+\dictum[Andrey Kolmogorov, \textit{{\"U}ber die analytischen Methoden in der Wahrscheinlichkeitsrechnung} (1931)]{%
   Ein solches mathematisch-definierbares System ist \"uberhaupt nicht die Wirklichkeit selbst, sondern nur ein Schema, welches zur Beschreibung der Wirklichkeit dienen kann.} % This mathematically defined system is not a reality itself, but a scheme that can be used to describe reality. From: On Analytical Methods in the Theory of Probability
 \vskip 2em
 
@@ -13,10 +13,10 @@ Most of the material in this chapter has been already published in the following
 \end{itemize}
 }
 
-In \cref{part:static_not} we introduced \emph{static} neural optimal transport schemes to model how a distribution $\mu$ morphs into distribution $\nu$.
-Motivated by the task of predicting cellular responses to perturbation such as cancer drugs, \cref{cha:cellot} and \cref{cha:condot} aimed at parameterizing the \acrshort{OT} map $T$ (conditioned on a context $c$) to enable inferring treatment outcomes to \emph{unseen} cells, e.g., such as from a new patient.
+In \cref{part:static_not}, we introduced \emph{static} neural optimal transport schemes to model how a distribution $\mu$ morphs into distribution $\nu$.
+Motivated by the task of predicting cellular responses to perturbations such as cancer drugs, \cref{cha:cellot} and \cref{cha:condot} aimed at parameterizing the \acrshort{OT} map $T$ (conditioned on a context $c$) to enable inferring treatment outcomes to \emph{unseen} cells, e.g., such as from a new patient.
 Perturbation responses of cells, however, are \emph{dynamic}: After applying perturbation $k$, cell states evolve over time.
-Capturing and modeling such processes continuously in time is crucial to understand fine-grained mechanisms of cells.
+Capturing and modeling such processes continuously in time is crucial to understanding the fine-grained mechanisms of cells.
 And while \cref{part:static_not} assumed that we only have access to the distributions of cell states before $\mu$ and after injecting perturbation $k$, $\nu_k$, many experimental techniques allow us to capture multiple snapshots of an evolving cell population $\mu_t$ over time $t$.
 
 Despite the growing availability of live imaging, most measurement technologies such as \acrshort{sc}\acrshort{RNA-seq} are destructive in nature (see \cref{sec:tech_background}).
@@ -28,7 +28,7 @@ So while provided with multiple measurements $\{ \mu_0, \mu_1, \dots, \mu_T \}$,
 \section{Population Dynamics as Gradient Flows}
 
 Partial differential equations are a fundamental tool in the mathematical description of continuous phenomena, providing a way to capture how systems change over space and time \citep{risken1996fokker}. 
-Specifically, the evolution of populations can be modeled by a drift-diffusion PDE, which represents a gradient flow in the space of probability measures.
+Specifically, the evolution of populations can be modeled by a drift-diffusion PDE that represents a gradient flow in the space of probability measures.
 These PDEs encapsulate the rate of change in the population due to both local effects (diffusion) and global effects (drift), reflecting the driving forces in the biological landscape \citep{teschendorff2021statistical, weinreb2018fundamental}.
 In the single-cell context, this translates into modeling how cell states evolve due to internal genetic factors and external environmental influences. Thus, the connection to PDEs and their links to gradient flow models offer a robust mathematical description for understanding the dynamics of populations at different scales, which we will explore next.
 
@@ -54,7 +54,7 @@ This approach presents several challenges: While numerical approaches to solve \
 
 % We wish to reconstruct that energy potential from observations, assuming each observation follows iteratively a \acrshort{JKO} flow.
 
-The contributions of this chapter are two-fold. First, we propose a method, given an input configuration and an energy function, to compute \acrshort{JKO} steps using input convex neural networks \acrlong{ICNN}~\citep{amos2017input,makkuva2020optimal} (see also concurrent works that have proposed similar approaches~\citep{alvarez2021optimizing, mokrov2021large}). Second, we view the \acrshort{JKO} step as an inner layer, a \textsc{JKOnet} module parameterized by an energy function, which is tasked with moving the particles of an input configuration along an OT flow (the gradient of an optimal ICNN), trading off lower energy with proximity to the previous configuration.
+The contributions of this chapter are two-fold. First, we propose a method, given an input configuration and an energy function, to compute \acrshort{JKO} steps using input convex neural networks \acrlong{ICNN}~\citep{amos2017input,makkuva2020optimal} (see also concurrent works that have proposed similar approaches~\citep{alvarez2021optimizing, mokrov2021large}). Second, we view the \acrshort{JKO} step as an inner layer, a \textsc{JKOnet} module parameterized by an energy function, which is tasked with moving the particles of an input configuration along an OT flow (the gradient of an optimal \acrshort{ICNN}), trading off lower energy with proximity to the previous configuration.
 % This module, \textsc{JKOnet}, can be therefore seen as a parameterized \emph{mover} of particles that is constrained by design to produce locally (OT) optimal displacements. 
 We propose to estimate the parameters of the energy by minimizing a fitting loss % (as a function of the energy itself) 
 computed between the outputs of the \textsc{JKOnet} module (the prediction) and the ground truth displacements, as illustrated in Figure~\ref{fig:overview_jkonet}.
@@ -95,7 +95,7 @@ simplifying the Wasserstein term in \eqref{eq:en}, using the assumption that $\v
 \label{algo:jkonet}
 \begin{algorithmic}
 
-   \STATE {\bfseries Input:} Dataset $\mathcal{D}=\{\{\mathrm{data}_t^0 \}_{t=0}^T, \ldots, \{\mathrm{data}_t^N \}_{t=0}^T\}$ of $N$ population trajectories, $\phi^0$ energy parameter initialization, $\theta^0$ ICNN parameter initialization, learning rates $\gamma_\theta$ and $\gamma_\phi$, step $\tau$, regularizer $\varepsilon$, tolerance $\alpha$, {\texttt{TeacherForcing}} flag
+   \STATE {\bfseries Input:} Dataset $\mathcal{D}=\{\{\mathrm{data}_t^0 \}_{t=0}^T, \ldots, \{\mathrm{data}_t^N \}_{t=0}^T\}$ of $N$ population trajectories, $\phi^0$ energy parameter initialization, $\theta^0$ \acrshort{ICNN} parameter initialization, learning rates $\gamma_\theta$ and $\gamma_\phi$, step $\tau$, regularizer $\varepsilon$, tolerance $\alpha$, {\texttt{TeacherForcing}} flag
    \STATE {\bfseries Output:} Free energy $J_{\phi}$ explaining underlying population dynamics of snapshot data
    \smallskip
    
@@ -123,7 +123,7 @@ simplifying the Wasserstein term in \eqref{eq:en}, using the assumption that $\v
 \end{algorithmic}
 \end{algorithm}
 
-We pick an ICNN architecture to optimize over a restricted family of convex functions, $\{\varphi_{\theta}\}$, and define, starting from $\mu_0(\phi):=\mathrm{data}_0$, the recursive sequence for $t\geq 0$,
+We pick an \acrshort{ICNN} architecture to optimize over a restricted family of convex functions, $\{\varphi_{\theta}\}$, and define, starting from $\mu_0(\phi):=\mathrm{data}_0$, the recursive sequence for $t\geq 0$,
 \begin{equation} \label{eq:next_pop}
 \mu_{t+1}(\phi) := \nabla \varphi_{\theta^\star\!(\phi, \mu_t(\phi))\, \sharp}\, \mu_{t}(\phi)\,,
 \end{equation}
@@ -136,7 +136,7 @@ with $\theta^\star(\phi, \mu_t)$ defined implicitly using $\phi$ and any $\nu$ a
 $$
 \ell \|x - y\| \leq \|\nabla\varphi(x) -\nabla\varphi(y)\|  \leq L\|x - y\|.
 $$
-While it is more difficult to enforce the $L$-smoothness of a neural network, and more generally its Lipschitz constants \citep{scaman2018lipschitz} it is easy to enforce its strong convexity, by simply adding a term $\ell \|x\|^2/2$ to the corresponding potential, or a residual rescaled term $\ell x$ to the output $\nabla\varphi(x)$. This approach can be used to enforce that the push-forward of the gradient of an ICNN does not collapse to a single point, maintaining spatial diversity.
+While it is more difficult to enforce the $L$-smoothness of a neural network, and more generally its Lipschitz constants \citep{scaman2018lipschitz} it is easy to enforce its strong convexity, by simply adding a term $\ell \|x\|^2/2$ to the corresponding potential, or a residual rescaled term $\ell x$ to the output $\nabla\varphi(x)$. This approach can be used to enforce that the push-forward of the gradient of an \acrshort{ICNN} does not collapse to a single point, maintaining spatial diversity.
 
 \subsection{Learning the Free Energy Functional}  \label{sec:learn_energy}
 The energy function $J_\phi : \mathcal{P}(\mathbb{R}^d) \rightarrow \mathbb{R}$ can be any parameterized function taking a measure as input. 
@@ -152,7 +152,7 @@ Inferring nonlinear energies accounting for population growth and decline, as we
 To address slow convergence and instabilities for dynamics with many snapshots, we use teacher forcing \citep{williams1989learning} to learn $J_\phi$ through time. In those settings, during training, $J_\phi$ uses the ground truth as input instead of predictions from the previous time step. At test time, we do not use teacher forcing.
 
 \subsection{Bilevel Formulation of \textsc{JKOnet}}
-Learning the free energy functional $J_\phi$ while solving each \acrshort{JKO} step via an ICNN results in a challenging bilevel optimization problem.
+Learning the free energy functional $J_\phi$ while solving each \acrshort{JKO} step via an \acrshort{ICNN} results in a challenging bilevel optimization problem.
 At each time step, the predicted dynamics are compared to the ground truth trajectory $(\mathrm{data}_0, \mathrm{data}_1, \dots, \mathrm{data}_T)$ with the entropy-regularized OT loss (see \ref{eq:ot-reg}),
 \begin{align} \label{eq:fittingloss}
 \begin{split}
@@ -168,11 +168,11 @@ The dependence of the Sinkhorn divergence losses in \eqref{eq:fittingloss} on $\
     \centering
     %\vskip-0.1cm
     \includegraphics[width=.6\textwidth]{figures/fig_optimization_icnn.pdf}
-    \caption{Optimization of the ICNN used in \acrshort{JKO} steps. The bumps correspond to a change in the outer iteration, and the smooth decrease in between corresponds to a single minimization~\eqref{eq:thetastar} of a time step $t_i$.}
+    \caption{Optimization of the \acrshort{ICNN} used in \acrshort{JKO} steps. The bumps correspond to a change in the outer iteration, and the smooth decrease in between corresponds to a single minimization~\eqref{eq:thetastar} of a time step $t_i$.}
     \label{fig:training_icnn}
 \end{figure}
 
-Learning  $J_\phi$ through the exclusive supervision of data observations requires therefore to differentiate the arg-minimum of a \acrshort{JKO} problem, down therefore through to the lower-level optimization of the ICNN. We achieve this by implementing a differentiable double loop in \texttt{JAX}, differentiating first the Sinkhorn divergence using the \texttt{OTT} package \citep{cuturi2022optimal}, and then backpropagating through the ICNN optimization by unrolling Adam steps \citep{kingma2014adam, metz2016unrolled, lorraine2020optimizing}.
+Learning  $J_\phi$ through the exclusive supervision of data observations requires therefore to differentiate the arg-minimum of a \acrshort{JKO} problem, down therefore through to the lower-level optimization of the \acrshort{ICNN}. We achieve this by implementing a differentiable double loop in \texttt{JAX}, differentiating first the Sinkhorn divergence using the \texttt{OTT} package \citep{cuturi2022optimal}, and then backpropagating through the \acrshort{ICNN} optimization by unrolling Adam steps \citep{kingma2014adam, metz2016unrolled, lorraine2020optimizing}.
 
 \begin{figure*}[t]
 \centering
@@ -181,11 +181,11 @@ Learning  $J_\phi$ through the exclusive supervision of data observations requir
 \label{fig:task_overview}
 \end{figure*}
 
-\paragraph{Inner loop termination.} A question that arises when defining $\mu_{t+1}(\phi)$ lies in the budget of gradient steps needed or allowed to optimize the parameters $\theta$ of the ICNN, before taking a new gradient step on $\phi$ in the outer loss. A straightforward approach in \texttt{JAX} \citep{jax2018github} would be to use a preset number of iterations with a \texttt{for} loop (\texttt{jax.lax.scan}). 
-We do observe, however, that the number of iterations needed to converge in relevant scenarios can vary significantly with the ICNN architecture and/or the hardness of the underlying task.
+\paragraph{Inner loop termination.} A question that arises when defining $\mu_{t+1}(\phi)$ lies in the budget of gradient steps needed or allowed to optimize the parameters $\theta$ of the \acrshort{ICNN}, before taking a new gradient step on $\phi$ in the outer loss. A straightforward approach in \texttt{JAX} \citep{jax2018github} would be to use a preset number of iterations with a \texttt{for} loop (\texttt{jax.lax.scan}). 
+We do observe, however, that the number of iterations needed to converge in relevant scenarios can vary significantly with the \acrshort{ICNN} architecture and/or the hardness of the underlying task.
 We propose to use instead a differentiable fixed-point loop to solve each \acrshort{JKO} step up to a desired convergence threshold.
-We measure convergence of the optimization of the ICNN via the average norm of the gradient of the \acrshort{JKO} objective w.r.t. the ICNN parameters $\theta$, i.e., $\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\phi}(\theta_i, \phi)}_2/\sum_i \text{count}(\theta_i)$.
-We observe that this approach is robust across datasets and architectures of the ICNN. An exemplary training curve for the \acrshortpl{ICNN} updated successively along a time sequence is shown in Figure~\ref{fig:training_icnn}.
+We measure convergence of the optimization of the \acrshort{ICNN} via the average norm of the gradient of the \acrshort{JKO} objective w.r.t. the \acrshort{ICNN} parameters $\theta$, i.e., $\sum_i \norm{\nabla_{\theta_i}\mathcal{F}_{J_\phi}(\theta_i, \phi)}_2/\sum_i \text{count}(\theta_i)$.
+We observe that this approach is robust across datasets and architectures of the \acrshort{ICNN}. An exemplary training curve for the \acrshortpl{ICNN} updated successively along a time sequence is shown in Figure~\ref{fig:training_icnn}.
 
 \paragraph{Reverse-mode differentiation.} The Jacobian $\partial \mu_{t+1} / \partial\phi$ arising when computing the gradient $\nabla_\phi W_\varepsilon(\mu_{t+1}(\phi), \mathrm{data}_{t+1})$ is obtained by unrolling the while loop above. The gradient term of the Sinkhorn divergence w.r.t the first argument is given by the Danskin envelope theorem \citep{danskin2012theory}.
 
@@ -288,7 +288,7 @@ In the following, we evaluate our method empirically on a variety of tasks. This
 \label{sec:jkonet_synthetic}
 
 \paragraph{Energy-driven trajectories.} The first task involves the evolution of partial differential equations with known potential. We hereby consider both convex (e.g., the quadratic function $J(x) = \|x\|^2_2$) and nonconvex potentials (e.g., Styblinski function) (see \cref{fig:task_overview}). These two-dimensional synthetic flows are generated using the Euler-Maruyama method~\citep{kloeden1992stochastic}. 
-To recover the true potential via \textsc{JKOnet}, we parameterize both energy $J_\phi$ and ICNN $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$.
+To recover the true potential via \textsc{JKOnet}, we parameterize both energy $J_\phi$ and \acrshort{ICNN} $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$.
 Figure~\ref{fig:exp_jkonet_pot_traj}a-b demonstrate \textsc{JKOnet}'s ability to recover convex and nonconvex potentials via energy $J_\phi$.
 
 \paragraph{Arbitrary trajectories.}
@@ -394,7 +394,7 @@ In the following, we are provided with a single-cell dataset of independent samp
 % The goal of learning individual dynamics is to identify ancestor and descendant cells and get a better understanding of biological differentiation or reprogramming mechanisms. 
 More concretely, we apply \textsc{JKOnet} to embryoid body sc\acrshort{RNA-seq} data \citep{moon2019visualizing}, describing the differentiation of human embryonic stem cells grown as embryoid bodies into diverse cell lineages over a period of 27 days. During this time, cells are collected at 5 different snapshots (day 1 to 3, day 6 to 9, day 12 to 15, day 18 to 21, day 24 to 27) and measured via scRNA-seq (resulting in $15,150$ cells).
 We run \textsc{JKOnet} as well as the baseline on the first 20 components of a \acrfull{PCA} of the $4,000$ highly differentiable genes. More details on the dataset are provided in \cref{app:dataset_moon}.
-We split the dataset into train and test data ($\sim 15 \%$) and parameterize both energy $J_\phi$ and ICNN $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$).
+We split the dataset into train and test data ($\sim 15 \%$) and parameterize both energy $J_\phi$ and \acrshort{ICNN} $\varphi_\theta$ with linear layers ($\varepsilon = 1.0$, $\tau = 1.0$).
 
 \paragraph{Capturing spatio-temporal dynamics.}
 Given the samples from the cell population at day 1 to 3 (i.e., $\mathrm{data}_0$), \textsc{JKOnet} learns the underlying spatiotemporal dynamics giving rise to the developmental evolution of embryonic stem cells. 
