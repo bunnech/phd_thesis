@@ -6,20 +6,20 @@
 \vskip 2em
 
 
-Optimal transport theory~\citep{santambrogio2015optimal} is a core element of the machine learning toolbox and has become within a few years the go-to framework to analyze, model, and solve an ever-increasing variety of tasks involving probability measures. This is best exemplified by its increasing importance to fitting generative models, where the goal is to learn a map~\citep{arjovsky2017wasserstein, genevay2018learning, salimans2018improving}, or more generally a diffusion \citep{song2020score, de2021diffusion} to morph a simple measure (e.g., Gaussian) onto a data distribution of interest (e.g., images). This is also apparent in the many applications that use OT to align probability measures that have since arisen, e.g., to transfer label knowledge between datasets~\citep{flamary2016optimal, singh2020model}, to analyze sampling schemes~\citep{dalalyan2017theoretical}, or study population trajectories~\citep{schiebinger2019optimal, bunne2021learning}, i.e., the subject of this thesis.
+\Acrlong{OT} theory~\citep{santambrogio2015optimal} is a core element of the machine learning toolbox and has become within a few years the go-to framework to analyze, model, and solve an ever-increasing variety of tasks involving probability measures. This is best exemplified by its increasing importance to fitting generative models, where the goal is to learn a map~\citep{arjovsky2017wasserstein, genevay2018learning, salimans2018improving}, or more generally a diffusion \citep{song2020score, de2021diffusion} to morph a simple measure (e.g., Gaussian) onto a data distribution of interest (e.g., images). This is also apparent in the many applications that use \acrshort{OT} to align probability measures that have since arisen, e.g., to transfer label knowledge between datasets~\citep{flamary2016optimal, singh2020model}, to analyze sampling schemes~\citep{dalalyan2017theoretical}, or study population trajectories~\citep{schiebinger2019optimal, bunne2021learning}, i.e., the subject of this thesis.
 
-In this chapter, we primarily cast light on the static and dynamic formulations of optimal transport, and simultaneously establish their theoretical nexus by recalling its mathematical history from \citeauthor{monge1781histoire} and \citeauthor{kantorovich1942transfer} to modern Fields Medal winners \citeauthor{villani2009optimal}, \citeauthor{figalli2010optimal}, and Abel Prize recipient \citeauthor{caffarelli1990interior} in order to provide a solid foundation for the discussion ahead.
+In this chapter, we primarily cast light on the static and dynamic formulations of \acrlong{OT}, and simultaneously establish their theoretical nexus by recalling its mathematical history from \citeauthor{monge1781histoire} and \citeauthor{kantorovich1942transfer} to modern Fields Medal winners \citeauthor{villani2009optimal}, \citeauthor{figalli2010optimal}, and Abel Prize recipient \citeauthor{caffarelli1990interior} in order to provide a solid foundation for the discussion ahead.
 
 
 \section{Static Optimal Transport} \label{sec:background_ot_static}
 
-\looseness -1 Optimal transport takes dual roles as it induces a mathematically well-characterized distance measure between distributions as well as provides a geometry-based approach to realize mappings between two probability distributions.
-In this section, we introduce the mathematical foundations of the \textbf{static} OT problem. Further, we provide an extended analysis of the \citeauthor{monge1781histoire} map, which gives an actionable way to flow from one probability distribution to another.
-We conclude with a complete proof of the celebrated \citeauthor{brenier1987decomposition} theorem. This quintessential result and its particularization to translation-invariant costs lay the foundation of the flurry of neural approaches proposed in the literature. This includes modeling Monge maps as gradients of convex functions parameterized through convex neural networks \citep{amos2017input, huang2021convex, makkuva2020optimal, korotin2021neural, lubeck2022neural, bunne2022supervised}, i.e., approaches that are a direct consequence of the \citeauthor{brenier1987decomposition} theorem and the subject of this thesis, regularizers \citep{uscidda2023monge}, amortized optimization \citep{amos2023amortizing, amos2023meta}, or entropic maps \citep{pooladian2021entropic, pooladian2023minimax, divol2022optimal, cuturi2023monge}.
+\looseness -1 \Acrlong{OT} takes dual roles as it induces a mathematically well-characterized distance measure between distributions as well as provides a geometry-based approach to realize mappings between two probability distributions.
+In this section, we introduce the mathematical foundations of the \textbf{static} \acrshort{OT} problem. Further, we provide an extended analysis of the \citeauthor{monge1781histoire} map, which gives an actionable way to flow from one probability distribution to another.
+We conclude with a complete proof of the celebrated \citeauthor{brenier1987decomposition} theorem. This quintessential result and its particularization to translation-invariant costs lay the foundation of the flurry of neural approaches proposed in the literature. This includes modeling Monge maps as gradients of convex functions parameterized through \acrlongpl{ICNN} \citep{amos2017input, huang2021convex, makkuva2020optimal, korotin2021neural, lubeck2022neural, bunne2022supervised}, i.e., approaches that are a direct consequence of the \citeauthor{brenier1987decomposition} theorem and the subject of this thesis, regularizers \citep{uscidda2023monge}, amortized optimization \citep{amos2023amortizing, amos2023meta}, or entropic maps \citep{pooladian2021entropic, pooladian2023minimax, divol2022optimal, cuturi2023monge}.
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_ot_background.pdf}
-  \caption{\textbf{Overview on different formulations of the static OT problem for discrete and continuous measures.} Monge map for \textbf{a.} discrete and \textbf{b.} continuous measures $\mu, \nu$. The optimal map $T^\star$ minimizes \eqref{eq:monge}. \textbf{c.} Optimal coupling $\pi$ \eqref{eq:kantorovich} for discrete measures $\mu$ and $\nu$. \textbf{d.} Mass splitting principle of the Kantorovich relaxation for discrete measures $\mu$ and $\nu$ of the optimal transport plan $\bP^\star$ and a non-optimal plan $\bP$. Figure adapted from \citet{peyre2019computational}.}	
+  \caption{\textbf{Overview on different formulations of the static \acrshort{OT} problem for discrete and continuous measures.} Monge map for \textbf{a.} discrete and \textbf{b.} continuous measures $\mu, \nu$. The optimal map $T^\star$ minimizes \eqref{eq:monge}. \textbf{c.} Optimal coupling $\pi$ \eqref{eq:kantorovich} for discrete measures $\mu$ and $\nu$. \textbf{d.} Mass splitting principle of the Kantorovich relaxation for discrete measures $\mu$ and $\nu$ of the \acrlong{OT} plan $\bP^\star$ and a non-optimal plan $\bP$. Figure adapted from \citet{peyre2019computational}.}	
   \label{fig:ot_principles}
 \end{figure}
 
@@ -46,7 +46,7 @@ Instead of the deterministic matching proposed by \citeauthor{monge1781histoire}
 \begin{equation} \label{eq:kantorovich}
     W(\mu, \nu) \defeq \inf_{\pi\in \Pi(\mu,\nu)}\iint c(x, y) \pi(x, y)\mathrm{d}x\mathrm{d}y,
 \end{equation}
-where $\Pi(\mu, \nu) \defeq \left\{\pi \in \gP(\mathcal{X} \times \mathcal{Y}): P_{\gX \sharp} \pi=\mu \, \text { and } \, P_{\gY \sharp} \pi=\nu\right\}$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$. Given the optimal transport coupling $\pi$, the resulting distance $W(\mu, \nu)$ between $\mu$ and $\nu$ is known as the Wasserstein distance.
+where $\Pi(\mu, \nu) \defeq \left\{\pi \in \gP(\mathcal{X} \times \mathcal{Y}): P_{\gX \sharp} \pi=\mu \, \text { and } \, P_{\gY \sharp} \pi=\nu\right\}$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$. Given the \acrlong{OT} coupling $\pi$, the resulting distance $W(\mu, \nu)$ between $\mu$ and $\nu$ is known as the Wasserstein distance.
 A visualization of the discrete setting is provided in \cref{fig:ot_principles}c.
 
 For his work, \citeauthor{kantorovich1942transfer} received the Nobel Prize in economics. The connection of \acrshort{OT} to basic questions in economy becomes clear when interpreting $\mu$ as a density of resource units, and $\nu$ a density of factories, where the coupling $\pi$ denotes the optimal transportation plan of distributing resources to factories.
@@ -117,9 +117,9 @@ where $f^\star$ is the optimal dual function and $c$-concave.
 \subsection{Geometry of Optimal Transport}
 \label{sec:background_brenier}
 
-Following \citet{gangbo1996geometry}, $f^\star$ can be linked to the optimal transport map $T^\star$ via the following result:
+Following \citet{gangbo1996geometry}, $f^\star$ can be linked to the \acrlong{OT} map $T^\star$ via the following result:
 \begin{theorem}[Gangbo-McCann Theorem] \label{thm:gangbo-mccann}
-	Given a cost function $c$, the relationship between the optimal transport map $T^\star : \gX \rightarrow \gX$ and the $c$-concave function $f^\star$ denoting the optimal dual potential is given by the expression 
+	Given a cost function $c$, the relationship between the \acrlong{OT} map $T^\star : \gX \rightarrow \gX$ and the $c$-concave function $f^\star$ denoting the optimal dual potential is given by the expression 
 	\begin{equation}
 		T^{\star}(x)=\nabla_1 c(x, \cdot)^{-1} \circ \nabla f^{\star}(x)\,.
 	\end{equation}
@@ -166,7 +166,7 @@ Applying this result to $c(x, y) = h(x-y)$, we get
 \end{proof}
 Alternative formulations that relate the Kantorovich setting (with general costs) \eqref{eq:kantorovich-dual} to that of Monge \eqref{eq:monge} were proposed by \citet{ruschendorf1991bounds, ruschendorf1991frechet, caffarelli2017allocation}. \\
 
-% Problem \eqref{eq:kantorovich-dual} allows us to characterize optimal transport plans that emerge as the solution to the Kantorovich optimal transportation problem \eqref{eq:kantorovich} and show sufficient conditions for the existence of optimal transport maps.
+% Problem \eqref{eq:kantorovich-dual} allows us to characterize \acrlong{OT} plans that emerge as the solution to the Kantorovich optimal transportation problem \eqref{eq:kantorovich} and show sufficient conditions for the existence of \acrlong{OT} maps.
 The case of the squared Euclidean cost\footnote{For elegance, we consider $c(x, y) = \frac{1}{2}\norm{x-y}^2$ instead of $c(x, y) = \norm{x-y}^2$.} $c(x, y) = \frac{1}{2}\norm{x-y}^2$ in $\gX = \gY = \mathbb{R}^d$ deserves a special attention. 
 Taking advantage of the particular form of the quadratic cost function, we can expand the constraint of \eqref{eq:kantorovich-dual} such that 
 \begin{equation*}
@@ -186,7 +186,7 @@ Similarly, for the special case of the squared Euclidean distance the \nameref{t
 where we again reparameterize $\varphi(x) \defeq \frac{1}{2}\|x\|^2_2-f(x)$ and $\varphi(x) = \frac{1}{2}\|x\|_2^2-f(x)$ can be shown to be convex.
 
 This connection presents a well-known fact that has been investigated first by \citeauthor{brenier1987decomposition}, establishing for the special case of the Euclidean distance the equivalence of the Monge \eqref{eq:monge} and Kantorovich formulation  \eqref{eq:kantorovich}, the uniqueness of the optimal coupling $\pi$, and instantiating that there must exist a unique (up to the addition of a constant) potential $\varphi^\star:\mathbb{R}^d\rightarrow \mathbb{R}$ such that $T^\star = \nabla \varphi^\star$. 
-This theorem has far-reaching implications: When seeking optimal transport maps, it is sufficient, to restrict the computational effort to seek a "good" convex potential $\varphi$, such that its gradient pushes $\mu$ towards $\nu$. 
+This theorem has far-reaching implications: When seeking \acrlong{OT} maps, it is sufficient, to restrict the computational effort to seek a "good" convex potential $\varphi$, such that its gradient pushes $\mu$ towards $\nu$. 
 Let us state the celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition} in more formal terms:
 \begin{theorem}[Brenier Theorem] \label{thm:brenier}
 	In the setting where both $\mathcal{X}$ and $\mathcal{Y}$ are equal to $\mathbb{R}^d$, and the cost function $c(x, y) = \norm{x-y}^2$ is employed, and at least one of the two input measures $\mu$ possesses a density $p_\mu$ in relation to the Lebesgue measure, then there exists a unique optimal solution $\pi$ in the Kantorovich formulation \eqref{eq:kantorovich}.
@@ -205,7 +205,7 @@ Moreover, this map $T$ is uniquely determined by the gradient of a convex functi
 \end{corollary}
 %To avoid confusion, we again note that the relationship between this convex function $\varphi$ and the dual potential $f$ that solves \eqref{eq:kantorovich-dual} is given $\varphi(x)$ as $\frac{\|x\|^2}{2}-f(x)$.
 
-The \nameref{thm:brenier} by \citet{brenier1987decomposition, brenier1991polar} has been exploited to propose neural OT solvers ~\citep{taghvaei20192, makkuva2020optimal, korotin2021wasserstein, bunne2022proximal, alvarez2021optimizing, mokrov2021large, amos2023amortizing} and recurrently permeates this thesis (see  \cref{cha:cellot} and \ref{cha:condot}), proving its essential nature in multiple instances and modern developments of optimal transport.
+The \nameref{thm:brenier} by \citet{brenier1987decomposition, brenier1991polar} has been exploited to propose neural \acrshort{OT} solvers ~\citep{taghvaei20192, makkuva2020optimal, korotin2021wasserstein, bunne2022proximal, alvarez2021optimizing, mokrov2021large, amos2023amortizing} and recurrently permeates this thesis (see  \cref{cha:cellot} and \ref{cha:condot}), proving its essential nature in multiple instances and modern developments of \acrlong{OT}.
 Further, it presents an elegant way to solve the Monge problem in a geometric sense and has profound implications for the dynamic version of the problem, which we will study next.
 
 
@@ -213,21 +213,21 @@ Further, it presents an elegant way to solve the Monge problem in a geometric se
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_dynamic_ot_background.pdf}
-  \caption{\looseness -1 \textbf{Overview on different formulations of the dynamic OT problem.} \textbf{a.} We can model the evolution of a measure $\mu_t$ over time as minimal path on a time-varying vector field $v(t, \cdot)$ or according to the gradient of a convex potential $\nabla \varphi$. \textbf{b.} Alternatively, taking a stochastic perspective, we can study the dynamic formulation of the entropy-regularized \acrshort{OT} problem \eqref{eq:ot-entropy} and find a stochastic process $\mathbb{P}_t$ that describes the particle dynamics from $\mu_0$ to $\mu_1$.}	
+  \caption{\looseness -1 \textbf{Overview on different formulations of the dynamic \acrshort{OT} problem.} \textbf{a.} We can model the evolution of a measure $\mu_t$ over time as minimal path on a time-varying vector field $v(t, \cdot)$ or according to the gradient of a convex potential $\nabla \varphi$. \textbf{b.} Alternatively, taking a stochastic perspective, we can study the dynamic formulation of the entropy-regularized \acrshort{OT} problem \eqref{eq:ot-entropy} and find a stochastic process $\mathbb{P}_t$ that describes the particle dynamics from $\mu_0$ to $\mu_1$.}	
   \label{fig:dynamic_ot_background}
 \end{figure}
 
-We have hitherto engaged with the \emph{static} \acrlong{OT} problem, establishing a solid foundation upon which to build more desirable dynamic formulations. In fact, the roots of these dynamic formulations are embedded within the static \acrshort{OT} framework: As posited by \citet{benamou2000computational}, the dynamic formulation "was already implicitly contained in the original problem addressed by \citeauthor{monge1781histoire}", where "eliminating the time variable was just a clever way of reducing the dimension of the problem." When reintroducing time in the dynamic version, the optimal transport map becomes a time-dependent flow capable of describing the evolution of a measure over time.
+We have hitherto engaged with the \emph{static} \acrlong{OT} problem, establishing a solid foundation upon which to build more desirable dynamic formulations. In fact, the roots of these dynamic formulations are embedded within the static \acrshort{OT} framework: As posited by \citet{benamou2000computational}, the dynamic formulation "was already implicitly contained in the original problem addressed by \citeauthor{monge1781histoire}", where "eliminating the time variable was just a clever way of reducing the dimension of the problem." When reintroducing time in the dynamic version, the \acrlong{OT} map becomes a time-dependent flow capable of describing the evolution of a measure over time.
 
 In this section, we will cover several perspectives and frameworks of the \textbf{dynamic} \acrshort{OT} problem: As mentioned earlier, the \citeauthor{brenier1987decomposition} theorem  forms a critical bridge that connects the static and dynamic formulation, perpetuated in the Monge-Amp{\`e}re equation.
-Further, \citet*{benamou2000computational} introduce how the dynamic point of view offers an alternate and intuitive interpretation of optimal transport with links to fluid dynamics. The resulting framework surprisingly leads to a convex optimization problem that can be parameterized through continuous normalizing flows \citep{tong2020trajectorynet, chen2018neural} or flow matching frameworks \citep{lipman2023flow, liu2022flow, pooladian2023multisample, albergo2023stochastic}.
+Further, \citet*{benamou2000computational} introduce how the dynamic point of view offers an alternate and intuitive interpretation of \acrlong{OT} with links to fluid dynamics. The resulting framework surprisingly leads to a convex optimization problem that can be parameterized through continuous \acrfull{NF} \citep{tong2020trajectorynet, chen2018neural} or flow matching frameworks \citep{lipman2023flow, liu2022flow, pooladian2023multisample, albergo2023stochastic}.
 We further highlight the connections of \acrshort{OT} to \acrshortpl{PDE} such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme.
-Lastly, moving beyond PDEs and taking a stochastic control perspective, we will introduce the notion of the Schr\"odinger bridge problem.
+Lastly, moving beyond \acrshortpl{PDE} and taking a stochastic control perspective, we will introduce the notion of the \acrlong{SB} problem.
 
 
 \subsection{Monge-Amp{\`e}re Equation} \label{sec:background_monge_ampere}
 
-% Caffarelli's regularity theorems from the 1990s represented a major breakthrough in our understanding of the Monge-Amp{\`e}re equation, a highly nonlinear, quintessential partial differential equation, that for instance is used to construct surfaces of prescribed Gaussian curvature. Important existence results were established by Alexandrov, and earlier central properties had been shown by Caffarelli in collaboration with Nirenberg and Spruck, with further key contributions by Evans and Krylov. Caffarelli however closed the gap in our understanding of singularities by proving that the explicitly known examples of singular solutions are the only ones.
+% Caffarelli's regularity theorems from the 1990s represented a major breakthrough in our understanding of the Monge-Amp{\`e}re equation, a highly nonlinear, quintessential \acrlong{PDE}, that for instance is used to construct surfaces of prescribed Gaussian curvature. Important existence results were established by Alexandrov, and earlier central properties had been shown by Caffarelli in collaboration with Nirenberg and Spruck, with further key contributions by Evans and Krylov. Caffarelli however closed the gap in our understanding of singularities by proving that the explicitly known examples of singular solutions are the only ones.
 
 % Caffarelli has, together with collaborators, applied these results to the Monge-Kantorovich optimal mass transportation problem, based on previous work by Brenier. Caffarelli and Vasseur gave deep regularity results for the quasi-geostrophic equation in part by applying the exceptionally influential paper by Caffarelli and Silvestre on the fractional Laplacian.
 As a direct consequence of the \nameref{thm:brenier}, if $T(x) = \nabla \varphi(x)$, $\varphi$ being smooth and strictly convex, and $\mu$ and $\nu$ absolutely continuous with densities $p_\mu$ and $p_\nu$, we can express $T_\sharp \mu = \nu$ in a nonlinear \acrfull{PDE} form. More concretely, as a consequence of a simple change-of-variable computation, $\varphi$ is a solution of the Monge-Amp{\`e}re equation that reads
@@ -235,8 +235,8 @@ As a direct consequence of the \nameref{thm:brenier}, if $T(x) = \nabla \varphi(
 	\operatorname{det}\left(\partial^2 \varphi(x)\right) p_\nu(\nabla \varphi(x))=p_\mu(x),
 \end{equation}
 where $\partial^2 \varphi(x) \in \mathbb{R}^{d \times d}$ is the Hessian of $\varphi$, describing the continuous evolution from $\mu$ to $\nu$.
-First studied by \citeauthor{monge1781histoire} in \citeyear{monge1781histoire} and later by \citeauthor{ampere1819memoire} in \citeyear{ampere1819memoire}, this nonlinear partial differential equation arises in several problems from analysis to geometry, for example, in the Weyl and Minkowski problems in differential geometry of surfaces. 
-The regularity of the solutions of \eqref{eq:monge_ampere}, with implications on regularity results of the optimal transport map $T$, has been subject of a series of works by \citeauthor{caffarelli1990interior} in the \citeyear{caffarelli1990interior}s, for which he was awarded the Abel Prize in 2023, as well as more recently by \citeauthor{figalli2017monge}, recognized with the Fields Medal in 2018.
+First studied by \citeauthor{monge1781histoire} in \citeyear{monge1781histoire} and later by \citeauthor{ampere1819memoire} in \citeyear{ampere1819memoire}, this nonlinear \acrlong{PDE} arises in several problems from analysis to geometry, for example, in the Weyl and Minkowski problems in differential geometry of surfaces. 
+The regularity of the solutions of \eqref{eq:monge_ampere}, with implications on regularity results of the \acrlong{OT} map $T$, has been subject of a series of works by \citeauthor{caffarelli1990interior} in the \citeyear{caffarelli1990interior}s, for which he was awarded the Abel Prize in 2023, as well as more recently by \citeauthor{figalli2017monge}, recognized with the Fields Medal in 2018.
 
 
 \subsection{Benamou-Brenier Formulation} \label{sec:background_benamou_brenier}
@@ -249,7 +249,7 @@ Such path $\mu_t$ can be described through a time-varying vector field $v(t, \cd
 	\frac{\partial \mu_t}{\partial t}+\nabla\left(\mu_t v\right)= 0, \qquad \mu_{t=0}=\mu_0, \mu_{t=1}=\mu_1\,,
 \end{equation}
 where the vector field $v(t, \cdot)$ denotes the speed and $\mu_t v(t, \cdot) = J_t$ corresponds to the momentum.
-Reformulating the optimal transportation problem in a differential way, an "Eulerian" formulation inspired by fluid mechanics, will be crucial for the subsequent study of dynamical problems.
+Reformulating the \acrlong{OT}ation problem in a differential way, an "Eulerian" formulation inspired by fluid mechanics, will be crucial for the subsequent study of dynamical problems.
 Every curve $\mu_t$ describing the evolution of the measure over time can be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v(t, \cdot)$ that (i.) satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimizes the path length.
 The infinitesimal length of such a vector field can be computed via 
 \begin{equation} \label{eq:vector_field_length}
@@ -266,24 +266,22 @@ Taking the perspective of fluid dynamics, \eqref{eq:vector_field_length} can als
 The Benamou-Brenier formulation \eqref{eq:benamou_brenier} then selects the vector field $v$ that minimizes the total efforts or the total kinetic energy one has to spend in order to move particles around according to the vector field $v$. \\
 
 
-A particularly important case occurs when there exists an optimal Monge map $T: \mathbb{R}^d \rightarrow \mathbb{R}^d$ with $T_\sharp \mu_0 = \mu_1$ (see \nameref{thm:brenier}): The solution of the time-dependent OT problem \eqref{eq:benamou_brenier} then coincides with \citeauthor{mccann1997convexity}'s displacement interpolation between two measures.
+A particularly important case occurs when there exists an optimal Monge map $T: \mathbb{R}^d \rightarrow \mathbb{R}^d$ with $T_\sharp \mu_0 = \mu_1$ (see \nameref{thm:brenier}): The solution of the time-dependent \acrshort{OT} problem \eqref{eq:benamou_brenier} then coincides with \citeauthor{mccann1997convexity}'s displacement interpolation between two measures.
 Reciting the \nameref{thm:brenier}, with $T = \nabla \varphi$, $\mu_t$ is equal to \citeauthor{mccann1997convexity}'s interpolation between $\mu_0$ and $\mu_1$ given by
 \begin{equation} \label{eq:mccann_interpolation}
 	\mu_t = [(1-t) I+t \nabla \varphi]_\sharp \mu_0 = [(1-t) I+t T]_\sharp \mu_0\,.
 \end{equation}
-Despite their simplicity, this concept possesses remarkable applications beyond the realm of optimal transport \citep{bonneel2011displacement}. In particular, its interpretation as a geodesic formula in Riemannian geometry is thoroughly discussed in \citet{gangbo1996geometry} and serves as a pivotal link to the subsequent discussion.
+Despite their simplicity, this concept possesses remarkable applications beyond the realm of \acrlong{OT} \citep{bonneel2011displacement}. In particular, its interpretation as a geodesic formula in Riemannian geometry is thoroughly discussed in \citet{gangbo1996geometry} and serves as a pivotal link to the subsequent discussion.
 
 
 \subsection{Jordan-Kinderlehrer-Otto Flows} \label{sec:background_jko}
 
-The time-dependent Benamou-Brenier formulation \eqref{eq:benamou_brenier} not only provides us with a more complete description of optimal transport but also the discovery that the resulting path $(\mu_t)_{t=0}^1$ may be seen as a constant-speed geodesic interpolating between population $\mu_0$ and $\mu_1$ in the space of measures, i.e., a Wasserstein geodesic.
+The time-dependent Benamou-Brenier formulation \eqref{eq:benamou_brenier} not only provides us with a more complete description of \acrlong{OT} but also the discovery that the resulting path $(\mu_t)_{t=0}^1$ may be seen as a constant-speed geodesic interpolating between population $\mu_0$ and $\mu_1$ in the space of measures, i.e., a Wasserstein geodesic.
 When studying dynamic processes in biomedicine, however, phenomena such as cellular differentiation in developmental processes, tissue formation, or cell migration involve intricate spatiotemporal dynamics that cannot be adequately captured by solely studying the interpolation between two measures $\mu_0$ and $\mu_1$.
 Instead, many phenomena in biology and physics can be modeled through an energy functional $J$ such that the minimization of $J$ describes the observed dynamics of the studied system ---a concept known as gradient flows.
 At their core, gradient flows provide a powerful framework for understanding the evolution of functions or systems toward an optimal state through the direction of the steepest descent of a function $J$. 
 More concretely, gradient flows capture the intuitive idea of objects moving in a direction that decreases their energy, seeking a state of minimum potential or maximum stability. 
 In the following, we will study gradient flows in the Euclidean setting before considering generalizations to arbitrary measures that allow studying the evolution of populations over time.
-
-% It is natural to derive various partial differential equations (PDEs) as gradient flows of certain energy functionals.
 
 \paragraph{Euclidean case.}
 Considering the evolution of a vector $x$ over time in Euclidean space. Provided with a smooth functional $J$, this can be realized through the standard gradient descent (forward) scheme
@@ -298,7 +296,7 @@ For non-smooth functions, one can resort to a proximal scheme, i.e.,
 The proximal scheme can thus be seen as a \emph{backward} Euler discretization of the gradient flow.
 
 \paragraph{Wasserstein case.}
-When studying the evolution of a population or measure $\mu_t$ over time, however, we need to resort to optimal transport metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
+When studying the evolution of a population or measure $\mu_t$ over time, however, we need to resort to \acrlong{OT} metrics $W(\cdot, \cdot)$ \eqref{eq:kantorovich} instead of the $\ell_2$-norm $\norm{\cdot}^2$.
 Considering functionals $J$ that take a measure or population as input, a gradient flow of $\mu$ w.r.t. to $J$ can be similarly expressed through forward and backward schemes. Assuming $J(\mu) 
 \defeq \int E(x) d \mu(x)$, i.e., ignoring particle interaction, the forward scheme reads
 \begin{equation*}
@@ -311,11 +309,11 @@ with the corresponding backward formulation defined as
 \end{equation}
 This implicit time stepping is a useful tool to construct continuous flows: In the limit $\tau \rightarrow 0$ the resulting sequence $\{\mu_t\}_{t=0}^T$ approximates a continuous flow $\mu_t$, i.e., a path in the Wasserstein space, and can thus be seen as the analogy of the usual proximal descent scheme, tailored for probability measures~\citep[p.285]{santambrogio2015optimal}
 
-Interest in Wasserstein gradient flows was sparked by the seminal work of Jordan, Kinderlehrer, and Otto (\citeyear{jordan1998variational}) who studied diffusion processes under the lens of the OT metric \citep[see also][]{ambrosio2006gradient}. 
-For a broad class of potentials, $J$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{JKO step} \eqref{eq:jko} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of a corresponding PDE, and the resulting evolutions are often referred to as \emph{JKO flows}.
+Interest in Wasserstein gradient flows was sparked by the seminal work of Jordan, Kinderlehrer, and Otto (\citeyear{jordan1998variational}) who studied diffusion processes under the lens of the \acrshort{OT} metric \citep[see also][]{ambrosio2006gradient}. 
+For a broad class of potentials, $J$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{\acrshort{JKO} step} \eqref{eq:jko} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of a corresponding \acrshort{PDE}, and the resulting evolutions are often referred to as \emph{\acrshort{JKO} flows}.
 
 \begin{table*}[t]
-	\caption{Equivalence between gradient flows and PDEs where the gradient flow of flow functional $J(\mu_t)$ in Wasserstein space satisfies the corresponding PDE \citep{alvarez2021optimizing, villani2021topics}. The function $f: \mathbb{R} \rightarrow \mathbb{R}$ is convex and superlinear and $V, W: \gX \rightarrow \mathbb{R}$ are convex and sufficiently smooth.}
+	\caption{Equivalence between gradient flows and \acrshortpl{PDE} where the gradient flow of flow functional $J(\mu_t)$ in Wasserstein space satisfies the corresponding \acrshort{PDE} \citep{alvarez2021optimizing, villani2021topics}. The function $f: \mathbb{R} \rightarrow \mathbb{R}$ is convex and superlinear and $V, W: \gX \rightarrow \mathbb{R}$ are convex and sufficiently smooth.}
 	\label{tab:examples_gradient_flows}
 	\centering
 	\adjustbox{max width=\linewidth}{%
@@ -332,13 +330,13 @@ For a broad class of potentials, $J$ and provided with an initial distribution $
 	}
 \end{table*}
 
-Following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of \acrlong{PDE} may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
+Following \citet{otto2001geometry} on the calculus of \acrlong{OT} (\citeauthor{otto2001geometry} calculus), a large class of \acrlong{PDE} may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
 For instance, the standard heat equation of physics, i.e.,
 \begin{equation*}
 	\frac{\partial \mu_t}{\partial t} = \Delta \mu_t,
 \end{equation*}
 with $\Delta$ being the spatial Laplacian, can be expressed as a gradient flow of the energy $J(\mu) = \int \mu_t(x) \log \mu_t(x) \mathrm{d} x$, i.e., Gibbs-Boltzmann's famous functional with the physical interpretation of the negative of an entropy.
-Among further examples displayed in \cref{tab:examples_gradient_flows} \citep{alvarez2021optimizing, villani2021topics}, a classic subject of the theory of PDEs also comprises the linear Fokker-Planck equation
+Among further examples displayed in \cref{tab:examples_gradient_flows} \citep{alvarez2021optimizing, villani2021topics}, a classic subject of the theory of \acrshortpl{PDE} also comprises the linear Fokker-Planck equation
 \begin{equation}
 	\label{eq:linear_fokker_planck}
 	\frac{\partial \mu_t}{\partial t} = \Delta \mu_t+\nabla \cdot(\mu_t \nabla V),
@@ -351,20 +349,20 @@ Here, the first term again represents the negative Gibbs-Boltzmann entropy and t
 
 
 Thus, \acrshort{JKO} flows have found application in inferring the evolution of populations over time, crucial in many scientific disciplines, for instance in biomedicine to reconstruct cellular dynamics from observations \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}.
-This formulation is particularly interesting for studying dynamical systems in biomedicine, as the exact expression of the PDE corresponding to functional $J$ does not need to be known.
+This formulation is particularly interesting for studying dynamical systems in biomedicine, as the exact expression of the \acrshort{PDE} corresponding to functional $J$ does not need to be known.
 Instead, we can propose parameterizations of energy functional $J$ that can be learned from data, an idea we will explore in \cref{sec:learn_energy}.
-While providing a general framework for studying general and complex population dynamics, each step of the JKO scheme \eqref{eq:jko} is costly as it requires solving a minimization problem involving the Wasserstein distance \eqref{eq:kantorovich}. Beyond introducing learning schemes for functional $J$, we will thus introduce novel efficient and differentiable schemes for solving JKO flows in \cref{sec:jko_icnn}.
+While providing a general framework for studying general and complex population dynamics, each step of the \acrshort{JKO} scheme \eqref{eq:jko} is costly as it requires solving a minimization problem involving the Wasserstein distance \eqref{eq:kantorovich}. Beyond introducing learning schemes for functional $J$, we will thus introduce novel efficient and differentiable schemes for solving \acrshort{JKO} flows in \cref{sec:jko_icnn}.
 
 
 \subsection{Stochastic Control Perspective} \label{sec:background_control}
 
-Benamou-Brenier motivated the introduction of the dynamic optimal transport problem from the perspective of fluid dynamics.
-As we shall see, both the OT problem \eqref{eq:kantorovich} and its regularized version \eqref{eq:ot-entropy} can be viewed as stochastic \textit{optimal control} problems.
+Benamou-Brenier motivated the introduction of the dynamic \acrlong{OT} problem from the perspective of fluid dynamics.
+As we shall see, both the \acrshort{OT} problem \eqref{eq:kantorovich} and its regularized version \eqref{eq:ot-entropy} can be viewed as stochastic \textit{optimal control} problems.
 % Why do we want this?
 Control theory at the heart is concerned with finding optimal policies for dynamic systems subject to constraints. Despite wide-ranging progress on both the theory and applications, deploying control theory to large-scale and often unknown systems remains a grand challenge.
-As we will explore in the following, stochastic optimal control problems to regulate dynamic systems emerge from the theory of optimal transport \citep{santambrogio2015optimal} that provides a geometric variational framework for studying flows of distributions on metric spaces \citep{chen2021optimal}.
+As we will explore in the following, stochastic optimal control problems to regulate dynamic systems emerge from the theory of \acrlong{OT} \citep{santambrogio2015optimal} that provides a geometric variational framework for studying flows of distributions on metric spaces \citep{chen2021optimal}.
 These theoretical concepts build the foundation of recently developed deep learning architectures employed as generative models \citep{song2020score, de2021diffusion} or for studying the evolution of dynamical systems over time \citep{chen2021likelihood, bunne2022proximal, vargas2021solving}.
-Further, celebrated control principles such as the Pontryagin maximum principle have been emphasized repeatedly in neural \acrfull{ODE} \citep{chen2018neural} and \acrfull{SDE} works \citep{jia2019neural}.
+Further, celebrated control principles such as the Pontryagin maximum principle have been emphasized repeatedly in neural \acrlong{ODE} \citep{chen2018neural} and \acrlong{SDE} works \citep{jia2019neural}.
 
 \subsubsection*{... on Optimal Transport} \label{sec:background_control_ot}
 
@@ -374,7 +372,7 @@ For this, we consider a system with state distribution $\mathrm{d}X_t=v\left(t, 
 \begin{equation*}
 	\int_0^1 \int_{\mathbb{R}^n} \frac{1}{2}\norm{v(t, x)}^2 \mathrm{d}\mu_t(x) \mathrm{d}t = \mathbb{E}\left\{\int_0^1 \frac{1}{2}\left\|v(t, X_t)\right\|^2 \mathrm{d}t\right\},
 \end{equation*}
-resulting in the stochastic control formulation of the OT problem 
+resulting in the stochastic control formulation of the \acrshort{OT} problem 
 \begin{align}
 & \inf _{v \in \mathcal{V}} \mathbb{E}\left\{\int_0^1 \frac{1}{2}\norm{v(t, X_t)}^2 \mathrm{d}t\right\} \\
 \label{eq:control_constraint} & \mathrm{d}X_t=v\left(t, X_t\right)\mathrm{d}t  \\
@@ -387,7 +385,7 @@ The above strategy, however, differs from standard optimal control in the added 
 
 \subsubsection*{... on Regularized Optimal Transport}
 
-Similarly, the regularized OT problem \eqref{eq:ot-entropy} can be cast as a stochastic control problem.
+Similarly, the regularized \acrshort{OT} problem \eqref{eq:ot-entropy} can be cast as a stochastic control problem.
 \begin{align}
 \label{eq:sb_control}
 & \inf _{v \in \mathcal{V}} \mathbb{E}\left\{\int_0^1 \frac{1}{2}\norm{v(t, X_t)}^2 \mathrm{d} t\right\}\\
@@ -428,7 +426,7 @@ This \emph{KL-minimization} problem is thus called the (generalized) \citeauthor
 This idea generalizes verbatim to any reference process $\mathbb{Q}_t$. Unfortunately, in most applications, notably biology, we often have little to no prior information about the underlying process $\Pmargin$ \citep{liberali2014hierarchical}, a problem tackled in \cref{cha:neural_sde}.
 
 % By the Gaussian increments of $\mathbb{W}_t$, for any marginal $\hat{\mathbb{P}}_0$ at time $0, \mathbb{W}_t$ would predict the distribution at time $T$ to be $\hat{\mathbb{P}}_0 * \mathcal{N}(0, T \cdot I)$ where $*$ denotes the convolution operator. If this distribution differs from the actual data $\hat{\mathbb{P}}_T$, then $\mathbb{P}_t$ must also differ from $\mathbb{W}_t$. 
-Recovering the stochastic calculus of variations formulation of the Schr{\"o}dinger bridge \eqref{eq:sb_control} can be achieved via the Girsanov theorem which tells us how stochastic processes behave under changes in measure. The equivalence between both formulations can be then established via
+Recovering the stochastic calculus of variations formulation of the \acrlong{SB} \eqref{eq:sb_control} can be achieved via the Girsanov theorem which tells us how stochastic processes behave under changes in measure. The equivalence between both formulations can be then established via
 \begin{align*}
 	\frac{\mathrm{d}\mathbb{P}_{t}}{\mathrm{d} \mathbb{P}^{v=0}_t} = \exp \left\{ \int_0^1 \frac{1}{\sigma} v(t, X_t^v) \cdot \mathrm{d} \mathbb{W}_t +  \int_0^1 \frac{1}{2\sigma^2} \norm{v(t, X_t^v)}^2 dt \right\}& \\
 	\text{and thus} \enspace \KL(\mathbb{P}_{t} \| \mathbb{P}^{v=0}_t) = \mathbb{E} \left\{ \int_0^1 \frac{1}{2\sigma^2}\norm{v(t, X_t)}^2 dt \right\}& ,
@@ -446,7 +444,7 @@ The resulting optimality conditions are
 & \frac{\partial \mu_t}{\partial t} = - \nabla \cdot(\mu_t \nabla \psi) +\frac{1}{2}\sigma^2 \Delta \mu_t
 \end{align}
 with value function $\psi(t, x)$ and $\mu_t$ being the associated optimal marginal density. Here, $v \equiv \nabla \psi$ and $\psi(1, \cdot)$ is equivalent to the terminal cost. Further, \cref{eq:sb_hb} is a second-order Hamilton-Jacobi-Bellman equation.
-After applying the \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform $(\psi, \mu_t) \rightarrow (\Phi, \widehat{\Phi})$, we obtain the \acrshort{SB} system associated to the SDE class in \eqref{eq:sb_control_constraint}, which is given by
+After applying the \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform $(\psi, \mu_t) \rightarrow (\Phi, \widehat{\Phi})$, we obtain the \acrshort{SB} system associated to the \acrshort{SDE} class in \eqref{eq:sb_control_constraint}, which is given by
 \begin{align}
 & \frac{\partial \Phi}{\partial t}=-\frac{1}{2}\sigma^2 \Delta \Phi 
 \quad \text { s.t. } & \Phi(0, \cdot) \widehat{\Phi}(0, \cdot)=\mu_0, \\ \nonumber
@@ -457,13 +455,13 @@ v(t, X_t)=\sigma^2 \nabla \log \Phi(t, x)$.
 
 \begin{figure}[t]
   \includegraphics[width=\textwidth]{figures/fig_comparison_sdes.pdf}
-  \caption{\textbf{Comparison of different SDE classes.} \textbf{a.} Particles evolve according to simple Brownian motion in all directions depending on the noise level $\sigma$. \textbf{b.} A particle evolution with an external speed $f$, here exemplified through a horizontal drift, and time-dependent noise $g$. The initial location of the particles is denoted as a blue dot, example trajectories are highlighted by blue lines.}	
+  \caption{\textbf{Comparison of different SDE classes.} \textbf{a.} Particles evolve according to simple \acrshort{BM} in all directions depending on the noise level $\sigma$. \textbf{b.} A particle evolution with an external speed $f$, here exemplified through a horizontal drift, and time-dependent noise $g$. The initial location of the particles is denoted as a blue dot, example trajectories are highlighted by blue lines.}	
   \label{fig:sde_comparison}
 \end{figure}
 
 \subsubsection*{Generalizations to Other SDE Classes}
-To describe complex biological processes, however, we need to consider SDE classes comprising nonlinear drifts, affine control, and time-varying diffusion. 
-In the following, let us consider SDEs with an external speed $f(\cdot, t): \mathbb{R}^d \rightarrow \mathbb{R}^d$, time-dependent diffusion $g(t) \in \mathbb{R}$, and standard Wiener process $\mathbb{W}_t \in \mathbb{R}^d$\footnote{Hereafter, we will sometimes drop $f \equiv f(t, X_t)$ and $g \equiv g(t)$ for brevity.}. \citet{caluya2021wasserstein, chen2021likelihood} provide a generalization of the above framework that reads
+To describe complex biological processes, however, we need to consider \acrshort{SDE} classes comprising nonlinear drifts, affine control, and time-varying diffusion. 
+In the following, let us consider \acrshortpl{SDE} with an external speed $f(\cdot, t): \mathbb{R}^d \rightarrow \mathbb{R}^d$, time-dependent diffusion $g(t) \in \mathbb{R}$, and standard Wiener process $\mathbb{W}_t \in \mathbb{R}^d$\footnote{Hereafter, we will sometimes drop $f \equiv f(t, X_t)$ and $g \equiv g(t)$ for brevity.}. \citet{caluya2021wasserstein, chen2021likelihood} provide a generalization of the above framework that reads
 \begin{align}
 \label{eq:sb_control_gen}
 & \inf _{v \in \mathcal{V}} \mathbb{E}\left\{\int_0^1 \frac{1}{2}\norm{v(t, X_t)}^2 d t\right\}\\
@@ -473,7 +471,7 @@ In the following, let us consider SDEs with an external speed $f(\cdot, t): \mat
 \nonumber & X_0 \sim \mu_0, \quad X_1 \sim \mu_1,
 \end{align}
 with $g(t)$ being uniformly lower-bounded and $f(t, X_t)$ satisfying Lipschitz conditions with at most linear growth in $x$.
-The effect of adding an external force $f$, here exemplified through a horizontal drift, compared to standard Brownian motion is visualized in \cref{fig:sde_comparison}.
+The effect of adding an external force $f$, here exemplified through a horizontal drift, compared to standard \acrlong{BM} is visualized in \cref{fig:sde_comparison}.
 
 \paragraph{Optimality criteria.}
 Again, we recover the optimality criteria via a \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform  of \eqref{eq:sb_control_gen} resulting in
@@ -482,7 +480,7 @@ Again, we recover the optimality criteria via a \citeauthor{hopf1950partial}-\ci
 \nonumber & \frac{\partial \widehat{\Phi}}{\partial t}=-\nabla \cdot(\widehat{\Phi} f)+\frac{1}{2}\sigma^2 g^2 \Delta \widehat{\Phi} \quad &  \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1
 \end{align}
 with the optimal control $v(t, X_t)= \sigma^2 g(t) \nabla \log \Phi\left(t, X_t\right)$.
-The solution in \eqref{eq:sb_optimality_gen} can be expressed through two coupled SDEs of the form \citep{leonard2013survey}
+The solution in \eqref{eq:sb_optimality_gen} can be expressed through two coupled \acrshortpl{SDE} of the form \citep{leonard2013survey}
 \begin{align}
 \label{eq:sb_forward} 
 & \mathrm{d} X_t=\left[f+g^2 \nabla \log \Phi\left(t, X_t\right)\right] \mathrm{d} t+g \mathrm{~d} \mathbb{W}_t, \quad & X_0 \sim \mu_0, \\
@@ -491,6 +489,6 @@ The solution in \eqref{eq:sb_optimality_gen} can be expressed through two couple
 \end{align}
 where $T = 1$, $\sigma = 1$, and $\nabla \log \Phi\left(t, X_t\right)$ and $\nabla \log \widehat{\Phi}\left(t, X_t\right)$ are the optimal forward and backward drifts for the \acrlong{SB}.
 
-\looseness -1 Interestingly, the underlying SDEs  \eqref{eq:sb_control_constraint_gen} coincides with the dynamic systems considered in score-based generative models \citep{song2020score}, an emerging generative model class that has achieved remarkable results in synthesizing high-fidelity data \citep{song2019generative, kong2020diffwave}.
+\looseness -1 Interestingly, the underlying \acrshortpl{SDE} \eqref{eq:sb_control_constraint_gen} coincides with the dynamic systems considered in \acrlongpl{SGM} \citep{song2020score}, an emerging generative model class that has achieved remarkable results in synthesizing high-fidelity data \citep{song2019generative, kong2020diffwave}.
 It also represents a key connection that has recently fueled the development of \acrlongpl{DSB} \citep{de2021diffusion, chen2021stochastic, bunne2022recovering, liu2022deep}, and will be subject of \cref{cha:neural_sde}.
 Compared to classical diffusion-based generative models \citep{daniels2021score, song2020score}, these algorithms allow interpolation between complex distributions. Extended to the Riemannian geometry \citep{thornton2022riemannian, de2022riemannian}, it has found applications in molecular dynamics \citep{holdijk2022path, somnath2023aligned}, and cell differentiation processes \citep{vargas2021solving, bunne2022recovering, tong2023conditional}.
