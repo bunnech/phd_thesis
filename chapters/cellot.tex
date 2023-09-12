@@ -43,7 +43,7 @@ Our method, \textsc{CellOT}, learns an optimal transport map for each perturbati
 \subsection{Input Convex Neural Networks}
 \label{sec:icnns}
 
-Input convex neural networks are neural networks $\varphi_\theta(x)$ with specific constraints on the architecture and parameters $\theta$, such that their output is a convex function of some (or all) elements of the input $x$~\citep{amos2017input}. We consider  \acrshortpl{ICNN}, such that the output is a convex function of the entire input $x$. A typical \acrshort{ICNN} is a $L$-layer, fully connected network such that, for $l = 0, \dots, L-1$:
+Input convex neural networks are neural networks $\varphi_\theta(x)$ with specific constraints on the architecture and parameters $\theta$, such that their output is a convex function of some (or all) elements of the input $x$~\citep{amos2017input}. We consider  \acrshortpl{ICNN}, such that the output is a convex function of the entire input $x$. A typical \acrshort{ICNN} is a $L$-layer, fully connected network such that, for $l = 0, \dots, L-1$
 \begin{equation} \label{eq:icnn}
     z_{l+1} = a_l(W^x_lx + W^z_l z_l + b_l)  \text{ and } \varphi_\theta(x) = z_L,
 \end{equation}

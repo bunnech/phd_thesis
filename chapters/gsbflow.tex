@@ -225,7 +225,7 @@ To emphasize the dependence on the reference \acrshort{SDE}, we will sometimes c
 
 At first sight, this might suggest that one can extend existing tools in Gaussian \acrshort{OT} to analyze \acrshortpl{GSB}.%\eqref{eq:BBGaussian} to \eqref{eq:dynamicGSB}.
 ~Unfortunately, the major difficulty of tackling \acrshortpl{GSB} is that these existing tools are fundamentally insufficient for the generalized objective \eqref{eq:dynamicGSB}. 
-~To be more precise, there exist three prominent frameworks for studying Gaussian \acrshort{OT} problems:% \eqref{eq:BBGaussian}:
+~To be more precise, there exist three prominent frameworks for studying Gaussian \acrshort{OT} problems: % \eqref{eq:BBGaussian}:
 \begin{itemize}[leftmargin=.4cm,itemsep=.0cm,topsep=.0cm]
 \item \textbf{Convex analysis:} An extremely fruitful observation in the field is that many Gaussian \acrshort{OT} instances can be reduced to a \emph{convex} program, for which one can import various convex techniques such as \acrfull{KKT} or fixed-point arguments. This is the case for static Gaussian \acrshort{OT} \eqref{eq:RegW2Gaussian}, both when $\sigma = 0$ \citep{dowson1982frechet, olkin1982distance, bhatia2019bures} and $\sigma>0$ \citep{janati2020entropic}. Furthermore, in the case of $\sigma=0$, the solution to the dynamic formulation \eqref{eq:BBGaussian} can be recovered from the static one via a simple linear interpolation \citep{mccann1997convexity}.
 
@@ -297,7 +297,7 @@ We are now ready to state the main result of the section. Let $\normBW[\cdot][\S
 %\tag{$\Wiener$-SB$_{\ssstyle\Ncal}$}
 \min_{ \Pinit = \Ncal(0, \Sigma),\; \Pend = \Ncal(0, \Sigma') } \KL(\Pmargin \| \sigma\Wiener).
 \end{equation}
-%For the purpose of illustration, we assume that $\mu = \mu' = 0$.% the mean of both initial and final distributions to be zero.
+% For the purpose of illustration, we assume that $\mu = \mu' = 0$.% the mean of both initial and final distributions to be zero.
 Then we have:
 \begin{restatable}{theorem}{mechanics}
 \label{thm:mechanics}
