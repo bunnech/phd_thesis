@@ -185,7 +185,7 @@ Similarly, for the special case of the squared Euclidean distance the \nameref{t
 \end{equation*}
 where we again reparameterize $\varphi(x) \defeq \frac{1}{2}\|x\|^2_2-f(x)$ and $\varphi(x) = \frac{1}{2}\|x\|_2^2-f(x)$ can be shown to be convex.
 
-This connection presents a well known fact that has been investigated first by \citeauthor{brenier1987decomposition}, establishing for the special case of the Euclidean distance the equivalence of the Monge \eqref{eq:monge} and Kantorovich formulation  \eqref{eq:kantorovich}, the uniqueness of the optimal coupling $\pi$, and instantiating that there must exist a unique (up to the addition of a constant) potential $\varphi^\star:\mathbb{R}^d\rightarrow \mathbb{R}$ such that $T^\star = \nabla \varphi^\star$. 
+This connection presents a well-known fact that has been investigated first by \citeauthor{brenier1987decomposition}, establishing for the special case of the Euclidean distance the equivalence of the Monge \eqref{eq:monge} and Kantorovich formulation  \eqref{eq:kantorovich}, the uniqueness of the optimal coupling $\pi$, and instantiating that there must exist a unique (up to the addition of a constant) potential $\varphi^\star:\mathbb{R}^d\rightarrow \mathbb{R}$ such that $T^\star = \nabla \varphi^\star$. 
 This theorem has far-reaching implications: When seeking optimal transport maps, it is sufficient, to restrict the computational effort to seek a "good" convex potential $\varphi$, such that its gradient pushes $\mu$ towards $\nu$. 
 Let us state the celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition} in more formal terms:
 \begin{theorem}[Brenier Theorem] \label{thm:brenier}
@@ -279,7 +279,7 @@ Despite their simplicity, this concept possesses remarkable applications beyond 
 The time-dependent Benamou-Brenier formulation \eqref{eq:benamou_brenier} not only provides us with a more complete description of optimal transport but also the discovery that the resulting path $(\mu_t)_{t=0}^1$ may be seen as a constant-speed geodesic interpolating between population $\mu_0$ and $\mu_1$ in the space of measures, i.e., a Wasserstein geodesic.
 When studying dynamic processes in biomedicine, however, phenomena such as cellular differentiation in developmental processes, tissue formation, or cell migration involve intricate spatiotemporal dynamics that cannot be adequately captured by solely studying the interpolation between two measures $\mu_0$ and $\mu_1$.
 Instead, many phenomena in biology and physics can be modeled through an energy functional $J$ such that the minimization of $J$ describes the observed dynamics of the studied system ---a concept known as gradient flows.
-At their core, gradient flows provide a powerful framework for understanding the evolution of functions or systems towards an optimal state through the direction of the steepest descent of a function $J$. 
+At their core, gradient flows provide a powerful framework for understanding the evolution of functions or systems toward an optimal state through the direction of the steepest descent of a function $J$. 
 More concretely, gradient flows capture the intuitive idea of objects moving in a direction that decreases their energy, seeking a state of minimum potential or maximum stability. 
 In the following, we will study gradient flows in the Euclidean setting before considering generalizations to arbitrary measures that allow studying the evolution of populations over time.
 
@@ -291,7 +291,7 @@ Considering the evolution of a vector $x$ over time in Euclidean space. Provided
 	x_{t+1} \defeq x_{t}-\tau \nabla J\left(x_{t}\right),
 \end{equation*}
 where $\tau$ is the step size. The resulting sequence ${x_0, \dots, x_{t-1}, x_{t}, x_{t+1}, \dots, x_T}$ then describes the trajectory of a single particle $x$ over time.
-For non-smooth functions, on can resort to a proximal scheme, i.e.,
+For non-smooth functions, one can resort to a proximal scheme, i.e.,
 \begin{equation*}
 	x_{t+1} \defeq \operatorname{Prox}_{\tau J}^{\|\cdot\|}\left(x_{t}\right) \defeq \arg\!\min_x \frac{1}{2\tau}\left\| x-x_t\right\|^2+ J(x).
 \end{equation*}
@@ -332,7 +332,7 @@ For a broad class of potentials, $J$ and provided with an initial distribution $
 	}
 \end{table*}
 
-In fact, following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of \acrlong{PDE} may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
+Following \citet{otto2001geometry} on the calculus of optimal transport (\citeauthor{otto2001geometry} calculus), a large class of \acrlong{PDE} may then be viewed as gradient flows on the Wasserstein space \citep{jordan1998variational}.
 For instance, the standard heat equation of physics, i.e.,
 \begin{equation*}
 	\frac{\partial \mu_t}{\partial t} = \Delta \mu_t,
@@ -351,7 +351,7 @@ Here, the first term again represents the negative Gibbs-Boltzmann entropy and t
 
 
 Thus, \acrshort{JKO} flows have found application in inferring the evolution of populations over time, crucial in many scientific disciplines, for instance in biomedicine to reconstruct cellular dynamics from observations \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented}.
-In fact, this formulation is particularly interesting for studying dynamical systems in biomedicine, as the exact expression of the PDE corresponding to functional $J$ does not need to be known.
+This formulation is particularly interesting for studying dynamical systems in biomedicine, as the exact expression of the PDE corresponding to functional $J$ does not need to be known.
 Instead, we can propose parameterizations of energy functional $J$ that can be learned from data, an idea we will explore in \cref{sec:learn_energy}.
 While providing a general framework for studying general and complex population dynamics, each step of the JKO scheme \eqref{eq:jko} is costly as it requires solving a minimization problem involving the Wasserstein distance \eqref{eq:kantorovich}. Beyond introducing learning schemes for functional $J$, we will thus introduce novel efficient and differentiable schemes for solving JKO flows in \cref{sec:jko_icnn}.
 
@@ -396,7 +396,7 @@ Similarly, the regularized OT problem \eqref{eq:ot-entropy} can be cast as a sto
 \nonumber & X_0 \sim \mu_0, \quad X_1 \sim \mu_1,
 \end{align}
 where $\mathbb{W}_t $ denotes a Wiener process, i.e., standard white noise. 
-Different to \eqref{eq:control_constraint}, however, \eqref{eq:sb_control_constraint} is a stochastic diffusion process.
+Different from \eqref{eq:control_constraint}, however, \eqref{eq:sb_control_constraint} is a stochastic diffusion process.
 
 Besides, this problem exhibits a fluid-dynamic interpretation, i.e.,
 \begin{align}
@@ -415,7 +415,7 @@ For an extended discussion, see \citet{dai1991stochastic, mikami2000dynamical, m
 Interestingly, \cref{eq:sb_control} first emerged in a very different setting.
 In his work "{\"U}ber die Umkehrung der Naturgesetze" published in \citeyear{schrodinger1931umkehrung}, \citeauthor{schrodinger1931umkehrung} studied the most likely random evolution between two marginals, i.e., two point clouds of diffusive particles.
 His Gedankenexperiment is best illustrated through a population of independent and identically distributed particles in $\mathbb{R}^d$ observed at $t=0$ as the empirical distribution $\mu_0$, and again at $t=1$ as $\mu_1$.
-To describe the mostly likely dynamics of these particles over time, we aim at finding the stochastic process $\Pmargin$ on $[0,\horizon]$ such that $\Pinit = \mu_0, \Pend = \mu_1$.
+To describe the most likely dynamics of these particles over time, we aim at finding the stochastic process $\Pmargin$ on $[0,\horizon]$ such that $\Pinit = \mu_0, \Pend = \mu_1$.
 
 Provided with some prior knowledge of a reference process $\mathbb{Q}_t$, e.g., that the underlying dynamics follow a \acrfull{BM}, we aim to identify the stochastic process $\mathbb{P}_t$ that best describes the particles evolution, i.e., minimizes the overall relative entropy
 \begin{equation}
