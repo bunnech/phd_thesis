@@ -85,11 +85,11 @@ In particular, \citeauthor{brenier1987decomposition}'s dynamical formulation of 
 This thesis highlights the connections of \acrshort{OT} to \acrshort{PDE} such as Fokker-Planck-like equations through the \citeauthor*{jordan1998variational} scheme: In recent works \citep{bunne2022proximal, alvarez2021optimizing, mokrov2021large, benamou2016augmented} 
 it has found application in inferring the evolution of populations over time, crucial in many scientific disciplines when for instance, observing a population of cells in biology.
 
-\cref{cha:neural_pde} introduces a reformulation of the \acrshort{JKO} objective that allows for gradient-based learning in an end-to-end fashion. Further, it proposes \textsc{JKOnet}, a \acrlong{NN} architecture that models the collective dynamics of particle populations using a parameterized energy by learning the causal \acrshort{JKO} flow from measurement snapshots,
+\cref{cha:neural_pde} introduces a reformulation of the \acrfull{JKO} objective that allows for gradient-based learning in an end-to-end fashion. Further, it proposes \textsc{JKOnet}, a \acrlong{NN} architecture that models the collective dynamics of particle populations using a parameterized energy by learning the causal \acrshort{JKO} flow from measurement snapshots,
 % trading off energy improvements with closeness to previous configurations
 demonstrating robust performance across a variety of settings \citep{bunne2022proximal}.
 
-Lastly, beyond \acrshortpl{PDE}, this thesis explores the link between the \acrlong{OT} problem and the \acrfull{SB} problem from stochastic control. It represents a key connection that has recently fueled the development of \acrlongpl{DSB} \citep{de2021diffusion, chen2021stochastic, liu2022deep, bunne2022recovering}. Estimating such bridges, however, is notoriously difficult, motivating our contributions in \cref{cha:neural_sde} that propose novel adaptive schemes:
+Lastly, beyond \acrshortpl{PDE}, this thesis explores the link between the \acrlong{OT} problem and the \acrfull{SB} problem from stochastic control. It represents a key connection that has recently fueled the development of \acrfullpl{DSB} \citep{de2021diffusion, chen2021stochastic, liu2022deep, bunne2022recovering}. Estimating such bridges, however, is notoriously difficult, motivating our contributions in \cref{cha:neural_sde} that propose novel adaptive schemes:
 
 First, in \cref{sec:gsbflow} our goal is to rely on Gaussian approximations of the data to provide the reference stochastic process needed to estimate \acrshortpl{SB}. To that end, we solve the \acrlong{SB} problem with Gaussian marginals, for which we derive, as a central contribution, a closed-form solution and \acrshort{SDE} representation. We use these formulas to define the reference process used to estimate more complex \acrshortpl{SB} and show that this does indeed help with its numerical solution of learning \acrlongpl{DSB}. We obtain notable improvements when reconstructing \acrlong{sc} genomics experiments of developmental \acrfull{EB} differentiation \citep{bunne2022recovering}.
 
@@ -157,8 +157,8 @@ This will be followed by a discussion on existing computational approaches that 
 \label{sec:tech_background}
 
 Until recently, our understanding of cellular dynamics was limited to "bulk" measurement technologies, which yield average measurements of a cell population.
-The advent of \acrlong{sc} \textit{omics} technologies has marked a significant shift from such bulk analyses, enabling a highly detailed examination of individual cells across various layers such as the gen\textit{ome}, transcript\textit{ome}, epigen\textit{ome}, and prote\textit{ome}.
-This shift has revealed previously hidden complexities, such as rare cell types, transitional states, and cell-to-cell variability. Transformative techniques like \acrshort{sc}\acrshort{RNAseq} (\cref{sec:background_sequencing}) have allowed researchers to profile gene expression in thousands of cells simultaneously, shedding light on new cellular subpopulations and responses \citep{jia2022high}.
+The advent of \acrfull{sc} \textit{omics} technologies has marked a significant shift from such bulk analyses, enabling a highly detailed examination of individual cells across various layers such as the gen\textit{ome}, transcript\textit{ome}, epigen\textit{ome}, and prote\textit{ome}.
+This shift has revealed previously hidden complexities, such as rare cell types, transitional states, and cell-to-cell variability. Transformative techniques like \acrlong{sc} \acrfull{RNAseq} (\cref{sec:background_sequencing}) have allowed researchers to profile gene expression in thousands of cells simultaneously, shedding light on new cellular subpopulations and responses \citep{jia2022high}.
 Additionally, modern imaging technologies have deepened our understanding of cell morphology and cellular signaling (\cref{sec:background_imaging}). 
 The integration of these diverse omics layers provides a holistic view of cellular diversity, opening new avenues in the study of health, disease, and personalized medicine \citep{baysoy2023technological}.
 
@@ -171,7 +171,7 @@ In order to understand the temporal evolution of the cell population over time, 
 \subsection{Sequencing-Based Screening}
 \label{sec:background_sequencing}
 
-Sequence-based profiling methods have emerged as a transformative tool for understanding the complexity of biological systems at the resolution of individual cells. Methods such as \acrfull{sc}\acrshort{RNA} \acrfull{RNAseq} (scRNA-seq), enable us to characterize gene expression within a single cell.
+Sequence-based profiling methods have emerged as a transformative tool for understanding the complexity of biological systems at the resolution of individual cells. Methods such as \acrlong{sc} \acrshort{RNAseq}, enable us to characterize gene expression within a single cell.
 By mapping the transcriptomic landscapes of individual cells, sequence-based profiling methods have allowed for unprecedented insights into developmental biology, tissue homeostasis, disease pathology, and therapeutic responses.
 
 In the process, RNA serves a direct quantifier for gene activity: Genes in \acrfull{DNA} are transcribed into \acrfull{mRNA}, which is then translated into proteins that carry out various functions within the cell.
