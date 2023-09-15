@@ -61,6 +61,7 @@ Importantly, generalizations of this \emph{dynamic} formulation can be formalize
 The thesis is structured as follows (see outline in \cref{fig:overview_thesis}).
 After reviewing dynamical systems in biomedicine in \cref{cha:bio_background} and providing a mathematical foundation of static and dynamic \acrlong{OT} in \cref{cha:theory_background}, the \textbf{thesis contributions} are organized in two parts:
 
+
 \paragraph{\cref{part:static_not}: Static neural optimal transport.}
 
 At its core, static \acrshort{OT} defines a so-called \citeauthor{monge1781histoire} \textit{map}, which provides an actionable way to flow from one probability distribution onto another.
@@ -72,9 +73,6 @@ Concretely, \cref{part:static_not} comprises two chapters:
 \textsc{CellOT} outperforms current methods in drug response predictions and provides ways for interpretation and understanding of heterogeneous \acrlong{sc} responses and patient-specific treatment outcomes \citep{bunne2021learning}. 
 
 \cref{cha:condot} generalizes the above framework and introduces the \textsc{CondOT} model, a multi-task approach that parameterizes a \emph{family of \acrshort{OT} maps} that can be conditioned on a context variable. Conditioning allows, for example, to predict the response of single cells to combination therapies, i.e., the inference of the effect of genetic or therapeutic perturbations applied in combination \citep{bunne2022supervised}.
-	
-% \textbf{Applications:} Predicting responses of heterogeneous cell populations to molecular perturbations (e.g., genetic knockouts or overexpression, chemical drugs, or developmental signals) at the level of single cells
-% A fundamental difficulty is thus to reconstruct perturbation responses of individual cells from a set of unaligned unperturbed and perturbed cells. To forecast patient cell reactions to treatments or deduce cell differentiation paths, we need to reconcile these unpaired snapshots, thus predicting each cell's perturbed state.
 
 
 \paragraph{\cref{part:dynamic_not}: Dynamic neural optimal transport.}
@@ -97,10 +95,7 @@ Second, parallel developments in bioengineering aim at overcoming the destructiv
 In \cref{sec:sbalign}, we thus introduce a novel algorithmic framework for solving \acrlongpl{DSB} that respects data alignment and incorporates \emph{sparse} trajectories by combining classical \acrlong{SB} theory with Doob's 
 $h$-transform \citep{somnath2023aligned}. The overall framework comprises a much simpler training procedure and substantial improvements in tasks such as cellular differentiation processes of hematopoiesis \citep{weinreb2020lineage}.
 
-% \textbf{Applications:} ...
 
-
-\newpage
 \section{Publications}
 All results presented in this thesis have been published in the following conference proceedings and journals:
 
@@ -111,6 +106,7 @@ All results presented in this thesis have been published in the following confer
 	\item[] Vignesh Ram Somnath, Matteo Pariset, Ya-Ping Hsieh, Maria Rodriguez Martinez, Andreas Krause, and Charlotte Bunne. Aligned Diffusion Schr{\"o}dinger Bridges. In \textit{Conference on Uncertainty in Artificial Intelligence (UAI)}, 2023.
 	\item[] Charlotte Bunne, Stefan G Stark, Gabriele Gut, Jacobo Sarabia del Castillo, Kjong-Van Lehmann, Lucas Pelkmans, Andreas Krause, and Gunnar R{\"a}tsch. Learning Single-Cell Perturbation Responses using Neural Optimal Transport. \textit{Nature Methods}, 2023.
 \end{itemize}
+
 
 \paragraph{Further publications.}
 The following publications of the author and collaborators are more broadly relevant to the topic of this thesis but have not been directly included:
@@ -252,30 +248,23 @@ Given that a cell has a specific expression profile at a time point, where will 
 \citet{schiebinger2019optimal} for example study reprogramming of fibroblasts to \acrfull{iPSC} \citep{takahashi2006induction}, by measuring \acrfull{MEF}. Cells at time point $t$ are connected to their ancestors at time $t-1$, by finding the corresponding transport plan $P_{t-1,t}$ between each pair of consecutive time steps (see \cref{fig:bio_problems}b).
 To understand the overall dynamic process, however, this thesis aims at identifying the evolution of a measure through recovering a \emph{continuous} path $\mu_t$ instead of resorting to the computation of distinct alignments between consecutive measurement snapshots \citep{lavenant2021towards} (see \cref{fig:bio_problems}b).
 
-\section{Related Work on Studying Cell Dynamics}
+\section{Related Work on Modeling Cell Dynamics}
 \label{sec:related_work_bio}
 
-% The modeling of \acrlong{sc} dynamics has become an essential research area, with implications for understanding biological processes on a fundamental level. Different computational methods have been devised to model these dynamics, and this section reviews some of the prominent approaches.
+The modeling of \acrlong{sc} dynamics has become an essential research area for understanding biological processes on a fundamental level. Different computational methods have been devised to model these dynamics, and this section reviews some of the prominent approaches.
 
-% Stochastic modeling has been employed to capture the intrinsic noise present in \acrlong{sc} dynamics. Gillespie's algorithm (Gillespie, 1977) has been foundational in this regard, providing a way to simulate random reactions at the \acrlong{sc} level. Many variants and improvements on this method have been developed to model complex biochemical networks within single cells (Gibson and Bruck, 2000; Cao et al., 2006).
+\subsection*{... from Non-Time-Resolved Data}
 
-% ODE-based models have been widely used for \acrlong{sc} analysis, especially for deterministic modeling where fluctuations can be ignored. Such models have provided insights into cell growth, gene regulation, and signaling pathways (Tyson et al., 2003; Alon, 2007). However, their inability to capture stochastic effects limits their applicability in some scenarios.
+\paragraph{Pseudo-time inference methods.}
 
-% PDE-based models have been used to describe spatial-temporal patterns in single cells, capturing phenomena such as protein diffusion and cellular growth (Erban and Othmer, 2004; Turing, 1952). These models are particularly useful for understanding cell morphogenesis and other spatial processes.
+% TODO: Rewrite.
+Pseudotemporal ordering methods, which describe development as a transition in the transcriptomic state (i.e. a 'trajectory') rather than a transition in real time \citep{haghverdi2016diffusion, trapnell2014dynamics}, have been devised to capture such trajectories. These trajectory-learning approaches are complemented by methods that learn the overall topology of the data set and thereby infer the connectivity between trajectories \citep{qiu2017reversed, wolf2019paga, saelens2019comparison}. One can merge overlapping snapshots from multiple time points across a developmental process to learn a trajectory that covers the full range of cell states accessible in this process; this is, however, still a static description. Accordingly, a trajectory does not uncover the dynamic behavior of individual cells in state space and time, i.e., this dynamic information is lost in population snapshot experiments. Hence pseudotime does not directly correspond to real time but is rather a cell state space metric.
 
-% Agent-based models (ABMs) provide a more flexible approach to modeling \acrlong{sc} dynamics by allowing individual entities to interact in complex ways (Walker and Southgate, 2009). These models have proven useful for simulating cell differentiation, migration, and interactions with the environment.
+\paragraph{RNA velocity for trajectory inference.}
 
-% Recent years have witnessed the application of machine learning techniques for \acrlong{sc} analysis. Deep learning methods have been utilized to extract complex patterns and perform classification tasks related to \acrshort{sc}\acrshort{RNAseq} data (Xu et al., 2020). Other machine learning models, such as random forests and support vector machines, have also been applied to predict \acrlong{sc} behaviors (Angermueller et al., 2016).
+RNA velocity is an approach that estimates the time derivative of gene expression (La Manno et al., 2018). This methodology captures the dynamics of RNA at the transcriptional level by examining the proportion of unspliced and spliced mRNAs within single cells, thereby providing an instantaneous snapshot of gene expression dynamics. This can be harnessed to predict the future state of individual cells on a trajectory (Bergen et al., 2020). An added advantage of RNA velocity is its compatibility with standard scRNA-seq data, allowing researchers to revisit previous datasets with a fresh perspective on trajectory dynamics.
 
-% Hybrid models that combine two or more of the above approaches have also been developed. These models aim to leverage the strengths of different methods to overcome individual limitations. For instance, a combination of stochastic simulations with deterministic ODEs has been proposed to provide a more comprehensive understanding of \acrlong{sc} processes (Salis and Kaznessis, 2005).
 
-% The computational modeling of \acrlong{sc} dynamics has evolved considerably, and a wide range of techniques has been proposed to study different aspects of \acrlong{sc} biology. From deterministic methods to stochastic simulations, agent-based models to machine learning techniques, the field is characterized by a rich diversity of approaches. As technological advancements continue to offer more detailed \acrlong{sc} data, it is expected that these computational models will further evolve, fostering our understanding of complex biological systems on a cellular level.
-
-% Gillespie, D.T., 1977. "Exact stochastic simulation of coupled chemical reactions." The Journal of Physical Chemistry, 81(25), pp.2340-2361.
-% Gibson, M.A. and Bruck, J., 2000. "Efficient Exact Stochastic Simulation of Chemical Systems with Many Species and Many Channels." The Journal of Physical Chemistry A, 104(9), pp.1876-1889.
-% Cao, Y., Gillespie, D.T., Petzold, L.R., 2006. "Efficient step size selection for the tau-leaping simulation method." The Journal of Chemical Physics, 124(4), 044109.
-% Tyson, J.J., Chen, K.C., Novak, B., 2003. "Sniffers, buzzers, toggles and blinkers: dynamics of regulatory and signaling pathways in the cell." Current Opinion in Cell Biology, 15(2), pp.221-231.
-% Alon, U., 2007. "An Introduction to Systems Biology: Design Principles of Biological Circuits." Chapman & Hall/CRC.
 % Erban, R. and Othmer, H.G., 2004. "From individual to collective behavior in bacterial chemotaxis." SIAM Journal on Applied Mathematics, 65(2), pp.361-391.
 % Turing, A.M., 1952. "The chemical basis of morphogenesis." Philosophical Transactions of the Royal Society of London. Series B, Biological Sciences, 237(641), pp.37-72.
 % Walker, D.C., Southgate, J., 2009. "The virtual cell - a candidate co-ordinator for middle-out modelling of biological systems." Briefings in Bioinformatics, 10(4), pp.450-461.
@@ -283,33 +272,36 @@ To understand the overall dynamic process, however, this thesis aims at identify
 % Angermueller, C., P�rnamaa, T., Parts, L., Stegle, O., 2016. "Deep learning for computational biology." Molecular Systems Biology, 12(7), pp.878.
 % Salis, H., Kaznessis, Y., 2005. "Accurate hybrid stochastic simulation of a system of coupled chemical or biochemical reactions." The Journal of Chemical Physics, 122(5), 054103.
 
+\subsection*{... from Time-Resolved Data}
 
-\paragraph{Population dynamics from single-cell data.}
+\paragraph{Dynamic modeling from bulk measurements.}
 
-Methods for profiling genes at the \acrlong{sc} level have revolutionized our ability to study several biological processes and systems including development, differentiation, response programs, and disease progression. In many of these studies, cells are profiled over time in order to infer dynamic changes in cell states and types, sets of expressed genes, active pathways, and key regulators.
+Traditional bulk measurements provided average readings across a cell population, concealing the heterogeneity present among individual cells. Nonetheless, when coupled with time-resolved data, dynamic modeling from bulk measurements can provide insights into population-level changes over time. These insights, although lacking granularity at the single-cell level, have been pivotal in generating initial hypotheses about cellular behavior, especially in systems where single-cell profiling might not be feasible. The computational modeling of \acrlong{sc} dynamics from bulk data has evolved considerably, and a wide range of techniques has been proposed to study different aspects of molecular processes. From deterministic methods to stochastic simulations, agent-based models to machine learning techniques, the field is characterized by a rich diversity of approaches, extensively reviewed in \citep{klipp2016systems}.
+
+ODE-based models have been widely used for \acrlong{sc} analysis, especially for deterministic modeling where fluctuations can be ignored. Such models have provided insights into cell growth, gene regulation, and signaling pathways \citep{busch2015fundamental, raue2015data2dynamics, tyson2003sniffers, alon2019introduction}. However, their inability to capture stochastic effects limits their applicability in some scenarios.
+Agent-based models or rule-based models provide a more flexible approach to modeling \acrlong{sc} dynamics by allowing individual entities to interact in complex ways \citep{an2009agent}. These models have proven useful for simulating cell differentiation, migration, and interactions with the environment. While computationally less demanding than an ODE system, ...
+
+Further, stochastic modeling has been employed to capture the intrinsic noise present in \acrlong{sc} dynamics. Most prominently, Gillespie's algorithm \citep{gillespie1977exact} has been foundational in this regard, providing a way to simulate random reactions. Many variants and improvements on this method have been developed to model complex biochemical reaction systems \citep{gibson2000efficient} in terms of a stochastic, discrete-state continuous-time formulation, called the chemical master equation \citep{liang2010computational}.
+
+Recent years have witnessed the application of machine learning techniques for \acrlong{sc} analysis. Deep learning methods have been utilized to extract complex patterns and perform classification tasks related to \acrshort{sc}\acrshort{RNAseq} data (Xu et al., 2020). Other machine learning models, such as random forests and support vector machines, have also been applied to predict \acrlong{sc} behaviors (Angermueller et al., 2016).
+
+\paragraph{Dynamic modeling from single-cell data.}
+
+The advent of single-cell sequencing technologies has shifted the paradigm by allowing researchers to probe the intricacies of cellular dynamics at unprecedented resolution. Here, every cell serves as its own unique data point, and capturing these data at multiple time points can unveil the dynamic behavior of individual cells in a system. Methods such as DPT (Density-preserving Trajectory inference) (Haghverdi et al., 2016) and Monocle (Trapnell et al., 2014) stand out for their ability to utilize time-resolved single-cell data to chart developmental trajectories and identify key transition states and branching events. Such techniques have deepened our understanding of complex biological processes, offering avenues for targeted therapeutic interventions.
 
 % Population dynamics govern distributional shifts in cellular systems and are key to understanding how cell type frequencies change in response to developmental and environmental cues that underlie physiological mechanisms of health and disease.
 % Population dynamics have been previously modeled in the context of cell cycle transitions \citep{kafri2013dynamics, kuritz2017relationship} and in the context of \acrshort{sc}\acrshort{RNAseq} under steady state assumptions \citep{weinreb2018fundamental}.
 
-\citep{fischer2019inferring, busch2015fundamental, hashimoto2016learning, raue2015data2dynamics}
+\citep{fischer2019inferring,hashimoto2016learning,}
 
-\paragraph{Population dynamics from bulk data.}
-...
 
-\paragraph{Pseudo-time inference methods.}
-% Dimensionality reduction-based methods for trajectory inference.
-% TODO: Rewrite.
-Pseudotemporal ordering methods, which describe development as a transition in the transcriptomic state (i.e. a 'trajectory') rather than a transition in real time \citep{haghverdi2016diffusion, trapnell2014dynamics}, have been devised to capture such trajectories. These trajectory-learning approaches are complemented by methods that learn the overall topology of the data set and thereby infer the connectivity between trajectories \citep{qiu2017reversed, wolf2019paga, saelens2019comparison}. One can merge overlapping snapshots from multiple time points across a developmental process to learn a trajectory that covers the full range of cell states accessible in this process; this is, however, still a static description. Accordingly, a trajectory does not uncover the dynamic behavior of individual cells in state space and time, i.e., this dynamic information is lost in population snapshot experiments. Hence pseudotime does not directly correspond to real time but is rather a cell state space metric \citep{}.
+Similarly, PDE-based models have been used to describe spatial-temporal patterns in single cells, capturing phenomena such as protein diffusion and cellular growth (Erban and Othmer, 2004; Turing, 1952). These models are particularly useful for understanding cell morphogenesis and other spatial processes.
 
-\paragraph{RNA velocity for trajectory inference.}
-...
-
-Integrating time-series \acrlong{sc} data with interaction data. 
 
 \section{Optimal Transport for Single-Cell Biology}
 \label{sec:ot_for_biology}
 
-Previous work has explored the application of \acrlong{OT} to the analysis and modeling of \acrlong{sc} biology problems.
+Previous work has also explored the application of \acrlong{OT} to the analysis and modeling of \acrlong{sc} biology problems.
 In particular, \acrshort{OT} has been used to infer the distributions of cells' ancestors and descendants along development \citep{schiebinger2019optimal}, perform trajectory inference \citep{bunne2022proximal, forrow2021lineageot, bunne2022recovering, lavenant2021towards, schiebinger2019optimal, tong2020trajectorynet, yang2020predicting, zhang2021optimal, chizat2022trajectory}, predict perturbation responses \citep{bunne2021learning, yang2018scalable, lubeck2022neural}, integrate multi-omics data of different modalities \citep{demetci2022scot}, infer cell-cell similarity \citep{huizing2022optimal}, and integrate across scales (e.g., morphology and molecular profiling) \citep{yang2021multi}. 
 Contrary to the contributions of this thesis, however, almost all previous approaches use \acrshort{OT} in the \emph{non-parametric} setting and thus do not allow predictions on unseen samples or extrapolations beyond the measured time horizon.
 

@@ -40,7 +40,7 @@ Our method, \textsc{CellOT}, learns an \acrlong{OT} map for each perturbation in
 \looseness -1 We demonstrate \textsc{CellOT}'s effectiveness by (i.) learning \acrlong{sc} marker responses to different cancer drugs in melanoma cell lines, (ii.) predicting \acrlong{sc} transcriptome responses in biopsies of patients with systemic lupus erythematosus as well as Panobinostat treatment outcomes of glioblastoma patients, (iii.) inferring \acrfull{LPS} responses across different animal species, and (iv.) modeling the transcriptome evolution of cell fates in hematopoiesis. Moreover, we benchmark \textsc{CellOT} against current state-of-the-art methods on multiple tasks~\citep{lopez2018scvi, lotfollahi2019scgen, chen2020dissecting}.
 
 
-\subsection{Input Convex Neural Networks}
+\section{Input Convex Neural Networks}
 \label{sec:icnns}
 
 \Acrlongpl{ICNN} are \acrlongpl{NN} $\varphi_\theta(x)$ with specific constraints on the architecture and parameters $\theta$, such that their output is a convex function of some (or all) elements of the input $x$~\citep{amos2017input}. We consider  \acrshortpl{ICNN}, such that the output is a convex function of the entire input $x$. A typical \acrshort{ICNN} is a $L$-layer, fully connected network such that, for $l = 0, \dots, L-1$
@@ -58,7 +58,7 @@ The majority of existing methods employ \acrshort{OT} as a loss function to comp
 More recently, however, the focus has shifted to parameterizing the \acrshort{OT} map $T$ \eqref{eq:monge} \citep{yang2018scalable, rout2021generative, daniels2021score}. Such parameterized \acrshort{OT} maps not only function as generative models but extend to tasks that involve interpolations between distributions. More concretely, \acrlong{NN}-based parameterizations of $T$ allow us to model the continuous evolution from a measure $\mu$ into a measure $\nu$ \citep{tong2020trajectorynet}, which we will discuss in \cref{part:dynamic_not} of this thesis.
 
 Multiple strategies exist on how to parameterize the \acrlong{OT} problem.
-In the following, we consider neural \acrshort{OT} solvers that make direct use of the \nameref{thm:brenier} and are based on the semi-dual \eqref{eq:dual-cvx}. For a review of alternative approaches, see \cref{sec:other_neural_solvers}.
+In the following, we consider neural \acrshort{OT} solvers that make direct use of the \nameref{thm:brenier} and are based on the semi-dual \eqref{eq:dual-cvx}.
 For convenience, let us restate the semi-dual formulation in \eqref{eq:dual-cvx}
 \begin{equation*}
 	\varphi^\star \leftarrow \arg\inf_{\varphi\, \text{convex}} \int \varphi \textrm{d}\mu + \int \varphi^*\textrm{d}\nu\,,
@@ -98,9 +98,7 @@ Thus, the potentials $\varphi$ and $g$ can be learned via an alternate min-max o
 For more details, see \citet{makkuva2020optimal, korotin2021neural}.
 
 
-\subsection{Alternative Approaches}
-\label{sec:other_neural_solvers}
-
+\paragraph{Alternative approaches.}
 Learning \acrlong{OT} problems based on \acrlongpl{NN} is at the core of many machine learning applications, including \acrlong{NF} \citep{rezende2015variational,huang2021convex} and generative models \citep{arjovsky2017wasserstein, genevay2018learning}, albeit the transport map is not explicitly estimated.
 % Here, the authors parameterize \textit{dual potentials} as Lipschitz \acrlongpl{NN}, in the case $p=1$. In that case, the interplay between \acrshort{OT} and estimation does not concern the map $T$ itself (which can be interpreted as a generator), but rather an auxiliary function (the discriminator). 
 The formulation introduced in \cref{sec:neural_solvers} proposes a neural \acrlong{OT} scheme via the semi-dual formulation. In fact, a stream of foundational papers has proposed methods to approximate the dual potential with a \acrlong{NN}.
@@ -116,7 +114,7 @@ that, if $0$, guarantees that $T_\theta$ is a $c$-OT map. For $c(x,y) = \|x-y\|^
 The advantage of such methods is that they generalize to all cost functions $c$ and are not restricted to the squared Euclidean distance.
 
 
-\section{Related Work}
+\section{Related Work on Modeling Cellular Perturbation Responses}
 
 \looseness -1 With increasing data availability, a diverse set of approaches has been proposed to model cellular perturbation responses, ranging from mechanistic to current deep learning-based approaches.
 Mechanistic models \citep{yuan2021cellbox, frohlich2018efficient} define mathematical models of molecular interactions to model the effect of perturbation.
