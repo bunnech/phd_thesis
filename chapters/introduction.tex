@@ -66,7 +66,7 @@ After reviewing dynamical systems in biomedicine in \cref{cha:bio_background} an
 
 At its core, static \acrshort{OT} defines a so-called \citeauthor{monge1781histoire} \textit{map}, which provides an actionable way to flow from one probability distribution onto another.
 The design of \acrlong{NN} parameterizations of such maps and their application to predict perturbation responses of single cells will form the first contribution of this thesis.
-This comprises approaches that are a direct consequence of the famous \citeauthor{brenier1987decomposition} theorem, and allow us to model Monge maps as gradients of \acrfullpl{ICNN} \citep{bunne2021learning, bunne2022supervised}.
+This comprises approaches that are a direct consequence of the famous \citeauthor{brenier1987decomposition} theorem, and allow us to model Monge maps as gradients of \acrfullpl{ICNN} \citep{bunne2022supervised, bunne2021learning}.
 
 Concretely, \cref{part:static_not} comprises two chapters:
 \cref{cha:cellot} proposes \textsc{CellOT}, a framework leveraging \acrlong{OT} theory and \acrlongpl{ICNN} that aligns unpaired distributions of unperturbed and perturbed cells to predict individual cellular responses to various perturbations. 
@@ -168,7 +168,7 @@ In order to understand the temporal evolution of the cell population over time, 
 \label{sec:background_sequencing}
 
 Sequence-based profiling methods have emerged as a transformative tool for understanding the complexity of biological systems at the resolution of individual cells. Methods such as \acrlong{sc} \acrshort{RNAseq}, enable us to characterize gene expression within a single cell.
-By mapping the transcriptomic landscapes of individual cells, sequence-based profiling methods have allowed for unprecedented insights into developmental biology, tissue homeostasis, disease pathology, and therapeutic responses.
+By mapping the transcriptomic landscapes of individual cells, sequence-based profiling methods have allowed for unprecedented insights into developmental biology, tissue homeostasis, disease pathology, and therapeutic responses \citep{van2023applications}.
 
 In the process, RNA serves a direct quantifier for gene activity: Genes in \acrfull{DNA} are transcribed into \acrfull{mRNA}, which is then translated into proteins that carry out various functions within the cell.
 By measuring the amounts and types of \acrshort{mRNA} present in a cell at a given time, i.e., the transcriptome, we can understand which genes are being actively expressed. This information is valuable as changes in gene expression can signal various biological processes, such as cell development, responses to environmental stimuli, disease states, and much more. 
@@ -180,7 +180,7 @@ Once a cell is lysed, its structural integrity and function are lost, making it 
 This is a fundamental limitation, as the process of obtaining high-resolution molecular data comes at the expense of the cell's viability.
 
 Besides using sequencing-based techniques for screening chemical compounds such as drugs \citep{srivatsan2020massively}, recent efforts have concentrated on developing high-throughput methods for studying the effects of gene perturbations at the single-cell resolution.
-Perturb-seq \citep{dixit2016perturb} is an innovative experimental technique that merges the power of \acrfull{CRISPR}-based perturbations with \acrlong{sc} \acrlong{RNAseq}. By using \acrfullpl{gRNA} to induce targeted gene perturbations and then assessing the resultant transcriptomic changes in individual cells, Perturb-seq provides valuable insights into gene function, regulatory networks, and cellular response mechanisms. This approach is particularly useful for delineating complex cellular phenotypes and understanding the diversity of responses within heterogeneous populations of cells.
+Perturb-seq \citep{dixit2016perturb} is an innovative experimental technique that merges the power of \acrfull{CRISPR}-based perturbations with \acrlong{sc} \acrlong{RNAseq} \citep{mali2013rna}. By using \acrfullpl{gRNA} to induce targeted gene perturbations and then assessing the resultant transcriptomic changes in individual cells, Perturb-seq provides valuable insights into gene function, regulatory networks, and cellular response mechanisms. This approach is particularly useful for delineating complex cellular phenotypes and understanding the diversity of responses within heterogeneous populations of cells.
 Recent datasets contain genome-wide screens \citep{replogle2022mapping} as well as combinatorial gene knockouts or overexpression \citep{norman2019exploring}. As a result, Perturb-seq has emerged as a vital tool for dissecting cellular dynamics and exploring gene interactions in intricate biological systems.
 
 \subsection{Optical Phenotypic Screening}
@@ -195,7 +195,7 @@ The resulting images allow the extraction of morphological properties and the fl
 However, it's important to note that while these methods are in general non-destructive in nature, some processes such as labeling or the use of certain dyes could potentially have some impact on cell viability or behavior. So while these techniques in general allow for dynamic tracking of cellular processes \citep{fischer2019inferring, hashimoto2016learning, tvarusko1999time, busch2015fundamental}, cells are usually fixed before staining to preserve cellular structures and allow for longer-term storage. Such procedures are lethal for cells, making longitudinal studies on the same cells impossible.
 
 High-content imaging, particularly when augmented by multiplexing abilities, is ideally suited to study heterogeneous cell responses.
-In this thesis, we study heterogeneous cell line responses to various cancer drugs based on a measurement technology known as \acrfull{4i} \citep{gut2018multiplexed}.
+While optical phenotyping can be used to analyze cellular responses toward genetic perturbations \citep{feldman2022pooled}, in this thesis, we concentrate on heterogeneous cell line responses to various cancer drugs based on a measurement technology known as \acrfull{4i} \citep{gut2018multiplexed}.
 With \acrshort{4i}, cells are fixed and fluorescently labeled antibodies are iteratively hybridized, imaged, and removed from a sample to measure the abundance and localization of proteins and their modifications. 
 Thus, \acrshort{4i} quickly generates large, spatially resolved phenotypic datasets rich in molecular information from thousands of treated and untreated cells. Additionally to the multiplexed information generated by \acrshort{4i}, cellular and nuclear morphology are routinely extracted from microscopy images (without the need for \acrshort{4i}) by image analysis algorithms \citep{carpenter2006cellprofiler}.
 
@@ -274,6 +274,9 @@ RNA velocity is an approach that estimates the time derivative of gene expressio
 
 \subsection*{... from Time-Resolved Data}
 
+...
+For an extended review of various approaches, see \citet{ding2022temporal}.
+
 \paragraph{Dynamic modeling from bulk measurements.}
 
 Traditional bulk measurements provided average readings across a cell population, concealing the heterogeneity present among individual cells. Nonetheless, when coupled with time-resolved data, dynamic modeling from bulk measurements can provide insights into population-level changes over time. These insights, although lacking granularity at the single-cell level, have been pivotal in generating initial hypotheses about cellular behavior, especially in systems where single-cell profiling might not be feasible. The computational modeling of \acrlong{sc} dynamics from bulk data has evolved considerably, and a wide range of techniques has been proposed to study different aspects of molecular processes. From deterministic methods to stochastic simulations, agent-based models to machine learning techniques, the field is characterized by a rich diversity of approaches, extensively reviewed in \citet{klipp2016systems}.
@@ -281,7 +284,7 @@ Traditional bulk measurements provided average readings across a cell population
 ODE-based models have been widely used for \acrlong{sc} analysis, especially for deterministic modeling where fluctuations can be ignored. Such models have provided insights into cell growth, gene regulation, and signaling pathways \citep{busch2015fundamental, raue2015data2dynamics, tyson2003sniffers, alon2019introduction}. However, their inability to capture stochastic effects limits their applicability in some scenarios.
 Agent-based models or rule-based models provide a more flexible approach to modeling \acrlong{sc} dynamics by allowing individual entities to interact in complex ways \citep{an2009agent}. These models have proven useful for simulating cell differentiation, migration, and interactions with the environment. While computationally less demanding than an ODE system, ...
 
-Further, stochastic modeling has been employed to capture the intrinsic noise present in \acrlong{sc} dynamics. Most prominently, Gillespie's algorithm \citep{gillespie1977exact} has been foundational in this regard, providing a way to simulate random reactions. Many variants and improvements on this method have been developed to model complex biochemical reaction systems \citep{gibson2000efficient} in terms of a stochastic, discrete-state continuous-time formulation, called the chemical master equation \citep{liang2010computational}.
+Further, stochastic modeling has been employed to capture the intrinsic noise present in \acrlong{sc} dynamics. Most prominently, \citeauthor{gillespie1977exact}'s algorithm \citep{gillespie1977exact} has been foundational in this regard, providing a way to simulate random reactions. Many variants and improvements on this method have been developed to model complex biochemical reaction systems \citep{gibson2000efficient} in terms of a stochastic, discrete-state continuous-time formulation, called the chemical master equation \citep{liang2010computational}.
 
 Recent years have witnessed the application of machine learning techniques for \acrlong{sc} analysis. Deep learning methods have been utilized to extract complex patterns ...
 
@@ -292,6 +295,8 @@ The advent of single-cell sequencing technologies has shifted the paradigm by al
 \citep{fischer2019inferring} ...
 \citep{hashimoto2016learning} ...
 \citep{chen2022deepvelo} ...
+
+Statistical mechanics perspective, see \citet{teschendorff2021statistical}.
 
 Population dynamics have been previously modeled in the context of cell cycle transitions \citep{kafri2013dynamics, kuritz2017relationship} and in the context of \acrshort{sc}\acrshort{RNAseq} under steady state assumptions \citep{weinreb2018fundamental}.
 
