@@ -80,14 +80,22 @@ A logistics company is concerned with transporting products from each resource u
 The Kantorovich duality \eqref{eq:kantorovich-dual} is a core pillar of \acrlong{OT}, powerful due to its generality and computationally attractive as it is easier to store two functions $(f, g)$ than an entire coupling $\pi$.
 In the following, we will introduce the concept of $c$-transforms, a useful machinery to reduce \eqref{eq:kantorovich-dual} even further into an optimization problem over only one instead of two dual potentials.
 \begin{definition}[$c$-transform] \label{eq:c-transform} 
-	$c$-transforms (also called $c$-conjugate functions) are generalizations of the Legendre transform from convex analysis defined as
+	$c$-transforms (also called $c$-conjugate functions) are generalizations of the \ref{eq:legendre} from convex analysis defined as
 \begin{align*} \tag{c-transform}
-	& \forall y \in \gY, \quad f^c(y) \defeq \inf _{x \in \gX} c(x, y)-f(x) \,. \\
+	& \forall y \in \gY, \quad f^c(y) \defeq \inf _{x \in \gX} c(x, y)-f(x) \,.\\
 	\intertext{The definition of $f^c$ is also often referred to as a "Hopf-Lax formula". Similarly to the $c$-transform of $f : \gX \rightarrow \mathbb{R}$, we can define the $\bar{c}$-transform of $g : \gY \rightarrow \bar{\mathbb{R}}$ by}
 	& \forall x \in \gX, \quad g^{\bar{c}}(y) \defeq \inf _{y \in \gY} c(x, y)-g(y) \,,
 \end{align*}
 where $\bar{c}(y, x) = c(x, y)$. 
 \end{definition}
+\begin{remark}
+	As well-known in convex analysis \citep{rockafellar1970conjugate}, the $c$-transform is a generalization of the \ref{eq:legendre}. More precisely, for function $f : \mathbb{R}^d \rightarrow \mathbb{R}$ its Legendre transform is defined as 
+	\begin{equation} \label{eq:legendre}
+	\tag{Legendre transform}
+		f^*(y) \defeq \sup_{x \in \mathbb{R}^d} \langle y, x \rangle - f(x)
+	\end{equation}
+	The $c$-transform corresponds to this notion by considering $c(x, y) = \langle x, y \rangle$ (up to a change of sign).
+\end{remark}
 Further, $f$ is a \textit{$\bar{c}$-concave} function if there exists a $g$ such that $f = g^{\bar{c}}$, and analogously, a function $g$ is said to be \textit{$c$-concave} if there is a function $f$ such that $g = f^c$.
 When $\gX = \gY$ and $c$ is symmetric, no distinction between $c$ and $\bar{c}$ is necessary.
 
@@ -96,7 +104,7 @@ Using the concept of $c$-transforms, we can reduce \eqref{eq:kantorovich-dual} t
   f(x)+g(y) & \leq c(x, y) \\
   g(y) & \leq c(x, y)-f(x)\,, \\
   \intertext{we can see that the "best" potential $g$ is given by the \nameref{eq:c-transform} of $f$ }
-  \label{eq:best_g} g(y) & \leq \inf _x c(x, y)-f(x).
+  \label{eq:best_g} g(y) & \leq \inf _x c(x, y) - f(x).
 \end{align*} 
 Then, doing an alternate optimization on either $f$ or $g$, we replace the dual potentials $(f, g)$ with $(f, f^c)$, and then $(f^{c\bar{c}}, f^c)$, whilst preserving the constraints and increasing the value of the integrals of \eqref{eq:kantorovich-dual}.  
 Although one could continue this alternate optimization further, the invariance property $f^{c\bar{c}c} = f^c$ for any $f$ shows that one can only "improve" once the dual potential using $c$-transforms, resulting in the semi-dual formulation of \acrlong{OT}
@@ -121,7 +129,7 @@ Following \citet{gangbo1996geometry}, $f^\star$ can be linked to the \acrlong{OT
 \begin{theorem}[Gangbo-McCann Theorem] \label{thm:gangbo-mccann}
 	Given a cost function $c$, the relationship between the \acrlong{OT} map $T^\star : \gX \rightarrow \gX$ and the $c$-concave function $f^\star$ denoting the optimal dual potential is given by the expression 
 	\begin{equation}
-		T^{\star}(x)=\nabla_1 c(x, \cdot)^{-1} \circ \nabla f^{\star}(x)\,.
+		T^{\star}(x)=\nabla_x c(x, \cdot)^{-1} \circ \nabla f^{\star}(x)\,.
 	\end{equation}
 	Thus, map $T$ depends explicitly on the gradient of the cost, or rather on its inverse map \citep{gangbo1995optimal}. 
 	
@@ -129,9 +137,8 @@ Following \citet{gangbo1996geometry}, $f^\star$ can be linked to the \acrlong{OT
 	\begin{equation} \label{eq:gangbo_h}
 		T^{\star}(x)=x-\nabla h^* \circ \nabla f^{\star}(x)\,,
 	\end{equation}
-	where $h^*$ is the Legendre-transform of $h$ given by
-	\begin{equation} \label{eq:legendre}
-		\tag{Legendre transform}
+	where $h^*$ is the \ref{eq:legendre} of $h$ given by
+	\begin{equation}
 		\forall z, \quad h^*(z) \defeq \sup _x \langle x, z\rangle-h(x)\,.
 	\end{equation}
 
@@ -150,18 +157,18 @@ Then, a point $(x_0, y_0)$ in the coupling $\pi$, i.e., $(x_0, y_0) \in \supp(\p
 \intertext{Yet, by definition of the $c$-transform, $f^{c\star}$ is given by}
 & \Leftrightarrow f^{c\star}\left(y_0\right)= \inf_z c\left(z, y_0\right)-f^{\star}\left(z\right).
 \end{align*}
-Thus, $x_0$ is a minimizer of the above expression and $\nabla_1 c\left(x_0, y_0\right)=\nabla f^{\star}\left(x_0\right)$.  
-Therefore, after inversion, we have $y_0=\nabla_1 c(x, \cdot)^{-1} \circ \nabla f^{\star}(x)$ and
+Thus, $x_0$ is a minimizer of the above expression and $\nabla_{x_0} c\left(x_0, y_0\right)=\nabla f^{\star}\left(x_0\right)$.  
+Therefore, after inversion, we have $y_0=\nabla_x c(x, \cdot)^{-1} \circ \nabla f^{\star}(x)$ and
 \begin{equation*}
 		T^{\star}(x)=x-\nabla h^* \circ \nabla f^{\star}(x)\,.
 	\end{equation*}
 Applying this result to $c(x, y) = h(x-y)$, we get 
 \begin{align*}
-  \nabla_1 c(x, y) & =\nabla h(x-y) \\
-  \nabla_1 c(x, \cdot) & =\nabla h(x-\cdot) \\
-  \nabla_1 c(x, \cdot)^{-1} & =x-(\nabla h)^{-1}(\cdot)\,. \\ 
+  \nabla_x c(x, y) & =\nabla h(x-y) \\
+  \nabla_x c(x, \cdot) & =\nabla h(x-\cdot) \\
+  \nabla_x c(x, \cdot)^{-1} & =x-(\nabla h)^{-1}(\cdot)\,. \\ 
 \intertext{Note that $(\nabla h)^{-1}$ is equivalent to $\nabla h^*$ with the convex conjugate $h^*$ and thus,}
-  \nabla_1 c(x, \cdot)^{-1} & =x-\nabla h^*(\cdot)\,.	
+  \nabla_x c(x, \cdot)^{-1} & =x-\nabla h^*(\cdot)\,.	
 \end{align*}
 \end{proof}
 Alternative formulations that relate the Kantorovich setting (with general costs) \eqref{eq:kantorovich-dual} to that of Monge \eqref{eq:monge} were proposed by \citet{ruschendorf1991bounds, ruschendorf1991frechet, caffarelli2017allocation}. \\
@@ -185,7 +192,7 @@ Similarly, for the special case of the squared Euclidean distance the \nameref{t
 \end{equation*}
 where we again reparameterize $\varphi(x) \defeq \frac{1}{2}\|x\|^2_2-f(x)$ and $\varphi(x) = \frac{1}{2}\|x\|_2^2-f(x)$ can be shown to be convex.
 
-This connection presents a well-known fact that has been investigated first by \citeauthor{brenier1987decomposition}, establishing for the special case of the Euclidean distance the equivalence of the Monge \eqref{eq:monge} and Kantorovich formulation  \eqref{eq:kantorovich}, the uniqueness of the optimal coupling $\pi$, and instantiating that there must exist a unique (up to the addition of a constant) potential $\varphi^\star:\mathbb{R}^d\rightarrow \mathbb{R}$ such that $T^\star = \nabla \varphi^\star$. 
+This connection presents a well-known fact that has been investigated first by \citet{brenier1987decomposition, brenier1991polar}, establishing for the special case of the Euclidean distance the equivalence of the Monge \eqref{eq:monge} and Kantorovich formulation  \eqref{eq:kantorovich}, the uniqueness of the optimal coupling $\pi$, and instantiating that there must exist a unique (up to the addition of a constant) potential $\varphi^\star:\mathbb{R}^d\rightarrow \mathbb{R}$ such that $T^\star = \nabla \varphi^\star$. 
 This theorem has far-reaching implications: When seeking \acrlong{OT} maps, it is sufficient, to restrict the computational effort to seek a "good" convex potential $\varphi$, such that its gradient pushes $\mu$ towards $\nu$. 
 Let us state the celebrated \citeauthor{brenier1987decomposition} theorem \citeyearpar{brenier1987decomposition} in more formal terms:
 \begin{theorem}[Brenier Theorem] \label{thm:brenier}
@@ -205,7 +212,7 @@ Moreover, this map $T$ is uniquely determined by the gradient of a convex functi
 \end{corollary}
 %To avoid confusion, we again note that the relationship between this convex function $\varphi$ and the dual potential $f$ that solves \eqref{eq:kantorovich-dual} is given $\varphi(x)$ as $\frac{\|x\|^2}{2}-f(x)$.
 
-The \nameref{thm:brenier} by \citet{brenier1987decomposition, brenier1991polar} has been exploited to propose neural \acrshort{OT} solvers ~\citep{taghvaei20192, makkuva2020optimal, korotin2021wasserstein, bunne2022proximal, alvarez2021optimizing, mokrov2021large, amos2023amortizing} and recurrently permeates this thesis (see  \cref{cha:cellot} and \ref{cha:condot}), proving its essential nature in multiple instances and modern developments of \acrlong{OT}.
+The \nameref{thm:brenier} has been exploited to propose neural \acrshort{OT} solvers ~\citep{taghvaei20192, makkuva2020optimal, korotin2021wasserstein, bunne2022proximal, alvarez2021optimizing, mokrov2021large, amos2023amortizing} and recurrently permeates this thesis (see  \cref{cha:cellot} and \ref{cha:condot}), proving its essential nature in multiple instances and modern developments of \acrlong{OT}.
 Further, it presents an elegant way to solve the Monge problem in a geometric sense and has profound implications for the dynamic version of the problem, which we will study next.
 
 

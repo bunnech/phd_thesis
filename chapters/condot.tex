@@ -242,7 +242,7 @@ Thanks to its modularity, \textsc{CondOT} can not only learn a map $T_\theta$ fo
 \subsubsection{\textit{Known} Actions}
 \label{sec:eval_action_known}
 
-\looseness -1 In the following, we analyze \textsc{CondOT}'s ability to accurately predict phenotypes of genetic perturbations based on \acrshort{sc}\acrshort{RNAseq} pooled \acrfull{CRISPR} screens \citep{norman2019exploring, dixit2016perturb}, comprising $98,419$ \acrlong{sc} gene expression profiles with $92$ different genetic perturbations, each cell measured via a $1,500$ \acrlong{HVG} expression vector.
+\looseness -1 In the following, we analyze \textsc{CondOT}'s ability to accurately predict phenotypes of genetic perturbations based on \acrshort{sc}\acrshort{RNAseq} pooled \acrshort{CRISPR} screens \citep{norman2019exploring, dixit2016perturb}, comprising $98,419$ \acrlong{sc} gene expression profiles with $92$ different genetic perturbations, each cell measured via a $1,500$ \acrlong{HVG} expression vector.
 As, in the first step, we do not aim at generalizing beyond perturbations encountered during training, we utilize again a \acrshort{OHE} $\mathcal{E}_\text{ohe}$ to condition $\mathcal{T}_\theta$ on each perturbation $a$.
 We compare our method to other baselines capable of modeling effects of a large set of perturbations such as \textsc{CPA} \citep{lotfollahi2021compositional}.
 Often, the effect of genetic perturbations is subtle in the high-dimensional gene expression profile of single cells. Using \acrshort{ICNN}-parameterized \acrshort{OT} maps without context information, we can thus assess the gain in accuracy of predicting the perturbed target population by incorporating context awareness over simply predicting an average perturbation effect. 
