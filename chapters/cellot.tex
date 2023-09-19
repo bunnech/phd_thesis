@@ -87,11 +87,10 @@ In order to solve the optimization problem stated in \eqref{eq:ot-minmax}, \cite
 	&- \varphi_\theta(\nabla g_\phi(y)) \,\mathrm{d} \nu(y),
 \end{align}
 where $\theta$ and $\phi$ are the parameters of each \acrshort{ICNN}.
-Thus, the potentials $\varphi$ and $g$ can be learned via an alternate min-max optimization problem with loss functions
-% TODO: Double-check.
+Thus, the potentials $\varphi$ and $g$ can be learned via an alternate max-min optimization problem with loss functions
 \begin{align} 
 	\label{eq:makkuva_f_loss}
-    \ell_\varphi(\mu, \nu; \theta) &= \mathbb{E}_{x \sim \mu}[\text{ICNN}_{\phi}(x)] - \mathbb{E}_{y \sim \nu}[\text{ICNN}_{\theta}(\nabla \text{ICNN}_{\phi}(y))],   \\
+    \ell_\varphi(\mu, \nu; \theta) &= - \mathbb{E}_{x \sim \mu}[\text{ICNN}_{\phi}(x)] - \mathbb{E}_{y \sim \nu}[\text{ICNN}_{\theta}(\nabla \text{ICNN}_{\phi}(y))],   \\
     \label{eq:makkuva_g_loss}
     \ell_g(\mu, \nu; \phi) &= -\mathbb{E}_{y \sim \nu}[\langle y, \nabla \text{ICNN}_{\phi}(y)\rangle-\text{ICNN}_{\theta}(\nabla \text{ICNN}_{\phi}(y))].
 \end{align}

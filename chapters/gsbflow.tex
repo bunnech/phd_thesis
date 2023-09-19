@@ -113,7 +113,7 @@ Throughout this chapter, let $\xi \sim \Ncal(\mu, \Sigma)$ and $\xi' \sim \Ncal(
 \subsubsection{Static Gaussian Optimal Transport}
 \label{sec:staticGOT}
 
-The \emph{static} entropy-regularized \acrshort{OT} between Gaussians refers to the following minimization problem \citep{peyre2019computational}:
+The \emph{static} entropy-regularized \acrshort{OT} between Gaussians refers to the following minimization problem \citep{peyre2019computational}
 % An important class of problems which generalizes \eqref{eq:W2Gaussian}, is the static entropy-regularized \acrshort{OT} between Gaussians:
 \begin{equation}
 \label{eq:RegW2Gaussian}
@@ -124,7 +124,7 @@ The \emph{static} entropy-regularized \acrshort{OT} between Gaussians refers to 
 \label{eq:Cstar}
 D_\sigma \defeq \parens{ 4\Sigma^{\frac{1}{2}} \Sigma' \Sigma^{\frac{1}{2}} + \sigma^4\eye  }^{\frac{1}{2}},\quad C_\sigma \defeq \frac{1}{2}\parens{\Sigma^{\frac{1}{2}} D_\sigma \Sigma^{-\frac{1}{2}} - \sigma^2\eye},
 \end{equation}
-then the solution $\pi^\star$ to \eqref{eq:RegW2Gaussian} is itself a Gaussian:
+then the solution $\pi^\star$ to \eqref{eq:RegW2Gaussian} is itself a Gaussian
 \begin{align}
 \label{eq:StaticGaussianSB-sol}
 \pi^\star \sim \Ncal \parens*{  \begin{bmatrix}
@@ -140,11 +140,11 @@ C_\sigma^T &\Sigma'
 \label{sec:dynamicGOT-BB}
 
 % TODO: Homogenize v_t notation to Background chapter.
-In the literature, \eqref{eq:RegW2Gaussian} is commonly referred to as the \emph{static} \acrshort{OT} formulation since it merely asks \emph{where} the mass should be transported to (i.e., $\pi(\point,\pointalt)$ dictates how much mass at $\point$ should be transported to $\pointalt$). In contrast, the more general problem of \emph{dynamic} Gaussian \acrshort{OT} seeks to answer \emph{how} the mass the should be transported:
+In the literature, \eqref{eq:RegW2Gaussian} is commonly referred to as the \emph{static} \acrshort{OT} formulation since it merely asks \emph{where} the mass should be transported to (i.e., $\pi(\point,\pointalt)$ dictates how much mass at $\point$ should be transported to $\pointalt$). In contrast, the more general problem of \emph{dynamic} Gaussian \acrshort{OT} seeks to answer \emph{how} the mass the should be transported
 \begin{align}
 \label{eq:BBGaussian}
 \min_{\ssstyle\substack{{\measure[0] = \xi,\ \measure[\horizon] = \xi'}}} \exof*{\int_{0}^\horizon  \frac{1}{2} \norm{\vect}^2 + \frac{\sigma^4}{8} \norm*{\nabla\log\measure}^2 \dt}.
-\end{align}Here, the minimization is taken over all pairs $(\measure, \vect)$ where $\measure$ is an absolutely continuous curve of measures \citep{ambrosio2006gradient}, and $\vect:\R^\vdim\to\R^\vdim$ is such that the continuity equation holds:
+\end{align}Here, the minimization is taken over all pairs $(\measure, \vect)$ where $\measure$ is an absolutely continuous curve of measures \citep{ambrosio2006gradient}, and $\vect:\R^\vdim\to\R^\vdim$ is such that the continuity equation holds
 \begin{equation}
 \label{eq:Coneq}
 \pt\measure = - \Div(\measure \vect),
@@ -163,7 +163,7 @@ The purpose of this section is to introduce the core objectives of this part of 
 \subsubsection{Schr{\"o}dinger Bridges as Dynamic Entropy-Regularized Optimal Transport}
 
 
-Let $\nu, \nu'$ be two given measures, and let $\refpro$ be an arbitrary stochastic process. In its most generic form, the \acrlong{SB} refers to a constrained KL-minimization problem overall stochastic processes $\Pmargin$ \eqref{eq:schrodinger_bridge} \citep{leonard2013survey, chen2021stochastic}, which we extensively discussed in \cref{sec:background_sb} and restate here for convenience:
+Let $\nu, \nu'$ be two given measures, and let $\refpro$ be an arbitrary stochastic process. In its most generic form, the \acrlong{SB} refers to a constrained KL-minimization problem overall stochastic processes $\Pmargin$ \eqref{eq:schrodinger_bridge} \citep{leonard2013survey, chen2021stochastic}, which we extensively discussed in \cref{sec:background_sb} and restate here for convenience
 \begin{equation}
 \label{eq:SB}
 \tag{SB}
@@ -171,13 +171,13 @@ Let $\nu, \nu'$ be two given measures, and let $\refpro$ be an arbitrary stochas
 \end{equation}
 In practice, $\nu$ and $\nu'$ typically arise as the (empirical) \emph{marginal} distributions of complicated continuous-time dynamics observed at the starting and end times, and $\refpro$ is a ``prior process'' representing our belief of the dynamics before observing any data. The solution $\Pstar$ to \eqref{eq:SB} is thus interpreted as the best dynamics that conforms to the prior belief $\refpro$ while respecting the data marginals ($\Pstar[0] = \nu, \Pstar[\horizon] = \nu'$). 
 
-We will consider a general class of $\refpro$'s that includes most existing processes in the machine learning applications of \acrshortpl{SB}. Specifically, with some initial condition $\refsde[0]$, we will take $\refpro$ to be the measure of the linear \acrlong{SDE}:
+We will consider a general class of $\refpro$'s that includes most existing processes in the machine learning applications of \acrshortpl{SB}. Specifically, with some initial condition $\refsde[0]$, we will take $\refpro$ to be the measure of the linear \acrlong{SDE}
 % To facilitate the numerical solutions of \eqref{eq:SB}, $\refpro$ is typically chosen so that conditional distributions given initial points admit a simple expression. To this end, we will consider the following general class of \acrlongpl{SDE} which incorporates, to our knowledge, all the existing processes in the literature: With some initial condition $\refsde[0]$, take $\refpro$ to be the measure of
 \begin{equation}
 \label{eq:linearsde}
 \drefsde = \parens*{\drift \refsde  + \shift }\dd t + \volat \dWiener[\ctime] \defeq \driftf\dt + \volat \dWiener[\ctime].
 \end{equation}
-Here, $\drift: \R^+ \to \R$, $\shift : \R^+ \to \R^\vdim$, and $\volat: \R^+ \to \R^+$ are smooth functions. In this case, \acrshortpl{SB} can be seen as generalized dynamical \acrshort{OT} between two (not necessarily Gaussian) measures:
+Here, $\drift: \R^+ \to \R$, $\shift : \R^+ \to \R^\vdim$, and $\volat: \R^+ \to \R^+$ are smooth functions. In this case, \acrshortpl{SB} can be seen as generalized dynamical \acrshort{OT} between two (not necessarily Gaussian) measures.
 %it is well-known that \eqref{eq:SB} can be seen as a generalized Benamou-Brenier \acrshort{OT} for two arbitrary (not necessarily Gaussian) measures \citep{chen2016relation, gentil2017analogy}:
 \begin{theorem}
 \label{thm:gsbtobb}
@@ -203,7 +203,7 @@ The proof of \cref{thm:gsbtobb}, which we defer to \cref{app:gsbtobb}, is a stra
 \subsubsection{The Gaussian Schr{\"o}dinger Bridge Problem}
 \label{sec:tere}
 
-The central goal of this section is to derive the closed-form solution of \acrshortpl{SB} when the marginal constraints are Gaussians $\xi \sim \Ncal(\mu, \Sigma),\ \xi' \sim \Ncal(\mu', \Sigma')$. Namely, we are interested in the following class of the \acrshortpl{SB}, termed \acrlongpl{GSB}:% refers to the KL-minimization problem:
+The central goal of this section is to derive the closed-form solution of \acrshortpl{SB} when the marginal constraints are Gaussians $\xi \sim \Ncal(\mu, \Sigma),\ \xi' \sim \Ncal(\mu', \Sigma')$. Namely, we are interested in the following class of the \acrshortpl{SB}, termed \acrlongpl{GSB} % refers to the KL-minimization problem:
 \begin{equation}
 \label{eq:GSB}
 \tag{GSB}
@@ -250,14 +250,14 @@ This section illustrates the simple geometric intuition that underlies the somew
 \subsubsection{A Brief Review on Action Minimization Problems} % in Euclidean and Riemannian Settings}
 \label{sec:actionRd}
 
-Following the connections established in \cref{sec:background_control}, let us consider the following \emph{action minimization} problem with fixed endpoints $\point, \point' \in \R^\vdim$:
+Following the connections established in \cref{sec:background_control}, let us consider the following \emph{action minimization} problem with fixed endpoints $\point, \point' \in \R^\vdim$
 \begin{align}
 \label{eq:Euclid_Lag}
 \min_{x(0) = \point, x(\horizon) = \point\prime} \int_0^\horizon {\frac{1}{2} \norm{\dot{x}(t)}^2 - U(x(t)) } \dt,
 \end{align}
 where the minimum is taken over all piecewise smooth curves. 
 %It is common to interpret the term $\frac{1}{2}\norm{\dot{x}(t)}^2$ as the \emph{kinetic} energy of $x(t)$, and $U(x(t))$ the \emph{potential} energy. 
-A celebrated result in physics asserts that the optimal curve for \eqref{eq:Euclid_Lag} satisfies the \emph{Euler-Lagrange} equation:
+A celebrated result in physics asserts that the optimal curve for \eqref{eq:Euclid_Lag} satisfies the \emph{Euler-Lagrange} equation
 \begin{equation}
 \label{eq:EL}
 \ddot{x}(t) = -\nabla U(x(t)), \quad x(0) = x,\quad x(\horizon) = x'.
@@ -274,7 +274,7 @@ More generally, one can consider \eqref{eq:Euclid_Lag} on any \emph{Riemannian m
 
 \looseness -1 We begin with the following simple observation. Based on the seminal work by \citet{otto2001geometry}, \citet{gentil2020dynamical} show that \acrshortpl{SB} between two arbitrary measures can be formally understood as an action minimization problem of the form \eqref{eq:Euclid_Lag} on an \emph{infinite}-dimensional manifold. Since we have restricted the measures in \eqref{eq:GSB} to be Gaussian, and since Gaussian measures are uniquely determined by their means and covariances, \citet{gentil2020dynamical} strongly suggests a \emph{finite}-dimensional geometric interpretation of $\sigma\Wiener$-\acrshortpl{GSB}. The main result in this section, \cref{thm:mechanics} below, makes this link precise.
 
-The proper geometry we need is the \emph{Bures-Wasserstein manifold} \citep{takatsu2010wasserstein, bhatia2019bures} defined as follows. Consider the space of covariance matrices (i.e., symmetric positive definite matrices) of dimension $\vdim$, which we denote by $\SPD$, and consider its natural {tangent space} as the space of symmetric matrices:
+The proper geometry we need is the \emph{Bures-Wasserstein manifold} \citep{takatsu2010wasserstein, bhatia2019bures} defined as follows. Consider the space of covariance matrices (i.e., symmetric positive definite matrices) of dimension $\vdim$, which we denote by $\SPD$, and consider its natural {tangent space} as the space of symmetric matrices
 \begin{equation}
 \mathcal{T}_{\ssstyle \Sigma} \SPD \defeq \setdef{U \in \R^{\vdim\times\vdim}}{ U^T  = U}.
 \end{equation}
@@ -291,7 +291,7 @@ It is shown in \citet{takatsu2010wasserstein} that the Lyapunov operator defines
 \frac{1}{2}\tr \lyap[\Sigma][U]V%,  \quad \normBWsq[U][\Sigma] \coloneqq \innerBW[U][U][\Sigma]
 \end{align}satisfies all the axioms of the Riemannian metric; additional background on the Bures-Wasserstein geometry can be found in \cref{app:reviewBW}. 
 
-We are now ready to state the main result of the section. Let $\normBW[\cdot][\Sigma]$ be the induced norm of $\innerBW[\cdot][\cdot][\Sigma]$. Fix $\sigma >0$ and let $\Wiener$ be a {reversible} \acrlong{BM}. Consider the following special case of \eqref{eq:GSB}:% where $\refsde \subs \sigma \Wiener$:
+We are now ready to state the main result of the section. Let $\normBW[\cdot][\Sigma]$ be the induced norm of $\innerBW[\cdot][\cdot][\Sigma]$. Fix $\sigma >0$ and let $\Wiener$ be a {reversible} \acrlong{BM}. Consider the following special case of \eqref{eq:GSB} % where $\refsde \subs \sigma \Wiener$:
 \begin{equation}
 \label{eq:GaussianSBWiener}
 %\tag{$\Wiener$-SB$_{\ssstyle\Ncal}$}
@@ -316,7 +316,7 @@ where $\nabla_{\ssstyle\dSigcurve}\dSigcurve$ denotes the Riemannian acceleratio
 \end{restatable}
 
 \paragraph{An important implication.}
-As alluded to in \cref{sec:overview_gsbflow}, the solution curve to \eqref{eq:BBGaussian} or \eqref{eq:GaussianSBWiener} is not new; it is derived in \citet{mallasto2021entropy} via a strenuous and rather unenlightening calculation:
+As alluded to in \cref{sec:overview_gsbflow}, the solution curve to \eqref{eq:BBGaussian} or \eqref{eq:GaussianSBWiener} is not new; it is derived in \citet{mallasto2021entropy} via a strenuous and rather unenlightening calculation
 \begin{equation}
 \label{eq:solMain}
 \Sigmasol \defeq \ctimebar^2 \Sigma + \ctime^2 \Sigma' + \ctime\cdot\ctimebar\parens*{\C+\C^T + \sigma^2 \eye}.
@@ -330,7 +330,7 @@ Define the matrix $\tilde{\St}$ to be:
 \Ht \defeq \ctime\Sigma' + \ctimebar \C - \ctimebar\Sigma - \ctime\C^T  + \frac{\sigma^2}{2}(\ctimebar-\ctime)\eye.
 \end{equation}Then $\Ht^T \Sigmasolinv$ is symmetric.
 \end{lemma}
-Armed with \cref{lem:lyapMain}, it is straightforward to verify that $\lyap = \Ht^T \Sigmasolinv$, i.e., $\Ht^T  \Sigmasolinv$ is symmetric and satisfies:
+Armed with \cref{lem:lyapMain}, it is straightforward to verify that $\lyap = \Ht^T \Sigmasolinv$, i.e., $\Ht^T  \Sigmasolinv$ is symmetric and satisfies
 \begin{align}
    \Ht^T \Sigmasolinv \cdot \Sigmasolinv + \Sigmasolinv \cdot\Sigmasolinv \Ht &= \Ht^T  +  \Ht= \dSigmasol
 \end{align}which is more or less equivalent to the original Euler-Lagrange equation \eqref{eq:el-bw}; we defer the details to \cref{app:proofmechanics}.
@@ -351,14 +351,14 @@ We now present the closed-form solutions of general \acrshortpl{GSB}.
 \subsubsection{Linear Stochastic Differential Equations}
 \label{sec:linearsdes}
 
-We need the following background knowledge on the linear \acrshort{SDE} $\refsde$. Let $\aggtime \defeq \exp\parens*{  \int_0^\ctime \drift[\ctimealt] \dd \ctimealt}$. Then the solution to \eqref{eq:linearsde} is \citep{platen2010numerical}:
+We need the following background knowledge on the linear \acrshort{SDE} $\refsde$. Let $\aggtime \defeq \exp\parens*{  \int_0^\ctime \drift[\ctimealt] \dd \ctimealt}$. Then the solution to \eqref{eq:linearsde} is \citep{platen2010numerical}
 \begin{align}
 \label{eq:linearsdesol}
 \refsde = \aggtime  \parens*{\refsde[0] +  \int_0^\ctime  \aggtimeinv[\ctimealt]\shift[\ctimealt]  \dd \ctimealt + \int_0^\ctime {\aggtimeinv[\ctimealt]}{ \volat[\ctimealt] } \dWiener }.
 \end{align}
 % where $\aggtime \defeq \exp\parens*{  \int_0^\ctime \drift[\ctimealt] \dd \ctimealt}$.
 
-Another crucial fact in our analysis is that $\refsde$ is a \emph{Gaussian process given $\refsde[0]$}, and is thus characterized by the first two moments. Using the independent increments of $\Wiener$ and It\^o's isometry \citep{protter2005stochastic}, we compute:
+Another crucial fact in our analysis is that $\refsde$ is a \emph{Gaussian process given $\refsde[0]$}, and is thus characterized by the first two moments. Using the independent increments of $\Wiener$ and It\^o's isometry \citep{protter2005stochastic}, we compute
 \begin{align}
 \label{eq:mYdef}
 \exof*{  \refsde \given \refsde[0]  } &= \aggtime  \parens*{\refsde[0] +  \int_0^\ctime {\aggtimeinv[\ctimealt]}{ \shift[\ctimealt] } \dd \ctimealt  } \eqdef \mYcinit  
@@ -421,7 +421,7 @@ Then the following holds:
 \label{eq:covsol}
 \Sigmasol&\defeq \ratioc^2\covar + \ratio^2 \covaralt + \ratio\ratioc \parens*{ C_{\sigma_\star} + C_{\sigma_\star}^T  } +  \kernel[\ctime][\ctime]  \parens*{ 1- \efftr } \eye.
 \end{align} % Then the marginal variable $\Xsol \sim \Psol$ follows $\Ncal\parens*{\meansol,\Sigmasol}$.
-\item $\Xsol$ admits a closed-form representation as the \acrshort{SDE}:
+\item $\Xsol$ admits a closed-form representation as the \acrshort{SDE}
 \begin{align}
 \label{eq:GSB-forward-sol}
 \dXsol = \GSBf[\ctime][\Xsol] \dd \ctime + \volat\dWiener[\ctime]
@@ -519,7 +519,7 @@ Building on the closed-form solutions in \cref{sec:results_gsbflow}, we present 
 % \tag{\acroalg}
 \min_{ \Pinit = \distinit,\; \Pend = \distend } \KL(\Pmargin \| \mathbb{Q}_t^\star).
 \end{equation}
-Following the framework of \citet{chen2021likelihood}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acrshortpl{SDE} of the form:
+Following the framework of \citet{chen2021likelihood}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acrshortpl{SDE} of the form
 % Following \eqref{eq:SB-sde-forward}-\eqref{eq:SB-sde-backward}, we see that the optimal solution to \eqref{eq:GSBflow} is given by two \acp{SDE} of the form:
 \begin{subequations}
 \begin{eqnarray}

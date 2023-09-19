@@ -41,7 +41,6 @@ i.e., the family of continuous functions that have both a continuous first and a
 
 It was not until the 20th century, however, that the concept found a more tractable development. In \citeyear{kantorovich1942transfer}, Leonid \citeauthor{kantorovich1942transfer} provided a relaxation to this non-convex and difficult-to-solve problem.
 Instead of the deterministic matching proposed by \citeauthor{monge1781histoire}, Kantorovich considered probabilistic correspondences that allow for the transportation of mass from a single source point to various target points (mass splitting), resulting in the problem formulation
-% TODO: Introduce P_{\gX \sharp}.
 \begin{equation} \label{eq:kantorovich}
     W(\mu, \nu) \defeq \inf_{\pi\in \Pi(\mu,\nu)}\iint c(x, y) \pi(x, y)\mathrm{d}x\mathrm{d}y,
 \end{equation}
@@ -447,7 +446,6 @@ Classical strategies for solving \eqref{eq:sb_control} commonly replace the boun
 The resulting optimality conditions are
 \begin{align}
 \label{eq:sb_hb} & \frac{\partial \psi}{\partial t} = -\frac{1}{2}\|\nabla \psi\|^2 -\frac{\sigma^2}{2} \Delta \psi \\
-% TODO: Is this a + or - \nabla?
 \label{eq:sb_optimality}
 & \frac{\partial \mu_t}{\partial t} = - \nabla \cdot(\mu_t \nabla \psi) +\frac{\sigma^2}{2} \Delta \mu_t
 \end{align}
@@ -456,7 +454,7 @@ After applying the \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} trans
 \begin{align*}
     \Phi = \exp (\frac{\psi}{\sigma^2}) \enspace \text{and} \enspace \widehat{\Phi} = \mu_t \exp (\frac{-\psi}{\sigma^2}),
 \end{align*}
-we obtain the \acrshort{SB} system associated to the \acrshort{SDE} class in \eqref{eq:sb_control_constraint}, which is given by
+we obtain the \acrshort{SB} system associated to the \acrshort{SDE} class in \eqref{eq:sb_control_constraint} given by
 \begin{align}
 & \frac{\partial \Phi}{\partial t}=-\frac{\sigma^2}{2} \Delta \Phi 
 \quad \text { s.t. } & \Phi(0, \cdot) \widehat{\Phi}(0, \cdot)=\mu_0, \\ \nonumber

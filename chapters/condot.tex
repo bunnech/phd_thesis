@@ -134,9 +134,9 @@ Receiving a flexible number of inputs from the embedding module $\mathcal{E}_\ph
 The training loss aims at making sure the map $\mathcal{T}_\theta(c_i)$ is an \acrshort{OT} map from $\mu_i$ to $\nu_i$, where $c_i$ may either be the original label itself or its embedded/combined formulation in more advanced tasks. To handle the Legendre transform in \eqref{eq:dual-cvx}, we use the proxy dual objective defined in \eqref{eq:ot-minmax} \citep{makkuva2020optimal} in place of \eqref{eq:dual-cvx} to minimize our overall loss~\eqref{eq:supdual}.
 
 We then parameterize the potentials $\varphi$ and $g$ using two \acrshortpl{PICNN}, i.e., $\text{PICNN}_{\theta}$ and $\text{PICNN}_{\phi}$, that already integrate an embedding and/or combinator module. The regularization in \eqref{eq:ot-minmax} promotes that for any $c$, $\text{PICNN}_{\phi}(\cdot,c)$ resembles the Legendre transform of the other network, i.e., $\text{PICNN}_{\theta^\star}(\cdot,c)$.
-Parameters of all three modules are trained jointly through the alternate min-max optimization introduced in \eqref{eq:cellot-optim}, replacing the \acrshort{ICNN} architecture in loss functions \eqref{eq:makkuva_f_loss}-\eqref{eq:makkuva_g_loss} with \acrshortpl{PICNN}, i.e.,
+Parameters of all three modules are trained jointly through the alternate max-min optimization introduced in \eqref{eq:cellot-optim}, replacing the \acrshort{ICNN} architecture in loss functions \eqref{eq:makkuva_f_loss}-\eqref{eq:makkuva_g_loss} with \acrshortpl{PICNN}, i.e.,
 \begin{align*} 
-    \ell_\varphi(\mu, \nu, c; \theta) &= \mathbb{E}_{x \sim \mu}[\text{PICNN}_{\phi}(x, c)] - \mathbb{E}_{y \sim \nu}[\text{PICNN}_{\theta}(\nabla \text{PICNN}_{\phi}(y, c), c)], \\
+    \ell_\varphi(\mu, \nu, c; \theta) &= -\mathbb{E}_{x \sim \mu}[\text{PICNN}_{\phi}(x, c)] - \mathbb{E}_{y \sim \nu}[\text{PICNN}_{\theta}(\nabla \text{PICNN}_{\phi}(y, c), c)], \\
     \ell_g(\mu, \nu, c; \phi) &= -\mathbb{E}_{y \sim \nu}[\langle y, \nabla \text{PICNN}_{\phi}(y, c)\rangle-\text{PICNN}_{\theta}(\nabla \text{PICNN}_{\phi}(y, c), c)].
 \end{align*}
 For more details, see \cref{sec:neural_solvers}.

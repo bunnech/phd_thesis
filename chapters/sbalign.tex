@@ -66,13 +66,13 @@ Our central idea is to represent $\Psol$ via two different, but equivalent, char
 
 \paragraph{$\Psol$ from $\Pssol$: $\refpro$ with pinned end points.}
 
-For illustration purposes, from now on, we will assume that the reference process $\refpro$ is a \acrshort{BM} with diffusion coefficient $\volat$:
+For illustration purposes, from now on, we will assume that the reference process $\refpro$ is a \acrshort{BM} with diffusion coefficient $\volat$
 % \footnote{\looseness -1 Extension to more involved reference processes is conceptually straightforward but notationally clumsy. Furthermore, reference processes of the form \eqref{eq:gtWt} are dominant in practical applications \citep{song2020score, bunne2022recovering}, so we omit the general case. }
 \begin{equation}
 \label{eq:gtWt}
 \dd \refpro = \volat \mathrm{d}\gW_t.
 \end{equation}
-In this case, it is well-known that $\refpro$ \emph{conditioned} to start at $\x_0$ and end at $\x_1$ can be written in another \acrshort{SDE} \citep{mansuy2008aspects, liu2023learning}:
+In this case, it is well-known that $\refpro$ \emph{conditioned} to start at $\x_0$ and end at $\x_1$ can be written in another \acrshort{SDE} \citep{mansuy2008aspects, liu2023learning}
 \begin{equation}
 \label{eq:BB}
 \dd X_t = \volatsq[\ctime] \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]} \dt + \volat\mathrm{d}\gW_t
@@ -93,7 +93,7 @@ Another characterization of $\Psol$ is that it is itself given by an \acrshort{S
 \end{equation}
 Here, $\fdrift: \R^d \to \R^d$ is a time-dependent drift function that we wish to learn.
 
-Now, by Doob's h-transform, we know that the \acrshort{SDE} \eqref{eq:SB-SDE} \emph{conditioned} to start at $\x_0$ and end at $\x_1$ is given by another \acrshort{SDE}  \citep{doob1984classical,rogers2000diffusions}:
+Now, by Doob's h-transform, we know that the \acrshort{SDE} \eqref{eq:SB-SDE} \emph{conditioned} to start at $\x_0$ and end at $\x_1$ is given by another \acrshort{SDE}  \citep{doob1984classical,rogers2000diffusions}
 \begin{equation}
 \label{eq:SB-SD-conditioned}
 \dd X_t = \volatsq[\ctime]\bracks*{\fdrift(X_t) + \nabla \log \doob(X_t) }\dt +\volat \mathrm{d}\gW_t
@@ -110,14 +110,14 @@ Since both \eqref{eq:BB} and \eqref{eq:SB-SD-conditioned} represent $\Psol$, the
 In other words, suppose we parametrize $\fdrift$ as $\fdrift^\theta$, then, by matching terms in \eqref{eq:BB} and \eqref{eq:SB-SD-conditioned}, we can learn the optimal parameter $\theta^\star$ via optimization of the loss function
 \begin{equation}
 \label{eq:loss}
-\Loss(\theta) \defeq \exof*{\int_0^1 \norm*{ \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}-\nabla \log \doob^\theta(X_t)}^2 \dt  }
+\Loss(\theta) \defeq \exof*{\int_0^1 \norm*{ \frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}-\nabla \log \doob^\theta(X_t)}^2 \dt  },
 \end{equation}where $\doob^\theta$ is determined by $\fdrift^\theta$ as well as the drawn samples $(\x_0,\x_1)$. In short, assuming that, for each $\theta$, we can compute $\doob^\theta$ \emph{based only on} $\fdrift^\theta$, we can then backpropagate through \eqref{eq:loss} and optimize it using any off-the-shelf algorithm.
 
 \paragraph{A slightly modified \eqref{eq:loss}.}
-Even with infinite data and a \acrlong{NN} with sufficient capacity, the loss function defined in \eqref{eq:loss} does converge to 0. For the purpose of numerical stability, we instead propose to modify \eqref{eq:loss} to:
+Even with infinite data and a \acrlong{NN} with sufficient capacity, the loss function defined in \eqref{eq:loss} does converge to 0. For the purpose of numerical stability, we instead propose to modify \eqref{eq:loss} to
 \begin{equation}
 \label{eq:loss_modified}
-\Loss(\theta) \defeq \exof*{\int_0^1 \norm*{\frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}- \left(\fdrift^\theta + \nabla \log \doob^\theta(X_t)\right)}^2 \dt  }
+\Loss(\theta) \defeq \exof*{\int_0^1 \norm*{\frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}- \left(\fdrift^\theta + \nabla \log \doob^\theta(X_t)\right)}^2 \dt  },
 \end{equation}which is clearly equivalent to \eqref{eq:loss} at the true solution of $\fdrift$. Notice that \eqref{eq:loss_modified} bears a similar form as the popular score matching objective employed in previous works \citep{song2019generative,song2020score}:
 \begin{equation}
 \label{eq:score_matching}
@@ -158,14 +158,15 @@ where the term $\frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}$ is akin to $
 
 \paragraph{Computing $\doob^\theta$.}
 
-Inspecting $\doob$ in \eqref{eq:SB-SD-conditioned}, we see that, given $(\x_0,\x_1)$, it can be written as the conditional expectation of an indicator function:
+Inspecting $\doob$ in \eqref{eq:SB-SD-conditioned}, we see that, given $(\x_0,\x_1)$, it can be written as the conditional expectation of an indicator function
 \begin{equation}
 \label{eq:h-semigroup}
 \doob(\x) = \prob(X_1 = \x_1\vert X_t = \x) = \exof*{
-\one_{\{\x_1\}}\vert X_t = \x}
-\end{equation}where the expectation is over \eqref{eq:SB-SDE}. Functions of the form \eqref{eq:h-semigroup} lend themselves well to computation since it solves simulating the \emph{unconditioned} paths.
+\one_{\{\x_1\}}\vert X_t = \x},
+\end{equation}
+where the expectation is over \eqref{eq:SB-SDE}. Functions of the form \eqref{eq:h-semigroup} lend themselves well to computation since it solves simulating the \emph{unconditioned} paths.
 % since the Feymann-Kac formula, which offers a representation via simulating the \emph{unconditional} paths. 
-Furthermore, in order to avoid overfitting on the given samples, it is customary to replace the "hard" constraint $\one_{\{\x_1\}}$ by its \emph{smoothed} version \citep{zhang2021path, holdijk2022path}: 
+Furthermore, in order to avoid overfitting on the given samples, it is customary to replace the "hard" constraint $\one_{\{\x_1\}}$ by its \emph{smoothed} version \citep{zhang2021path, holdijk2022path}
 \begin{equation}
 \label{eq:softdoob}
 \doobs(\x) \defeq \exof*{  \exp\parens*{-\frac{1}{2\reg}\norm{X_\horizon-\x_1}^2 }  \vert X_t = \x}.
@@ -184,13 +185,13 @@ Although the computation of \eqref{eq:softdoob} can be done via a standard appli
 \paragraph{Regularization.}
 Since it is well-known that $\nabla \log\doob$ typically explodes when $\ctime\to 1$ \citep{liu2023learning}, it is important to regularize the behavior of $m^{\phi}$ for numerical stability, especially when $\ctime\to 1$. Moreover, in practice, it is desirable to learn a drift $\fdrift^\theta$ that respects the data alignment \emph{in expectation}: If $(\x_0,\x_1)$ is an input pair, then multiple runs of the \acrshort{SDE} \eqref{eq:SB-SDE} starting from $\x_0$ should, on average, produce samples that are in the proximity of $\x_1$. This observation implies that we should search for drifts whose corresponding $h$-transforms are diminishing.
 
-A simple way to simultaneously achieve the above two requirements is to add an $\ell^2$-regularization term, resulting in the loss function:
+A simple way to simultaneously achieve the above two requirements is to add an $\ell^2$-regularization term, resulting in the loss function
 % \eqref{eq:logdoobs} is computationally expensive to simulate, because of repeated function calls to $\fdrift^\theta$, and also suffers from high variance, especially in the initial stages of training. 
 % Note $\nabla \log \doobs(\x_1) = 0$. We replace $\nabla \log \doobs(\x)$ with a \acrlong{NN} $m^{\phi}$ such that $\norm{m^{\phi}(\x_1)}$ is minimized. The final loss function looks like
 \begin{align}
 \label{eq:loss_final}
 \Loss(\theta,\phi) &\defeq \mathbb{E} \Bigg[\int_0^1 \norm*{\frac{\x_1-X_t}{\cvolat[\horizon]-\cvolat[\ctime]}- \left(\fdrift^\theta + m^{\phi}(X_t)\right)}^2
-\\ &\hspace{35mm}+ \lambda_t \norm{m^{\phi}(\x_t)}^2 \dt \Bigg]
+\\ &\hspace{35mm}+ \lambda_t \norm{m^{\phi}(\x_t)}^2 \dt \Bigg],
 \nonumber
 \end{align}where $\lambda_t$ can either be constant or vary with time. The overall algorithm is depicted in \cref{alg:SBalign}.
 
@@ -200,9 +201,9 @@ A simple way to simultaneously achieve the above two requirements is to add an $
 
 Our algorithm finds solutions to \acrshortpl{SB} on aligned data by relying on samples drawn from the (optimal) coupling $\pi^\star$. This is what differentiates it from classical \acrshortpl{SB} --which instead only consider samples from $\hat{\mathbb{P}}_0$ and $\hat{\mathbb{P}}_1$-- and plays a critical role in avoiding \acrshort{IPF}-like iterates. However, \textsc{SBalign} reliance on samples from $\pi^\star$ may become a limitation, when the available information on alignments is insufficient. 
 
-If the number of pairings is limited,  it is unrealistic to hope for an accurate solution to the aligned \acrshort{SB} problem. However, the interpolation between $\hat{\mathbb{P}}_0$ and $\hat{\mathbb{P}}_1$ learned by \textsc{SBalign} can potentially be leveraged as a starting point to obtain a better reference process, which can then be used when solving a classical \acrshort{SB} on the same marginals. In other words, the drift $b^\text{aligned}_t(X_t)$ learned through \textsc{SBalign} can be used \textit{as is} to construct a data-informed alternative $\tilde{\mathbb{Q}}$ to the standard \acrshort{BM}, defined by paths:
+If the number of pairings is limited,  it is unrealistic to hope for an accurate solution to the aligned \acrshort{SB} problem. However, the interpolation between $\hat{\mathbb{P}}_0$ and $\hat{\mathbb{P}}_1$ learned by \textsc{SBalign} can potentially be leveraged as a starting point to obtain a better reference process, which can then be used when solving a classical \acrshort{SB} on the same marginals. In other words, the drift $b^\text{aligned}_t(X_t)$ learned through \textsc{SBalign} can be used \textit{as is} to construct a data-informed alternative $\tilde{\mathbb{Q}}$ to the standard \acrshort{BM}, defined by paths
 \[
-    \tilde{X}_t = b^\text{aligned}_t(\tilde{X}_t) dt + g_t dW_t
+    \tilde{X}_t = b^\text{aligned}_t(\tilde{X}_t) dt + g_t dW_t.
 \]
 Intuitively, solving a standard \acrshort{SB} problem with $\tilde{\mathbb{Q}}$ as reference is beneficial because the (imperfect) coupling of marginals learned by \textsc{SBalign} ($\tilde{\mathbb{Q}}_{01}$) is, in general, closer to the truth than $\mathbb{Q}_{01}$.
 
