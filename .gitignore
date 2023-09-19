@@ -42,5 +42,5 @@ raw/*
 .DS_Store
 
 # Presentations
-.pptx
-.key
+*.pptx
+*.key
