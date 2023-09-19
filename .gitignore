@@ -40,3 +40,7 @@ cover/*
 raw/*
 
 .DS_Store
+
+# Presentations
+.pptx
+.key
