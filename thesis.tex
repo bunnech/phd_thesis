@@ -32,13 +32,14 @@
 \pagestyle{scrplain}
 
 % Cover
-\includepdf[pages={1,{}}]{cover/crop/cover_tmp.pdf}
+\includepdf[pages={1,{}}]{cover/cover_front.pdf}
 \cleardoublepage\setcounter{page}{1}
 
 % Frontmatter
-\input{frontbackmatter/dirtytitlepage}
 \input{frontbackmatter/titlepage}
 \input{frontbackmatter/titleback}
+\cleardoublepage
+\input{frontbackmatter/dirtytitlepage}
 \cleardoublepage\input{frontbackmatter/dedication}
 \cleardoublepage\input{frontbackmatter/abstract}
 \cleardoublepage\input{frontbackmatter/acknowledgments}

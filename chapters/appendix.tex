@@ -61,7 +61,7 @@ For the downstream analysis of how well the overall perturbation effect has been
 
 Besides sc\acrshort{RNAseq}, optical phenotypic screens, e.g., multiplexing tools such as \acrshort{4i} \citep{gut2018multiplexed}, are able to capture meaningful features related to both the treatment response heterogeneity (e.g., the phosphorylation or dephosphorylation of a kinase in a signaling pathway) and the pre-existing cell-to-cell variability (e.g., protein levels related to different cellular states or cell cycle phases) which my determine treatment response. 
 % Traditional high-content imaging datasets often need to compromise between features describing either the former or the latter and may thus struggle to provide sufficient information to pair treated and control cells accurately.
-In order to derive a proof-of-concept study and test if the proposed methods are able to capture heterogeneous \acrlong{sc} responses, we consider two co-cultured primary melanoma cell lines (M130219 and M130429), which were derived from the same melanoma patient from different body sites \citet{bunne2021learning}.
+In order to derive a proof-of-concept study and test if the proposed methods are able to capture heterogeneous \acrlong{sc} responses, we consider two co-cultured primary melanoma cell lines (M130219 and M130429), which were derived from the same melanoma patient from different body sites \citep{bunne2021learning}.
 M130219 originates from a subcutaneous biopsy taken during treatment with Bimetinib (MEKi), whereas M130429 was derived from a bone autopsy one month after stopping said targeted therapy \citep{raaijmakers2015new}. Both cell lines share the same driver mutation (NRAS Q61R) but are phenotypically diverse. The cell lines were screened with $34$ different drugs, partially applied as combination therapies.
 
 \paragraph{Data preprocessing.}
@@ -166,7 +166,7 @@ To reduce the dimensionality of these data points, we perform a \acrshort{PCA} p
 Preprocessing for the lupus patients~\citep{kang2018multiplexed} and cross-species dataset~\citep{hagai2018gene} were inherited from~\citet{rybakov2020learning} 
 and \citet{lotfollahi2019scgen}, and we would like to thank the authors for hosting this dataset.
 Lastly, the preprocessing of the glioblastoma patient dataset \citep{zhao2021deconvolution} was adapted from \citet{peidli2022scperturb}.
-The preprocessed datasets are available for download\textsuperscript{\ref{fnt:dataset_download}}. Similarly, for the dataset by \citet{schiebinger2019optimal}, the processed dataset is hosted by the authors\footnote{https://broadinstitute.github.io/wot/tutorial/}.
+The preprocessed datasets are available for download\textsuperscript{\ref{fnt:dataset_download}}. Similarly, for the dataset by \citet{schiebinger2019optimal}, the processed dataset is hosted by the authors\footnote{Dataset available via \url{https://broadinstitute.github.io/wot/tutorial/}.}.
 
 \section{Evaluation Metrics} \label{app:evaluation_metrics}
 
@@ -189,7 +189,7 @@ Given two random variables $x$ and $y$ with distributions $\hat{\nu}$ and $\nu$,
 We report an unbiased estimate of $\text{MMD}(\hat{\nu},\nu)$, in which the expectations are evaluated by averages over the population particles in each set. We utilize the RBF kernel, and as is usually done, report the \acrshort{MMD} as an average over several length scales, i.e., \texttt{np.logspace(1, -3)}.
 
 \paragraph{Perturbation signatures.}
-A common method to quantify the effect of a perturbation on a population is to compute its \acrlong{PS} \citep[(PS)]{stathias2018drug}, computed via the difference in means between the distribution of perturbed states and control states of each feature, e.g., here individual genes. $\ell_2$(\acrshort{PS}) then refers to the $\ell_2$-distance between the \acrlongpl{PS} computed on the observed and predicted distributions, $\nu$ and $\hat{\nu}$. As before, let $\mu$ be the set of observed unperturbed population particles, $\nu$ the set of observed perturbed particles, as well as $\hat{\nu}$ the predicted perturbed state of population $\mu$. The $\ell_2$(PS) is then defined as
+A common method to quantify the effect of a perturbation on a population is to compute its \acrlong{PS} \citep[PS]{stathias2018drug}, computed via the difference in means between the distribution of perturbed states and control states of each feature, e.g., here individual genes. $\ell_2$(\acrshort{PS}) then refers to the $\ell_2$-distance between the \acrlongpl{PS} computed on the observed and predicted distributions, $\nu$ and $\hat{\nu}$. As before, let $\mu$ be the set of observed unperturbed population particles, $\nu$ the set of observed perturbed particles, as well as $\hat{\nu}$ the predicted perturbed state of population $\mu$. The $\ell_2$(PS) is then defined as
 \begin{equation*}
     \text{PS}(\nu, \mu) = \frac{1}{m}\sum_{y_i \in \nu}{y_i} - \frac{1}{n}\sum_{x_i \in \mu}{x_i},
 \end{equation*}
