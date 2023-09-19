@@ -8,13 +8,13 @@
 
 \Acrlong{OT} theory~\citep{santambrogio2015optimal} is a core element of the machine learning toolbox and has become within a few years the go-to framework to analyze, model, and solve an ever-increasing variety of tasks involving probability measures. This is best exemplified by its increasing importance to fitting generative models, where the goal is to learn a map~\citep{arjovsky2017wasserstein, genevay2018learning, salimans2018improving}, or more generally a diffusion \citep{song2020score, de2021diffusion} to morph a simple measure (e.g., Gaussian) onto a data distribution of interest (e.g., images). This is also apparent in the many applications that use \acrshort{OT} to align probability measures that have since arisen, e.g., to transfer label knowledge between datasets~\citep{flamary2016optimal, singh2020model}, to analyze sampling schemes~\citep{dalalyan2017theoretical}, or study population trajectories~\citep{schiebinger2019optimal, bunne2021learning}, i.e., the subject of this thesis.
 
-In this chapter, we primarily cast light on the static and dynamic formulations of \acrlong{OT}, and simultaneously establish their theoretical nexus by recalling its mathematical history from \citeauthor{monge1781histoire} and \citeauthor{kantorovich1942transfer} to modern Fields Medal winners \citeauthor{villani2009optimal}, \citeauthor{figalli2010optimal}, and Abel Prize recipient \citeauthor{caffarelli1990interior} in order to provide a solid foundation for the discussion ahead.
+In this chapter, we primarily cast light on the static and dynamic formulations of \acrlong{OT}, and simultaneously establish their theoretical nexus by recalling its mathematical history from \citeauthor{monge1781histoire} and \citeauthor{kantorovich1942transfer} to modern Fields Medal winners \citeauthor{villani2009optimal}, \citeauthor{figalli2010optimal}, and Abel and Wolf Prize recipient \citeauthor{caffarelli1990interior} in order to provide a solid foundation for the discussion ahead.
 
 
 \section{Static Optimal Transport} \label{sec:background_ot_static}
 
 \looseness -1 \Acrlong{OT} takes dual roles as it induces a mathematically well-characterized distance measure between distributions as well as provides a geometry-based approach to realize mappings between two probability distributions.
-In this section, we introduce the mathematical foundations of the \textbf{static} \acrshort{OT} problem. Further, we provide an extended analysis of the \citeauthor{monge1781histoire} map, which gives an actionable way to flow from one probability distribution to another.
+In this section, we introduce the mathematical foundations of the \textbf{static} \acrshort{OT} problem. Further, we provide an extended analysis of the \citeauthor{monge1781histoire} map, which gives an actionable way to transform from one probability distribution to another.
 We conclude with a complete proof of the celebrated \citeauthor{brenier1987decomposition} theorem. This quintessential result and its particularization to translation-invariant costs lay the foundation of the flurry of neural approaches proposed in the literature. This includes modeling Monge maps as gradients of convex functions parameterized through \acrlongpl{ICNN} \citep{amos2017input, huang2021convex, makkuva2020optimal, korotin2021neural, lubeck2022neural, bunne2022supervised}, i.e., approaches that are a direct consequence of the \citeauthor{brenier1987decomposition} theorem and the subject of this thesis, regularizers \citep{uscidda2023monge}, amortized optimization \citep{amos2023amortizing, amos2023meta}, or entropic maps \citep{pooladian2021entropic, pooladian2023minimax, divol2022optimal, cuturi2023monge}.
 
 \begin{figure}[t]
@@ -29,12 +29,11 @@ In the 18th century "M{\'e}moire sur la th{\'e}orie des d{\'e}blais et des rembl
 In more formal terms, provided with two measures $\mu, \nu\in \mathcal{P}(\mathbb{R}^d)$, here restricted to measures supported on $\mathbb{R}^d$, \citeauthor{monge1781histoire}'s initial approach was to find a map $T$ that pushes one mass onto the other in a way that minimizes the total cost of transport.
 Given a measurable const function $c: \mathcal{X} \times \mathcal{Y} \rightarrow \mathbb{R}$, the \citeauthor{monge1781histoire} problem then reads
 \begin{equation}\label{eq:monge}
-T^\star := \arg\inf_{T\sharp\mu=\nu}\int_{\mathbb{R}^d} c(x, T(x)) d\mu(x)\,.
+T^\star := \arg\inf_{T\sharp\mu=\nu}\int_{\mathbb{R}^d} c(x, T(x)) d\mu(x)\,,
 \end{equation}
+where $T_\sharp$ defines the pushforward operator that "moves" an entire probability measure on $\gX$ towards a new probability measure on $\gY$, i.e., $T_\sharp$ "pushes forward" each elementary mass of a measure $\mu$ on $\gX$ by applying the map $T$ to obtain then an elementary mass in $\gY$.
 For two discrete measures $\mu=\sum_{i=1}^n u_i \delta_{x_{i}}, \nu=\sum_{j=1}^m v_j \delta_{y_{j}}$, it seeks a transport map $T: \mathcal{X} \rightarrow \mathcal{Y}$ associating each source point $x_i$ to a target point $y_j$ (see \cref{fig:ot_principles}a for the discrete and \cref{fig:ot_principles}b for the continuous setting).
-% TODO: Add more butter.
 The existence of $T^\star$ is guaranteed under fairly general conditions \citep[Theorem 1.22]{santambrogio2015optimal}, which require that $\mu$ and $\nu$ have finite $\ell_2$ norm, and that $\mu$ puts no mass on $(d-1)$ surfaces of class $\mathcal{C}_2$, 
-% TODO: Check the statement below.
 i.e., the family of continuous functions that have both a continuous first and a continuous second derivative.
 
 
@@ -46,7 +45,9 @@ Instead of the deterministic matching proposed by \citeauthor{monge1781histoire}
 \begin{equation} \label{eq:kantorovich}
     W(\mu, \nu) \defeq \inf_{\pi\in \Pi(\mu,\nu)}\iint c(x, y) \pi(x, y)\mathrm{d}x\mathrm{d}y,
 \end{equation}
-where $\Pi(\mu, \nu) \defeq \left\{\pi \in \gP(\mathcal{X} \times \mathcal{Y}): P_{\gX \sharp} \pi=\mu \, \text { and } \, P_{\gY \sharp} \pi=\nu\right\}$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$. Given the \acrlong{OT} coupling $\pi$, the resulting distance $W(\mu, \nu)$ between $\mu$ and $\nu$ is known as the Wasserstein distance.
+where $\Pi(\mu, \nu) \defeq \left\{\pi \in \gP(\mathcal{X} \times \mathcal{Y}): P_{\gX \sharp} \pi=\mu \, \text { and } \, P_{\gY \sharp} \pi=\nu\right\}$ is the set of couplings on $\mathbb{R}^d\times\mathbb{R}^d$ with respective marginals $\mu, \nu$. 
+Here, $P_{\gX \sharp}$ and $P_{\gY \sharp}$ are the pushforward by the projections $P_\gX (x, y) = x$ and $P_\gY (x, y) = y$
+Given the \acrlong{OT} coupling $\pi$, the resulting distance $W(\mu, \nu)$ between $\mu$ and $\nu$ is known as the Wasserstein distance.
 A visualization of the discrete setting is provided in \cref{fig:ot_principles}c.
 
 For his work, \citeauthor{kantorovich1942transfer} received the Nobel Prize in economics. The connection of \acrshort{OT} to basic questions in economy becomes clear when interpreting $\mu$ as a density of resource units, and $\nu$ a density of factories, where the coupling $\pi$ denotes the optimal transportation plan of distributing resources to factories.
@@ -253,11 +254,11 @@ Deviating from the previous notation of $(\mu, \nu)$, in the following sections 
 In the setting $\gX = \gY = \mathbb{R}^d$ with the squared Euclidean cost $c(x, y) = \norm{x-y}^2$, the solution of \eqref{eq:kantorovich} then coincides with finding the minimal path $(\mu_t)_{t=0}^1$, or more concretely, a curve in the space of measures, minimizing a total length.  
 Such path $\mu_t$ can be described through a time-varying vector field $v(t, \cdot)$ which moves particles around, satisfying the continuity equation in fluid dynamics or conservation of mass formula
 \begin{equation} \label{eq:continuity_equation}
-	\frac{\partial \mu_t}{\partial t}+\nabla\left(\mu_t v\right)= 0, \qquad \mu_{t=0}=\mu_0, \mu_{t=1}=\mu_1\,,
+	\frac{\partial \mu_t}{\partial t}+\nabla \cdot \left(\mu_t v\right)= 0, \qquad \mu_{t=0}=\mu_0, \mu_{t=1}=\mu_1\,,
 \end{equation}
 where the vector field $v(t, \cdot)$ denotes the speed and $\mu_t v(t, \cdot) = J_t$ corresponds to the momentum.
 Reformulating the \acrlong{OT}ation problem in a differential way, an "Eulerian" formulation inspired by fluid mechanics, will be crucial for the subsequent study of dynamical problems.
-Every curve $\mu_t$ describing the evolution of the measure over time can be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v(t, \cdot)$ that (i.) satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimizes the path length.
+Every curve $\mu_t$ describing the evolution of the measure over time can be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v(t, \cdot)$ that (i.) satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimizes the kinetic energy of the path.
 The infinitesimal length of such a vector field can be computed via 
 \begin{equation} \label{eq:vector_field_length}
 	\left\|v\right\|_{\ell^2\left(\mu_t\right)}=\left(\int_{\mathbb{R}^d}\left\|v(t, x)\right\|^2 \mathrm{~d} \mu_t(x)\right)^{1 / 2}.
@@ -278,7 +279,7 @@ Reciting the \nameref{thm:brenier}, with $T = \nabla \varphi$, $\mu_t$ is equal 
 \begin{equation} \label{eq:mccann_interpolation}
 	\mu_t = [(1-t) I+t \nabla \varphi]_\sharp \mu_0 = [(1-t) I+t T]_\sharp \mu_0\,.
 \end{equation}
-Despite their simplicity, this concept possesses remarkable applications beyond the realm of \acrlong{OT} \citep{bonneel2011displacement}. In particular, its interpretation as a geodesic formula in Riemannian geometry is thoroughly discussed in \citet{gangbo1996geometry} and serves as a pivotal link to the subsequent discussion.
+Despite their simplicity, this concept possesses remarkable applications beyond the realm of \acrlong{OT} \citep{bonneel2011displacement}. In particular, its interpretation as a geodesic formula in Riemannian geometry is  discussed in \citet{otto2001geometry} and serves as a pivotal link to the subsequent discussion.
 
 
 \subsection{Jordan-Kinderlehrer-Otto Flows} \label{sec:background_jko}
@@ -291,7 +292,7 @@ More concretely, gradient flows capture the intuitive idea of objects moving in 
 In the following, we will study gradient flows in the Euclidean setting before considering generalizations to arbitrary measures that allow studying the evolution of populations over time.
 
 \paragraph{Euclidean case.}
-Considering the evolution of a vector $x$ over time in Euclidean space. Provided with a smooth functional $J$, this can be realized through the standard gradient descent (forward) scheme
+Consider the evolution of a vector $x$ over time in Euclidean space. Provided with a smooth functional $J$, this can be realized through the standard gradient descent (forward) scheme
 \begin{equation*}
 	x_{t+1} \defeq x_{t}-\tau \nabla J\left(x_{t}\right),
 \end{equation*}
@@ -317,7 +318,7 @@ with the corresponding backward formulation defined as
 This implicit time stepping is a useful tool to construct continuous flows: In the limit $\tau \rightarrow 0$ the resulting sequence $\{\mu_t\}_{t=0}^T$ approximates a continuous flow $\mu_t$, i.e., a path in the Wasserstein space, and can thus be seen as the analogy of the usual proximal descent scheme, tailored for probability measures~\citep[p.285]{santambrogio2015optimal}
 
 Interest in Wasserstein gradient flows was sparked by the seminal work of Jordan, Kinderlehrer, and Otto (\citeyear{jordan1998variational}) who studied diffusion processes under the lens of the \acrshort{OT} metric \citep[see also][]{ambrosio2006gradient}. 
-For a broad class of potentials, $J$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{\acrshort{JKO} step} \eqref{eq:jko} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of a corresponding \acrshort{PDE}, and the resulting evolutions are often referred to as \emph{\acrshort{JKO} flows}.
+For a broad class of potentials $J$ and provided with an initial distribution $\mu_0$, the resulting time-discrete, iterative variational scheme induced by the so-called \emph{\acrshort{JKO} step} \eqref{eq:jko} reconstructs the evolution of measure $\mu_t$ over time. As $\tau \rightarrow 0$, the solution of the time-discretized gradient flow converges to the solution of a corresponding \acrshort{PDE}, and the resulting evolutions are often referred to as \emph{\acrshort{JKO} flows}.
 
 \begin{table*}[t]
 	\caption{Equivalence between gradient flows and \acrshortpl{PDE} where the gradient flow of flow functional $J(\mu_t)$ in Wasserstein space satisfies the corresponding \acrshort{PDE} \citep{alvarez2021optimizing, villani2021topics}. The function $f: \mathbb{R} \rightarrow \mathbb{R}$ is convex and superlinear and $V, W: \gX \rightarrow \mathbb{R}$ are convex and sufficiently smooth.}
@@ -400,13 +401,13 @@ Similarly, the regularized \acrshort{OT} problem \eqref{eq:ot-entropy} can be ca
 & \mathrm{d} X_t = v(t, X_t) \mathrm{d} t + \sigma \mathrm{d} \mathbb{W}_t \\
 \nonumber & X_0 \sim \mu_0, \quad X_1 \sim \mu_1,
 \end{align}
-where $\mathbb{W}_t $ denotes a Wiener process, i.e., standard white noise. 
+where $\mathbb{W}_t $ denotes a Wiener process, i.e., integrals of white noise. 
 Different from \eqref{eq:control_constraint}, however, \eqref{eq:sb_control_constraint} is a stochastic diffusion process.
 
 Besides, this problem exhibits a fluid-dynamic interpretation, i.e.,
 \begin{align}
 	& \inf _{(\mu_t, v)} \int_0^1 \int_{\mathbb{R}^n}\frac{1}{2}\norm{v(t, x)}^2 \mathrm{d}\mu_t(x) \mathrm{d} t \\
-	\label{eq:reg_bb_control_constraint} & \frac{\partial \mu_t}{\partial t}+\nabla \cdot(v \mu_t) - \frac{1}{2}\sigma^2 \Delta \mu_t = 0 \\
+	\label{eq:reg_bb_control_constraint} & \frac{\partial \mu_t}{\partial t}+\nabla \cdot(v \mu_t) - \frac{\sigma^2}{2} \Delta \mu_t = 0 \\
 	& \nonumber \mu_{t=0}=\mu_0, \mu_{t=1}=\mu_1\,,
 \end{align}
 where $\Delta$ denotes the Laplace operator.
@@ -445,17 +446,21 @@ In other words, the relative entropy between the stochastic process describing t
 Classical strategies for solving \eqref{eq:sb_control} commonly replace the boundary constraint $X_1 \sim \mu_1$ with a penalty or artificial terminal cost, thus transforming \eqref{eq:sb_control} to standard stochastic optimal control formulations. 
 The resulting optimality conditions are
 \begin{align}
-\label{eq:sb_hb} & \frac{\partial \psi}{\partial t} = -\frac{1}{2}\|\nabla \psi\|^2 -\frac{1}{2}\sigma^2 \Delta \psi \\
+\label{eq:sb_hb} & \frac{\partial \psi}{\partial t} = -\frac{1}{2}\|\nabla \psi\|^2 -\frac{\sigma^2}{2} \Delta \psi \\
 % TODO: Is this a + or - \nabla?
 \label{eq:sb_optimality}
-& \frac{\partial \mu_t}{\partial t} = - \nabla \cdot(\mu_t \nabla \psi) +\frac{1}{2}\sigma^2 \Delta \mu_t
+& \frac{\partial \mu_t}{\partial t} = - \nabla \cdot(\mu_t \nabla \psi) +\frac{\sigma^2}{2} \Delta \mu_t
 \end{align}
-with value function $\psi(t, x)$ and $\mu_t$ being the associated optimal marginal density. Here, $v \equiv \nabla \psi$ and $\psi(1, \cdot)$ is equivalent to the terminal cost. Further, \cref{eq:sb_hb} is a second-order Hamilton-Jacobi-Bellman equation.
-After applying the \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform $(\psi, \mu_t) \rightarrow (\Phi, \widehat{\Phi})$, we obtain the \acrshort{SB} system associated to the \acrshort{SDE} class in \eqref{eq:sb_control_constraint}, which is given by
+with value function $\psi(t, x)$ and $\mu_t$ being the associated optimal marginal density. Here, $v \equiv \nabla \psi$ and $\psi(1, \cdot)$ is equivalent to the terminal cost. Further, \cref{eq:sb_hb} is a second-order Hamilton-Jacobi-Bellman equation, while \eqref{eq:sb_optimality} is the continuity equation.
+After applying the \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform $(\psi, \mu_t) \rightarrow (\Phi, \widehat{\Phi})$, 
+\begin{align*}
+    \Phi = \exp (\frac{\psi}{\sigma^2}) \enspace \text{and} \enspace \widehat{\Phi} = \mu_t \exp (\frac{-\psi}{\sigma^2}),
+\end{align*}
+we obtain the \acrshort{SB} system associated to the \acrshort{SDE} class in \eqref{eq:sb_control_constraint}, which is given by
 \begin{align}
-& \frac{\partial \Phi}{\partial t}=-\frac{1}{2}\sigma^2 \Delta \Phi 
+& \frac{\partial \Phi}{\partial t}=-\frac{\sigma^2}{2} \Delta \Phi 
 \quad \text { s.t. } & \Phi(0, \cdot) \widehat{\Phi}(0, \cdot)=\mu_0, \\ \nonumber
-& \frac{\partial \widehat{\Phi}}{\partial t}=\frac{1}{2}\sigma^2 \Delta \widehat{\Phi} \quad & \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1.
+& \frac{\partial \widehat{\Phi}}{\partial t}=\frac{\sigma^2}{2} \Delta \widehat{\Phi} \quad & \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1.
 \end{align}
 i.e., a backward Kolmogorov and a Fokker-Planck equation, respectively. The optimal control is then given by $
 v(t, X_t)=\sigma^2 \nabla \log \Phi(t, x)$.
@@ -468,7 +473,7 @@ v(t, X_t)=\sigma^2 \nabla \log \Phi(t, x)$.
 
 \subsubsection*{Generalizations to Other SDE Classes}
 To describe complex biological processes, however, we need to consider \acrshort{SDE} classes comprising nonlinear drifts, affine control, and time-varying diffusion. 
-In the following, let us consider \acrshortpl{SDE} with an external speed $f(\cdot, t): \mathbb{R}^d \rightarrow \mathbb{R}^d$, time-dependent diffusion $g(t) \in \mathbb{R}$, and standard Wiener process $\mathbb{W}_t \in \mathbb{R}^d$\footnote{Hereafter, we will sometimes drop $f \equiv f(t, X_t)$ and $g \equiv g(t)$ for brevity.}. \citet{caluya2021wasserstein, chen2021likelihood} provide a generalization of the above framework that reads
+In the following, let us consider \acrshortpl{SDE} with an external speed $f(\cdot, t): \mathbb{R}^d \rightarrow \mathbb{R}^d$, time-dependent diffusion $g(t) \in \mathbb{R}$, and standard Wiener process $\mathbb{W}_t \in \mathbb{R}^d$.\footnote{Hereafter, we will sometimes drop $f \equiv f(t, X_t)$ and $g \equiv g(t)$ for brevity.} \citet{caluya2021wasserstein, chen2021likelihood} provide a generalization of the above framework that reads
 \begin{align}
 \label{eq:sb_control_gen}
 & \inf _{v \in \mathcal{V}} \mathbb{E}\left\{\int_0^1 \frac{1}{2}\norm{v(t, X_t)}^2 d t\right\}\\
@@ -483,8 +488,8 @@ The effect of adding an external force $f$, here exemplified through a horizonta
 \paragraph{Optimality criteria.}
 Again, we recover the optimality criteria via a \citeauthor{hopf1950partial}-\citeauthor{cole1951quasi} transform  of \eqref{eq:sb_control_gen} resulting in
 \begin{align} \label{eq:sb_optimality_gen}
-& \frac{\partial \Phi}{\partial t}=-\nabla \Phi^{T } f- \frac{1}{2}\sigma^2 g^2 \Delta \Phi \quad \quad \text { s.t. } &\Phi(0, \cdot) \widehat{\Phi}(0,  \cdot)=\mu_0, \\
-\nonumber & \frac{\partial \widehat{\Phi}}{\partial t}=-\nabla \cdot(\widehat{\Phi} f)+\frac{1}{2}\sigma^2 g^2 \Delta \widehat{\Phi} \quad &  \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1
+& \frac{\partial \Phi}{\partial t}=-\nabla \Phi^{T } f- \frac{\sigma^2}{2} g^2 \Delta \Phi \quad \quad \text { s.t. } &\Phi(0, \cdot) \widehat{\Phi}(0,  \cdot)=\mu_0, \\
+\nonumber & \frac{\partial \widehat{\Phi}}{\partial t}=-\nabla \cdot(\widehat{\Phi} f)+\frac{\sigma^2}{2} g^2 \Delta \widehat{\Phi} \quad &  \Phi(1, \cdot) \widehat{\Phi}(1, \cdot)=\mu_1
 \end{align}
 with the optimal control $v(t, X_t)= \sigma^2 g(t) \nabla \log \Phi\left(t, X_t\right)$.
 The solution in \eqref{eq:sb_optimality_gen} can be expressed through two coupled \acrshortpl{SDE} of the form \citep{leonard2013survey}

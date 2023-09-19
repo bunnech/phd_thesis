@@ -73,7 +73,7 @@ $10,995$ cells were imaged in the DMSO-treated control state and the rest were t
 
 All image analysis steps were performed by our in-house platform called \href{https://github.com/TissueMAPS}{\texttt{TissueMAPS}}. The steps included illumination correction \citep{snijder2012single}, alignment of images from different acquisition cycles using fast Fourier transform \citep{guizar2008efficient}, segmentation of nuclei and cell outlines \citep{stoeger2015computer},  as well cellular and nuclear measurements of intensity and morphology features using the \texttt{scikit-image} library \citep{van2014scikit}.
 
-The extracted marker intensities and morphological features are then re-normalized to the same numerical scale by dividing each feature with its 75th percentile computed on control cells. Values are then transformed with a log1p ($x \xleftarrow{} \log(x + 1)$) function\footnote{\label{fnt:dataset_download} The dataset can be downloaded via \url{https://doi.org/10.3929/ethz-b-000609681}.}.
+The extracted marker intensities and morphological features are then re-normalized to the same numerical scale by dividing each feature with its 75th percentile computed on control cells. Values are then transformed with a log1p ($x \xleftarrow{} \log(x + 1)$) function.\footnote{\label{fnt:dataset_download} The dataset can be downloaded via \url{https://doi.org/10.3929/ethz-b-000609681}.}
 
 \paragraph{Feature selection.}
 A total of 47 features are reported, 21 morphological features and 26 protein intensities.
@@ -113,7 +113,7 @@ Developmental processes in biology involve tissue and organ development, body ax
 An example of such a process is the differentiation of \acrshortpl{ESC} into hematopoietic, cardiac, neural, pancreatic, hepatocytic, and germ lineages.
 This development can be approximated \textit{in vitro} using \acrlongpl{EB} \citep{martin1975differentiation}, three-dimensional aggregates of pluripotent stem cells, including \acrshortpl{ESC} \citep{shamblott2009derivation}.
 Recently, \citet{moon2019visualizing} conducted a \acrshort{sc}\acrshort{RNAseq} analysis to unveil the developmental trajectories, as well as cellular and molecular identities through which early lineage precursors emerge from human \acrshortpl{ESC}.
-The dataset is available via \href{https://data.mendeley.com/datasets/v6n743h5ng}{Mendeley Data (V6N743H5NG)}\footnote{Dataset available via \url{https://data.mendeley.com/datasets/v6n743h5ng}.}.
+The dataset is available via \href{https://data.mendeley.com/datasets/v6n743h5ng}{Mendeley Data (V6N743H5NG)}.\footnote{Dataset available via \url{https://data.mendeley.com/datasets/v6n743h5ng}.}
 In the following, we describe the preprocessing of the raw \acrshort{sc}\acrshort{RNAseq} data as well as the lineage branch analysis extracting the functional cell types emerging in this developmental process.
 
 \paragraph{Data preprocessing.}
@@ -166,7 +166,7 @@ To reduce the dimensionality of these data points, we perform a \acrshort{PCA} p
 Preprocessing for the lupus patients~\citep{kang2018multiplexed} and cross-species dataset~\citep{hagai2018gene} were inherited from~\citet{rybakov2020learning} 
 and \citet{lotfollahi2019scgen}, and we would like to thank the authors for hosting this dataset.
 Lastly, the preprocessing of the glioblastoma patient dataset \citep{zhao2021deconvolution} was adapted from \citet{peidli2022scperturb}.
-The preprocessed datasets are available for download\textsuperscript{\ref{fnt:dataset_download}}. Similarly, for the dataset by \citet{schiebinger2019optimal}, the processed dataset is hosted by the authors\footnote{Dataset available via \url{https://broadinstitute.github.io/wot/tutorial/}.}.
+The preprocessed datasets are available for download\textsuperscript{\ref{fnt:dataset_download}}. Similarly, for the dataset by \citet{schiebinger2019optimal}, the processed dataset is hosted by the authors.\footnote{Dataset available via \url{https://broadinstitute.github.io/wot/tutorial/}.}
 
 \section{Evaluation Metrics} \label{app:evaluation_metrics}
 
