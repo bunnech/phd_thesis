@@ -260,7 +260,7 @@ Reformulating the \acrlong{OT}ation problem in a differential way, an "Eulerian"
 Every curve $\mu_t$ describing the evolution of the measure over time can be interpreted as the fluid flow along a family of vector fields. We are searching for the vector field $v(t, \cdot)$ that (i.) satisfies the conservation of mass \eqref{eq:continuity_equation}, and (ii.) minimizes the kinetic energy of the path.
 The infinitesimal length of such a vector field can be computed via 
 \begin{equation} \label{eq:vector_field_length}
-	\left\|v\right\|_{\ell^2\left(\mu_t\right)}=\left(\int_{\mathbb{R}^d}\left\|v(t, x)\right\|^2 \mathrm{~d} \mu_t(x)\right)^{1 / 2}.
+	\left\|v\right\|_{\ell^2\left(\mu_t\right)}=\left(\int_{\mathbb{R}^d}\left\|v(t, x)\right\|^2 \mathrm{~d} \mu_t(x)\right)^{1 / 2},
 \end{equation}
 resulting, in the case of $\gX = \gY = \mathbb{R}^d$ and $c(x, y)=\|x-y\|^2$, in the minimal-path reformulation of \eqref{eq:kantorovich}
 \begin{align}  \label{eq:benamou_brenier}
@@ -392,7 +392,7 @@ The above strategy, however, differs from standard optimal control in the added 
 
 \subsubsection*{... on Regularized Optimal Transport}
 
-Similarly, the regularized \acrshort{OT} problem \eqref{eq:ot-entropy} can be cast as a stochastic control problem.
+Similarly, the regularized \acrshort{OT} problem \eqref{eq:ot-entropy} can be cast as a stochastic control problem
 \begin{align}
 \label{eq:sb_control}
 & \inf _{v \in \mathcal{V}} \mathbb{E}\left\{\int_0^1 \frac{1}{2}\norm{v(t, X_t)}^2 \mathrm{d} t\right\}\\

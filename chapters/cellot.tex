@@ -65,7 +65,7 @@ For convenience, let us restate the semi-dual formulation in \eqref{eq:dual-cvx}
 \end{equation*}
 where the optimization problem is concerned with finding a convex function $\varphi$ and its convex conjugate \eqref{eq:legendre} $\varphi^*$ given by
 \begin{equation} \label{eq:varphi_conjugate}
-	\forall y, \quad \varphi^*(y) \defeq \sup _x \langle x, y\rangle-\varphi(y)\,.	
+	\forall y, \quad \varphi^*(y) \defeq \sup _x \langle x, y\rangle-\varphi(x)\,.	
 \end{equation}
 As discussed in \cref{sec:background_brenier}, the \acrlong{OT} map $T^\star$ for cost $c(x,y) = \|x-y\|^2_2$ and $\gX = \gY = \mathbb{R}^d$ in~\eqref{eq:monge} can be recovered via $\nabla \varphi^\star$.
 
@@ -90,7 +90,7 @@ where $\theta$ and $\phi$ are the parameters of each \acrshort{ICNN}.
 Thus, the potentials $\varphi$ and $g$ can be learned via an alternate max-min optimization problem with loss functions
 \begin{align} 
 	\label{eq:makkuva_f_loss}
-    \ell_\varphi(\mu, \nu; \theta) &= - \mathbb{E}_{x \sim \mu}[\text{ICNN}_{\phi}(x)] - \mathbb{E}_{y \sim \nu}[\text{ICNN}_{\theta}(\nabla \text{ICNN}_{\phi}(y))],   \\
+    \ell_\varphi(\mu, \nu; \theta) &= - \mathbb{E}_{x \sim \mu}[\text{ICNN}_{\theta}(x)] - \mathbb{E}_{y \sim \nu}[\text{ICNN}_{\theta}(\nabla \text{ICNN}_{\phi}(y))],   \\
     \label{eq:makkuva_g_loss}
     \ell_g(\mu, \nu; \phi) &= -\mathbb{E}_{y \sim \nu}[\langle y, \nabla \text{ICNN}_{\phi}(y)\rangle-\text{ICNN}_{\theta}(\nabla \text{ICNN}_{\phi}(y))].
 \end{align}
@@ -141,7 +141,7 @@ Finding this map then not only allows us to model \acrlong{sc} trajectories upon
 \begin{figure}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/fig_overview_cellot.pdf}
-    \caption{\textbf{Overview of the \textsc{CellOT} Model.} \textbf{a.}~Distributions of single cells were measured in either an untreated control state ($\mu$) or in one of several perturbed states ($\nu_k, \nu_l, \nu_m,  \ldots$). These distributions lie in a high-dimensional space of profiled features. \textbf{b.}~For a perturbation $k$, we aim to model it with a function $T_k$ that maps untreated cells in $\mu$ to their treated counterparts in $\nu_k$. \textbf{c.}~Lacking paired measurements, we assume that the perturbation transforms $\mu$ into $\nu_k$ under a principle of minimal effort. In particular, we learn $T_k$ using \acrlong{OT} theory to directly estimate this distributional mapping as the gradient of the \acrlong{OT} dual potential $\nabla g_\theta$.
+    \caption{\textbf{Overview of the \textsc{CellOT} model.} \textbf{a.}~Distributions of single cells were measured in either an untreated control state ($\mu$) or in one of several perturbed states ($\nu_k, \nu_l, \nu_m,  \ldots$). These distributions lie in a high-dimensional space of profiled features. \textbf{b.}~For a perturbation $k$, we aim to model it with a function $T_k$ that maps untreated cells in $\mu$ to their treated counterparts in $\nu_k$. \textbf{c.}~Lacking paired measurements, we assume that the perturbation transforms $\mu$ into $\nu_k$ under a principle of minimal effort. In particular, we learn $T_k$ using \acrlong{OT} theory to directly estimate this distributional mapping as the gradient of the \acrlong{OT} dual potential $\nabla \varphi_k$.
     \textbf{d.}~OT maps are learned for all perturbations independently. Because these maps are fully parameterized, \textsc{CellOT} can be trained, for example, on a set of initially provided samples to then make predictions on untreated cells originating from new, previously unseen samples.}
     \label{fig:overview_cellot}
 \end{figure}
@@ -231,7 +231,7 @@ Using 750 predicted and 750 observed perturbed cells, we computed \acrshort{UMAP
 \label{fig:biological_analysis}
 
 % \subsection*{\textsc{CellOT} enables cell state-aware drug profiling and disentangles subpopulation-specific drug effects}
-\subsection{Disentangles Subpopulation-Specific Drug Effects}
+\subsection{Disentangling Subpopulation-Specific Drug Effects}
 \textsc{CellOT} allows us to 
 % profile the severity of drug perturbations on individual cellular states and understand how the cellular state of unperturbed cells determines drug response behavior. We can 
 isolate the \acrlong{MOA} of each drug by computing the difference between predicted perturbed cells and untreated control cells. % , i.e., the \emph{cost} of the \acrlong{OT}.

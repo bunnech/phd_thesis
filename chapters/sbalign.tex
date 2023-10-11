@@ -178,7 +178,7 @@ Although the computation of \eqref{eq:softdoob} can be done via a standard appli
 \begin{figure*}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/fig_results_synthetic.png}
-    \caption{Experimental results on the Moon dataset (\textbf{a-c}) and T-dataset (\textbf{d-f}). The top row shows the trajectory sampled using the learned drift, and the bottom row shows the matching based on the learned drift. Compared to other baselines, \textsc{SBalign} is able to learn an appropriate drift respecting the true alignment. (\textbf{f}) further showcases the utility of \textsc{SBalign}'s learned drift as a suitable reference process to improve other training methods.}
+    \caption{\textbf{a.}-\textbf{c.} Experimental results on the Moon dataset and \textbf{d.}-\textbf{f.} the T-dataset. The top row shows the trajectory sampled using the learned drift, and the bottom row shows the matching based on the learned drift. Compared to other baselines, \textsc{SBalign} is able to learn an appropriate drift respecting the true alignment. \textbf{f.} We further showcase the utility of \textsc{SBalign}'s learned drift as a suitable reference process to improve other training methods.}
     \label{fig:results_spiral}
 \end{figure*}
 
@@ -220,7 +220,7 @@ In this section, we evaluate \textsc{SBalign} in different settings involving 2-
 \begin{figure*}
     \centering
     \includegraphics[width=\textwidth]{figures/fig_cell_trajectories_matchings.png}
-    \caption{Cell differentiation trajectories based on (\textbf{a}) the ground truth and (\textbf{b-d}) learned drifts. \textsc{SBalign} is able to learn an appropriate drift underlying the true differentiation process while respecting the alignment. (\textbf{d}) Using the learned drift from \textsc{SBalign} as a reference process helps improve the drift learned by other training methods.}
+    \caption{Cell differentiation trajectories based on \textbf{a.} the ground truth and \textbf{b.}-\textbf{d.} learned drifts. \textsc{SBalign} is able to learn an appropriate drift underlying the true differentiation process while respecting the alignment. \textbf{d.} Using the learned drift from \textsc{SBalign} as a reference process helps improve the drift learned by other training methods.}
     \label{fig:results_cell_traj}
 \end{figure*}
 
@@ -249,7 +249,7 @@ Setting imprecise values for one of $t_h$ and $t_v$ when defining custom referen
 \begin{figure*}[t]
     \centering
     \includegraphics[width=\textwidth]{figures/fig_cell_pred_types.pdf}
-    \caption{Cell type prediction on the differentiation dataset. All distributions are plotted on the first two principal components. \textbf{a-b:} Ground truth cell types on day 2 and day 4 respectively. \textbf{c-d:} \textsc{fbSB} and \textsc{SBalign} cell type predictions on day 4. \textsc{SBalign} is able to better model the underlying differentiation processes and capture the diversity in cell types.}
+    \caption{Cell type prediction on the differentiation dataset. All distributions are plotted on the first two principal components. \textbf{a.}-\textbf{b.} Ground truth cell types on day 2 and day 4 respectively. \textbf{c.}-\textbf{d.} \textsc{fbSB} and \textsc{SBalign} cell type predictions on day 4. \textsc{SBalign} is able to better model the underlying differentiation processes and capture the diversity in cell types.}
     \label{fig:results_cell_class}
 \end{figure*}
 
